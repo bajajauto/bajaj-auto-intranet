@@ -91,7 +91,7 @@ function SidebarContent({ isExpanded, activeSection, onNavigate }) {
             </p>
           )}
           <ul className="space-y-0.5">
-            {group.items.map((item) => (
+            {group.items.filter((item) => item.enabled !== false).map((item) => (
               <li key={item.id}>
                 <NavItem
                   item={item}
