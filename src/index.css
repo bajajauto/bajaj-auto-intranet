@@ -12,10 +12,13 @@
   }
 
   body {
-    @apply text-text-primary bg-bg-main;
-    font-family: 'Segoe UI', Calibri, system-ui, -apple-system, sans-serif;
+    @apply text-text-primary bg-bg-main font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
   }
 }
 
