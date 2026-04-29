@@ -6,8 +6,8 @@ export default function TopBanner() {
   ]
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-9 bg-brand-light border-b border-brand-primary/20 flex items-center justify-center px-4">
-      <nav className="flex items-center gap-6" aria-label="Policy links">
+    <div className="fixed top-0 left-0 right-0 z-50 h-9 bg-brand-light border-b border-brand-primary/20 flex items-center justify-center px-4 overflow-x-auto">
+      <nav className="flex items-center gap-6 whitespace-nowrap min-w-max" aria-label="Policy links">
         {links.map((link, i) => (
           <span key={link.label} className="flex items-center gap-6">
             <a
