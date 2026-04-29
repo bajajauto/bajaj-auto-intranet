@@ -7,7 +7,7 @@ export default function Header() {
   const user = useUser()
 
   return (
-    <header className="fixed top-9 left-0 right-0 z-40 h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-4 shadow-card">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-4 shadow-card">
       <button
         onClick={toggleSidebar}
         className="p-2 rounded-btn text-text-secondary hover:bg-bg-alt focus-ring"

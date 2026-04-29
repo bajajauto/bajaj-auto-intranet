@@ -5,12 +5,8 @@ export default function NewsFeed() {
   const articles = newsService.getAll()
 
   return (
-    <div className="flex gap-4 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory">
-      {articles.map((article) => (
-        <div key={article.id} className="snap-start">
-          <NewsCard {...article} />
-        </div>
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {articles.map((article) => <NewsCard key={article.id} {...article} />)}
     </div>
   )
 }

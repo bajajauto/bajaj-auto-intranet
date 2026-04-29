@@ -4,7 +4,12 @@ import { navGroups } from '@/config/navigation.config'
 
 function scrollToSection(sectionId) {
   const el = document.getElementById(sectionId)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
+  if (!el) return
+
+  // Account for fixed TopBanner (36px) + fixed Header (64px) wrapper padding.
+  const HEADER_OFFSET_PX = 16
+  const y = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET_PX
+  window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
 }
 
 function NavItem({ item, isExpanded, isActive, onNavigate }) {
@@ -28,9 +33,10 @@ function NavItem({ item, isExpanded, isActive, onNavigate }) {
 }
 
 export default function Sidebar({ activeSection }) {
-  const { isExpanded, isMobileOpen, setMobileOpen } = useSidebar()
+  const { isExpanded, isMobileOpen, setMobileOpen, collapseSidebar } = useSidebar()
 
   function handleNavigate(sectionId) {
+    collapseSidebar()
     scrollToSection(sectionId)
     setMobileOpen(false)
   }
@@ -47,8 +53,8 @@ export default function Sidebar({ activeSection }) {
 
       <aside
         className={`
-          fixed top-[100px] bottom-0 left-0 z-30 overflow-y-auto bg-white border-r border-gray-200
-          transition-all duration-200 ease-in-out
+          sticky top-0 h-screen overflow-y-auto bg-white border-r border-gray-200
+          transition-all duration-200 ease-in-out flex-shrink-0
           ${isExpanded ? 'w-64' : 'w-16'}
           hidden md:flex flex-col
         `}

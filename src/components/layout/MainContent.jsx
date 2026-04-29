@@ -12,7 +12,6 @@ import LocationsSection from '@/components/locations/LocationsSection'
 import FeedbackSection from '@/components/feedback/FeedbackSection'
 
 const SECTION_IDS = [
-  'dashboard',
   'self-service',
   'company-overview',
   'company-news',
@@ -31,10 +30,7 @@ export default function MainContent() {
       <Sidebar activeSection={activeSection} />
 
       <main
-        className={`
-          flex-1 min-h-screen transition-all duration-200
-          ${isExpanded ? 'md:ml-64' : 'md:ml-16'}
-        `}
+        className="flex-1 min-h-screen"
       >
         <div className="max-w-screen-xl mx-auto px-4 md:px-6 py-6 space-y-10">
           <section id="dashboard" aria-labelledby="dashboard-heading">

@@ -12,7 +12,7 @@ function formatDate(iso) {
 
 export default function NewsCard({ headline, excerpt, date, sourceTag, image }) {
   return (
-    <button className="flex-shrink-0 w-72 rounded-card border border-gray-100 shadow-card bg-white text-left hover:shadow-modal transition-shadow focus-ring overflow-hidden">
+    <button className="w-full rounded-card border border-gray-100 shadow-card bg-white text-left hover:shadow-modal transition-shadow focus-ring overflow-hidden">
       <ImagePlaceholder width="100%" height={140} label="News Image" />
       <div className="p-4 space-y-2">
         <div className="flex items-center justify-between gap-2">
