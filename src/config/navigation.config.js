@@ -95,8 +95,8 @@ export const navGroups = [
         icon: 'Phone',
         sectionId: 'it-resources',
       },
-      { id: 'help-faqs', label: 'Help / FAQs', icon: 'HelpCircle', sectionId: 'help' },
-      { id: 'chat-bot', label: 'Chat with Bot', icon: 'Bot', sectionId: 'help', enabled: false },
+      { id: 'help-faqs', label: 'Help / FAQs', icon: 'HelpCircle', sectionId: 'feedback' },
+      { id: 'chat-bot', label: 'Chat with Bot', icon: 'Bot', sectionId: 'feedback', enabled: false },
     ],
   },
 ]

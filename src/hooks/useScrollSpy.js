@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export function useScrollSpy(sectionIds, options = {}) {
+export function useScrollSpy(sectionIds) {
   const [activeId, setActiveId] = useState(sectionIds[0] ?? null)
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function useScrollSpy(sectionIds, options = {}) {
           window.history.replaceState(null, '', `#${visible.target.id}`)
         }
       },
-      { rootMargin: '-20% 0px -60% 0px', threshold: 0, ...options }
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
     )
 
     elements.forEach((el) => observer.observe(el))

@@ -15,6 +15,7 @@ export function UserProvider({ children }) {
   return <UserContext.Provider value={mockUser}>{children}</UserContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useUser() {
   return useContext(UserContext)
 }

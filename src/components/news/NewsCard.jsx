@@ -10,7 +10,7 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-export default function NewsCard({ headline, excerpt, date, sourceTag, image }) {
+export default function NewsCard({ headline, excerpt, date, sourceTag }) {
   return (
     <button className="flex-shrink-0 w-72 rounded-card border border-gray-100 shadow-card bg-white text-left hover:shadow-modal transition-shadow focus-ring overflow-hidden">
       <ImagePlaceholder width="100%" height={140} label="News Image" />

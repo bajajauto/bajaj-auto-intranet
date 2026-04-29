@@ -14,7 +14,7 @@ function formatTime(isoString) {
   })
 }
 
-export default function NotificationCard({ id, title, timestamp, priority, icon }) {
+export default function NotificationCard({ title, timestamp, priority, icon }) {
   const Icon = Icons[icon] ?? Icons.Bell
 
   return (
