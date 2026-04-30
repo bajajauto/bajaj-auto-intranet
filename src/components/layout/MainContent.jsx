@@ -36,7 +36,7 @@ export default function MainContent() {
           <section id="dashboard" aria-labelledby="dashboard-heading">
             <h2 id="dashboard-heading" className="sr-only">Dashboard</h2>
             <div className="flex flex-col lg:flex-row gap-6">
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
                   <h2 id="self-service-heading" className="text-lg font-semibold text-text-primary mb-4">
                     Employee Self-Service
@@ -44,7 +44,7 @@ export default function MainContent() {
                   <ServiceGrid />
                 </section>
               </div>
-              <div className="flex flex-col gap-6 lg:w-80 xl:w-96">
+              <div className="flex flex-col gap-6 w-full lg:w-80 flex-shrink-0">
                 <NotificationsPanel />
                 <CalendarWidget />
               </div>

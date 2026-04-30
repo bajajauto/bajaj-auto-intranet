@@ -1,6 +1,6 @@
 import * as Icons from 'lucide-react'
 
-export default function ServiceTile({ id, label, icon, redirectUrl }) {
+export default function ServiceTile({ label, icon, redirectUrl }) {
   const Icon = Icons[icon] ?? Icons.ExternalLink
 
   function handleClick() {
