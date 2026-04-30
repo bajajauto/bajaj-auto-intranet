@@ -15,10 +15,10 @@ const SECTION_IDS = [
   'self-service',
   'company-overview',
   'company-news',
-  'it-resources',
-  'emergency-contacts',
   'locations',
+  'it-resources',
   'feedback',
+  'emergency-contacts',
 ]
 
 export default function MainContent() {
@@ -65,20 +65,6 @@ export default function MainContent() {
             <NewsFeed />
           </section>
 
-          <section id="it-resources" aria-labelledby="it-resources-heading">
-            <h2 id="it-resources-heading" className="text-lg font-semibold text-text-primary mb-4">
-              IT Resources
-            </h2>
-            <ITResources />
-          </section>
-
-          <section id="emergency-contacts" aria-labelledby="emergency-heading">
-            <h2 id="emergency-heading" className="text-lg font-semibold text-text-primary mb-4">
-              Emergency Contacts
-            </h2>
-            <EmergencyContacts />
-          </section>
-
           <section id="locations" aria-labelledby="locations-heading">
             <h2 id="locations-heading" className="text-lg font-semibold text-text-primary mb-4">
               Bajaj Auto Locations
@@ -86,11 +72,25 @@ export default function MainContent() {
             <LocationsSection />
           </section>
 
+          <section id="it-resources" aria-labelledby="it-resources-heading">
+            <h2 id="it-resources-heading" className="text-lg font-semibold text-text-primary mb-4">
+              IT Resources
+            </h2>
+            <ITResources />
+          </section>
+
           <section id="feedback" aria-labelledby="feedback-heading">
             <h2 id="feedback-heading" className="text-lg font-semibold text-text-primary mb-4">
               Feedback & Support
             </h2>
             <FeedbackSection />
+          </section>
+
+          <section id="emergency-contacts" aria-labelledby="emergency-heading">
+            <h2 id="emergency-heading" className="text-lg font-semibold text-text-primary mb-4">
+              Emergency Contacts
+            </h2>
+            <EmergencyContacts />
           </section>
         </div>
       </main>

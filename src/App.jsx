@@ -3,6 +3,7 @@ import { UserProvider } from '@/context/UserContext'
 import TopBanner from '@/components/layout/TopBanner'
 import Header from '@/components/layout/Header'
 import MainContent from '@/components/layout/MainContent'
+import FloatingSupportButton from '@/components/shared/FloatingSupportButton'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <div className="flex flex-1 pt-[calc(36px+64px)]">
             <MainContent />
           </div>
+          <FloatingSupportButton />
         </div>
       </SidebarProvider>
     </UserProvider>

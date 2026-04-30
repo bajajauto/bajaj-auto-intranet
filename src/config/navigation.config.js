@@ -1,19 +1,14 @@
 export const navGroups = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    items: [
-      {
-        id: 'dashboard-home',
-        label: 'Dashboard',
-        icon: 'LayoutDashboard',
-        sectionId: 'dashboard',
-      },
-    ],
+    id: 'portal-brand',
+    label: 'EKAM',
+    isPortalName: true,
+    items: [],
   },
   {
     id: 'employee-services',
-    label: 'Employee Services',
+    label: 'Employee Self-Service',
+    collapsible: true,
     items: [
       { id: 'team-directory', label: 'Team Directory', icon: 'Users', sectionId: 'self-service' },
       { id: 'payslip', label: 'Payslip', icon: 'Receipt', sectionId: 'self-service' },
@@ -57,31 +52,40 @@ export const navGroups = [
   {
     id: 'company-resources',
     label: 'Company Resources',
+    collapsible: true,
     items: [
-      {
-        id: 'news-updates',
-        label: 'News / Updates',
-        icon: 'Newspaper',
-        sectionId: 'company-news',
-      },
-      { id: 'bajaj-ev-map', label: 'Bajaj EV Map', icon: 'Map', sectionId: 'locations' },
-      {
-        id: 'emergency-contacts',
-        label: 'Emergency Contacts',
-        icon: 'PhoneCall',
-        sectionId: 'emergency-contacts',
-      },
       {
         id: 'company-overview',
         label: 'Company Overview',
         icon: 'Building2',
         sectionId: 'company-overview',
       },
+      {
+        id: 'company-news',
+        label: 'Company News',
+        icon: 'Newspaper',
+        sectionId: 'company-news',
+      },
+      { id: 'locations', label: 'Bajaj EV Map', icon: 'Map', sectionId: 'locations' },
+    ],
+  },
+  {
+    id: 'it-resources-group',
+    label: 'IT Resources',
+    collapsible: true,
+    items: [
+      {
+        id: 'telecom-contacts',
+        label: 'Telecom Contacts',
+        icon: 'Phone',
+        sectionId: 'it-resources',
+      },
     ],
   },
   {
     id: 'support-engagement',
     label: 'Support & Engagement',
+    collapsible: true,
     items: [
       {
         id: 'feedback',
@@ -89,14 +93,20 @@ export const navGroups = [
         icon: 'MessageSquare',
         sectionId: 'feedback',
       },
-      {
-        id: 'telecom-contacts',
-        label: 'Telecom Contacts',
-        icon: 'Phone',
-        sectionId: 'it-resources',
-      },
       { id: 'help-faqs', label: 'Help / FAQs', icon: 'HelpCircle', sectionId: 'feedback' },
-      { id: 'chat-bot', label: 'Chat with Bot', icon: 'Bot', sectionId: 'feedback', enabled: false },
+    ],
+  },
+  {
+    id: 'emergency',
+    label: 'Emergency Contacts',
+    collapsible: false,
+    items: [
+      {
+        id: 'emergency-contacts',
+        label: 'Emergency Contacts',
+        icon: 'PhoneCall',
+        sectionId: 'emergency-contacts',
+      },
     ],
   },
 ]

@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
-import { Search, Bell, HelpCircle, Menu, LogOut, ChevronDown } from 'lucide-react'
+import { Search, Bell, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { useUser } from '@/context/UserContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { notificationService } from '@/services/notificationService'
 import NotificationsPanel from '@/components/notifications/NotificationsPanel'
+import logoImage from '../../../Bajaj Auto Logo-02.png'
 
 export default function Header() {
   const { toggleSidebar, isMobileOpen, setMobileOpen } = useSidebar()
@@ -76,12 +77,9 @@ export default function Header() {
 
       {/* Logo */}
       <div className="flex items-center gap-2 flex-shrink-0 select-none">
-        <div className="w-8 h-8 bg-brand-primary rounded-sm flex items-center justify-center">
-          <span className="text-white text-sm font-black tracking-tight">B</span>
-        </div>
+        <img src={logoImage} alt="EKAM Logo" className="h-12 w-auto" />
         <div className="leading-none">
-          <div className="text-brand-dark font-black text-sm tracking-wider uppercase">Bajaj</div>
-          <div className="text-text-secondary font-medium text-[10px] tracking-widest uppercase">Auto</div>
+          <div className="text-brand-dark font-black text-base tracking-wider uppercase">EKAM</div>
         </div>
       </div>
 
@@ -125,14 +123,6 @@ export default function Header() {
             </div>
           )}
         </div>
-
-        {/* Help */}
-        <button
-          className="p-2 rounded-btn text-text-secondary hover:bg-bg-alt focus-ring"
-          aria-label="Help"
-        >
-          <HelpCircle size={20} />
-        </button>
 
         {/* User profile */}
         <div className="relative" ref={profileRef}>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import * as Icons from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
@@ -33,12 +34,21 @@ function NavItem({ item, isExpanded, isActive, onNavigate }) {
 }
 
 export default function Sidebar({ activeSection }) {
-  const { isExpanded, isMobileOpen, setMobileOpen, collapseSidebar } = useSidebar()
+  const { isExpanded, isMobileOpen, setMobileOpen } = useSidebar()
+  const [expandedGroups, setExpandedGroups] = useState({
+    'employee-services': true,
+  })
 
   function handleNavigate(sectionId) {
-    collapseSidebar()
     scrollToSection(sectionId)
     setMobileOpen(false)
+  }
+
+  function toggleGroup(groupId) {
+    setExpandedGroups((prev) => ({
+      ...prev,
+      [groupId]: !prev[groupId],
+    }))
   }
 
   return (
@@ -55,7 +65,7 @@ export default function Sidebar({ activeSection }) {
         className={`
           sticky top-0 h-screen overflow-y-auto bg-white border-r border-gray-200
           transition-all duration-200 ease-in-out flex-shrink-0
-          ${isExpanded ? 'w-64' : 'w-16'}
+          ${isExpanded ? 'w-56' : 'w-16'}
           hidden md:flex flex-col
         `}
         aria-label="Main navigation"
@@ -64,12 +74,14 @@ export default function Sidebar({ activeSection }) {
           isExpanded={isExpanded}
           activeSection={activeSection}
           onNavigate={handleNavigate}
+          expandedGroups={expandedGroups}
+          onToggleGroup={toggleGroup}
         />
       </aside>
 
       <aside
         className={`
-          fixed top-0 bottom-0 left-0 z-50 w-72 bg-white border-r border-gray-200
+          fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200
           overflow-y-auto transition-transform duration-200 ease-in-out
           md:hidden flex flex-col pt-[100px]
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -80,36 +92,85 @@ export default function Sidebar({ activeSection }) {
           isExpanded={true}
           activeSection={activeSection}
           onNavigate={handleNavigate}
+          expandedGroups={expandedGroups}
+          onToggleGroup={toggleGroup}
         />
       </aside>
     </>
   )
 }
 
-function SidebarContent({ isExpanded, activeSection, onNavigate }) {
+function SidebarContent({ isExpanded, activeSection, onNavigate, expandedGroups, onToggleGroup }) {
   return (
-    <nav className="flex-1 py-4 px-2 space-y-4">
-      {navGroups.map((group) => (
-        <div key={group.id}>
-          {isExpanded && (
-            <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
-              {group.label}
-            </p>
-          )}
-          <ul className="space-y-0.5">
-            {group.items.filter((item) => item.enabled !== false).map((item) => (
-              <li key={item.id}>
-                <NavItem
-                  item={item}
-                  isExpanded={isExpanded}
-                  isActive={activeSection === item.sectionId}
-                  onNavigate={onNavigate}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <nav className="flex-1 py-4 px-2 space-y-2">
+      {navGroups.map((group) => {
+        const isCollapsible = group.collapsible
+        const isGroupExpanded = expandedGroups[group.id]
+        const isPortalName = group.isPortalName
+
+        if (isPortalName) {
+          return (
+            <div key={group.id} className={isExpanded ? 'px-3 py-3 mb-2' : 'px-3 py-2'}>
+              {isExpanded && (
+                <div className="text-base font-black tracking-wider text-brand-primary uppercase">
+                  {group.label}
+                </div>
+              )}
+            </div>
+          )
+        }
+
+        return (
+          <div key={group.id}>
+            {isCollapsible ? (
+              <>
+                <button
+                  onClick={() => onToggleGroup(group.id)}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-btn text-sm font-medium text-text-secondary hover:bg-bg-alt hover:text-text-primary transition-colors focus-ring"
+                  aria-expanded={isGroupExpanded}
+                >
+                  <span>{isExpanded ? group.label : ''}</span>
+                  {isExpanded && (
+                    <Icons.ChevronDown
+                      size={16}
+                      className={`flex-shrink-0 transition-transform ${
+                        isGroupExpanded ? 'rotate-180' : ''
+                      }`}
+                    />
+                  )}
+                </button>
+                {isGroupExpanded && (
+                  <ul className="space-y-0.5 mt-1 ml-2">
+                    {group.items.filter((item) => item.enabled !== false).map((item) => (
+                      <li key={item.id}>
+                        <NavItem
+                          item={item}
+                          isExpanded={isExpanded}
+                          isActive={activeSection === item.sectionId}
+                          onNavigate={onNavigate}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            ) : (
+              <ul className="space-y-0.5">
+                {group.items.filter((item) => item.enabled !== false).map((item) => (
+                  <li key={item.id}>
+                    <NavItem
+                      item={item}
+                      isExpanded={isExpanded}
+                      isActive={activeSection === item.sectionId}
+                      onNavigate={onNavigate}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )
+      })}
     </nav>
   )
 }

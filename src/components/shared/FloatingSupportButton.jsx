@@ -15,11 +15,12 @@ export default function FloatingSupportButton() {
     <button
       type="button"
       onClick={() => scrollToSection('feedback')}
-      className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-card hover:bg-brand-dark focus-ring"
+      className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-brand-primary text-white flex items-center gap-2 shadow-card hover:bg-brand-dark focus-ring transition-colors"
       aria-label="Support - jump to Feedback & Support"
       title="Support"
     >
       <Headphones size={20} />
+      <span className="text-sm font-medium">Support</span>
     </button>
   )
 }
