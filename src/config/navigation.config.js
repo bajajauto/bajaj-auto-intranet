@@ -1,13 +1,8 @@
 export const navGroups = [
   {
-    id: 'portal-brand',
-    label: 'EKAM',
-    isPortalName: true,
-    items: [],
-  },
-  {
     id: 'employee-services',
     label: 'Employee Self-Service',
+    icon: 'UserCheck',
     collapsible: true,
     items: [
       { id: 'team-directory', label: 'Team Directory', icon: 'Users', sectionId: 'self-service' },
@@ -52,6 +47,7 @@ export const navGroups = [
   {
     id: 'company-resources',
     label: 'Company Resources',
+    icon: 'Newspaper',
     collapsible: true,
     items: [
       {
@@ -72,7 +68,8 @@ export const navGroups = [
   {
     id: 'it-resources-group',
     label: 'IT Resources',
-    collapsible: true,
+    icon: 'Monitor',
+    hideChildren: true,
     items: [
       {
         id: 'telecom-contacts',
@@ -85,7 +82,8 @@ export const navGroups = [
   {
     id: 'support-engagement',
     label: 'Support & Engagement',
-    collapsible: true,
+    icon: 'MessageSquare',
+    hideChildren: true,
     items: [
       {
         id: 'feedback',
@@ -99,7 +97,8 @@ export const navGroups = [
   {
     id: 'emergency',
     label: 'Emergency Contacts',
-    collapsible: false,
+    icon: 'PhoneCall',
+    hideChildren: true,
     items: [
       {
         id: 'emergency-contacts',

@@ -12,7 +12,7 @@ export default function App() {
         <div className="flex flex-col min-h-screen">
           <TopBanner />
           <Header />
-          <div className="flex flex-1 pt-[calc(36px+64px)]">
+          <div className="flex flex-1 pt-[calc(36px+80px)]">
             <MainContent />
           </div>
           <FloatingSupportButton />

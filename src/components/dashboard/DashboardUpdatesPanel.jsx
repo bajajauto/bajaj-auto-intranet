@@ -1,0 +1,303 @@
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react'
+import { calendarService } from '@/services/calendarService'
+import { notificationService } from '@/services/notificationService'
+import NotificationCard from '@/components/notifications/NotificationCard'
+
+const EVENT_BACKGROUNDS = [
+  'bg-gradient-to-br from-brand-dark via-brand-primary to-slate-500',
+  'bg-gradient-to-br from-slate-700 via-brand-dark to-brand-primary',
+  'bg-gradient-to-br from-brand-primary via-slate-600 to-brand-dark',
+  'bg-gradient-to-br from-slate-800 via-brand-primary to-slate-500',
+]
+
+function formatDay(iso) {
+  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric' })
+}
+
+function formatMonth(iso) {
+  return new Date(iso).toLocaleDateString('en-IN', { month: 'short' })
+}
+
+function formatWeekday(iso) {
+  return new Date(iso).toLocaleDateString('en-IN', { weekday: 'short' })
+}
+
+function formatMonthYear(year, month) {
+  return new Date(year, month, 1).toLocaleDateString('en-IN', {
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
+function formatIsoDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+    date.getDate()
+  ).padStart(2, '0')}`
+}
+
+function EventCard({ event, index }) {
+  const background = EVENT_BACKGROUNDS[index % EVENT_BACKGROUNDS.length]
+
+  return (
+    <div className="grid grid-cols-[2.5rem_1fr] gap-3">
+      <div className="pt-1 text-center">
+        <p className="text-lg font-semibold leading-none text-text-primary">
+          {formatDay(event.date)}
+        </p>
+        <p className="mt-1 text-xs text-text-secondary">{formatMonth(event.date)}</p>
+      </div>
+
+      <button
+        type="button"
+        className={`relative min-h-[88px] overflow-hidden rounded-card px-4 py-3 text-left text-white shadow-card focus-ring transition-all hover:-translate-y-0.5 hover:shadow-modal ${background}`}
+        aria-label={event.label}
+      >
+        <div className="absolute inset-0 bg-black/25" />
+        <div className="absolute -right-8 -top-10 h-24 w-24 rounded-full bg-white/15" />
+        <div className="absolute -bottom-10 left-8 h-24 w-24 rounded-full bg-white/10" />
+
+        <div className="relative z-10 pr-6">
+          <p className="line-clamp-1 text-sm font-semibold">{event.label}</p>
+          <p className="mt-1 text-xs text-white/85">{event.location}</p>
+          <p className="mt-2 text-xs font-medium text-white/95">{event.time}</p>
+        </div>
+
+        <MoreVertical
+          size={16}
+          className="absolute right-3 top-3 z-10 text-white/80"
+          aria-hidden="true"
+        />
+      </button>
+    </div>
+  )
+}
+
+function HolidayCalendar({ holidays }) {
+  const today = new Date()
+  const todayKey = formatIsoDate(today)
+  const [visibleDate, setVisibleDate] = useState(today)
+  const year = visibleDate.getFullYear()
+  const month = visibleDate.getMonth()
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const holidayMap = new Map(holidays.map((holiday) => [holiday.date, holiday]))
+  const cells = Array(firstDay)
+    .fill(null)
+    .concat(Array.from({ length: daysInMonth }, (_, index) => index + 1))
+
+  function toKey(day) {
+    return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+  }
+
+  function changeMonth(delta) {
+    setVisibleDate((current) => new Date(current.getFullYear(), current.getMonth() + delta, 1))
+  }
+
+  return (
+    <div className="px-4 py-4">
+      <div className="flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={() => changeMonth(-1)}
+          className="p-1.5 rounded-btn text-text-secondary hover:bg-bg-alt hover:text-brand-primary focus-ring"
+          aria-label="Previous month"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <p className="text-sm font-semibold text-text-primary">{formatMonthYear(year, month)}</p>
+        <button
+          type="button"
+          onClick={() => changeMonth(1)}
+          className="p-1.5 rounded-btn text-text-secondary hover:bg-bg-alt hover:text-brand-primary focus-ring"
+          aria-label="Next month"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      <div className="mt-4 grid grid-cols-7 gap-1 text-center">
+        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
+          <div key={day} className="py-1 text-[10px] font-semibold text-text-secondary">
+            {day}
+          </div>
+        ))}
+        {cells.map((day, index) => {
+          if (!day) return <div key={`empty-${index}`} className="aspect-square" />
+
+          const key = toKey(day)
+          const holiday = holidayMap.get(key)
+          const isToday = key === todayKey
+
+          return (
+            <button
+              key={key}
+              type="button"
+              className={`group relative aspect-square rounded-btn text-xs transition-colors focus-ring ${
+                holiday
+                  ? 'bg-brand-light text-brand-primary font-semibold hover:bg-brand-primary hover:text-white'
+                  : isToday
+                    ? 'bg-bg-alt font-semibold text-brand-primary ring-1 ring-brand-primary/30'
+                    : 'text-text-secondary hover:bg-bg-alt'
+              }`}
+              aria-label={holiday ? `${day}, ${holiday.label}` : `${day}`}
+            >
+              {day}
+              {holiday && (
+                <>
+                  <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-brand-primary group-hover:bg-white" />
+                  <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-52 -translate-x-1/2 rounded-card border border-brand-primary/10 bg-white p-3 text-left opacity-0 shadow-modal transition-all group-hover:-translate-y-1 group-hover:opacity-100 group-focus-visible:-translate-y-1 group-focus-visible:opacity-100">
+                    <span className="block text-xs font-semibold text-brand-primary">
+                      {holiday.label}
+                    </span>
+                    <span className="mt-1 block text-[11px] font-normal text-text-secondary">
+                      {formatWeekday(holiday.date)}, {formatDay(holiday.date)}{' '}
+                      {formatMonth(holiday.date)}
+                    </span>
+                    <span className="mt-2 inline-flex rounded-full bg-brand-light px-2 py-0.5 text-[10px] font-medium text-brand-primary">
+                      {holiday.time}
+                    </span>
+                    <span className="mt-2 block text-[11px] font-normal leading-snug text-text-secondary">
+                      {holiday.remarks}
+                    </span>
+                  </span>
+                </>
+              )}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function HolidayRow({ holiday }) {
+  return (
+    <div className="grid grid-cols-[2.5rem_1fr] gap-3 rounded-card px-2 py-2 hover:bg-bg-alt transition-colors">
+      <div className="text-center">
+        <p className="text-base font-semibold leading-none text-brand-primary">
+          {formatDay(holiday.date)}
+        </p>
+        <p className="mt-1 text-[10px] uppercase text-text-secondary">
+          {formatMonth(holiday.date)}
+        </p>
+      </div>
+
+      <div className="min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-xs font-semibold text-text-primary leading-snug">{holiday.label}</p>
+          <span className="flex-shrink-0 text-[10px] text-text-secondary">
+            {formatWeekday(holiday.date)}
+          </span>
+        </div>
+        <p className="mt-1 text-[11px] text-text-secondary line-clamp-2">
+          {holiday.remarks ?? holiday.time}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function HolidayList({ holidays }) {
+  return (
+    <div className="max-h-[310px] space-y-1 overflow-y-auto px-4 py-3 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
+      {holidays.map((holiday) => (
+        <HolidayRow key={`${holiday.date}-${holiday.label}`} holiday={holiday} />
+      ))}
+    </div>
+  )
+}
+
+export default function DashboardUpdatesPanel() {
+  const [activeTab, setActiveTab] = useState('events')
+  const [calendarTab, setCalendarTab] = useState('calendar')
+  const calendarItems = calendarService.getEvents()
+  const events = calendarItems.filter((item) => item.type === 'event')
+  const holidays = calendarItems.filter((item) => item.type === 'holiday')
+  const notifications = notificationService.getAll()
+
+  return (
+    <div className="bg-white rounded-card shadow-card border border-gray-100 overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gray-100">
+        <h3 className="text-sm font-semibold text-text-primary">
+          {activeTab === 'events' ? 'Upcoming Events' : 'Notifications'}
+        </h3>
+
+        <div className="flex rounded-btn bg-bg-alt p-0.5">
+          <button
+            type="button"
+            onClick={() => setActiveTab('events')}
+            className={`px-3 py-1 text-xs font-medium rounded-btn transition-colors focus-ring ${
+              activeTab === 'events'
+                ? 'bg-white text-brand-primary shadow-card'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            Events
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('notifications')}
+            className={`px-3 py-1 text-xs font-medium rounded-btn transition-colors focus-ring ${
+              activeTab === 'notifications'
+                ? 'bg-white text-brand-primary shadow-card'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            Alerts
+          </button>
+        </div>
+      </div>
+
+      {activeTab === 'events' ? (
+        <div className="max-h-[390px] space-y-4 overflow-y-auto px-4 py-4 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
+          {events.map((event, index) => (
+            <EventCard key={`${event.date}-${event.label}`} event={event} index={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="max-h-[390px] overflow-y-auto divide-y divide-gray-50 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
+          {notifications.map((notification) => (
+            <NotificationCard key={notification.id} {...notification} />
+          ))}
+        </div>
+      )}
+
+      <div className="border-t border-gray-100">
+        <div className="flex items-center justify-between gap-3 px-4 py-3">
+          <h3 className="text-sm font-semibold text-text-primary">Calendar</h3>
+          <div className="flex rounded-btn bg-bg-alt p-0.5">
+            <button
+              type="button"
+              onClick={() => setCalendarTab('calendar')}
+              className={`px-3 py-1 text-xs font-medium rounded-btn transition-colors focus-ring ${
+                calendarTab === 'calendar'
+                  ? 'bg-white text-brand-primary shadow-card'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              Calendar
+            </button>
+            <button
+              type="button"
+              onClick={() => setCalendarTab('holidays')}
+              className={`px-3 py-1 text-xs font-medium rounded-btn transition-colors focus-ring ${
+                calendarTab === 'holidays'
+                  ? 'bg-white text-brand-primary shadow-card'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              Holidays
+            </button>
+          </div>
+        </div>
+
+        {calendarTab === 'calendar' ? (
+          <HolidayCalendar holidays={holidays} />
+        ) : (
+          <HolidayList holidays={holidays} />
+        )}
+      </div>
+    </div>
+  )
+}

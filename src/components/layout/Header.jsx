@@ -5,7 +5,7 @@ import { useUser } from '@/context/UserContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { notificationService } from '@/services/notificationService'
 import NotificationsPanel from '@/components/notifications/NotificationsPanel'
-import logoImage from '../../../Bajaj Auto Logo-02.png'
+import logoImage from '@/assets/bajaj-mark-transparent.png'
 
 export default function Header() {
   const { toggleSidebar, isMobileOpen, setMobileOpen } = useSidebar()
@@ -65,41 +65,47 @@ export default function Header() {
   }, [isNotifOpen, isProfileOpen])
 
   return (
-    <header className="fixed top-9 left-0 right-0 z-40 h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-4 shadow-card">
-      {/* Hamburger */}
-      <button
-        onClick={handleMenuClick}
-        className="p-2 rounded-btn text-text-secondary hover:bg-bg-alt focus-ring"
-        aria-label="Toggle sidebar"
-      >
-        <Menu size={20} />
-      </button>
+    <header className="fixed top-9 left-0 right-0 z-40 h-20 bg-brand-dark grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4 shadow-modal">
+      <div className="flex items-center gap-3 min-w-0">
+        {/* Hamburger */}
+        <button
+          onClick={handleMenuClick}
+          className="p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
+          aria-label="Toggle sidebar"
+        >
+          <Menu size={20} />
+        </button>
 
-      {/* Logo */}
-      <div className="flex items-center gap-2 flex-shrink-0 select-none">
-        <img src={logoImage} alt="EKAM Logo" className="h-12 w-auto" />
-        <div className="leading-none">
-          <div className="text-brand-dark font-black text-base tracking-wider uppercase">EKAM</div>
+        {/* Logo */}
+        <div className="flex items-center gap-2 flex-shrink-0 select-none">
+          <img src={logoImage} alt="Bajaj Auto Logo" className="h-12 w-auto" />
+          <div className="h-9 w-px bg-white/35" aria-hidden="true" />
+          <div className="font-ekam italic text-white font-normal text-3xl tracking-[0.16em] leading-none">
+            EKAM
+          </div>
         </div>
       </div>
 
       {/* Search */}
-      <div className="hidden md:flex flex-1 max-w-xl">
+      <div className="hidden md:flex w-full">
         <div className="relative w-full">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-dark/50"
+          />
           <input
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search employees, policies, documents..."
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-btn border border-gray-200 bg-bg-alt focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary"
+            className="w-full pl-9 pr-4 py-2 text-sm rounded-btn border border-white/20 bg-white/95 text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white"
             aria-label="Global search"
           />
         </div>
       </div>
 
       {/* Right actions */}
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center justify-end gap-2 min-w-0">
         {/* Notification bell */}
         <div className="relative" ref={notifRef}>
           <button
@@ -107,7 +113,7 @@ export default function Header() {
             aria-label="Notifications"
             aria-expanded={isNotifOpen}
             aria-haspopup="true"
-            className="relative p-2 rounded-btn text-text-secondary hover:bg-bg-alt focus-ring"
+            className="relative p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
           >
             <Bell size={20} />
             {unreadCount > 0 && (
@@ -131,18 +137,18 @@ export default function Header() {
             aria-label="User menu"
             aria-expanded={isProfileOpen}
             aria-haspopup="true"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-btn hover:bg-bg-alt focus-ring"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-btn hover:bg-white/10 focus-ring"
           >
-            <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
               {user.name.charAt(0)}
             </div>
             <div className="hidden md:block text-left">
-              <div className="text-sm font-medium text-text-primary leading-tight">{user.name}</div>
-              <div className="text-xs text-text-secondary leading-tight">{user.designation}</div>
+              <div className="text-sm font-medium text-white leading-tight">{user.name}</div>
+              <div className="text-xs text-white/70 leading-tight">{user.designation}</div>
             </div>
             <ChevronDown
               size={14}
-              className={`hidden md:block text-text-secondary transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`}
+              className={`hidden md:block text-white/70 transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`}
             />
           </button>
 

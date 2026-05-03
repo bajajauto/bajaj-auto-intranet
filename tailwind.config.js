@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Lora', 'Georgia', 'serif'],
+        ekam: ['Cormorant Garamond', 'Georgia', 'serif'],
       },
       colors: {
         brand: {
@@ -33,6 +34,15 @@ export default {
       },
       transitionDuration: {
         accordion: '200ms',
+      },
+      keyframes: {
+        'fade-up': {
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.4s ease-out both',
       },
     },
   },
