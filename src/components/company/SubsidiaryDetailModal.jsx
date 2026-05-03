@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X, Users, TrendingUp, Zap } from 'lucide-react'
 
 export default function SubsidiaryDetailModal({ subsidiary, onClose }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // Lock body scroll so the page doesn't jump behind the modal
     document.body.style.overflow = 'hidden'
+    document.getElementById('root')?.classList.add('modal-open')
     setVisible(true)
     return () => {
       document.body.style.overflow = ''
+      document.getElementById('root')?.classList.remove('modal-open')
     }
   }, [])
 
@@ -18,10 +20,10 @@ export default function SubsidiaryDetailModal({ subsidiary, onClose }) {
     setTimeout(onClose, 400)
   }
 
-  return (
+  return createPortal(
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center p-6 transition-all duration-500 ${
-        visible ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent pointer-events-none'
+        visible ? 'bg-black/25' : 'bg-transparent pointer-events-none'
       }`}
       onClick={handleClose}
     >
@@ -134,6 +136,7 @@ export default function SubsidiaryDetailModal({ subsidiary, onClose }) {
 
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById('modal-root')
   )
 }
