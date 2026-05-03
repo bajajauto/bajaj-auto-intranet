@@ -1,7 +1,7 @@
-import * as Icons from 'lucide-react'
+import { iconMap } from '@/components/shared/iconMap'
 
 export default function ServiceTile({ label, icon, redirectUrl }) {
-  const Icon = Icons[icon] ?? Icons.ExternalLink
+  const Icon = iconMap[icon] ?? iconMap.ExternalLink
 
   function handleClick() {
     if (redirectUrl && redirectUrl !== '#') {

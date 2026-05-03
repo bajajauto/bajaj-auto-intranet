@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -17,7 +19,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
   }
 }
@@ -25,5 +32,406 @@
 @layer utilities {
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2;
+  }
+
+  .globe-pan {
+    animation: globe-pan 16s linear infinite;
+  }
+
+  .presence-orbit {
+    animation: presence-orbit 18s linear infinite;
+  }
+
+  .presence-orbit-slow {
+    animation-duration: 28s;
+    animation-direction: reverse;
+  }
+
+  .affection-scene {
+    position: absolute;
+    right: clamp(1rem, 4vw, 4rem);
+    bottom: 1.5rem;
+    width: min(34vw, 18rem);
+    height: 11rem;
+    pointer-events: none;
+    opacity: 0.95;
+  }
+
+  .affection-person {
+    position: absolute;
+    bottom: 0.5rem;
+    width: 5.5rem;
+    height: 8rem;
+  }
+
+  .affection-person-left {
+    left: 2.5rem;
+    animation: affection-breathe 3.8s ease-in-out infinite;
+  }
+
+  .affection-person-right {
+    right: 2.5rem;
+    animation: affection-breathe 3.8s ease-in-out 0.4s infinite;
+  }
+
+  .affection-head,
+  .affection-body,
+  .affection-arm,
+  .affection-hands,
+  .affection-shoulder,
+  .affection-speech,
+  .affection-heart {
+    position: absolute;
+    display: block;
+  }
+
+  .affection-head {
+    left: 50%;
+    top: 0;
+    width: 2.7rem;
+    height: 2.7rem;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: linear-gradient(145deg, #f6d4bd, #d89a75);
+    box-shadow: inset -0.4rem -0.3rem 0 rgba(92, 39, 18, 0.14);
+  }
+
+  .affection-body {
+    left: 50%;
+    bottom: 0;
+    width: 4.4rem;
+    height: 5.7rem;
+    transform: translateX(-50%);
+    border-radius: 2rem 2rem 1rem 1rem;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(186, 230, 253, 0.78));
+    box-shadow: 0 1rem 2.5rem rgba(8, 21, 55, 0.26);
+  }
+
+  .affection-person-right .affection-body {
+    background: linear-gradient(160deg, rgba(254, 240, 138, 0.94), rgba(251, 191, 36, 0.72));
+  }
+
+  .affection-arm {
+    top: 3.6rem;
+    width: 3.7rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: rgba(246, 212, 189, 0.96);
+    transform-origin: 0.4rem center;
+  }
+
+  .affection-arm-left {
+    right: -1.4rem;
+    transform: rotate(17deg);
+    animation: affection-hand-left 2.6s ease-in-out infinite;
+  }
+
+  .affection-arm-right {
+    left: -1.4rem;
+    transform: rotate(163deg);
+    animation: affection-hand-right 2.6s ease-in-out infinite;
+  }
+
+  .affection-hands {
+    left: 50%;
+    bottom: 4.6rem;
+    width: 1.7rem;
+    height: 1rem;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: #f0c0a3;
+    box-shadow: 0 0 1.2rem rgba(255, 255, 255, 0.38);
+    animation: affection-hands 2.6s ease-in-out infinite;
+  }
+
+  .affection-shoulder {
+    right: 5.6rem;
+    bottom: 6.2rem;
+    width: 2.8rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.13);
+    opacity: 0;
+  }
+
+  .affection-speech {
+    top: 0.8rem;
+    width: 1.35rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    opacity: 0;
+  }
+
+  .affection-speech-one {
+    right: 1rem;
+    animation: affection-talk 2.4s ease-in-out infinite;
+  }
+
+  .affection-speech-two {
+    right: 2.9rem;
+    top: 2rem;
+    width: 1rem;
+    height: 0.75rem;
+    animation: affection-talk 2.4s ease-in-out 0.6s infinite;
+  }
+
+  .affection-heart {
+    width: 0.75rem;
+    height: 0.75rem;
+    transform: rotate(45deg);
+    border-radius: 0.15rem;
+    background: rgba(251, 191, 36, 0.9);
+    opacity: 0.82;
+    animation: affection-heart 3.2s ease-in-out infinite;
+  }
+
+  .affection-heart::before,
+  .affection-heart::after {
+    content: '';
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 999px;
+    background: inherit;
+  }
+
+  .affection-heart::before {
+    left: -0.36rem;
+  }
+
+  .affection-heart::after {
+    top: -0.36rem;
+  }
+
+  .affection-heart-one {
+    left: 50%;
+    top: 1.6rem;
+  }
+
+  .affection-heart-two {
+    left: 57%;
+    top: 3.2rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    animation-delay: 0.9s;
+  }
+
+  .affection-scene-shoulder-talk .affection-speech {
+    opacity: 1;
+  }
+
+  .affection-scene-morning-hug .affection-person-left,
+  .affection-scene-hand-hug .affection-person-left {
+    transform: translateX(0.7rem);
+  }
+
+  .affection-scene-morning-hug .affection-person-right,
+  .affection-scene-hand-hug .affection-person-right {
+    transform: translateX(-0.7rem);
+  }
+
+  .affection-scene-morning-hug .affection-hands,
+  .affection-scene-cuddle .affection-hands {
+    bottom: 4.2rem;
+    width: 2.4rem;
+  }
+
+  .affection-scene-shoulder-talk .affection-person-left {
+    transform: translateX(0.9rem) rotate(4deg);
+  }
+
+  .affection-scene-shoulder-talk .affection-person-right {
+    transform: translateX(-0.9rem);
+  }
+
+  .affection-scene-shoulder-talk .affection-person-left .affection-head {
+    transform: translateX(-35%) rotate(16deg);
+  }
+
+  .affection-scene-shoulder-talk .affection-shoulder {
+    opacity: 1;
+  }
+
+  .affection-scene-twirl .affection-person-left {
+    animation: affection-lift-left 3.2s ease-in-out infinite;
+  }
+
+  .affection-scene-twirl .affection-person-right {
+    animation: affection-lift-right 3.2s ease-in-out infinite;
+  }
+
+  .affection-scene-twirl .affection-hands {
+    animation: affection-twirl-hands 3.2s ease-in-out infinite;
+  }
+
+  .affection-scene-cuddle .affection-person-left {
+    transform: translateX(1rem) rotate(3deg);
+    animation: affection-cuddle-left 4s ease-in-out infinite;
+  }
+
+  .affection-scene-cuddle .affection-person-right {
+    transform: translateX(-1rem) rotate(-3deg);
+    animation: affection-cuddle-right 4s ease-in-out infinite;
+  }
+
+  .affection-scene-cuddle .affection-heart {
+    background: rgba(254, 202, 202, 0.9);
+  }
+}
+
+@keyframes globe-pan {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 180px 0;
+  }
+}
+
+@keyframes presence-orbit {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes affection-breathe {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -0.18rem;
+  }
+}
+
+@keyframes affection-hand-left {
+  0%,
+  100% {
+    transform: rotate(17deg) translateX(0);
+  }
+  50% {
+    transform: rotate(12deg) translateX(0.18rem);
+  }
+}
+
+@keyframes affection-hand-right {
+  0%,
+  100% {
+    transform: rotate(163deg) translateX(0);
+  }
+  50% {
+    transform: rotate(168deg) translateX(0.18rem);
+  }
+}
+
+@keyframes affection-hands {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.12;
+  }
+}
+
+@keyframes affection-talk {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-0.35rem);
+    opacity: 1;
+  }
+}
+
+@keyframes affection-heart {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-0.5rem) rotate(45deg);
+    opacity: 0.95;
+  }
+}
+
+@keyframes affection-lift-left {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  40% {
+    transform: translate(1rem, -1.1rem) rotate(-7deg);
+  }
+  70% {
+    transform: translate(0.5rem, -0.35rem) rotate(6deg);
+  }
+}
+
+@keyframes affection-lift-right {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  40% {
+    transform: translate(-0.9rem, -0.2rem) rotate(9deg);
+  }
+  70% {
+    transform: translate(-0.45rem, 0) rotate(-5deg);
+  }
+}
+
+@keyframes affection-twirl-hands {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(0deg);
+    scale: 1;
+  }
+  40% {
+    transform: translateX(-50%) rotate(14deg);
+    scale: 1.22;
+  }
+  70% {
+    transform: translateX(-50%) rotate(-10deg);
+    scale: 1.08;
+  }
+}
+
+@keyframes affection-cuddle-left {
+  0%,
+  100% {
+    transform: translateX(1rem) rotate(3deg);
+  }
+  50% {
+    transform: translateX(1.18rem) rotate(5deg);
+  }
+}
+
+@keyframes affection-cuddle-right {
+  0%,
+  100% {
+    transform: translateX(-1rem) rotate(-3deg);
+  }
+  50% {
+    transform: translateX(-1.18rem) rotate(-5deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .affection-scene {
+    right: -1rem;
+    bottom: -0.6rem;
+    width: 11rem;
+    height: 8.5rem;
+    opacity: 0.42;
+    transform: scale(0.82);
+    transform-origin: bottom right;
   }
 }

@@ -1,8 +1,8 @@
-import * as Icons from 'lucide-react'
+import { iconMap } from '@/components/shared/iconMap'
 import { emergencyContacts } from '@/config/contacts.config'
 
 function ContactCard({ label, phone, icon, colorClass }) {
-  const Icon = Icons[icon] ?? Icons.Phone
+  const Icon = iconMap[icon] ?? iconMap.Phone
 
   return (
     <div className={`bg-white rounded-card shadow-card border border-gray-100 border-l-4 ${colorClass} p-4 flex items-center gap-4`}>

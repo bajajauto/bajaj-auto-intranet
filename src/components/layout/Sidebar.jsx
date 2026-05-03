@@ -1,28 +1,29 @@
 import { useState } from 'react'
-import * as Icons from 'lucide-react'
+import { iconMap } from '@/components/shared/iconMap'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
+
+// TopBanner 36px + Header 80px + 8px breathing room = 124px
+const TOP_OFFSET = 124
 
 function scrollToSection(sectionId) {
   const el = document.getElementById(sectionId)
   if (!el) return
-
-  // Account for fixed TopBanner (36px) + fixed Header (64px) wrapper padding.
-  const HEADER_OFFSET_PX = 16
-  const y = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET_PX
+  const y = el.getBoundingClientRect().top + window.scrollY - TOP_OFFSET
   window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
 }
 
 function NavItem({ item, isExpanded, isActive, onNavigate }) {
-  const Icon = Icons[item.icon] ?? Icons.Circle
+  const Icon = iconMap[item.icon] ?? iconMap.Circle
 
   return (
     <button
       onClick={() => onNavigate(item.sectionId)}
       className={`w-full flex items-center gap-3 px-3 py-2 rounded-btn text-sm transition-colors focus-ring
-        ${isActive
-          ? 'bg-brand-light text-brand-primary font-medium'
-          : 'text-text-secondary hover:bg-bg-alt hover:text-text-primary'
+        ${
+          isActive
+            ? 'bg-brand-light text-brand-primary font-medium'
+            : 'text-text-secondary hover:bg-bg-alt hover:text-text-primary'
         }`}
       title={!isExpanded ? item.label : undefined}
       aria-label={item.label}
@@ -33,13 +34,67 @@ function NavItem({ item, isExpanded, isActive, onNavigate }) {
   )
 }
 
-export default function Sidebar({ activeSection }) {
+function GroupButton({
+  group,
+  isExpanded,
+  isActive,
+  isGroupExpanded,
+  isCollapsible,
+  onToggleGroup,
+  onNavigate,
+}) {
+  const Icon = iconMap[group.icon] ?? iconMap.Circle
+
+  function handleClick() {
+    const firstItem = group.items.find((item) => item.enabled !== false)
+
+    if (group.hideChildren) {
+      if (firstItem) onNavigate(firstItem.sectionId)
+      return
+    }
+
+    if (isCollapsible) {
+      onToggleGroup(group.id)
+      return
+    }
+
+    if (firstItem) onNavigate(firstItem.sectionId)
+  }
+
+  return (
+    <button
+      onClick={handleClick}
+      className={`w-full flex items-center gap-3 px-3 py-3 rounded-card transition-colors focus-ring
+        ${
+          isActive
+            ? 'bg-brand-light text-brand-primary'
+            : 'text-text-primary hover:bg-bg-alt hover:text-brand-primary'
+        }`}
+      title={!isExpanded ? group.label : undefined}
+      aria-label={group.label}
+      aria-expanded={isCollapsible && !group.hideChildren ? isGroupExpanded : undefined}
+    >
+      <span className="w-10 h-10 rounded-card bg-brand-light flex items-center justify-center flex-shrink-0">
+        <Icon size={22} className="text-brand-primary" />
+      </span>
+
+      {isExpanded && (
+        <span className="flex-1 text-left text-sm font-semibold whitespace-normal leading-snug">
+          {group.label}
+        </span>
+      )}
+    </button>
+  )
+}
+
+export default function Sidebar({ activeSection, onForceSection }) {
   const { isExpanded, isMobileOpen, setMobileOpen } = useSidebar()
   const [expandedGroups, setExpandedGroups] = useState({
     'employee-services': true,
   })
 
   function handleNavigate(sectionId) {
+    onForceSection?.(sectionId) // highlight immediately; don't wait for IntersectionObserver
     scrollToSection(sectionId)
     setMobileOpen(false)
   }
@@ -63,9 +118,9 @@ export default function Sidebar({ activeSection }) {
 
       <aside
         className={`
-          sticky top-0 h-screen overflow-y-auto bg-white border-r border-gray-200
+          sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto bg-white border-r border-gray-200
           transition-all duration-200 ease-in-out flex-shrink-0
-          ${isExpanded ? 'w-56' : 'w-16'}
+          ${isExpanded ? 'w-72' : 'w-16'}
           hidden md:flex flex-col
         `}
         aria-label="Main navigation"
@@ -83,7 +138,7 @@ export default function Sidebar({ activeSection }) {
         className={`
           fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200
           overflow-y-auto transition-transform duration-200 ease-in-out
-          md:hidden flex flex-col pt-[100px]
+          md:hidden flex flex-col pt-[116px]
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
         aria-label="Main navigation"
@@ -112,7 +167,7 @@ function SidebarContent({ isExpanded, activeSection, onNavigate, expandedGroups,
           return (
             <div key={group.id} className={isExpanded ? 'px-3 py-3 mb-2' : 'px-3 py-2'}>
               {isExpanded && (
-                <div className="text-base font-black tracking-wider text-brand-primary uppercase">
+                <div className="font-sans text-2xl font-semibold tracking-[0.24em] text-brand-primary uppercase">
                   {group.label}
                 </div>
               )}
@@ -121,27 +176,42 @@ function SidebarContent({ isExpanded, activeSection, onNavigate, expandedGroups,
         }
 
         return (
-          <div key={group.id}>
-            {isCollapsible ? (
+          <div key={group.id} className="border-b border-gray-100 pb-2 last:border-b-0">
+            <GroupButton
+              group={group}
+              isExpanded={isExpanded}
+              isActive={group.items.some((item) => item.sectionId === activeSection)}
+              isGroupExpanded={isGroupExpanded}
+              isCollapsible={isCollapsible}
+              onToggleGroup={onToggleGroup}
+              onNavigate={onNavigate}
+            />
+
+            {group.hideChildren ? null : isCollapsible ? (
               <>
-                <button
-                  onClick={() => onToggleGroup(group.id)}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-btn text-sm font-medium text-text-secondary hover:bg-bg-alt hover:text-text-primary transition-colors focus-ring"
-                  aria-expanded={isGroupExpanded}
-                >
-                  <span>{isExpanded ? group.label : ''}</span>
-                  {isExpanded && (
-                    <Icons.ChevronDown
-                      size={16}
-                      className={`flex-shrink-0 transition-transform ${
-                        isGroupExpanded ? 'rotate-180' : ''
-                      }`}
-                    />
-                  )}
-                </button>
-                {isGroupExpanded && (
+                {isExpanded && isGroupExpanded && (
                   <ul className="space-y-0.5 mt-1 ml-2">
-                    {group.items.filter((item) => item.enabled !== false).map((item) => (
+                    {group.items
+                      .filter((item) => item.enabled !== false)
+                      .map((item) => (
+                        <li key={item.id}>
+                          <NavItem
+                            item={item}
+                            isExpanded={isExpanded}
+                            isActive={activeSection === item.sectionId}
+                            onNavigate={onNavigate}
+                          />
+                        </li>
+                      ))}
+                  </ul>
+                )}
+              </>
+            ) : (
+              isExpanded && (
+                <ul className="space-y-0.5 mt-1 ml-2">
+                  {group.items
+                    .filter((item) => item.enabled !== false)
+                    .map((item) => (
                       <li key={item.id}>
                         <NavItem
                           item={item}
@@ -151,22 +221,8 @@ function SidebarContent({ isExpanded, activeSection, onNavigate, expandedGroups,
                         />
                       </li>
                     ))}
-                  </ul>
-                )}
-              </>
-            ) : (
-              <ul className="space-y-0.5">
-                {group.items.filter((item) => item.enabled !== false).map((item) => (
-                  <li key={item.id}>
-                    <NavItem
-                      item={item}
-                      isExpanded={isExpanded}
-                      isActive={activeSection === item.sectionId}
-                      onNavigate={onNavigate}
-                    />
-                  </li>
-                ))}
-              </ul>
+                </ul>
+              )
             )}
           </div>
         )

@@ -1,4 +1,4 @@
-import * as Icons from 'lucide-react'
+import { iconMap } from '@/components/shared/iconMap'
 
 const PRIORITY_STYLES = {
   Urgent: 'bg-red-100 text-red-700',
@@ -15,7 +15,7 @@ function formatTime(isoString) {
 }
 
 export default function NotificationCard({ title, timestamp, priority, icon }) {
-  const Icon = Icons[icon] ?? Icons.Bell
+  const Icon = iconMap[icon] ?? iconMap.Bell
 
   return (
     <button
