@@ -115,6 +115,7 @@ function GlobePresence() {
   const mountRef = useRef(null)
   const markerRefs = useRef({})
   const isPausedRef = useRef(false)
+  const targetCountryRef = useRef(null)
   const [activeCountry, setActiveCountry] = useState('India')
 
   const pauseOnCountry = (countryName) => {
@@ -123,8 +124,15 @@ function GlobePresence() {
   }
 
   const resumeGlobe = () => {
+    if (targetCountryRef.current) return
     isPausedRef.current = false
     setActiveCountry('India')
+  }
+
+  const flyToCountry = (country) => {
+    targetCountryRef.current = country
+    isPausedRef.current = false
+    setActiveCountry(country.name)
   }
 
   useEffect(() => {
@@ -169,6 +177,8 @@ function GlobePresence() {
 
       const globeGroup = new THREE.Group()
       globeGroup.rotation.y = -0.75
+      const baseRotationX = THREE.MathUtils.degToRad(-8)
+      globeGroup.rotation.x = baseRotationX
       scene.add(globeGroup)
 
       const earthGeometry = new THREE.SphereGeometry(1.55, 128, 128)
@@ -219,8 +229,30 @@ function GlobePresence() {
 
       const countryVecs = BAJAJ_COUNTRIES.map((c) => ({
         name: c.name,
+        lat: c.lat,
+        lng: c.lng,
         vec: latLngToVector3(c.lat, c.lng, 1.68),
       }))
+
+      const normalizeRotation = (angle) => Math.atan2(Math.sin(angle), Math.cos(angle))
+
+      const focusCountry = (country) => {
+        const countryVec = latLngToVector3(country.lat, country.lng, 1)
+        const targetY = normalizeRotation(Math.atan2(-countryVec.x, countryVec.z))
+        const targetX = THREE.MathUtils.clamp(
+          baseRotationX + THREE.MathUtils.degToRad(country.lat) * 0.35,
+          THREE.MathUtils.degToRad(-32),
+          THREE.MathUtils.degToRad(24)
+        )
+        const yDelta = normalizeRotation(targetY - globeGroup.rotation.y)
+        globeGroup.rotation.y += yDelta * 0.08
+        globeGroup.rotation.x += (targetX - globeGroup.rotation.x) * 0.08
+
+        if (Math.abs(yDelta) < 0.004 && Math.abs(targetX - globeGroup.rotation.x) < 0.004) {
+          targetCountryRef.current = null
+          isPausedRef.current = true
+        }
+      }
 
       const resizeObserver = new ResizeObserver(([entry]) => {
         const { width, height } = entry.contentRect
@@ -250,8 +282,13 @@ function GlobePresence() {
       let frameId = 0
       const animate = () => {
         frameId = window.requestAnimationFrame(animate)
-        if (!isPausedRef.current) {
+        const targetCountry = targetCountryRef.current
+
+        if (targetCountry) {
+          focusCountry(targetCountry)
+        } else if (!isPausedRef.current) {
           globeGroup.rotation.y += 0.0026
+          globeGroup.rotation.x += (baseRotationX - globeGroup.rotation.x) * 0.015
           atmosphere.rotation.y += 0.0008
           stars.rotation.y -= 0.00015
         }
@@ -296,7 +333,7 @@ function GlobePresence() {
         </div>
         <p className="mt-3 text-5xl font-bold leading-none tracking-tight text-white">43</p>
         <p className="mt-1 text-sm text-white/50">Countries worldwide</p>
-        <p className="mt-4 text-[11px] text-white/35">Hover a country marker or name</p>
+        <p className="mt-4 text-[11px] text-white/35">Click a country to fly there</p>
         <div className="mt-3 inline-flex max-w-[15rem] items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.8)]" />
           {activeCountry === 'India' ? 'India - HQ market' : activeCountry}
@@ -325,10 +362,15 @@ function GlobePresence() {
                     ? 'border-white/50 bg-white text-brand-dark shadow-[0_0_18px_rgba(255,255,255,0.22)]'
                     : 'border-white/10 bg-white/5 text-white/70 hover:border-white/30 hover:bg-white/15 hover:text-white'
                 }`}
-                onMouseEnter={() => pauseOnCountry(country.name)}
-                onMouseLeave={resumeGlobe}
-                onFocus={() => pauseOnCountry(country.name)}
-                onBlur={resumeGlobe}
+                onMouseEnter={() => setActiveCountry(country.name)}
+                onMouseLeave={() => {
+                  if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
+                }}
+                onFocus={() => setActiveCountry(country.name)}
+                onBlur={() => {
+                  if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
+                }}
+                onClick={() => flyToCountry(country)}
               >
                 <span className="block truncate">{country.name}</span>
               </button>
@@ -347,10 +389,15 @@ function GlobePresence() {
                 ? 'border-white/60 bg-white text-brand-dark'
                 : 'border-white/10 bg-black/25 text-white/70 backdrop-blur-sm'
             }`}
-            onMouseEnter={() => pauseOnCountry(country.name)}
-            onMouseLeave={resumeGlobe}
-            onFocus={() => pauseOnCountry(country.name)}
-            onBlur={resumeGlobe}
+            onMouseEnter={() => setActiveCountry(country.name)}
+            onMouseLeave={() => {
+              if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
+            }}
+            onFocus={() => setActiveCountry(country.name)}
+            onBlur={() => {
+              if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
+            }}
+            onClick={() => flyToCountry(country)}
           >
             {country.name}
           </button>
@@ -370,41 +417,57 @@ function GlobePresence() {
       </div>
 
       {/* Country marker overlays */}
-      {BAJAJ_COUNTRIES.map((country) => (
-        <button
-          key={country.name}
-          type="button"
-          ref={(node) => {
-            if (node) markerRefs.current[country.name] = node
-            else delete markerRefs.current[country.name]
-          }}
-          className="absolute left-0 top-0 z-10 group flex h-8 w-8 items-center justify-center rounded-full focus-ring"
-          aria-label={`${country.name}${country.primary ? ' HQ' : ''}`}
-          onMouseEnter={() => pauseOnCountry(country.name)}
-          onMouseLeave={resumeGlobe}
-          onFocus={() => pauseOnCountry(country.name)}
-          onBlur={resumeGlobe}
-        >
-          {country.primary ? (
-            <>
-              <span className="relative flex h-4 w-4 items-center justify-center rounded-full">
-                <span className="absolute inset-0 animate-ping rounded-full bg-white/50" />
-                <span className="relative h-4 w-4 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.75)]" />
-              </span>
-              <span className="pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-white px-2.5 py-1 text-[11px] font-bold text-brand-dark opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
-                India - HQ
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="block h-2 w-2 rounded-full bg-sky-300/70 ring-1 ring-white/15 transition-all duration-150 group-hover:scale-[1.9] group-hover:bg-white group-hover:ring-2 group-hover:ring-white/50 group-hover:shadow-[0_0_7px_rgba(255,255,255,0.55)]" />
-              <span className="pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-brand-dark opacity-0 shadow-sm transition-opacity duration-150 group-hover:opacity-100">
-                {country.name}
-              </span>
-            </>
-          )}
-        </button>
-      ))}
+      {BAJAJ_COUNTRIES.map((country) => {
+        const isActive = activeCountry === country.name
+        return (
+          <button
+            key={country.name}
+            type="button"
+            ref={(node) => {
+              if (node) markerRefs.current[country.name] = node
+              else delete markerRefs.current[country.name]
+            }}
+            className="absolute left-0 top-0 z-10 group flex h-8 w-8 items-center justify-center rounded-full focus-ring"
+            aria-label={`${country.name}${country.primary ? ' HQ' : ''}`}
+            onMouseEnter={() => pauseOnCountry(country.name)}
+            onMouseLeave={resumeGlobe}
+            onFocus={() => pauseOnCountry(country.name)}
+            onBlur={resumeGlobe}
+            onClick={() => flyToCountry(country)}
+          >
+            {country.primary ? (
+              <>
+                <span className="relative flex h-4 w-4 items-center justify-center rounded-full">
+                  <span className={`absolute inset-0 rounded-full bg-white/50 ${isActive ? 'animate-ping' : ''}`} />
+                  <span
+                    className={`relative rounded-full bg-white transition-all duration-200 ${
+                      isActive
+                        ? 'h-5 w-5 shadow-[0_0_20px_rgba(255,255,255,0.95)]'
+                        : 'h-4 w-4 shadow-[0_0_12px_rgba(255,255,255,0.75)]'
+                    }`}
+                  />
+                </span>
+                <span className={`pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-white px-2.5 py-1 text-[11px] font-bold text-brand-dark shadow-md transition-opacity duration-150 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                  India - HQ
+                </span>
+              </>
+            ) : (
+              <>
+                <span
+                  className={`block rounded-full ring-white/15 transition-all duration-200 ${
+                    isActive
+                      ? 'h-4 w-4 scale-125 bg-white ring-2 shadow-[0_0_16px_rgba(255,255,255,0.9)]'
+                      : 'h-2 w-2 bg-sky-300/70 ring-1 group-hover:scale-[1.9] group-hover:bg-white group-hover:ring-2 group-hover:ring-white/50 group-hover:shadow-[0_0_7px_rgba(255,255,255,0.55)]'
+                  }`}
+                />
+                <span className={`pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-brand-dark shadow-sm transition-opacity duration-150 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                  {country.name}
+                </span>
+              </>
+            )}
+          </button>
+        )
+      })}
     </div>
   )
 }

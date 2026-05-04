@@ -34,9 +34,9 @@ function AutoBody() {
     <g>
       {/* ══ LAYER 0: FAR-SIDE REAR WHEEL (behind near-side, drawn first) ══ */}
       <circle cx="168" cy="-23" r="23" fill="#111"/>
-      <circle cx="168" cy="-23" r="14" fill="#2d2d2d"/>
-      <circle cx="168" cy="-23" r="6"  fill="#111"/>
-      <circle cx="168" cy="-23" r="2"  fill="#888"/>
+      <circle cx="168" cy="-23" r="15" fill="#e5e7eb"/>
+      <circle cx="168" cy="-23" r="9"  fill="#6b7280"/>
+      <circle cx="168" cy="-23" r="3"  fill="#f8fafc"/>
 
       {/* ══ LAYER 1: CHASSIS / FLOOR ══ */}
       {/* Rear axle bar (connects two rear wheels) */}
@@ -48,82 +48,85 @@ function AutoBody() {
 
       {/* ══ LAYER 2: BODY ══ */}
       {/* Lower green body panels */}
-      <rect x="35" y="-65" width="140" height="35" fill="#16a34a"/>
+      <path d="M 26 -68 C 34 -88 50 -96 76 -96 L 174 -94 C 184 -84 188 -70 188 -50 L 188 -31 L 175 -31 C 172 -49 161 -58 148 -58 C 132 -58 121 -46 119 -31 L 63 -31 C 60 -48 50 -58 36 -58 C 25 -58 17 -50 13 -39 L 9 -39 C 10 -52 16 -62 26 -68 Z" fill="#16a34a"/>
       {/* Upper body */}
-      <rect x="35" y="-96" width="140" height="33" fill="#16a34a"/>
+      <path d="M 82 -93 L 175 -91 L 175 -63 L 83 -63 Z" fill="#14532d"/>
       {/* Yellow horizontal stripe (centre band) */}
-      <rect x="35" y="-68" width="140" height="11" fill="#fbbf24"/>
+      <path d="M 18 -84 L 80 -84 L 78 -71 L 14 -71 Z" fill="#f59e0b"/>
 
       {/* ══ LAYER 3: FRONT SECTION (left = front) ══ */}
       {/* Engine cowl / front face — slanted trapeziod */}
-      <path d="M 14 -72 L 14 -32 L 36 -32 L 38 -72 Z" fill="#15803d"/>
+      <path d="M 9 -74 L 22 -101 C 30 -119 47 -128 74 -126 L 84 -125 C 76 -104 72 -86 73 -69 L 62 -43 L 15 -43 C 8 -53 6 -64 9 -74 Z" fill="#374151"/>
       {/* Windshield glass */}
-      <path d="M 16 -70 L 16 -36 L 34 -36 L 36 -70 Z" fill="#7dd3fc" opacity="0.80"/>
+      <path d="M 31 -99 C 39 -116 53 -122 76 -121 C 88 -120 93 -113 91 -102 L 85 -80 C 83 -73 78 -70 69 -70 L 28 -70 C 25 -82 26 -92 31 -99 Z" fill="#9ca3af" opacity="0.78"/>
       {/* Windshield glare streak */}
-      <line x1="20" y1="-68" x2="24" y2="-38" stroke="white" strokeWidth="2" opacity="0.5" strokeLinecap="round"/>
+      <line x1="50" y1="-111" x2="39" y2="-82" stroke="white" strokeWidth="2" opacity="0.55" strokeLinecap="round"/>
+      <line x1="75" y1="-110" x2="52" y2="-79" stroke="#111827" strokeWidth="3" opacity="0.65" strokeLinecap="round"/>
+      <line x1="59" y1="-119" x2="59" y2="-70" stroke="#111827" strokeWidth="2" opacity="0.65"/>
       {/* Front bumper nose (rounded) */}
-      <path d="M 10 -70 Q 2 -58 2 -50 Q 2 -40 10 -32 L 14 -32 L 14 -70 Z" fill="#166534"/>
+      <path d="M 11 -66 L 63 -66 L 58 -47 L 17 -47 C 13 -53 11 -59 11 -66 Z" fill="#4b5563"/>
       {/* Headlight */}
-      <ellipse cx="6"  cy="-46" rx="5" ry="8" fill="#fef9c3"/>
-      <ellipse cx="6"  cy="-46" rx="9" ry="13" fill="#fef9c3" opacity="0.18"/>
+      <ellipse cx="48" cy="-55" rx="9" ry="12" fill="#e5e7eb"/>
+      <ellipse cx="48" cy="-55" rx="5" ry="7" fill="#f8fafc"/>
       {/* Front turn indicator */}
-      <ellipse cx="8"  cy="-34" rx="3" ry="5"  fill="#fbbf24" opacity="0.9"/>
+      <rect x="67" y="-80" width="18" height="8" rx="2" fill="#ef4444"/>
       {/* Number plate */}
-      <rect x="4" y="-30" width="22" height="8" rx="2" fill="#fef9c3"/>
-      <text x="15" y="-24" textAnchor="middle" fontSize="4" fill="#1f2937" fontFamily="monospace" fontWeight="bold">MH 20</text>
+      <rect x="18" y="-77" width="28" height="22" rx="5" fill="#e59b17"/>
       {/* Side mirror arm */}
-      <line x1="14" y1="-74" x2="4"  y2="-80" stroke="#ca8a04" strokeWidth="3" strokeLinecap="round"/>
-      <ellipse cx="3" cy="-82" rx="5" ry="4" fill="#ca8a04"/>
+      <line x1="78" y1="-105" x2="103" y2="-123" stroke="#1f2937" strokeWidth="3" strokeLinecap="round"/>
+      <ellipse cx="106" cy="-126" rx="8" ry="11" fill="#4b5563" transform="rotate(-18 106 -126)"/>
+      <line x1="24" y1="-99" x2="8" y2="-111" stroke="#1f2937" strokeWidth="3" strokeLinecap="round"/>
+      <ellipse cx="5" cy="-113" rx="5" ry="8" fill="#1f2937" transform="rotate(-28 5 -113)"/>
 
       {/* ══ LAYER 4: CANOPY / ROOF (dome-shaped, yellow) ══ */}
       {/* Canopy dome — tall arch shape */}
-      <path d="M 14 -96 Q 14 -136 42 -138 L 162 -138 Q 185 -136 175 -96 Z" fill="#fbbf24"/>
+      <path d="M 25 -103 C 31 -142 57 -155 106 -153 L 151 -151 C 178 -148 194 -140 207 -127 C 216 -110 220 -96 218 -82 L 194 -83 C 194 -96 188 -106 176 -110 L 93 -117 C 84 -124 74 -128 56 -126 C 42 -123 34 -115 29 -101 Z" fill="#facc15"/>
       {/* Canopy interior ceiling edge */}
-      <rect x="35" y="-98" width="140" height="5" fill="#d97706"/>
+      <path d="M 31 -109 C 43 -139 70 -146 111 -144 L 165 -140" stroke="#ca8a04" strokeWidth="5" strokeLinecap="round" opacity="0.55"/>
       {/* Top flat section */}
-      <rect x="40" y="-142" width="124" height="7" rx="3.5" fill="#b45309"/>
+      <path d="M 38 -121 C 57 -138 86 -140 130 -137" stroke="#fde047" strokeWidth="6" strokeLinecap="round" opacity="0.7"/>
       {/* Front canopy overhang lip */}
-      <path d="M 14 -96 Q 8 -100 6 -96 Q 5 -92 10 -90 L 14 -90 Z" fill="#fbbf24"/>
+      <path d="M 18 -101 Q 9 -101 7 -95 Q 6 -90 16 -90 L 29 -101 Z" fill="#facc15"/>
       {/* Rear canopy tail */}
-      <path d="M 175 -96 Q 182 -100 184 -96 Q 184 -92 179 -90 L 175 -90 Z" fill="#fbbf24"/>
+      <path d="M 194 -83 C 207 -82 215 -86 218 -94 L 219 -77 L 195 -73 Z" fill="#eab308"/>
 
       {/* ══ LAYER 5: CANOPY PILLARS ══ */}
-      <rect x="36" y="-138" width="7" height="70" rx="3.5" fill="#14532d"/>
-      <rect x="168" y="-138" width="7" height="70" rx="3.5" fill="#14532d"/>
+      <rect x="90" y="-112" width="7" height="81" rx="3.5" fill="#14532d"/>
+      <rect x="175" y="-110" width="7" height="78" rx="3.5" fill="#14532d"/>
 
       {/* ══ LAYER 6: INTERIOR ══ */}
       {/* Passenger bench seat */}
-      <rect x="90"  y="-72" width="72" height="28" rx="5" fill="#c2410c"/>
-      <rect x="90"  y="-77" width="72" height="10" rx="4" fill="#9a3412"/>
+      <rect x="89"  y="-65" width="56" height="24" rx="5" fill="#6b4f3d"/>
+      <rect x="94"  y="-72" width="54" height="18" rx="5" fill="#8b6b4f"/>
       {/* Bench legs */}
-      <rect x="95"  y="-44" width="5" height="14" rx="2" fill="#7c2d12"/>
-      <rect x="150" y="-44" width="5" height="14" rx="2" fill="#7c2d12"/>
+      <rect x="91"  y="-38" width="32" height="11" rx="4" fill="#c19a73"/>
+      <rect x="155" y="-64" width="30" height="25" rx="5" fill="#5a4537"/>
 
       {/* ══ LAYER 7: DRIVER ══ */}
       {/* Body / torso */}
-      <rect x="46" y="-80" width="18" height="20" rx="4" fill="#1d4ed8"/>
+      <rect x="50" y="-76" width="18" height="20" rx="4" fill="#1d4ed8"/>
       {/* Head */}
-      <circle cx="55" cy="-88" r="11" fill="#fde68a"/>
+      <circle cx="59" cy="-86" r="10" fill="#fde68a"/>
       {/* Hair */}
-      <path d="M 44 -88 Q 46 -102 55 -102 Q 64 -102 66 -88" fill="#1c1917"/>
+      <path d="M 49 -88 Q 50 -100 59 -100 Q 67 -99 69 -88" fill="#1c1917"/>
       {/* Arm on handlebar */}
-      <line x1="46" y1="-75" x2="36" y2="-68" stroke="#fde68a" strokeWidth="4" strokeLinecap="round"/>
+      <line x1="51" y1="-72" x2="39" y2="-65" stroke="#fde68a" strokeWidth="4" strokeLinecap="round"/>
       {/* Handlebar */}
-      <line x1="30" y1="-64" x2="42" y2="-64" stroke="#374151" strokeWidth="5" strokeLinecap="round"/>
+      <line x1="32" y1="-64" x2="43" y2="-64" stroke="#374151" strokeWidth="5" strokeLinecap="round"/>
 
       {/* ══ LAYER 8: REAR SECTION ══ */}
-      <path d="M 175 -96 Q 188 -80 188 -62 Q 188 -44 175 -32 Z" fill="#15803d"/>
+      <path d="M 175 -86 Q 196 -78 196 -58 Q 196 -41 182 -31 L 175 -31 Z" fill="#22c55e"/>
       {/* Rear light */}
-      <ellipse cx="183" cy="-44" rx="5"  ry="8"  fill="#ef4444"/>
-      <ellipse cx="183" cy="-44" rx="8"  ry="11" fill="#ef4444" opacity="0.25"/>
+      <ellipse cx="190" cy="-46" rx="5"  ry="8"  fill="#ef4444"/>
+      <ellipse cx="190" cy="-46" rx="8"  ry="11" fill="#ef4444" opacity="0.25"/>
       {/* Exhaust pipe */}
       <rect x="178" y="-32" width="18" height="5" rx="2.5" fill="#6b7280"/>
 
       {/* ══ LAYER 9: NEAR-SIDE REAR WHEEL (front/visible) ══ */}
       <circle cx="158" cy="-23" r="25" fill="#1a1a1a"/>
-      <circle cx="158" cy="-23" r="16" fill="#374151"/>
-      <circle cx="158" cy="-23" r="7"  fill="#1a1a1a"/>
-      <circle cx="158" cy="-23" r="3"  fill="#9ca3af"/>
+      <circle cx="158" cy="-23" r="16" fill="#e5e7eb"/>
+      <circle cx="158" cy="-23" r="9"  fill="#9ca3af"/>
+      <circle cx="158" cy="-23" r="3"  fill="#f8fafc"/>
       <g style={{ transformOrigin: '158px -23px', animation: 'ars-spin 0.3s linear infinite' }}>
         <line x1="158" y1="-48" x2="158" y2="2"   stroke="#4b5563" strokeWidth="2.5"/>
         <line x1="133" y1="-23" x2="183" y2="-23"  stroke="#4b5563" strokeWidth="2.5"/>
@@ -134,15 +137,16 @@ function AutoBody() {
       <line x1="158" y1="2" x2="158" y2="0" stroke="#1a1a1a" strokeWidth="3"/>
 
       {/* ══ LAYER 10: FRONT WHEEL (single, steering) ══ */}
-      <circle cx="42" cy="-22" r="22" fill="#1a1a1a"/>
-      <circle cx="42" cy="-22" r="14" fill="#374151"/>
-      <circle cx="42" cy="-22" r="6"  fill="#1a1a1a"/>
-      <circle cx="42" cy="-22" r="2.5" fill="#9ca3af"/>
-      <g style={{ transformOrigin: '42px -22px', animation: 'ars-spin 0.3s linear infinite' }}>
-        <line x1="42" y1="-44" x2="42" y2="0"    stroke="#4b5563" strokeWidth="2.5"/>
-        <line x1="20" y1="-22" x2="64" y2="-22"  stroke="#4b5563" strokeWidth="2.5"/>
-        <line x1="26" y1="-38" x2="58" y2="-6"   stroke="#4b5563" strokeWidth="1.5"/>
-        <line x1="26" y1="-6"  x2="58" y2="-38"  stroke="#4b5563" strokeWidth="1.5"/>
+      <path d="M -2 -34 C 9 -51 30 -56 48 -45 C 30 -44 16 -37 5 -25 Z" fill="#22c55e"/>
+      <circle cx="34" cy="-22" r="23" fill="#1a1a1a"/>
+      <circle cx="34" cy="-22" r="15" fill="#e5e7eb"/>
+      <circle cx="34" cy="-22" r="9"  fill="#9ca3af"/>
+      <circle cx="34" cy="-22" r="2.5" fill="#f8fafc"/>
+      <g style={{ transformOrigin: '34px -22px', animation: 'ars-spin 0.3s linear infinite' }}>
+        <line x1="34" y1="-44" x2="34" y2="0"    stroke="#4b5563" strokeWidth="2.5"/>
+        <line x1="12" y1="-22" x2="56" y2="-22"  stroke="#4b5563" strokeWidth="2.5"/>
+        <line x1="18" y1="-38" x2="50" y2="-6"   stroke="#4b5563" strokeWidth="1.5"/>
+        <line x1="18" y1="-6"  x2="50" y2="-38"  stroke="#4b5563" strokeWidth="1.5"/>
       </g>
 
       {/* ══ EXHAUST PUFFS (trailing to the right) ══ */}
@@ -280,7 +284,7 @@ function AutoRickshawScene({ timeOfDay }) {
           {/* Inner group: vertical bounce */}
           <g style={{ animation: 'ars-bounce-y 0.65s ease-in-out infinite' }}>
             {/* Auto positioned: wheel bottoms touch field at y=155 */}
-            <g transform="translate(0, 155)">
+            <g transform="translate(0, 155) scale(1 0.82)">
               <AutoBody/>
             </g>
           </g>

@@ -10,8 +10,9 @@ export default function NewsFeed() {
   const [selectedArticle, setSelectedArticle] = useState(null)
 
   function scrollByCard(direction) {
+    const scrollAmount = carouselRef.current?.clientWidth ?? 960
     carouselRef.current?.scrollBy({
-      left: direction * 320,
+      left: direction * scrollAmount,
       behavior: 'smooth',
     })
   }
@@ -43,7 +44,7 @@ export default function NewsFeed() {
 
         <div
           ref={carouselRef}
-          className="flex gap-5 overflow-x-auto px-4 sm:px-12 py-5 snap-x snap-mandatory scroll-smooth"
+          className="grid auto-cols-[minmax(17rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 py-6 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
           aria-label="Company news carousel"
         >
           {articles.map((article) => (

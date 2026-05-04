@@ -8,7 +8,8 @@ export const newsMock = {
           'Bajaj Auto reported record-breaking Q4 results driven by strong EV and export performance across all segments.',
         date: '2026-04-20',
         sourceTag: 'Leadership',
-        image: null,
+        image:
+          'https://akm-img-a-in.tosshub.com/indiatoday/images/story/201801/manufecture.jpeg?size=690:388',
         body: [
           'Bajaj Auto closed the fourth quarter of FY2026 with its highest-ever revenue and EBITDA, surpassing analyst forecasts by a significant margin. The company posted a 22% year-on-year revenue growth, with operating profit margins expanding to 21.4%.',
           'The performance was driven by robust domestic two-wheeler demand, record Chetak EV volumes, and strong export shipments to Africa and Latin America. The premium motorcycle segment, led by the Pulsar and Dominar ranges, grew 18% quarter-on-quarter.',
@@ -22,7 +23,8 @@ export const newsMock = {
           "The Chetak electric scooter has crossed 1,00,000 cumulative sales, marking a significant milestone for Bajaj's EV journey.",
         date: '2026-04-15',
         sourceTag: 'Product',
-        image: null,
+        image:
+          'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80',
         body: [
           'The Chetak electric scooter has crossed the 1,00,000 cumulative sales mark, cementing its position as one of the top-selling electric two-wheelers in India. The milestone was reached in just 28 months since the model\'s nationwide rollout.',
           'Availability has expanded to over 180 cities, with Bajaj\'s service network covering all major metro and Tier 2 markets. The latest Chetak 35 series introduced a longer 135 km real-world range and app-connected features that have driven repeat purchase intent in the premium EV segment.',
@@ -36,7 +38,8 @@ export const newsMock = {
           "A state-of-the-art R&D and testing facility has been inaugurated at the Chakan plant, expanding Bajaj's advanced engineering capabilities.",
         date: '2026-04-10',
         sourceTag: 'Facilities',
-        image: null,
+        image:
+          'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80',
         body: [
           'A new 42,000 sq ft research and development centre has been inaugurated at the Chakan manufacturing campus near Pune. The facility houses advanced powertrain dynamometers, a climate-controlled NVH lab, and a dedicated EV battery validation wing.',
           'The centre will serve as the primary development hub for next-generation electric and hybrid platforms, reducing reliance on third-party test facilities. It is expected to cut prototype-to-validation cycle time by approximately 30%.',

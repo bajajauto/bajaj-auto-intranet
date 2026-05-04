@@ -40,27 +40,27 @@ function EventCard({ event, index }) {
   const background = EVENT_BACKGROUNDS[index % EVENT_BACKGROUNDS.length]
 
   return (
-    <div className="grid grid-cols-[2.5rem_1fr] gap-3">
-      <div className="pt-1 text-center">
-        <p className="text-lg font-semibold leading-none text-text-primary">
+    <div className="grid grid-cols-[3.5rem_1fr] items-center gap-4">
+      <div className="text-center">
+        <p className="text-xl font-semibold leading-none text-text-primary">
           {formatDay(event.date)}
         </p>
-        <p className="mt-1 text-xs text-text-secondary">{formatMonth(event.date)}</p>
+        <p className="mt-1 text-xs font-medium text-text-secondary">{formatMonth(event.date)}</p>
       </div>
 
       <button
         type="button"
-        className={`relative min-h-[88px] overflow-hidden rounded-card px-4 py-3 text-left text-white shadow-card focus-ring transition-all hover:-translate-y-0.5 hover:shadow-modal ${background}`}
+        className={`relative min-h-[96px] overflow-hidden rounded-card px-5 py-4 text-left text-white shadow-card focus-ring transition-all hover:-translate-y-0.5 hover:shadow-modal ${background}`}
         aria-label={event.label}
       >
         <div className="absolute inset-0 bg-black/25" />
         <div className="absolute -right-8 -top-10 h-24 w-24 rounded-full bg-white/15" />
         <div className="absolute -bottom-10 left-8 h-24 w-24 rounded-full bg-white/10" />
 
-        <div className="relative z-10 pr-6">
-          <p className="line-clamp-1 text-sm font-semibold">{event.label}</p>
-          <p className="mt-1 text-xs text-white/85">{event.location}</p>
-          <p className="mt-2 text-xs font-medium text-white/95">{event.time}</p>
+        <div className="relative z-10 pr-7">
+          <p className="line-clamp-1 text-base font-semibold">{event.label}</p>
+          <p className="mt-1.5 text-sm text-white/85">{event.location}</p>
+          <p className="mt-2 text-sm font-medium text-white/95">{event.time}</p>
         </div>
 
         <MoreVertical
@@ -218,12 +218,12 @@ export default function DashboardUpdatesPanel() {
 
   return (
     <div className="bg-white rounded-card shadow-card border border-gray-100 overflow-hidden">
-      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gray-100">
+      <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-gray-100">
         <h3 className="text-sm font-semibold text-text-primary">
           {activeTab === 'events' ? 'Upcoming Events' : 'Notifications'}
         </h3>
 
-        <div className="flex rounded-btn bg-bg-alt p-0.5">
+        <div className="flex flex-shrink-0 rounded-btn bg-bg-alt p-0.5">
           <button
             type="button"
             onClick={() => setActiveTab('events')}
@@ -250,7 +250,7 @@ export default function DashboardUpdatesPanel() {
       </div>
 
       {activeTab === 'events' ? (
-        <div className="max-h-[390px] space-y-4 overflow-y-auto px-4 py-4 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
+        <div className="space-y-5 px-5 py-5">
           {events.map((event, index) => (
             <EventCard key={`${event.date}-${event.label}`} event={event} index={index} />
           ))}

@@ -14,22 +14,32 @@ function formatDate(iso) {
   })
 }
 
-export default function NewsCard({ headline, excerpt, date, sourceTag, onClick }) {
+export default function NewsCard({ headline, excerpt, date, sourceTag, image, onClick }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="group flex-shrink-0 w-[18rem] sm:w-80 rounded-card border border-gray-100 shadow-card bg-white text-left hover:shadow-modal hover:-translate-y-1 hover:scale-[1.025] transition-all duration-200 ease-out focus-ring overflow-hidden"
+      className="group h-full w-full rounded-card border border-gray-100 shadow-card bg-white text-left hover:shadow-modal hover:-translate-y-1 transition-all duration-200 ease-out focus-ring overflow-hidden"
       aria-label={`Read full article: ${headline}`}
       aria-haspopup="dialog"
     >
       <div className="overflow-hidden bg-brand-light">
-        <ImagePlaceholder
-          width="100%"
-          height={156}
-          label="News Image"
-          className="transition-transform duration-300 ease-out group-hover:scale-105"
-        />
+        {image ? (
+          <img
+            src={image}
+            alt=""
+            className="h-[156px] w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <ImagePlaceholder
+            width="100%"
+            height={156}
+            label="News Image"
+            className="transition-transform duration-300 ease-out group-hover:scale-105"
+          />
+        )}
       </div>
       <div className="p-4 space-y-2">
         <div className="flex items-center justify-between gap-2">

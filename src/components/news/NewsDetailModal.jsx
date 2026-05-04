@@ -52,7 +52,16 @@ export default function NewsDetailModal({ article, onClose }) {
     >
       <div className="relative bg-white w-full rounded-t-[16px] sm:rounded-modal sm:max-w-2xl max-h-[92vh] sm:max-h-[85vh] flex flex-col overflow-hidden shadow-modal">
         <div className="relative flex-shrink-0">
-          <ImagePlaceholder width="100%" height={200} label="Article Image" className="sm:h-56" />
+          {article.image ? (
+            <img
+              src={article.image}
+              alt=""
+              className="h-[200px] w-full object-cover sm:h-56"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <ImagePlaceholder width="100%" height={200} label="Article Image" className="sm:h-56" />
+          )}
           <button
             ref={closeBtnRef}
             type="button"

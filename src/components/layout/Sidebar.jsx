@@ -53,7 +53,7 @@ function GroupButton({
       return
     }
 
-    if (isCollapsible) {
+    if (isExpanded && isCollapsible) {
       onToggleGroup(group.id)
       return
     }
@@ -89,9 +89,7 @@ function GroupButton({
 
 export default function Sidebar({ activeSection, onForceSection }) {
   const { isExpanded, isMobileOpen, setMobileOpen } = useSidebar()
-  const [expandedGroups, setExpandedGroups] = useState({
-    'employee-services': true,
-  })
+  const [expandedGroups, setExpandedGroups] = useState({})
 
   function handleNavigate(sectionId) {
     onForceSection?.(sectionId) // highlight immediately; don't wait for IntersectionObserver
