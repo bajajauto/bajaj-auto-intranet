@@ -40,8 +40,8 @@ export default function SubsidiaryCard({ subsidiary, onClick }) {
         <div className="h-px bg-gray-100 group-hover:bg-white/20 transition-colors duration-300" />
 
         {/* Segments list */}
-        <div className="space-y-1.5">
-          {subsidiary.segments.slice(0, 3).map((segment) => (
+        <div className="space-y-1 max-h-[120px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 group-hover:[&::-webkit-scrollbar-thumb]:bg-white/30">
+          {subsidiary.segments.map((segment) => (
             <div key={segment.id} className="flex items-center gap-2">
               <span className="text-sm leading-none">{segment.icon}</span>
               <span className="text-xs text-text-secondary group-hover:text-white/75 transition-colors duration-300 truncate">
@@ -49,11 +49,6 @@ export default function SubsidiaryCard({ subsidiary, onClick }) {
               </span>
             </div>
           ))}
-          {subsidiary.segments.length > 3 && (
-            <p className="text-xs text-text-secondary/50 group-hover:text-white/40 transition-colors duration-300 pl-6">
-              +{subsidiary.segments.length - 3} more
-            </p>
-          )}
         </div>
 
         {/* Divider */}

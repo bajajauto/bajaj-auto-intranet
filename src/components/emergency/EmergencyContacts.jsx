@@ -5,7 +5,7 @@ function ContactCard({ label, phone, icon, colorClass }) {
   const Icon = iconMap[icon] ?? iconMap.Phone
 
   return (
-    <div className={`bg-white rounded-card shadow-card border border-gray-100 border-l-4 ${colorClass} p-4 flex items-center gap-4`}>
+    <div className={`bg-white rounded-card shadow-card border border-gray-100 border-l-4 ${colorClass} p-4 flex items-center gap-4 transition-all duration-200 hover:shadow-modal hover:-translate-y-1 cursor-pointer`}>
       <div className="w-10 h-10 rounded-full bg-bg-alt flex items-center justify-center flex-shrink-0">
         <Icon size={20} className="text-text-secondary" />
       </div>
@@ -25,7 +25,7 @@ function ContactCard({ label, phone, icon, colorClass }) {
 
 export default function EmergencyContacts() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {emergencyContacts.map((contact) => (
         <ContactCard key={contact.id} {...contact} />
       ))}

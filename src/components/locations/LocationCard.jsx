@@ -6,7 +6,7 @@ export default function LocationCard({ name, subLocations }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="w-full rounded-card border border-gray-100 shadow-card bg-white overflow-hidden">
+    <div className="w-full rounded-card border border-gray-100 shadow-card bg-white overflow-hidden transition-all duration-200 hover:shadow-modal hover:-translate-y-0.5">
       <ImagePlaceholder width="100%" height={120} label={name} />
       <div className="p-3">
         <div className="flex items-center gap-1.5 mb-2">

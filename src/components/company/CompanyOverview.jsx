@@ -138,6 +138,51 @@ const SUBSIDIARIES = [
       'Foster innovation culture and tech talent',
     ],
   },
+  {
+    id: 'baf',
+    code: 'BAF',
+    fullName: 'Bajaj Auto Foundation',
+    employees: 450,
+    founded: '2014',
+    description:
+      'Bajaj Auto Foundation is the CSR arm of Bajaj Auto, dedicated to creating positive social impact. BAF focuses on societal empowerment through skill development, education, health initiatives, and community livelihoods.',
+    segments: [
+      {
+        id: 'skill-development',
+        name: 'Skill Development',
+        icon: '🎓',
+        focus: 'STEM education and workforce development',
+        highlights: ['BEST', 'BMS', 'Youth Empowerment'],
+      },
+      {
+        id: 'education',
+        name: 'Education',
+        icon: '📚',
+        focus: 'School and higher education initiatives',
+        highlights: ['STEM Focus', 'Scholarships', 'Mentorship'],
+      },
+      {
+        id: 'health-wellness',
+        name: 'Health & Wellness',
+        icon: '🏥',
+        focus: 'Healthcare and community wellness',
+        highlights: ['Medical Programs', 'Health Aid', 'Community Care'],
+      },
+      {
+        id: 'community-livelihoods',
+        name: 'Community Livelihoods',
+        icon: '🌱',
+        focus: 'Water conservation and rural development',
+        highlights: ['Water Projects', 'Rural Development', 'Sustainability'],
+      },
+    ],
+    keyFocus: [
+      'Social empowerment through education and skill development',
+      'Advancing sustainability and environmental conservation',
+      'Improving public health and community wellness',
+      'Empowering youth for industrial transformation',
+    ],
+  },
 ]
 
 export default function CompanyOverview() {
@@ -154,7 +199,7 @@ export default function CompanyOverview() {
       </div>
 
       {/* Subsidiaries Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '100ms' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '100ms' }}>
         {SUBSIDIARIES.map((subsidiary, idx) => (
           <div key={subsidiary.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${150 + idx * 100}ms` }}>
             <SubsidiaryCard

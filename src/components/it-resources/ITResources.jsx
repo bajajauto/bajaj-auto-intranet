@@ -15,7 +15,7 @@ function ResourceLink({ label, sublabel, icon: Icon, href }) {
   return (
     <a
       href={href}
-      className="flex items-center gap-3 p-3 rounded-btn hover:bg-bg-alt transition-colors focus-ring group"
+      className="flex items-center gap-3 p-3 rounded-btn hover:bg-brand-light hover:text-brand-primary transition-all duration-200 focus-ring group hover:shadow-sm hover:-translate-x-0.5"
     >
       <div className="w-8 h-8 rounded bg-brand-light flex items-center justify-center flex-shrink-0">
         <Icon size={16} className="text-brand-primary" />
@@ -30,12 +30,14 @@ function ResourceLink({ label, sublabel, icon: Icon, href }) {
 
 export default function ITResources() {
   return (
-    <div className="bg-white rounded-card shadow-card border border-gray-100 p-4 space-y-4">
-      <div className="space-y-1">
-        {IT_LINKS.map((item) => <ResourceLink key={item.id} {...item} />)}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-white rounded-card shadow-card border border-gray-100 p-4 space-y-4 transition-all duration-200 hover:shadow-modal hover:-translate-y-0.5">
+        <div className="space-y-1">
+          {IT_LINKS.map((item) => <ResourceLink key={item.id} {...item} />)}
+        </div>
       </div>
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary px-3 mb-1">Systems Available</p>
+      <div className="bg-white rounded-card shadow-card border border-gray-100 p-4 space-y-4 transition-all duration-200 hover:shadow-modal hover:-translate-y-0.5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary px-3">Systems Available</p>
         <div className="space-y-1">
           {SYSTEMS.map((item) => <ResourceLink key={item.id} {...item} />)}
         </div>
