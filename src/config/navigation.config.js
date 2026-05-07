@@ -51,6 +51,12 @@ export const navGroups = [
     collapsible: true,
     items: [
       {
+        id: 'bajaj-bytes',
+        label: 'Bajaj Bytes',
+        icon: 'BookOpen',
+        sectionId: 'bajaj-bytes',
+      },
+      {
         id: 'company-overview',
         label: 'Company Overview',
         icon: 'Building2',

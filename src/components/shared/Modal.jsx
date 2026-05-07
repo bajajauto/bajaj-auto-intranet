@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 
-export default function Modal({ isOpen, onClose, title, children }) {
+export default function Modal({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' }) {
   const overlayRef = useRef(null)
   const firstFocusableRef = useRef(null)
 
@@ -33,7 +33,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
       aria-labelledby="modal-title"
       onClick={(e) => { if (e.target === overlayRef.current) onClose() }}
     >
-      <div className="bg-white rounded-modal shadow-modal w-full max-w-lg max-h-[90vh] flex flex-col">
+      <div className={`bg-white rounded-modal shadow-modal w-full ${maxWidth} max-h-[90vh] flex flex-col`}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 id="modal-title" className="text-base font-semibold text-text-primary">{title}</h2>
           <button

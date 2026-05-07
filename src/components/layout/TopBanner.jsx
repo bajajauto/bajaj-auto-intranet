@@ -43,6 +43,7 @@ export default function TopBanner() {
       <Modal
         isOpen={isSosOpen}
         onClose={() => setIsSosOpen(false)}
+        maxWidth="max-w-3xl"
         title="Emergency SOS – Contacts & Help"
       >
         <div className="space-y-4">

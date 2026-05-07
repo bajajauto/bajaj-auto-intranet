@@ -5,6 +5,7 @@ import ServiceGrid from '@/components/self-service/ServiceGrid'
 import DashboardUpdatesPanel from '@/components/dashboard/DashboardUpdatesPanel'
 import CompanyOverview from '@/components/company/CompanyOverview'
 import NewsFeed from '@/components/news/NewsFeed'
+import BajajBytes from '@/components/news/BajajBytes'
 import ITResources from '@/components/it-resources/ITResources'
 import EmergencyContacts from '@/components/emergency/EmergencyContacts'
 import LocationsSection from '@/components/locations/LocationsSection'
@@ -46,6 +47,15 @@ export default function MainContent() {
                     Employee Self-Service
                   </h2>
                   <ServiceGrid />
+                  <div id="bajaj-bytes" className="mt-6 scroll-mt-32">
+                    <h2
+                      id="bajaj-bytes-heading"
+                      className="text-lg font-semibold text-text-primary mb-4"
+                    >
+                      Bajaj Bytes
+                    </h2>
+                    <BajajBytes />
+                  </div>
                 </section>
               </div>
               <div className="flex flex-col gap-6 w-full lg:w-80 flex-shrink-0">
@@ -70,7 +80,6 @@ export default function MainContent() {
             </h2>
             <NewsFeed />
           </ScrollReveal>
-
           <ScrollReveal id="locations" aria-labelledby="locations-heading">
             <h2 id="locations-heading" className="text-lg font-semibold text-text-primary mb-4">
               Bajaj Auto Locations

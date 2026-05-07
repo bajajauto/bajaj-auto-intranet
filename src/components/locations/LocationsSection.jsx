@@ -333,8 +333,7 @@ function GlobePresence() {
         </div>
         <p className="mt-3 text-5xl font-bold leading-none tracking-tight text-white">43</p>
         <p className="mt-1 text-sm text-white/50">Countries worldwide</p>
-        <p className="mt-4 text-[11px] text-white/35">Click a country to fly there</p>
-        <div className="mt-3 inline-flex max-w-[15rem] items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
+        <div className="mt-4 inline-flex max-w-[15rem] items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.8)]" />
           {activeCountry === 'India' ? 'India - HQ market' : activeCountry}
         </div>

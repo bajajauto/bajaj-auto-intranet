@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react'
 
 const mockUser = {
-  name: 'Employee Name',
+  name: 'Debosmita Paul',
   email: 'employee@bajajauto.com',
-  designation: 'Senior Engineer',
-  department: 'R&D',
+  designation: 'Manager(HR)',
+  department: 'Digitization',
   role: 'employee',
   avatar: null,
 }

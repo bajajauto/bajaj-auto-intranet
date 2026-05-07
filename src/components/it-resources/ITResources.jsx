@@ -1,4 +1,4 @@
-import { ExternalLink, Headphones, BarChart2, Database, Monitor } from 'lucide-react'
+import { ArrowRight, BarChart2, Database, ExternalLink, Headphones, Monitor } from 'lucide-react'
 
 const IT_LINKS = [
   { id: 'raise-request', label: 'Raise IT Request', sublabel: 'ServiceNow', icon: ExternalLink, href: '#' },
@@ -15,31 +15,50 @@ function ResourceLink({ label, sublabel, icon: Icon, href }) {
   return (
     <a
       href={href}
-      className="flex items-center gap-3 p-3 rounded-btn hover:bg-brand-light hover:text-brand-primary transition-all duration-200 focus-ring group hover:shadow-sm hover:-translate-x-0.5"
+      className="group flex items-center gap-3 rounded-card border border-brand-primary/10 bg-brand-light/60 p-3 transition-all duration-200 focus-ring hover:-translate-y-0.5 hover:border-brand-primary/25 hover:bg-white hover:shadow-card"
     >
-      <div className="w-8 h-8 rounded bg-brand-light flex items-center justify-center flex-shrink-0">
-        <Icon size={16} className="text-brand-primary" />
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-card bg-white text-brand-primary shadow-sm">
+        <Icon size={17} />
       </div>
-      <div>
-        <p className="text-sm font-medium text-text-primary group-hover:text-brand-primary transition-colors">{label}</p>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold text-text-primary">{label}</p>
         <p className="text-xs text-text-secondary">{sublabel}</p>
       </div>
+      <ArrowRight
+        size={15}
+        className="flex-shrink-0 text-brand-primary transition-transform group-hover:translate-x-0.5"
+      />
     </a>
   )
 }
 
 export default function ITResources() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-white rounded-card shadow-card border border-gray-100 p-4 space-y-4 transition-all duration-200 hover:shadow-modal hover:-translate-y-0.5">
-        <div className="space-y-1">
-          {IT_LINKS.map((item) => <ResourceLink key={item.id} {...item} />)}
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="rounded-card border border-gray-100 bg-white p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+        <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Support Desk
+        </p>
+
+        <div className="space-y-3">
+          {IT_LINKS.map((item) => (
+            <ResourceLink key={item.id} {...item} />
+          ))}
         </div>
       </div>
-      <div className="bg-white rounded-card shadow-card border border-gray-100 p-4 space-y-4 transition-all duration-200 hover:shadow-modal hover:-translate-y-0.5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary px-3">Systems Available</p>
-        <div className="space-y-1">
-          {SYSTEMS.map((item) => <ResourceLink key={item.id} {...item} />)}
+
+      <div className="rounded-card border border-gray-100 bg-white p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+        <div className="mb-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+            Systems Available
+          </p>
+          <h3 className="mt-1 text-xl font-bold text-text-primary">Work tools</h3>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+          {SYSTEMS.map((item) => (
+            <ResourceLink key={item.id} {...item} />
+          ))}
         </div>
       </div>
     </div>
