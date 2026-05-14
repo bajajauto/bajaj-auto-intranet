@@ -90,4 +90,25 @@ export const services = [
     redirectUrl: '#',
     enabled: true,
   },
+  {
+    id: 'form-16',
+    label: 'Form 16 Download',
+    icon: 'Form16Icon',
+    redirectUrl: '#',
+    enabled: true,
+  },
+  {
+    id: 'mediclaim',
+    label: 'Mediclaim Download',
+    icon: 'MediclaimIcon',
+    redirectUrl: '#',
+    enabled: true,
+  },
+  {
+    id: 'parental-leave',
+    label: 'Parental Leave',
+    icon: 'ParentalLeaveIcon',
+    redirectUrl: '#',
+    enabled: true,
+  },
 ]

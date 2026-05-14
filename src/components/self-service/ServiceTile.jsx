@@ -1,4 +1,3 @@
-import { ArrowUpRight } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 
 const tileStyles = {
@@ -15,6 +14,9 @@ const tileStyles = {
   documents:          { grad: 'from-[#475569] to-[#334155]', glow: 'hover:shadow-[0_18px_40px_rgba(71,85,105,0.55)]' },
   'idea-hub':         { grad: 'from-[#EAB308] to-[#CA8A04]', glow: 'hover:shadow-[0_18px_40px_rgba(234,179,8,0.55)]' },
   'actions-pending':  { grad: 'from-[#DC2626] to-[#B91C1C]', glow: 'hover:shadow-[0_18px_40px_rgba(220,38,38,0.55)]' },
+  'form-16':          { grad: 'from-[#06B6D4] to-[#0891B2]', glow: 'hover:shadow-[0_18px_40px_rgba(6,182,212,0.55)]' },
+  'mediclaim':        { grad: 'from-[#A855F7] to-[#9333EA]', glow: 'hover:shadow-[0_18px_40px_rgba(168,85,247,0.55)]' },
+  'parental-leave':   { grad: 'from-[#F97316] to-[#EA580C]', glow: 'hover:shadow-[0_18px_40px_rgba(249,115,22,0.55)]' },
 }
 
 export default function ServiceTile({ id, label, icon, redirectUrl }) {
@@ -29,31 +31,21 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
   return (
     <button
       onClick={handleClick}
-      className={`group relative overflow-hidden flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-br ${grad} aspect-square w-full p-3 text-white shadow-md transition-all duration-300 hover:-translate-y-1 ${glow} active:translate-y-0 focus-ring`}
+      className={`group relative overflow-hidden flex flex-col items-center justify-center gap-1.5 rounded-xl bg-gradient-to-br ${grad} aspect-square w-full p-2 text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 ${glow} active:translate-y-0 focus-ring`}
       aria-label={label}
     >
       {/* decorative corner accent */}
-      <span aria-hidden className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/10 transition-transform duration-500 group-hover:scale-125" />
-      <span aria-hidden className="absolute -right-2 -top-1 h-9 w-9 rounded-full bg-white/10" />
+      <span aria-hidden className="absolute -right-4 -top-4 h-12 w-12 rounded-full bg-white/10 transition-transform duration-500 group-hover:scale-125" />
 
       {/* icon in glass container */}
-      <span className="relative z-10 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white/20 ring-1 ring-white/30 shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/25">
-        <Icon size={24} strokeWidth={1.8} className="text-white drop-shadow-sm" />
+      <span className="relative z-10 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-white/20 ring-1 ring-white/30 transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/25">
+        <Icon size={22} strokeWidth={1.6} className="text-white drop-shadow-sm" />
       </span>
 
       {/* label */}
-      <span className="relative z-10 line-clamp-2 px-1 text-center text-[10.5px] font-bold uppercase leading-tight tracking-wide text-white drop-shadow-sm">
+      <span className="relative z-10 line-clamp-2 px-1 text-center text-[9px] font-semibold uppercase leading-tight tracking-wide text-white drop-shadow-sm">
         {label}
       </span>
-
-      {/* link hint arrow */}
-      {isClickable && (
-        <ArrowUpRight
-          size={13}
-          aria-hidden
-          className="absolute bottom-2 right-2 z-10 text-white/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-        />
-      )}
     </button>
   )
 }

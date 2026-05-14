@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart2, Database, ExternalLink, Headphones, Monitor } from 'lucide-react'
+import { BarChart2, Database, ExternalLink, Headphones, Monitor } from 'lucide-react'
 
 const IT_LINKS = [
   { id: 'raise-request', label: 'Raise IT Request', sublabel: 'ServiceNow', icon: ExternalLink, href: '#' },
@@ -15,19 +15,17 @@ function ResourceLink({ label, sublabel, icon: Icon, href }) {
   return (
     <a
       href={href}
-      className="group flex items-center gap-3 rounded-card border border-brand-primary/10 bg-brand-light/60 p-3 transition-all duration-200 focus-ring hover:-translate-y-0.5 hover:border-brand-primary/25 hover:bg-white hover:shadow-card"
+      className="group flex items-center justify-between gap-4 rounded-card border border-brand-primary/10 bg-brand-light/60 p-3 transition-all duration-200 focus-ring hover:-translate-y-0.5 hover:border-brand-primary/25 hover:bg-white hover:shadow-card"
     >
-      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-card bg-white text-brand-primary shadow-sm">
-        <Icon size={17} />
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-card bg-white text-brand-primary shadow-sm">
+          <Icon size={17} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-text-primary">{label}</p>
+          <p className="text-xs text-text-secondary">{sublabel}</p>
+        </div>
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-text-primary">{label}</p>
-        <p className="text-xs text-text-secondary">{sublabel}</p>
-      </div>
-      <ArrowRight
-        size={15}
-        className="flex-shrink-0 text-brand-primary transition-transform group-hover:translate-x-0.5"
-      />
     </a>
   )
 }

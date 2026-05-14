@@ -172,3 +172,48 @@ export function ActionsPendingIcon({ size = 24, strokeWidth = 2, className = '' 
     </Svg>
   )
 }
+
+export function Form16Icon({ size = 24, strokeWidth = 2, className = '' }) {
+  return (
+    <Svg size={size} strokeWidth={strokeWidth} className={className}>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+      <path d="M9 12h6" />
+      <path d="M9 15h6" />
+      <path d="M9 18h4" />
+    </Svg>
+  )
+}
+
+export function MediclaimIcon({ size = 24, strokeWidth = 2, className = '' }) {
+  return (
+    <Svg size={size} strokeWidth={strokeWidth} className={className}>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c-1.657 0 -3 1.343 -3 3v2h-4a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2 -2v-10a2 2 0 0 0 -2 -2h-4v-2c0 -1.657 -1.343 -3 -3 -3z" />
+      <path d="M12 9v6" />
+      <path d="M9 12h6" />
+    </Svg>
+  )
+}
+
+export function ParentalLeaveIcon({ size = 24, strokeWidth = 2, className = '' }) {
+  return (
+    <Svg size={size} strokeWidth={strokeWidth} className={className}>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      {/* father (left) – larger head */}
+      <path d="M7 4m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" />
+      {/* father torso */}
+      <path d="M4.5 6.5 L4 8 L4 17 L10 17 L10 8 L9.5 6.5" />
+      {/* mother (right) – head + hair arc */}
+      <path d="M17 4.5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M15.2 2.7 Q17 0.5 18.8 2.7" />
+      {/* mother torso */}
+      <path d="M15 6.5 L14 8 L14 17 L20 17 L20 8 L19 6.5" />
+      {/* baby head */}
+      <path d="M12 14m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" />
+      {/* both parents' inner arms wrapping under baby */}
+      <path d="M10 12 L9.5 15.5 Q12 19 14.5 15.5 L14 12" />
+    </Svg>
+  )
+}
