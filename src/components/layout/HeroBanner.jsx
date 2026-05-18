@@ -4,13 +4,13 @@ import { notificationService } from '@/services/notificationService'
 
 function getHeroMoment() {
   const h = new Date().getHours()
-  if (h >= 0  && h < 5)  return { greeting: 'Good night',     timeOfDay: 'night',     subtitle: 'The roads are quiet — rest well.' }
-  if (h >= 5  && h < 7)  return { greeting: 'Good morning',   timeOfDay: 'dawn',      subtitle: 'First light. A fresh road ahead.' }
-  if (h >= 7  && h < 11) return { greeting: 'Good morning',   timeOfDay: 'morning',   subtitle: "Morning shift in full swing. Let's go!" }
-  if (h >= 11 && h < 14) return { greeting: 'Good afternoon', timeOfDay: 'noon',      subtitle: 'Midday — keep the engine running strong.' }
-  if (h >= 14 && h < 19) return { greeting: 'Good afternoon', timeOfDay: 'afternoon', subtitle: 'Steady pace, full speed ahead.' }
-  if (h >= 19 && h < 22) return { greeting: 'Good evening',   timeOfDay: 'evening',   subtitle: 'Another great day on the road. Well done.' }
-  return                        { greeting: 'Good night',      timeOfDay: 'night',     subtitle: 'Time to park and rest. See you tomorrow.' }
+  if (h >= 0  && h < 5)  return { greeting: 'Good night',     timeOfDay: 'night',     subtitle: 'Night mode: dreams on cruise control.' }
+  if (h >= 5  && h < 7)  return { greeting: 'Good morning',   timeOfDay: 'dawn',      subtitle: 'Fresh keys, fresh roads, fresh spark.' }
+  if (h >= 7  && h < 11) return { greeting: 'Good morning',   timeOfDay: 'morning',   subtitle: "Coffee's warmed up. So are we." }
+  if (h >= 11 && h < 14) return { greeting: 'Good afternoon', timeOfDay: 'noon',      subtitle: 'Midday pit stop: refuel, reset, roll on.' }
+  if (h >= 14 && h < 19) return { greeting: 'Good afternoon', timeOfDay: 'afternoon', subtitle: 'Afternoon lane: steady hands, bright ideas.' }
+  if (h >= 19 && h < 22) return { greeting: 'Good evening',   timeOfDay: 'evening',   subtitle: 'Evening lights on. Nice drive today.' }
+  return                        { greeting: 'Good night',      timeOfDay: 'night',     subtitle: 'Parked for now. Tomorrow gets the throttle.' }
 }
 
 const SKY = {

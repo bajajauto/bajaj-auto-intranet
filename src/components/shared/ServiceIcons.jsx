@@ -36,11 +36,8 @@ export function PoliciesIcon({ size = 24, strokeWidth = 2, className = '' }) {
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M13 10l7.383 7.418c.823 .82 .823 2.148 0 2.967a2.11 2.11 0 0 1 -2.976 0l-7.407 -7.385" />
-      <path d="M6 9l4 4" />
-      <path d="M13 10l-4 -4" />
-      <path d="M3 21h7" />
-      <path d="M6.793 15.793l-3.586 -3.586a1 1 0 0 1 0 -1.414l2.293 -2.293l.5 .5l3 -3l-.5 -.5l2.293 -2.293a1 1 0 0 1 1.414 0l3.586 3.586a1 1 0 0 1 0 1.414l-2.293 2.293l-.5 -.5l-3 3l.5 .5l-2.293 2.293a1 1 0 0 1 -1.414 0z" />
+      <path d="M12 3l7 3.5v4.5c0 5.25 -3.5 9.75 -7 11c-3.5 -1.25 -7 -5.75 -7 -11v-4.5l7 -3.5z" />
+      <path d="M9 12l2 2l4 -4" />
     </Svg>
   )
 }
@@ -128,11 +125,19 @@ export function HolidayCalendarIcon({ size = 24, strokeWidth = 2, className = ''
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M11 21h-5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3.5" />
-      <path d="M16 3v4" />
-      <path d="M8 3v4" />
-      <path d="M4 11h11" />
-      <path d="M17.8 20.817l-2.172 1.138a.392 .392 0 0 1 -.568 -.41l.415 -2.411l-1.757 -1.707a.389 .389 0 0 1 .217 -.665l2.428 -.352l1.086 -2.193a.392 .392 0 0 1 .702 0l1.086 2.193l2.428 .352a.39 .39 0 0 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567 .411l-2.172 -1.138z" />
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+      <path d="M3 8h18" />
+      <path d="M7 2.5v4" />
+      <path d="M12 2.5v4" />
+      <path d="M17 2.5v4" />
+      <path d="M5 12.5c1 -.9 2 -.9 3 0c1 -.9 2 -.9 3 0" />
+      <path d="M17.5 11.5c.8 -.7 1.6 -.7 2.2 0" />
+      <path d="M6 18c2.4 -2 6.1 -3 10.5 -1.4" />
+      <path d="M5.5 19c4.5 -.9 8.9 -.9 13 0" />
+      <path d="M12 16c.9 -2.6 1 -5 .3 -7" />
+      <path d="M12.3 10c-1.6 -.6 -3.3 -.4 -4.8 .7c1.9 .1 3.5 .6 4.8 1.5" />
+      <path d="M12.3 10c1.2 -1.4 2.8 -2 4.8 -1.9c-1.4 1.2 -3 1.8 -4.8 1.9" />
+      <path d="M12.3 10c1.7 .1 3 .8 4.2 2c-1.7 -.3 -3 -.2 -4.2 .3" />
     </Svg>
   )
 }
@@ -201,19 +206,11 @@ export function ParentalLeaveIcon({ size = 24, strokeWidth = 2, className = '' }
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      {/* father (left) – larger head */}
-      <path d="M7 4m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" />
-      {/* father torso */}
-      <path d="M4.5 6.5 L4 8 L4 17 L10 17 L10 8 L9.5 6.5" />
-      {/* mother (right) – head + hair arc */}
-      <path d="M17 4.5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      <path d="M15.2 2.7 Q17 0.5 18.8 2.7" />
-      {/* mother torso */}
-      <path d="M15 6.5 L14 8 L14 17 L20 17 L20 8 L19 6.5" />
-      {/* baby head */}
-      <path d="M12 14m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" />
-      {/* both parents' inner arms wrapping under baby */}
-      <path d="M10 12 L9.5 15.5 Q12 19 14.5 15.5 L14 12" />
+      <circle cx="6" cy="19" r="2" />
+      <circle cx="17" cy="19" r="2" />
+      <path d="M2 7h4" />
+      <path d="M6 7v1a9 9 0 0 0 9 9h4a1 1 0 0 0 1 -1v-6a1 1 0 0 0 -1 -1h-12" />
+      <path d="M6 11h14" />
     </Svg>
   )
 }

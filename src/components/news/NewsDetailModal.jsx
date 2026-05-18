@@ -50,7 +50,7 @@ export default function NewsDetailModal({ article, onClose }) {
         if (e.target === overlayRef.current) onClose()
       }}
     >
-      <div className="relative bg-white w-full rounded-t-[16px] sm:rounded-modal sm:max-w-2xl max-h-[92vh] sm:max-h-[85vh] flex flex-col overflow-hidden shadow-modal">
+      <div className="relative bg-white w-full rounded-t-[16px] sm:rounded-modal sm:max-w-2xl h-[92vh] sm:h-[85vh] flex flex-col overflow-hidden shadow-modal">
         <div className="relative flex-shrink-0">
           {article.image ? (
             <img
@@ -78,7 +78,7 @@ export default function NewsDetailModal({ article, onClose }) {
           <div className="pointer-events-none absolute top-0 left-0 right-0 z-10 h-4 bg-gradient-to-b from-white to-transparent" />
           <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-8 bg-gradient-to-t from-white to-transparent" />
 
-          <div className="h-full overflow-y-auto overscroll-contain px-5 sm:px-8 py-5 pr-4 sm:pr-6 space-y-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/30 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/50">
+          <div className="h-full overflow-y-scroll overscroll-contain px-5 py-5 pr-4 space-y-4 sm:px-8 sm:pr-6 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-brand-primary/30 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/30 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/50">
             <div className="flex items-center gap-3">
               <span
                 className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
