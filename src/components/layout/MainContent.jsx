@@ -40,14 +40,14 @@ export default function MainContent() {
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
-                  <h2 id="self-service-heading" className="text-lg font-semibold text-text-primary mb-4">
+                  <h2 id="self-service-heading" className="text-lg font-semibold text-brand-primary mb-4">
                     Employee Self Service
                   </h2>
                   <ServiceGrid />
                   <div id="bajaj-bytes" className="mt-6 scroll-mt-32">
                     <h2
                       id="bajaj-bytes-heading"
-                      className="text-lg font-semibold text-text-primary mb-4"
+                      className="text-lg font-semibold text-brand-primary mb-4"
                     >
                       Bajaj Bytes
                     </h2>
@@ -64,7 +64,7 @@ export default function MainContent() {
           <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
             <h2
               id="company-overview-heading"
-              className="text-lg font-semibold text-text-primary mb-4"
+              className="text-lg font-semibold text-brand-primary mb-4"
             >
               Company Overview
             </h2>
@@ -72,34 +72,34 @@ export default function MainContent() {
           </ScrollReveal>
 
           <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
-            <h2 id="company-news-heading" className="text-lg font-semibold text-text-primary mb-4">
+            <h2 id="company-news-heading" className="text-lg font-semibold text-brand-primary mb-4">
               Company News
             </h2>
             <NewsFeed />
           </ScrollReveal>
           <ScrollReveal id="locations" aria-labelledby="locations-heading">
-            <h2 id="locations-heading" className="text-lg font-semibold text-text-primary mb-4">
+            <h2 id="locations-heading" className="text-lg font-semibold text-brand-primary mb-4">
               Bajaj Auto Locations
             </h2>
             <LocationsSection />
           </ScrollReveal>
 
           <ScrollReveal id="it-resources" aria-labelledby="it-resources-heading">
-            <h2 id="it-resources-heading" className="text-lg font-semibold text-text-primary mb-4">
+            <h2 id="it-resources-heading" className="text-lg font-semibold text-brand-primary mb-4">
               IT Resources
             </h2>
             <ITResources />
           </ScrollReveal>
 
           <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
-            <h2 id="feedback-heading" className="text-lg font-semibold text-text-primary mb-4">
+            <h2 id="feedback-heading" className="text-lg font-semibold text-brand-primary mb-4">
               Feedback & Support
             </h2>
             <FeedbackSection />
           </ScrollReveal>
 
           <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
-            <h2 id="emergency-heading" className="text-lg font-semibold text-text-primary mb-4">
+            <h2 id="emergency-heading" className="text-lg font-semibold text-brand-primary mb-4">
               Emergency Contacts
             </h2>
             <EmergencyContacts />
