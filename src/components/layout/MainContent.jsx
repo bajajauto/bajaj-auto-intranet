@@ -40,6 +40,9 @@ export default function MainContent() {
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
+                  <h2 id="self-service-heading" className="text-lg font-semibold text-text-primary mb-4">
+                    Employee Self Service
+                  </h2>
                   <ServiceGrid />
                   <div id="bajaj-bytes" className="mt-6 scroll-mt-32">
                     <h2
