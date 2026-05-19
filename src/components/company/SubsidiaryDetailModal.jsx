@@ -108,9 +108,9 @@ export default function SubsidiaryDetailModal({ subsidiary, onClose }) {
                   className="group flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:border-brand-primary hover:bg-brand-light/30 transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 duration-500"
                   style={{ animationDelay: `${180 + idx * 70}ms` }}
                 >
-                  <span className="text-2xl flex-shrink-0 mt-0.5 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 inline-block">
-                    {segment.icon}
-                  </span>
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-brand-light group-hover:bg-brand-primary transition-all duration-300">
+                    <segment.icon size={18} className="text-brand-primary group-hover:text-white transition-colors duration-300" />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-sm font-semibold text-text-primary group-hover:text-brand-primary transition-colors duration-200">
                       {segment.name}

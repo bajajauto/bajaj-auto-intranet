@@ -49,7 +49,7 @@ export default function FeedbackSection() {
               ))}
             </h3>
             <p className="text-sm text-brand-primary/70 max-w-sm">
-              Share feedback, report an issue, or raise an IT request — we're here to help.
+              Share feedback, report an issue, or raise an IT request.
             </p>
           </div>
 

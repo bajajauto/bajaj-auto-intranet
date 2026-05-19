@@ -1,11 +1,27 @@
-import { TrendingUp, Database, Monitor, Headphones, ExternalLink } from 'lucide-react'
+import { BarChart3, FileStack, Globe, Wrench } from 'lucide-react'
+
+function IntercomDeskIcon({ size = 24, className = '' }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+      className={className} aria-hidden>
+      <circle cx="12" cy="4.5" r="2" />
+      <path d="M9 8c0-1 1-1.5 3-1.5s3 .5 3 1.5v2.5" />
+      <rect x="3" y="11" width="18" height="2" rx="1" />
+      <rect x="5" y="14" width="14" height="7" rx="1.5" />
+      <rect x="7" y="16.5" width="2.5" height="2" rx="0.4" />
+      <rect x="10.75" y="16.5" width="2.5" height="2" rx="0.4" />
+      <rect x="14.5" y="16.5" width="2.5" height="2" rx="0.4" />
+    </svg>
+  )
+}
 
 const IT_LINKS = [
   {
     id: 'raise-request',
     label: 'Raise IT Request',
     sublabel: 'ServiceNow',
-    icon: ExternalLink,
+    icon: Wrench,
     href: '#',
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
@@ -16,7 +32,7 @@ const IT_LINKS = [
     id: 'intercom',
     label: 'Intercom Support',
     sublabel: 'Internal ticketing',
-    icon: Headphones,
+    icon: IntercomDeskIcon,
     href: '#',
     iconBg: 'bg-indigo-50',
     iconColor: 'text-indigo-600',
@@ -30,7 +46,7 @@ const SYSTEMS = [
     id: 'qlik',
     label: 'BI Dashboard',
     sublabel: 'Qlik Sense',
-    icon: TrendingUp,
+    icon: BarChart3,
     href: '#',
     iconBg: 'bg-amber-50',
     iconColor: 'text-amber-600',
@@ -41,7 +57,7 @@ const SYSTEMS = [
     id: 'cdms',
     label: 'CDMS',
     sublabel: 'Document Management',
-    icon: Database,
+    icon: FileStack,
     href: '#',
     iconBg: 'bg-teal-50',
     iconColor: 'text-teal-600',
@@ -52,7 +68,7 @@ const SYSTEMS = [
     id: 'it-portal',
     label: 'IT Portal',
     sublabel: 'Self-service portal',
-    icon: Monitor,
+    icon: Globe,
     href: '#',
     iconBg: 'bg-sky-50',
     iconColor: 'text-sky-600',
@@ -94,7 +110,7 @@ export default function ITResources() {
       </div>
 
       <div className="rounded-card border border-gray-100 bg-white p-5 shadow-card">
-        <h3 className="mb-4 text-xl font-bold text-brand-primary">Work Tools</h3>
+        <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-primary/60">Work Tools</p>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
           {SYSTEMS.map((item) => (
             <ResourceLink key={item.id} {...item} />

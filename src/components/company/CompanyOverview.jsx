@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import {
+  Gauge, Truck, Zap, CreditCard,
+  Banknote, TrendingUp, Smartphone, ShieldCheck,
+  Code2, Satellite, Globe, Rocket,
+  GraduationCap, BookOpen, HeartPulse, Sprout,
+} from 'lucide-react'
 import SubsidiaryCard from './SubsidiaryCard'
 import SubsidiaryDetailModal from './SubsidiaryDetailModal'
 
@@ -15,28 +21,28 @@ const SUBSIDIARIES = [
       {
         id: 'motorcycle',
         name: 'Motorcycle Division',
-        icon: '🏍️',
+        icon: Gauge,
         focus: 'Domestic and international markets',
         highlights: ['Pulsar', 'Avenger', 'Dominar', 'Platina'],
       },
       {
         id: 'commercial-vehicle',
         name: 'Commercial Vehicle Division',
-        icon: '🚙',
+        icon: Truck,
         focus: 'Three-wheelers and commercial mobility',
         highlights: ['RE Auto', 'Maxima', 'Qute'],
       },
       {
         id: 'electric-vehicle',
         name: 'Electric Vehicle Division',
-        icon: '⚡',
+        icon: Zap,
         focus: 'Sustainable mobility solutions',
         highlights: ['Chetak', 'EV Future', 'Battery Tech'],
       },
       {
         id: 'finance-leasing',
         name: 'Finance & Leasing Division',
-        icon: '💳',
+        icon: CreditCard,
         focus: 'Financing solutions for customers',
         highlights: ['Auto Finance', 'Leasing', 'Credit'],
       },
@@ -60,28 +66,28 @@ const SUBSIDIARIES = [
       {
         id: 'auto-finance',
         name: 'Auto Finance',
-        icon: '💰',
+        icon: Banknote,
         focus: 'Vehicle purchase financing',
         highlights: ['Retail Finance', 'Fleet Finance', 'Quick Processing'],
       },
       {
         id: 'credit-products',
         name: 'Credit Products',
-        icon: '📊',
+        icon: TrendingUp,
         focus: 'Diverse credit solutions',
         highlights: ['Personal Loans', 'Business Credit', 'Flexible Terms'],
       },
       {
         id: 'digital-banking',
         name: 'Digital Solutions',
-        icon: '📱',
+        icon: Smartphone,
         focus: 'Online and mobile banking',
         highlights: ['Mobile App', 'Digital Processing', 'E-Services'],
       },
       {
         id: 'risk-management',
         name: 'Risk & Collections',
-        icon: '🛡️',
+        icon: ShieldCheck,
         focus: 'Credit risk management',
         highlights: ['Portfolio Management', 'Analytics', 'Compliance'],
       },
@@ -105,28 +111,28 @@ const SUBSIDIARIES = [
       {
         id: 'software-development',
         name: 'Software Development',
-        icon: '💻',
+        icon: Code2,
         focus: 'Enterprise and consumer applications',
         highlights: ['Cloud Solutions', 'Mobile Apps', 'Web Platforms'],
       },
       {
         id: 'iot-analytics',
         name: 'IoT & Analytics',
-        icon: '📡',
+        icon: Satellite,
         focus: 'Connected vehicles and data insights',
         highlights: ['Vehicle Analytics', 'Telematics', 'Big Data'],
       },
       {
         id: 'digital-platforms',
         name: 'Digital Platforms',
-        icon: '🌐',
+        icon: Globe,
         focus: 'E-commerce and customer engagement',
         highlights: ['E-Commerce', 'CRM', 'Digital Marketing'],
       },
       {
         id: 'emerging-tech',
         name: 'Emerging Technologies',
-        icon: '🚀',
+        icon: Rocket,
         focus: 'AI, ML, and blockchain',
         highlights: ['AI/ML', 'Blockchain', 'AR/VR'],
       },
@@ -150,28 +156,28 @@ const SUBSIDIARIES = [
       {
         id: 'skill-development',
         name: 'Skill Development',
-        icon: '🎓',
+        icon: GraduationCap,
         focus: 'STEM education and workforce development',
         highlights: ['BEST', 'BMS', 'Youth Empowerment'],
       },
       {
         id: 'education',
         name: 'Education',
-        icon: '📚',
+        icon: BookOpen,
         focus: 'School and higher education initiatives',
         highlights: ['STEM Focus', 'Scholarships', 'Mentorship'],
       },
       {
         id: 'health-wellness',
         name: 'Health & Wellness',
-        icon: '🏥',
+        icon: HeartPulse,
         focus: 'Healthcare and community wellness',
         highlights: ['Medical Programs', 'Health Aid', 'Community Care'],
       },
       {
         id: 'community-livelihoods',
         name: 'Community Livelihoods',
-        icon: '🌱',
+        icon: Sprout,
         focus: 'Water conservation and rural development',
         highlights: ['Water Projects', 'Rural Development', 'Sustainability'],
       },
@@ -190,13 +196,10 @@ export default function CompanyOverview() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      {/* Section Header */}
-      <div className="animate-in slide-in-from-bottom-4 duration-500">
-        <h2 className="text-2xl font-bold text-text-primary mb-2">Bajaj Group Structure</h2>
-        <p className="text-text-secondary text-sm">
-          Hover over a subsidiary to explore. Click any card to dive deeper into its business segments.
-        </p>
-      </div>
+      {/* Section description */}
+      <p className="text-text-secondary text-sm animate-in slide-in-from-bottom-4 duration-500">
+        Hover over a subsidiary to explore. Click any card to dive deeper into its business segments.
+      </p>
 
       {/* Subsidiaries Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '100ms' }}>
