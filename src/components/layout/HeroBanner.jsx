@@ -362,7 +362,7 @@ export default function HeroBanner() {
   })
 
   return (
-    <div className="relative mb-8 overflow-hidden rounded-2xl animate-fade-up" style={{ minHeight: '180px' }}>
+    <div className="relative mb-6 overflow-hidden rounded-2xl animate-fade-up" style={{ minHeight: '136px' }}>
 
       {/* Full-background animated scene */}
       <div className="absolute inset-0">
@@ -370,17 +370,17 @@ export default function HeroBanner() {
       </div>
 
       {/* Text — floats over the left gradient overlay */}
-      <div className="relative z-10 flex min-h-[180px] flex-col gap-5 p-6 text-white md:p-8 lg:flex-row lg:items-stretch lg:justify-between">
+      <div className="relative z-10 flex min-h-[136px] flex-col gap-3 p-5 text-white md:px-6 md:py-5 lg:flex-row lg:items-stretch lg:justify-between">
         <div className="max-w-sm lg:self-end">
           <p className="mb-1 text-sm font-medium tracking-wide text-white/60">{moment.greeting}</p>
-          <h1 className="mb-1 text-2xl font-bold tracking-tight text-white md:text-3xl">
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-white">
             {user.name}
           </h1>
           <p className="text-sm font-medium text-white/55">
             {user.designation} &middot; {user.department}
           </p>
 
-          <div className="mt-5 max-w-sm rounded-card border border-white/15 bg-white/10 p-4 shadow-modal backdrop-blur-md">
+          <div className="mt-3 max-w-sm rounded-card border border-white/15 bg-white/10 px-3.5 py-3 shadow-modal backdrop-blur-md">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/50">
@@ -394,9 +394,9 @@ export default function HeroBanner() {
               </span>
             </div>
 
-            <div className="mt-3 border-t border-white/10" />
+            <div className="mt-2 border-t border-white/10" />
 
-            <div className="mt-3 grid grid-cols-2 divide-x divide-white/10">
+            <div className="mt-2 grid grid-cols-2 divide-x divide-white/10">
               {SALES_SNAPSHOT.map((metric) => {
                 const Icon = metric.icon
                 return (
@@ -407,7 +407,7 @@ export default function HeroBanner() {
                         {metric.label}
                       </span>
                     </div>
-                    <p className="text-2xl font-bold leading-none text-white">{metric.value}</p>
+                    <p className="text-xl font-bold leading-none text-white">{metric.value}</p>
                     <p className="text-[10px] text-white/40">{metric.detail}</p>
                   </div>
                 )
@@ -415,7 +415,7 @@ export default function HeroBanner() {
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur-sm">
               <Bell size={12} className="text-amber-300"/>
               <span className="text-amber-200">{unreadCount} new</span>

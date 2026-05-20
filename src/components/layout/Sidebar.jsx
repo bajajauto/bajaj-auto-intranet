@@ -120,7 +120,9 @@ export default function Sidebar({ activeSection, onForceSection }) {
   const mobileRef = useRef(null)
 
   useEffect(() => {
-    ;[desktopRef, mobileRef].forEach((ref) => {
+    const sidebarRefs = [desktopRef, mobileRef]
+
+    sidebarRefs.forEach((ref) => {
       const sidebar = ref.current
       if (!sidebar) return
       const el = sidebar.querySelector('[data-active="true"]')
