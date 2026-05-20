@@ -56,7 +56,7 @@ function EventCard({ event, index }) {
 
       <button
         type="button"
-        className="relative min-h-[68px] overflow-hidden rounded-card border border-gray-100 bg-white px-3 py-2.5 text-left shadow-card focus-ring transition-all hover:-translate-y-0.5 hover:border-brand-primary/20 hover:bg-brand-light/50 hover:shadow-modal"
+        className="site-surface-interactive relative min-h-[68px] overflow-hidden rounded-card border px-3 py-2.5 text-left focus-ring transition-all hover:-translate-y-0.5 hover:bg-brand-light/50 hover:shadow-modal"
         aria-label={event.label}
       >
         <div className="relative z-10">
@@ -220,7 +220,7 @@ export default function DashboardUpdatesPanel() {
   const notifications = notificationService.getAll()
 
   return (
-    <div className="bg-white rounded-card shadow-card border border-gray-100 overflow-hidden">
+    <div className="site-surface rounded-card border overflow-hidden">
       <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-gray-100">
         <h3 className="text-sm font-semibold text-text-primary">
           {activeTab === 'events' ? 'Upcoming Events' : 'Notifications'}

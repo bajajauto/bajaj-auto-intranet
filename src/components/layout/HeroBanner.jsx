@@ -1,4 +1,4 @@
-import { Bell, CalendarDays } from 'lucide-react'
+import { Bell, CalendarDays, Factory, ShoppingCart, TrendingUp } from 'lucide-react'
 import { useUser } from '@/context/UserContext'
 import { notificationService } from '@/services/notificationService'
 
@@ -25,6 +25,23 @@ const SKY = {
 const STARS = [
   [60,18],[130,32],[220,14],[310,28],[420,11],[510,36],[600,20],[690,8],[790,30],[850,16],
   [40,52],[180,48],[350,56],[500,44],[670,60],[820,50],[110,70],[430,65],[730,72],
+]
+
+const SALES_SNAPSHOT = [
+  {
+    id: 'manufactured',
+    label: 'Manufactured',
+    value: '4.12L',
+    detail: 'units this month',
+    icon: Factory,
+  },
+  {
+    id: 'sold',
+    label: 'Sold',
+    value: '3.96L',
+    detail: 'units dispatched',
+    icon: ShoppingCart,
+  },
 ]
 
 // Auto in LOCAL coords — y=0 is ground level (wheel bottom), facing LEFT
@@ -353,29 +370,62 @@ export default function HeroBanner() {
       </div>
 
       {/* Text — floats over the left gradient overlay */}
-      <div className="relative z-10 p-6 md:p-8 max-w-sm text-white">
-        <p className="mb-1 text-sm font-medium tracking-wide text-white/60">{moment.greeting}</p>
-        <h1 className="mb-1 font-serif text-2xl font-bold tracking-tight text-white md:text-3xl">
-          {user.name}
-        </h1>
-        <p className="text-sm font-medium text-white/55">
-          {user.designation} &middot; {user.department}
-        </p>
+      <div className="relative z-10 flex min-h-[180px] flex-col gap-5 p-6 text-white md:p-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-sm">
+          <p className="mb-1 text-sm font-medium tracking-wide text-white/60">{moment.greeting}</p>
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-white md:text-3xl">
+            {user.name}
+          </h1>
+          <p className="text-sm font-medium text-white/55">
+            {user.designation} &middot; {user.department}
+          </p>
 
-        <div className="mt-5 max-w-xs rounded-card border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
-          <p className="text-sm font-semibold text-white">Bajaj Auto</p>
-          <p className="mt-1 text-xs leading-relaxed text-white/65">{moment.subtitle}</p>
+          <div className="mt-5 max-w-xs rounded-card border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-white">Bajaj Auto</p>
+            <p className="mt-1 text-xs leading-relaxed text-white/65">{moment.subtitle}</p>
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur-sm">
+              <Bell size={12} className="text-amber-300"/>
+              <span className="text-amber-200">{unreadCount} new</span>
+              <span className="text-white/50">notifications</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/70 backdrop-blur-sm">
+              <CalendarDays size={12}/>
+              {today}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-5 flex flex-wrap gap-2">
-          <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur-sm">
-            <Bell size={12} className="text-amber-300"/>
-            <span className="text-amber-200">{unreadCount} new</span>
-            <span className="text-white/50">notifications</span>
+        <div className="w-full rounded-card border border-white/15 bg-white/10 p-3 shadow-modal backdrop-blur-md sm:max-w-sm lg:w-[20rem]">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                Sales snapshot
+              </p>
+              <p className="mt-0.5 text-sm font-semibold text-white">Month overview</p>
+            </div>
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2 py-1 text-[11px] font-semibold text-emerald-100">
+              <TrendingUp size={12} />
+              +8.4%
+            </span>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/70 backdrop-blur-sm">
-            <CalendarDays size={12}/>
-            {today}
+
+          <div className="grid grid-cols-2 gap-2">
+            {SALES_SNAPSHOT.map((metric) => {
+              const Icon = metric.icon
+              return (
+                <div key={metric.id} className="rounded-btn border border-white/10 bg-white/10 p-3">
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-medium text-white/65">{metric.label}</span>
+                    <Icon size={14} className="text-sky-100" />
+                  </div>
+                  <p className="text-2xl font-bold leading-none text-white">{metric.value}</p>
+                  <p className="mt-1 text-[10px] font-medium text-white/50">{metric.detail}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

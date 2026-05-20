@@ -82,7 +82,7 @@ function ResourceLink({ label, sublabel, icon: Icon, href, iconBg, iconColor, ho
     <a
       href={href}
       onClick={e => e.preventDefault()}
-      className={`group flex items-center gap-3 rounded-card border border-gray-100 bg-white p-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${hoverBorder} ${hoverShadow} focus-ring cursor-pointer`}
+      className={`site-surface-interactive group flex items-center gap-3 rounded-card border p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${hoverBorder} ${hoverShadow} focus-ring cursor-pointer`}
     >
       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${iconBg} ring-1 ring-inset ring-black/5 transition-transform duration-200 group-hover:scale-110`}>
         <Icon size={18} className={iconColor} />
@@ -98,7 +98,7 @@ function ResourceLink({ label, sublabel, icon: Icon, href, iconBg, iconColor, ho
 export default function ITResources() {
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-      <div className="rounded-card border border-gray-100 bg-white p-5 shadow-card">
+      <div className="site-surface rounded-card border p-5">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-primary/60">
           Support Desk
         </p>
@@ -109,7 +109,7 @@ export default function ITResources() {
         </div>
       </div>
 
-      <div className="rounded-card border border-gray-100 bg-white p-5 shadow-card">
+      <div className="site-surface rounded-card border p-5">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-primary/60">Work Tools</p>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
           {SYSTEMS.map((item) => (

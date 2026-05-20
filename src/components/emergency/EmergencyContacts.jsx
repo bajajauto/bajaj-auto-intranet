@@ -9,7 +9,7 @@ function ContactCard({ label, phone, icon, colorClass }) {
     <a
       href={`tel:${phone}`}
       aria-label={`Call ${label}: ${phone}`}
-      className={`group flex min-h-[76px] min-w-0 items-center gap-3 rounded-card border border-gray-100 border-l-4 bg-white p-3 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal ${colorClass}`}
+      className={`site-surface-interactive group flex min-h-[76px] min-w-0 items-center gap-3 rounded-card border border-l-4 p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal ${colorClass}`}
     >
       <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-bg-alt">
         <Icon size={18} className="text-text-secondary" />

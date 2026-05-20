@@ -1,4 +1,4 @@
-import { Headphones } from 'lucide-react'
+import { BotMessageSquare } from 'lucide-react'
 
 function scrollToSection(sectionId) {
   const el = document.getElementById(sectionId)
@@ -16,12 +16,11 @@ export default function FloatingSupportButton() {
       type="button"
       onClick={() => scrollToSection('feedback')}
       className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-brand-primary text-white flex items-center gap-2 shadow-card hover:bg-brand-dark focus-ring transition-colors"
-      aria-label="Support - jump to Feedback & Support"
-      title="Support"
+      aria-label="Jarvis - jump to Feedback & Support"
+      title="Jarvis"
     >
-      <Headphones size={20} />
-      <span className="text-sm font-medium">Support</span>
+      <BotMessageSquare size={20} />
+      <span className="text-sm font-medium">Jarvis</span>
     </button>
   )
 }
-

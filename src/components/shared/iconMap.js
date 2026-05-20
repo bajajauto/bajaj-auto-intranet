@@ -58,7 +58,7 @@ import {
   ActionsPendingIcon,
   Form16Icon,
   MediclaimIcon,
-  ParentalLeaveIcon,
+  CsrIcon,
 } from './ServiceIcons'
 
 export const iconMap = {
@@ -78,7 +78,7 @@ export const iconMap = {
   ActionsPendingIcon,
   Form16Icon,
   MediclaimIcon,
-  ParentalLeaveIcon,
+  CsrIcon,
   // lucide icons (used elsewhere in the app)
   AlertCircle,
   AppWindow,

@@ -19,7 +19,7 @@ export default function NewsCard({ headline, excerpt, date, sourceTag, image, on
     <button
       type="button"
       onClick={onClick}
-      className="group h-full w-full rounded-card border border-gray-100 shadow-card bg-white text-left hover:shadow-modal hover:-translate-y-1 transition-all duration-200 ease-out focus-ring overflow-hidden"
+      className="site-surface-interactive group h-full w-full rounded-card border text-left hover:shadow-modal hover:-translate-y-1 transition-all duration-200 ease-out focus-ring overflow-hidden"
       aria-label={`Read full article: ${headline}`}
       aria-haspopup="dialog"
     >

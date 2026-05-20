@@ -41,7 +41,7 @@ export default function CalendarWidget() {
   const selectedEvent = selectedKey ? eventMap[selectedKey] : null
 
   return (
-    <div className="bg-white rounded-card shadow-card border border-gray-100 p-4">
+    <div className="site-surface rounded-card border p-4">
       <div className="flex items-center justify-between mb-3">
         <button onClick={prevMonth} className="p-1 rounded hover:bg-bg-alt focus-ring" aria-label="Previous month">
           <ChevronLeft size={16} className="text-text-secondary" />

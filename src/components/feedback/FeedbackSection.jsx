@@ -30,7 +30,7 @@ export default function FeedbackSection() {
         }
       `}</style>
 
-      <div className="bg-white rounded-card shadow-card border border-gray-100 p-6 sm:p-8">
+      <div className="site-surface rounded-card border p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
           {/* Left: text */}
           <div className="flex-1 min-w-0">

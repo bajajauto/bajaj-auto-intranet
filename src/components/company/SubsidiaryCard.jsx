@@ -4,8 +4,7 @@ export default function SubsidiaryCard({ subsidiary, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="group relative overflow-hidden rounded-2xl cursor-pointer h-full min-h-[280px]
-                 bg-white ring-1 ring-gray-200 shadow-sm
+      className="site-surface-interactive group relative h-full min-h-[280px] cursor-pointer overflow-hidden rounded-2xl border
                  hover:shadow-2xl hover:-translate-y-2 hover:ring-brand-dark
                  transition-all duration-500"
     >

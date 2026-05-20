@@ -5,7 +5,7 @@ export default function NotificationsPanel() {
   const notifications = notificationService.getAll()
 
   return (
-    <div className="bg-white rounded-card shadow-card border border-gray-100">
+    <div className="site-surface rounded-card border">
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
         <h3 className="text-sm font-semibold text-text-primary">Notifications</h3>
         <span className="text-xs font-medium text-white bg-brand-primary px-2 py-0.5 rounded-full">

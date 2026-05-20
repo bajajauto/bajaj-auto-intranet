@@ -3,7 +3,7 @@ import ImagePlaceholder from '@/components/shared/ImagePlaceholder'
 
 export default function BusinessUnitCard({ bu, isOpen, onToggle }) {
   return (
-    <div className="rounded-card border border-gray-100 shadow-card overflow-hidden">
+    <div className="site-surface rounded-card border overflow-hidden">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between px-5 py-4 bg-white hover:bg-bg-alt transition-colors focus-ring"

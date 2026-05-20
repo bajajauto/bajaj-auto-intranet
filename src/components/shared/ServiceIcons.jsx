@@ -60,7 +60,9 @@ export function TravelIcon({ size = 24, strokeWidth = 2, className = '' }) {
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" />
+      <g transform="rotate(-28 12 12)">
+        <path d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" />
+      </g>
     </Svg>
   )
 }
@@ -69,11 +71,14 @@ export function LeaveAttendanceIcon({ size = 24, strokeWidth = 2, className = ''
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M9 5h9a2 2 0 0 1 2 2v9m-.184 3.839a2 2 0 0 1 -1.816 1.161h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 1.158 -1.815" />
-      <path d="M16 3v4" />
-      <path d="M8 3v1" />
-      <path d="M4 11h7m4 0h5" />
-      <path d="M3 3l18 18" />
+      <path d="M4 7a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v5.5" />
+      <path d="M4 10h14" />
+      <path d="M8 3v4" />
+      <path d="M14 3v4" />
+      <path d="M4 10v8a2 2 0 0 0 2 2h6.5" />
+      <path d="M8 14h2" />
+      <path d="M15.5 17.5m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+      <path d="M15.5 15.5v2.2l1.7 1" />
     </Svg>
   )
 }
@@ -82,8 +87,10 @@ export function CompensationIcon({ size = 24, strokeWidth = 2, className = '' })
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
-      <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
+      <path d="M7 5h10" />
+      <path d="M7 9h10" />
+      <path d="M9 5c5 0 6 6 -1 6l7 8" />
+      <path d="M8 11h3" />
     </Svg>
   )
 }
@@ -106,9 +113,9 @@ export function BoltLearningIcon({ size = 24, strokeWidth = 2, className = '' })
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" />
-      <path d="M19 16h-12a2 2 0 0 0 -2 2" />
-      <path d="M9 8h6" />
+      <path d="M3 9l9 -4l9 4l-9 4z" />
+      <path d="M7 11v4.5c0 1.4 2.2 2.5 5 2.5s5 -1.1 5 -2.5v-4.5" />
+      <path d="M21 9v5" />
     </Svg>
   )
 }
@@ -127,19 +134,19 @@ export function HolidayCalendarIcon({ size = 24, strokeWidth = 2, className = ''
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <rect x="3" y="4" width="18" height="17" rx="2" />
-      <path d="M3 8h18" />
-      <path d="M7 2.5v4" />
-      <path d="M12 2.5v4" />
-      <path d="M17 2.5v4" />
-      <path d="M5 12.5c1 -.9 2 -.9 3 0c1 -.9 2 -.9 3 0" />
-      <path d="M17.5 11.5c.8 -.7 1.6 -.7 2.2 0" />
-      <path d="M6 18c2.4 -2 6.1 -3 10.5 -1.4" />
-      <path d="M5.5 19c4.5 -.9 8.9 -.9 13 0" />
-      <path d="M12 16c.9 -2.6 1 -5 .3 -7" />
-      <path d="M12.3 10c-1.6 -.6 -3.3 -.4 -4.8 .7c1.9 .1 3.5 .6 4.8 1.5" />
-      <path d="M12.3 10c1.2 -1.4 2.8 -2 4.8 -1.9c-1.4 1.2 -3 1.8 -4.8 1.9" />
-      <path d="M12.3 10c1.7 .1 3 .8 4.2 2c-1.7 -.3 -3 -.2 -4.2 .3" />
+      <path d="M4 6h14a2 2 0 0 1 2 2v4" />
+      <path d="M4 6v15h9" />
+      <path d="M4 10h16" />
+      <path d="M7 3v5" />
+      <path d="M11 3v5" />
+      <path d="M15 3v5" />
+      <path d="M7.5 13.5h1" />
+      <path d="M11.5 13.5h1" />
+      <path d="M7.5 17.5h1" />
+      <path d="M16 16a3.6 3.6 0 0 1 7.2 0" />
+      <path d="M19.6 16v4.4" />
+      <path d="M16.5 20.5h5.2" />
+      <path d="M15.5 22h7.2" />
     </Svg>
   )
 }
@@ -204,12 +211,25 @@ export function MediclaimIcon({ size = 24, strokeWidth = 2, className = '' }) {
   )
 }
 
-export function ParentalLeaveIcon({ size = 24, strokeWidth = 2, className = '' }) {
+export function CsrIcon({ size = 24, strokeWidth = 2, className = '' }) {
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M8 4h-5v5h4v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1 -1v-10h4v-5h-5" />
-      <path d="M8 4a4 2 0 0 1 8 0" />
+      {/* Badge circle at top */}
+      <circle cx="12" cy="3" r="2.5" />
+      {/* Stem */}
+      <path d="M12 5.5v4.5" />
+      {/* Left leaf */}
+      <path d="M12 8c-1 -1.5 -3 -1.5 -4 -0.5" />
+      {/* Right leaf */}
+      <path d="M12 8c1 -1.5 3 -1.5 4 -0.5" />
+      {/* Four fingers (index → pinky, uniform height) */}
+      <path d="M8 12v-2a1 1 0 0 1 2 0v2" />
+      <path d="M10 12v-2a1 1 0 0 1 2 0v2" />
+      <path d="M12 12v-2a1 1 0 0 1 2 0v2" />
+      <path d="M14 12v-2a1 1 0 0 1 2 0v2" />
+      {/* Palm wrapping the fingers */}
+      <path d="M7 12h-1a2 2 0 0 0 -2 2v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-1a2 2 0 0 0 -2 -2h-1" />
     </Svg>
   )
 }

@@ -23,7 +23,7 @@ export function AccordionItem({ id, title, children, openIds, onToggle }) {
   const isOpen = openIds.includes(id)
 
   return (
-    <div className="rounded-card border border-gray-100 shadow-card overflow-hidden">
+    <div className="site-surface rounded-card border overflow-hidden">
       <button
         onClick={() => onToggle(id)}
         className="w-full flex items-center justify-between px-4 py-3 bg-white hover:bg-bg-alt transition-colors focus-ring text-left"

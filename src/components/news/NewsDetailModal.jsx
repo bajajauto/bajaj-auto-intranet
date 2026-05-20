@@ -92,7 +92,7 @@ export default function NewsDetailModal({ article, onClose }) {
 
             <h2
               id="news-modal-title"
-              className="font-serif text-xl sm:text-2xl font-bold text-text-primary leading-snug"
+              className="text-xl sm:text-2xl font-bold text-text-primary leading-snug"
             >
               {article.headline}
             </h2>

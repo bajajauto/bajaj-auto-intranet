@@ -502,7 +502,7 @@ function SatellitePreview({ location }) {
 
 function PlantCard({ location }) {
   return (
-    <article className="rounded-card border border-gray-100 bg-white p-3 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-modal">
+    <article className="site-surface-interactive rounded-card border p-3 transition-all hover:-translate-y-0.5 hover:shadow-modal">
       <SatellitePreview location={location} />
 
       <div className="mt-3">

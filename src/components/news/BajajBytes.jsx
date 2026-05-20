@@ -42,7 +42,7 @@ function CoverArt({ volume }) {
 
 export default function BajajBytes() {
   return (
-    <div className="rounded-card border border-gray-100 bg-white p-4 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+    <div className="site-surface rounded-card border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {VOLUMES.map((volume) => (
           <a
@@ -50,13 +50,13 @@ export default function BajajBytes() {
             href={volume.href}
             target="_blank"
             rel="noreferrer"
-            className="group overflow-hidden rounded-card border border-gray-100 bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-card focus-ring"
+            className="site-surface-interactive group overflow-hidden rounded-card border text-left transition-all hover:-translate-y-1 hover:shadow-card focus-ring"
           >
             <div className="relative h-28 min-h-28 overflow-hidden bg-brand-light">
               <CoverArt volume={volume} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
               <div className="absolute bottom-4 left-4 text-white">
-                <p className="font-serif text-sm font-bold leading-none">Bajaj Bytes</p>
+                <p className="text-sm font-bold leading-none">Bajaj Bytes</p>
                 <p className="mt-1 text-[10px] font-semibold text-white/80">
                   {volume.label.replace('Volume ', 'Vol. ')}
                 </p>
