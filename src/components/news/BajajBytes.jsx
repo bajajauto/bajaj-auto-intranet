@@ -1,128 +1,79 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { ExternalLink } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const VOLUMES = [
   {
     id: 'vol-7',
     label: 'Volume 7',
-    eyebrow: 'Latest edition',
+    month: 'May 2026',
     href: 'https://ting-brochures.netlify.app/bajaj-bytes-vol7-brochure',
-    cover: 'https://ting-brochures.netlify.app/bajaj-bytes-vol7-brochure/files/page/01.jpg',
+    gradient: 'linear-gradient(135deg, #fbbf24 0%, #f97316 30%, #ec4899 62%, #4c1d95 100%)',
+    accent: 'rgba(244, 114, 182, 0.28)',
   },
   {
     id: 'vol-6',
     label: 'Volume 6',
-    eyebrow: 'Previous edition',
+    month: 'April 2026',
     href: 'https://ting-brochures.netlify.app/bajaj-bytes-vol6-brochure',
-    cover: 'https://ting-brochures.netlify.app/bajaj-bytes-vol6-brochure/files/page/1.jpg',
+    gradient: 'linear-gradient(135deg, #0f766e 0%, #115e59 48%, #0f172a 100%)',
+    accent: 'rgba(245, 158, 11, 0.28)',
+  },
+  {
+    id: 'vol-5',
+    label: 'Volume 5',
+    month: 'March 2026',
+    href: 'https://ting-brochures.netlify.app/bajaj-bytes-vol6-brochure',
+    gradient: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1f0b37 100%)',
+    accent: 'rgba(251, 113, 133, 0.28)',
   },
 ]
 
-const INTERVAL_MS = 4500
+function CoverArt({ volume }) {
+  return (
+    <span className="absolute inset-0" style={{ background: volume.gradient }}>
+      <span className="absolute -left-10 top-5 h-36 w-36 rounded-full border border-white/15 transition-transform duration-500 group-hover:scale-110" />
+      <span
+        className="absolute right-6 top-10 h-16 w-16 rounded-full transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-110"
+        style={{ backgroundColor: volume.accent }}
+      />
+      <span className="absolute bottom-0 right-4 h-32 w-32 rotate-45 rounded-[24px] bg-white/10 transition-transform duration-500 group-hover:rotate-[50deg]" />
+    </span>
+  )
+}
 
 export default function BajajBytes() {
-  const [activeIdx, setActiveIdx] = useState(0)
-  const timerRef = useRef(null)
-  const activeVolume = VOLUMES[activeIdx]
-
-  const startTimer = useCallback(() => {
-    window.clearInterval(timerRef.current)
-    timerRef.current = window.setInterval(() => {
-      setActiveIdx((current) => (current + 1) % VOLUMES.length)
-    }, INTERVAL_MS)
-  }, [])
-
-  useEffect(() => {
-    startTimer()
-    return () => window.clearInterval(timerRef.current)
-  }, [startTimer])
-
   return (
-    <div className="h-full overflow-hidden rounded-card border border-gray-100 bg-white p-4 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
-      <div className="flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-          Newsletter catalog
-        </p>
-        <span className="rounded-full bg-brand-light px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-brand-primary">
-          Bajaj Bytes
-        </span>
-      </div>
+    <div className="rounded-card border border-gray-100 bg-white p-4 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {VOLUMES.map((volume) => (
+          <a
+            key={volume.id}
+            href={volume.href}
+            target="_blank"
+            rel="noreferrer"
+            className="group overflow-hidden rounded-card border border-gray-100 bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-card focus-ring"
+          >
+            <div className="relative h-28 min-h-28 overflow-hidden bg-brand-light">
+              <CoverArt volume={volume} />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
+              <div className="absolute bottom-4 left-4 text-white">
+                <p className="font-serif text-sm font-bold leading-none">Bajaj Bytes</p>
+                <p className="mt-1 text-[10px] font-semibold text-white/80">
+                  {volume.label.replace('Volume ', 'Vol. ')}
+                </p>
+              </div>
+            </div>
 
-      <div
-        className="mt-3 flex gap-3"
-        onMouseEnter={() => window.clearInterval(timerRef.current)}
-        onMouseLeave={startTimer}
-      >
-        {/* Featured cover – left panel */}
-        <a
-          href={activeVolume.href}
-          target="_blank"
-          rel="noreferrer"
-          className="group relative aspect-square w-52 flex-shrink-0 overflow-hidden rounded-xl"
-        >
-          <img
-            key={activeVolume.id}
-            src={activeVolume.cover}
-            alt={activeVolume.label}
-            className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-          <span className="absolute left-3 top-3 rounded-full bg-brand-primary px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider text-white shadow-card">
-            {activeVolume.eyebrow}
-          </span>
-          <div className="absolute bottom-0 left-0 right-0 p-3">
-            <p className="text-sm font-bold leading-tight text-white">{activeVolume.label}</p>
-            <p className="mt-1 flex items-center gap-1 text-[10px] text-white/60 transition-colors group-hover:text-white/90">
-              Read now <ExternalLink size={9} />
-            </p>
-          </div>
-        </a>
-
-        {/* Edition list – right panel */}
-        <div className="flex w-[7.5rem] flex-col gap-1.5">
-          <p className="text-[10px] font-medium uppercase tracking-wide text-text-secondary">
-            All editions
-          </p>
-          {VOLUMES.map((volume, index) => (
-            <a
-              key={volume.id}
-              href={volume.href}
-              target="_blank"
-              rel="noreferrer"
-              onMouseEnter={() => setActiveIdx(index)}
-              onFocus={() => setActiveIdx(index)}
-              className={`group flex items-center gap-2 rounded-lg border p-1.5 transition-all duration-200 focus-ring ${
-                index === activeIdx
-                  ? 'border-brand-primary/30 bg-brand-light shadow-sm'
-                  : 'border-transparent hover:border-gray-200 hover:bg-gray-50'
-              }`}
-            >
-              <span className="relative h-12 w-8 flex-shrink-0 overflow-hidden rounded shadow-sm">
-                <img
-                  src={volume.cover}
-                  alt=""
-                  className="h-full w-full object-cover object-center"
-                  loading="lazy"
-                />
+            <div className="p-3">
+              <p className="text-sm font-semibold text-text-primary">{volume.label}</p>
+              <p className="mt-0.5 text-xs text-text-secondary">{volume.month}</p>
+              <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-primary">
+                Read
+                <ArrowRight size={13} />
               </span>
-              <span className="min-w-0 flex-1">
-                <span
-                  className={`block truncate text-[11px] font-semibold leading-tight ${
-                    index === activeIdx ? 'text-brand-primary' : 'text-text-primary'
-                  }`}
-                >
-                  {volume.label}
-                </span>
-                <span className="mt-0.5 block text-[9px] leading-tight text-text-secondary">
-                  {volume.eyebrow}
-                </span>
-              </span>
-            </a>
-          ))}
-        </div>
+            </div>
+          </a>
+        ))}
       </div>
-
-      <span className="sr-only">Selected newsletter: {activeVolume.label}</span>
     </div>
   )
 }

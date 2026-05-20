@@ -86,6 +86,20 @@ export const navGroups = [
     ],
   },
   {
+    id: 'emergency',
+    label: 'Emergency Contacts',
+    icon: 'PhoneCall',
+    hideChildren: true,
+    items: [
+      {
+        id: 'emergency-contacts',
+        label: 'Emergency Contacts',
+        icon: 'PhoneCall',
+        sectionId: 'emergency-contacts',
+      },
+    ],
+  },
+  {
     id: 'support-engagement',
     label: 'Support & Engagement',
     icon: 'MessageSquare',
@@ -98,20 +112,6 @@ export const navGroups = [
         sectionId: 'feedback',
       },
       { id: 'help-faqs', label: 'Help / FAQs', icon: 'HelpCircle', sectionId: 'feedback' },
-    ],
-  },
-  {
-    id: 'emergency',
-    label: 'Emergency Contacts',
-    icon: 'PhoneCall',
-    hideChildren: true,
-    items: [
-      {
-        id: 'emergency-contacts',
-        label: 'Emergency Contacts',
-        icon: 'PhoneCall',
-        sectionId: 'emergency-contacts',
-      },
     ],
   },
 ]

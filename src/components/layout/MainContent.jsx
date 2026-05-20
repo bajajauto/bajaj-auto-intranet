@@ -18,8 +18,8 @@ const SECTION_IDS = [
   'company-news',
   'locations',
   'it-resources',
-  'feedback',
   'emergency-contacts',
+  'feedback',
 ]
 
 export default function MainContent() {
@@ -91,18 +91,18 @@ export default function MainContent() {
             <ITResources />
           </ScrollReveal>
 
-          <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
-            <h2 id="feedback-heading" className="text-lg font-semibold text-brand-primary mb-4">
-              Feedback & Support
-            </h2>
-            <FeedbackSection />
-          </ScrollReveal>
-
           <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
             <h2 id="emergency-heading" className="text-lg font-semibold text-brand-primary mb-4">
               Emergency Contacts
             </h2>
             <EmergencyContacts />
+          </ScrollReveal>
+
+          <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
+            <h2 id="feedback-heading" className="sr-only">
+              Feedback and Support
+            </h2>
+            <FeedbackSection />
           </ScrollReveal>
         </div>
       </main>

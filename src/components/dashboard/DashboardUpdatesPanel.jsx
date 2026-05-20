@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { calendarService } from '@/services/calendarService'
 import { notificationService } from '@/services/notificationService'
 import NotificationCard from '@/components/notifications/NotificationCard'
@@ -40,34 +40,32 @@ function EventCard({ event, index }) {
   const background = EVENT_BACKGROUNDS[index % EVENT_BACKGROUNDS.length]
 
   return (
-    <div className="grid grid-cols-[3.5rem_1fr] items-center gap-4">
-      <div className="text-center">
-        <p className="text-xl font-semibold leading-none text-text-primary">
-          {formatDay(event.date)}
-        </p>
-        <p className="mt-1 text-xs font-medium text-text-secondary">{formatMonth(event.date)}</p>
+    <div className="grid grid-cols-[3.25rem_1fr] items-center gap-3">
+      <div
+        className={`relative h-[52px] w-[52px] overflow-hidden rounded-card text-white shadow-card ${background}`}
+      >
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute -right-5 -top-5 h-12 w-12 rounded-full bg-white/15" />
+        <div className="relative z-10 flex h-full flex-col items-center justify-center">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-white/75">
+            {formatMonth(event.date)}
+          </p>
+          <p className="text-xl font-semibold leading-none">{formatDay(event.date)}</p>
+        </div>
       </div>
 
       <button
         type="button"
-        className={`relative min-h-[96px] overflow-hidden rounded-card px-5 py-4 text-left text-white shadow-card focus-ring transition-all hover:-translate-y-0.5 hover:shadow-modal ${background}`}
+        className="relative min-h-[68px] overflow-hidden rounded-card border border-gray-100 bg-white px-3 py-2.5 text-left shadow-card focus-ring transition-all hover:-translate-y-0.5 hover:border-brand-primary/20 hover:bg-brand-light/50 hover:shadow-modal"
         aria-label={event.label}
       >
-        <div className="absolute inset-0 bg-black/25" />
-        <div className="absolute -right-8 -top-10 h-24 w-24 rounded-full bg-white/15" />
-        <div className="absolute -bottom-10 left-8 h-24 w-24 rounded-full bg-white/10" />
-
-        <div className="relative z-10 pr-7">
-          <p className="line-clamp-1 text-base font-semibold">{event.label}</p>
-          <p className="mt-1.5 text-sm text-white/85">{event.location}</p>
-          <p className="mt-2 text-sm font-medium text-white/95">{event.time}</p>
+        <div className="relative z-10">
+          <p className="line-clamp-2 text-sm font-semibold leading-snug text-text-primary">
+            {event.label}
+          </p>
+          <p className="mt-1 text-xs text-text-secondary">{event.location}</p>
+          <p className="mt-1 text-xs font-semibold text-brand-primary">{event.time}</p>
         </div>
-
-        <MoreVertical
-          size={16}
-          className="absolute right-3 top-3 z-10 text-white/80"
-          aria-hidden="true"
-        />
       </button>
     </div>
   )
@@ -95,30 +93,35 @@ function HolidayCalendar({ holidays }) {
   }
 
   return (
-    <div className="px-4 py-4">
+    <div className="bg-gradient-to-b from-brand-light/70 via-white to-white px-4 py-4">
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={() => changeMonth(-1)}
-          className="p-1.5 rounded-btn text-text-secondary hover:bg-bg-alt hover:text-brand-primary focus-ring"
+          className="rounded-btn bg-white/80 p-1.5 text-brand-primary shadow-sm ring-1 ring-brand-primary/10 transition-colors hover:bg-brand-primary hover:text-white focus-ring"
           aria-label="Previous month"
         >
           <ChevronLeft size={16} />
         </button>
-        <p className="text-sm font-semibold text-text-primary">{formatMonthYear(year, month)}</p>
+        <p className="rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-primary shadow-sm ring-1 ring-brand-primary/10">
+          {formatMonthYear(year, month)}
+        </p>
         <button
           type="button"
           onClick={() => changeMonth(1)}
-          className="p-1.5 rounded-btn text-text-secondary hover:bg-bg-alt hover:text-brand-primary focus-ring"
+          className="rounded-btn bg-white/80 p-1.5 text-brand-primary shadow-sm ring-1 ring-brand-primary/10 transition-colors hover:bg-brand-primary hover:text-white focus-ring"
           aria-label="Next month"
         >
           <ChevronRight size={16} />
         </button>
       </div>
 
-      <div className="mt-4 grid grid-cols-7 gap-1 text-center">
+      <div className="mt-4 grid grid-cols-7 gap-1.5 text-center">
         {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-          <div key={day} className="py-1 text-[10px] font-semibold text-text-secondary">
+          <div
+            key={day}
+            className="rounded-full bg-white/70 py-1 text-[10px] font-semibold text-brand-primary/70"
+          >
             {day}
           </div>
         ))}
@@ -133,19 +136,19 @@ function HolidayCalendar({ holidays }) {
             <button
               key={key}
               type="button"
-              className={`group relative aspect-square rounded-btn text-xs transition-colors focus-ring ${
+              className={`group relative aspect-square rounded-btn text-xs shadow-sm transition-all focus-ring ${
                 holiday
-                  ? 'bg-brand-light text-brand-primary font-semibold hover:bg-brand-primary hover:text-white'
+                  ? 'bg-brand-primary font-semibold text-white ring-1 ring-brand-primary/20 hover:-translate-y-0.5 hover:bg-brand-dark'
                   : isToday
-                    ? 'bg-bg-alt font-semibold text-brand-primary ring-1 ring-brand-primary/30'
-                    : 'text-text-secondary hover:bg-bg-alt'
+                    ? 'bg-white font-semibold text-brand-primary ring-2 ring-brand-primary/40'
+                    : 'bg-white/80 text-text-secondary ring-1 ring-brand-primary/5 hover:-translate-y-0.5 hover:bg-white hover:text-brand-primary hover:ring-brand-primary/20'
               }`}
               aria-label={holiday ? `${day}, ${holiday.label}` : `${day}`}
             >
               {day}
               {holiday && (
                 <>
-                  <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-brand-primary group-hover:bg-white" />
+                  <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-white" />
                   <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-52 -translate-x-1/2 rounded-card border border-brand-primary/10 bg-white p-3 text-left opacity-0 shadow-modal transition-all group-hover:-translate-y-1 group-hover:opacity-100 group-focus-visible:-translate-y-1 group-focus-visible:opacity-100">
                     <span className="block text-xs font-semibold text-brand-primary">
                       {holiday.label}
@@ -218,7 +221,7 @@ export default function DashboardUpdatesPanel() {
 
   return (
     <div className="bg-white rounded-card shadow-card border border-gray-100 overflow-hidden">
-      <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-gray-100">
+      <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-gray-100">
         <h3 className="text-sm font-semibold text-text-primary">
           {activeTab === 'events' ? 'Upcoming Events' : 'Notifications'}
         </h3>
@@ -250,7 +253,7 @@ export default function DashboardUpdatesPanel() {
       </div>
 
       {activeTab === 'events' ? (
-        <div className="space-y-5 px-5 py-5">
+        <div className="space-y-3 px-4 py-4">
           {events.map((event, index) => (
             <EventCard key={`${event.date}-${event.label}`} event={event} index={index} />
           ))}

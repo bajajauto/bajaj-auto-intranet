@@ -36,8 +36,10 @@ export function PoliciesIcon({ size = 24, strokeWidth = 2, className = '' }) {
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 3l7 3.5v4.5c0 5.25 -3.5 9.75 -7 11c-3.5 -1.25 -7 -5.75 -7 -11v-4.5l7 -3.5z" />
-      <path d="M9 12l2 2l4 -4" />
+      <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+      <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+      <path d="M9 12h6" />
+      <path d="M9 16h6" />
     </Svg>
   )
 }
@@ -206,11 +208,8 @@ export function ParentalLeaveIcon({ size = 24, strokeWidth = 2, className = '' }
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <circle cx="6" cy="19" r="2" />
-      <circle cx="17" cy="19" r="2" />
-      <path d="M2 7h4" />
-      <path d="M6 7v1a9 9 0 0 0 9 9h4a1 1 0 0 0 1 -1v-6a1 1 0 0 0 -1 -1h-12" />
-      <path d="M6 11h14" />
+      <path d="M8 4h-5v5h4v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1 -1v-10h4v-5h-5" />
+      <path d="M8 4a4 2 0 0 1 8 0" />
     </Svg>
   )
 }

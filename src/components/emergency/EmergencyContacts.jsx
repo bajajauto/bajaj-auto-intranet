@@ -2,22 +2,22 @@ import { PhoneCall } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import { emergencyContacts } from '@/config/contacts.config'
 
-function ContactCard({ label, phone, icon }) {
+function ContactCard({ label, phone, icon, colorClass }) {
   const Icon = iconMap[icon] ?? iconMap.Phone
 
   return (
     <a
       href={`tel:${phone}`}
       aria-label={`Call ${label}: ${phone}`}
-      className="group flex items-center gap-4 bg-white rounded-lg border border-gray-200 p-4 transition-colors duration-150 hover:border-brand-primary hover:bg-brand-light/40"
+      className={`group flex min-h-[76px] min-w-0 items-center gap-3 rounded-card border border-gray-100 border-l-4 bg-white p-3 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal ${colorClass}`}
     >
-      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand-primary">
-        <Icon size={20} strokeWidth={1.8} />
+      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-bg-alt">
+        <Icon size={18} className="text-text-secondary" />
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-text-secondary mb-0.5">{label}</p>
-        <p className="text-base font-bold text-brand-primary leading-none">{phone}</p>
+        <p className="text-xs font-semibold leading-snug text-text-primary">{label}</p>
+        <p className="mt-0.5 break-words text-xs leading-snug text-brand-primary">{phone}</p>
       </div>
 
       <PhoneCall
