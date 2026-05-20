@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X, Users, TrendingUp, Zap } from 'lucide-react'
 
+const MODAL_TRANSITION_MS = 500
+
 export default function SubsidiaryDetailModal({ subsidiary, onClose }) {
   const [visible, setVisible] = useState(false)
 
@@ -17,7 +19,7 @@ export default function SubsidiaryDetailModal({ subsidiary, onClose }) {
 
   const handleClose = () => {
     setVisible(false)
-    setTimeout(onClose, 400)
+    setTimeout(onClose, MODAL_TRANSITION_MS)
   }
 
   return createPortal(

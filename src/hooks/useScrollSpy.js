@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 
-const ACTIVE_OFFSET_PX = 140
+// 124px sticky header + 10% of viewport height so the section title is
+// comfortably visible before it activates, regardless of screen size
+const HEADER_HEIGHT = 124
+function getThreshold() {
+  return HEADER_HEIGHT + Math.round(window.innerHeight * 0.1)
+}
 
 export function useScrollSpy(sectionIds) {
   const [activeId, setActiveId] = useState(sectionIds[0] ?? null)
@@ -10,6 +15,7 @@ export function useScrollSpy(sectionIds) {
 
     function updateActiveSection() {
       frameId = null
+      const threshold = getThreshold()
 
       const isAtPageEnd =
         window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4
@@ -20,7 +26,7 @@ export function useScrollSpy(sectionIds) {
             const el = document.getElementById(id)
             if (!el) return active
 
-            return el.getBoundingClientRect().top <= ACTIVE_OFFSET_PX ? id : active
+            return el.getBoundingClientRect().top <= threshold ? id : active
           }, sectionIds[0] ?? null)
 
       if (current) {

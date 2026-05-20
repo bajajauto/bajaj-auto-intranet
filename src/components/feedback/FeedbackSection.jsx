@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MessageSquare, ClipboardList } from 'lucide-react'
+import { MessageSquare } from 'lucide-react'
 import FeedbackModal from './FeedbackModal'
 
 const HEADING = 'Help us improve your experience'
@@ -30,11 +30,10 @@ export default function FeedbackSection() {
         }
       `}</style>
 
-      <div className="site-surface rounded-card border p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          {/* Left: text */}
+      <div className="site-surface rounded-card border px-5 py-4 sm:px-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-bold leading-snug mb-1 select-none">
+            <h3 className="text-lg font-bold leading-snug select-none sm:text-xl">
               {HEADING.split('').map((char, i) => (
                 <span
                   key={i}
@@ -48,26 +47,15 @@ export default function FeedbackSection() {
                 </span>
               ))}
             </h3>
-            <p className="text-sm text-brand-primary/70 max-w-sm">
-              Share feedback, report an issue, or raise an IT request.
-            </p>
           </div>
 
-          {/* Right: CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+          <div className="flex flex-shrink-0">
             <button
               onClick={() => openModal('')}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-btn bg-brand-primary text-white text-sm font-semibold shadow-sm hover:bg-brand-dark hover:-translate-y-0.5 focus-ring transition-all duration-200"
+              className="flex items-center justify-center gap-2 rounded-btn border border-brand-primary/20 bg-white/70 px-4 py-2 text-sm font-semibold text-brand-primary shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-primary/35 hover:bg-brand-light focus-ring"
             >
               <MessageSquare size={16} />
               Submit Feedback
-            </button>
-            <button
-              onClick={() => openModal('IT')}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-btn border-2 border-brand-primary text-brand-primary text-sm font-semibold hover:bg-brand-light hover:-translate-y-0.5 focus-ring transition-all duration-200"
-            >
-              <ClipboardList size={16} />
-              Raise Request
             </button>
           </div>
         </div>

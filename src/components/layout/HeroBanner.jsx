@@ -370,8 +370,8 @@ export default function HeroBanner() {
       </div>
 
       {/* Text — floats over the left gradient overlay */}
-      <div className="relative z-10 flex min-h-[180px] flex-col gap-5 p-6 text-white md:p-8 lg:flex-row lg:items-end lg:justify-between">
-        <div className="max-w-sm">
+      <div className="relative z-10 flex min-h-[180px] flex-col gap-5 p-6 text-white md:p-8 lg:flex-row lg:items-stretch lg:justify-between">
+        <div className="max-w-sm lg:self-end">
           <p className="mb-1 text-sm font-medium tracking-wide text-white/60">{moment.greeting}</p>
           <h1 className="mb-1 text-2xl font-bold tracking-tight text-white md:text-3xl">
             {user.name}
@@ -380,9 +380,39 @@ export default function HeroBanner() {
             {user.designation} &middot; {user.department}
           </p>
 
-          <div className="mt-5 max-w-xs rounded-card border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">Bajaj Auto</p>
-            <p className="mt-1 text-xs leading-relaxed text-white/65">{moment.subtitle}</p>
+          <div className="mt-5 max-w-sm rounded-card border border-white/15 bg-white/10 p-4 shadow-modal backdrop-blur-md">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/50">
+                  Sales snapshot
+                </p>
+                <p className="mt-0.5 text-sm font-semibold text-white">Month overview</p>
+              </div>
+              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2 py-1 text-[11px] font-semibold text-emerald-100">
+                <TrendingUp size={12} />
+                +8.4%
+              </span>
+            </div>
+
+            <div className="mt-3 border-t border-white/10" />
+
+            <div className="mt-3 grid grid-cols-2 divide-x divide-white/10">
+              {SALES_SNAPSHOT.map((metric) => {
+                const Icon = metric.icon
+                return (
+                  <div key={metric.id} className="flex flex-col gap-1 px-3 first:pl-0 last:pr-0">
+                    <div className="flex items-center gap-1.5 text-white/50">
+                      <Icon size={12} />
+                      <span className="text-[10px] font-semibold uppercase tracking-wide">
+                        {metric.label}
+                      </span>
+                    </div>
+                    <p className="text-2xl font-bold leading-none text-white">{metric.value}</p>
+                    <p className="text-[10px] text-white/40">{metric.detail}</p>
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -395,37 +425,6 @@ export default function HeroBanner() {
               <CalendarDays size={12}/>
               {today}
             </div>
-          </div>
-        </div>
-
-        <div className="w-full rounded-card border border-white/15 bg-white/10 p-3 shadow-modal backdrop-blur-md sm:max-w-sm lg:w-[20rem]">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
-                Sales snapshot
-              </p>
-              <p className="mt-0.5 text-sm font-semibold text-white">Month overview</p>
-            </div>
-            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2 py-1 text-[11px] font-semibold text-emerald-100">
-              <TrendingUp size={12} />
-              +8.4%
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            {SALES_SNAPSHOT.map((metric) => {
-              const Icon = metric.icon
-              return (
-                <div key={metric.id} className="rounded-btn border border-white/10 bg-white/10 p-3">
-                  <div className="mb-2 flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-medium text-white/65">{metric.label}</span>
-                    <Icon size={14} className="text-sky-100" />
-                  </div>
-                  <p className="text-2xl font-bold leading-none text-white">{metric.value}</p>
-                  <p className="mt-1 text-[10px] font-medium text-white/50">{metric.detail}</p>
-                </div>
-              )
-            })}
           </div>
         </div>
       </div>

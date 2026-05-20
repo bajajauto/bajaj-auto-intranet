@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { iconMap } from '@/components/shared/iconMap'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
@@ -73,6 +73,7 @@ function GroupButton({
   return (
     <button
       onClick={handleClick}
+      data-active={isActive ? 'true' : undefined}
       className={`group relative w-full flex items-center gap-3 rounded-card border-l-4 px-3 py-3 transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
         ${
           isActive
@@ -115,6 +116,25 @@ function GroupButton({
 export default function Sidebar({ activeSection, onForceSection }) {
   const { isExpanded, isMobileOpen, setMobileOpen } = useSidebar()
   const [expandedGroups, setExpandedGroups] = useState({})
+  const desktopRef = useRef(null)
+  const mobileRef = useRef(null)
+
+  useEffect(() => {
+    ;[desktopRef, mobileRef].forEach((ref) => {
+      const sidebar = ref.current
+      if (!sidebar) return
+      const el = sidebar.querySelector('[data-active="true"]')
+      if (!el) return
+      const elTop = el.getBoundingClientRect().top - sidebar.getBoundingClientRect().top + sidebar.scrollTop
+      const elBottom = elTop + el.offsetHeight
+      const pad = 16
+      if (elTop < sidebar.scrollTop + pad) {
+        sidebar.scrollTo({ top: elTop - pad, behavior: 'smooth' })
+      } else if (elBottom > sidebar.scrollTop + sidebar.clientHeight - pad) {
+        sidebar.scrollTo({ top: elBottom - sidebar.clientHeight + pad, behavior: 'smooth' })
+      }
+    })
+  }, [activeSection])
 
   function handleNavigate(sectionId) {
     onForceSection?.(sectionId) // highlight immediately; don't wait for IntersectionObserver
@@ -140,6 +160,7 @@ export default function Sidebar({ activeSection, onForceSection }) {
       )}
 
       <aside
+        ref={desktopRef}
         className={`
           sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
           transition-all duration-200 ease-in-out flex-shrink-0
@@ -158,6 +179,7 @@ export default function Sidebar({ activeSection, onForceSection }) {
       </aside>
 
       <aside
+        ref={mobileRef}
         className={`
           fixed top-0 bottom-0 left-0 z-50 w-64 bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
           overflow-y-auto transition-transform duration-200 ease-in-out

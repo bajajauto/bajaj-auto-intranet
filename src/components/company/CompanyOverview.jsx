@@ -55,51 +55,6 @@ const SUBSIDIARIES = [
     ],
   },
   {
-    id: 'bacl',
-    code: 'BACL',
-    fullName: 'Bajaj Auto Credit Limited',
-    employees: 2800,
-    founded: '1987',
-    description:
-      'Bajaj Auto Credit Limited provides specialized financial services and credit solutions. BACL facilitates vehicle purchases and enables financial access for Bajaj customers, supporting rapid growth and customer satisfaction.',
-    segments: [
-      {
-        id: 'auto-finance',
-        name: 'Auto Finance',
-        icon: Banknote,
-        focus: 'Vehicle purchase financing',
-        highlights: ['Retail Finance', 'Fleet Finance', 'Quick Processing'],
-      },
-      {
-        id: 'credit-products',
-        name: 'Credit Products',
-        icon: TrendingUp,
-        focus: 'Diverse credit solutions',
-        highlights: ['Personal Loans', 'Business Credit', 'Flexible Terms'],
-      },
-      {
-        id: 'digital-banking',
-        name: 'Digital Solutions',
-        icon: Smartphone,
-        focus: 'Online and mobile banking',
-        highlights: ['Mobile App', 'Digital Processing', 'E-Services'],
-      },
-      {
-        id: 'risk-management',
-        name: 'Risk & Collections',
-        icon: ShieldCheck,
-        focus: 'Credit risk management',
-        highlights: ['Portfolio Management', 'Analytics', 'Compliance'],
-      },
-    ],
-    keyFocus: [
-      'Increase credit penetration across customer base',
-      'Digital-first financial services delivery',
-      'Competitive and transparent pricing',
-      'Strong risk management and compliance',
-    ],
-  },
-  {
     id: 'batl',
     code: 'BATL',
     fullName: 'Bajaj Auto Technology Limited',
@@ -142,6 +97,51 @@ const SUBSIDIARIES = [
       'Develop innovative technology solutions',
       'Build scalable cloud-based platforms',
       'Foster innovation culture and tech talent',
+    ],
+  },
+  {
+    id: 'bacl',
+    code: 'BACL',
+    fullName: 'Bajaj Auto Credit Limited',
+    employees: 2800,
+    founded: '1987',
+    description:
+      'Bajaj Auto Credit Limited provides specialized financial services and credit solutions. BACL facilitates vehicle purchases and enables financial access for Bajaj customers, supporting rapid growth and customer satisfaction.',
+    segments: [
+      {
+        id: 'auto-finance',
+        name: 'Auto Finance',
+        icon: Banknote,
+        focus: 'Vehicle purchase financing',
+        highlights: ['Retail Finance', 'Fleet Finance', 'Quick Processing'],
+      },
+      {
+        id: 'credit-products',
+        name: 'Credit Products',
+        icon: TrendingUp,
+        focus: 'Diverse credit solutions',
+        highlights: ['Personal Loans', 'Business Credit', 'Flexible Terms'],
+      },
+      {
+        id: 'digital-banking',
+        name: 'Digital Solutions',
+        icon: Smartphone,
+        focus: 'Online and mobile banking',
+        highlights: ['Mobile App', 'Digital Processing', 'E-Services'],
+      },
+      {
+        id: 'risk-management',
+        name: 'Risk & Collections',
+        icon: ShieldCheck,
+        focus: 'Credit risk management',
+        highlights: ['Portfolio Management', 'Analytics', 'Compliance'],
+      },
+    ],
+    keyFocus: [
+      'Increase credit penetration across customer base',
+      'Digital-first financial services delivery',
+      'Competitive and transparent pricing',
+      'Strong risk management and compliance',
     ],
   },
   {

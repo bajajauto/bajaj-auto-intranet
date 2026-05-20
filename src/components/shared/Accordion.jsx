@@ -36,10 +36,12 @@ export function AccordionItem({ id, title, children, openIds, onToggle }) {
         />
       </button>
       <div
-        className={`overflow-hidden transition-all duration-accordion ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
+        className={`grid transition-[grid-template-rows] duration-accordion ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
-        <div className="px-4 pb-4 pt-2 bg-white border-t border-gray-50 text-sm text-text-secondary">
-          {children}
+        <div className="overflow-hidden min-h-0">
+          <div className="px-4 pb-4 pt-2 bg-white border-t border-gray-50 text-sm text-text-secondary">
+            {children}
+          </div>
         </div>
       </div>
     </div>

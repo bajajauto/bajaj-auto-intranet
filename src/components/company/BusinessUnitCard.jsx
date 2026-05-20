@@ -1,7 +1,25 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import ImagePlaceholder from '@/components/shared/ImagePlaceholder'
 
 export default function BusinessUnitCard({ bu, isOpen, onToggle }) {
+  const contentRef = useRef(null)
+  const [contentHeight, setContentHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    if (!contentRef.current) return undefined
+
+    const updateHeight = () => {
+      setContentHeight(contentRef.current.scrollHeight)
+    }
+
+    updateHeight()
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(contentRef.current)
+
+    return () => observer.disconnect()
+  }, [bu])
+
   return (
     <div className="site-surface rounded-card border overflow-hidden">
       <button
@@ -17,9 +35,12 @@ export default function BusinessUnitCard({ bu, isOpen, onToggle }) {
       </button>
 
       <div
-        className={`overflow-hidden transition-all duration-accordion ease-in-out ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
+        className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
+          isOpen ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{ maxHeight: isOpen ? `${contentHeight}px` : '0px' }}
       >
-        <div className="px-5 pb-5 pt-3 bg-white border-t border-gray-50">
+        <div ref={contentRef} className="px-5 pb-5 pt-3 bg-white border-t border-gray-50">
           <div className="flex flex-col sm:flex-row gap-5">
             <div className="flex-shrink-0">
               <ImagePlaceholder width={80} height={80} label={bu.leader} className="rounded-full" />

@@ -14,6 +14,7 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 
 const SECTION_IDS = [
   'self-service',
+  'bajaj-bytes',
   'company-overview',
   'company-news',
   'locations',
@@ -99,8 +100,8 @@ export default function MainContent() {
           </ScrollReveal>
 
           <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
-            <h2 id="feedback-heading" className="sr-only">
-              Feedback and Support
+            <h2 id="feedback-heading" className="text-lg font-semibold text-brand-primary mb-4">
+              Feedback & Support
             </h2>
             <FeedbackSection />
           </ScrollReveal>
