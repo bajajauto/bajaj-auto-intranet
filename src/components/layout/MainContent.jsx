@@ -99,10 +99,7 @@ export default function MainContent() {
             <EmergencyContacts />
           </ScrollReveal>
 
-          <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
-            <h2 id="feedback-heading" className="text-lg font-semibold text-brand-primary mb-4">
-              Feedback & Support
-            </h2>
+          <ScrollReveal id="feedback">
             <FeedbackSection />
           </ScrollReveal>
         </div>
