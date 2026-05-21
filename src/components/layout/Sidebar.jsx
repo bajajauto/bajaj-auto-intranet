@@ -19,6 +19,7 @@ function NavItem({ item, isExpanded, isActive, onNavigate }) {
   return (
     <button
       onClick={() => onNavigate(item.sectionId)}
+      data-active={isActive ? 'true' : undefined}
       className={`group relative w-full flex items-center gap-3 rounded-btn border-l-4 px-3 py-2 text-sm transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
         ${
           isActive
@@ -145,27 +146,27 @@ export default function Sidebar({ activeSection, onForceSection }) {
   }
 
   function toggleGroup(groupId) {
-    setExpandedGroups((prev) => ({
-      ...prev,
-      [groupId]: !prev[groupId],
-    }))
+    setExpandedGroups((prev) => {
+      const isOpen = prev[groupId]
+      return isOpen ? { ...prev, [groupId]: false } : { [groupId]: true }
+    })
   }
 
   return (
     <>
-      {isMobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
-          onClick={() => setMobileOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className={`fixed inset-0 z-40 bg-black/40 md:hidden transition-opacity duration-[350ms] ease-out ${
+          isMobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
 
       <aside
         ref={desktopRef}
         className={`
-          sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
-          transition-all duration-200 ease-in-out flex-shrink-0
+          sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto overflow-x-hidden bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
+          transition-[width] duration-300 ease-in-out flex-shrink-0
           ${isExpanded ? 'w-72' : 'w-16'}
           hidden md:flex flex-col
         `}
@@ -183,8 +184,8 @@ export default function Sidebar({ activeSection, onForceSection }) {
       <aside
         ref={mobileRef}
         className={`
-          fixed top-0 bottom-0 left-0 z-50 w-64 bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
-          overflow-y-auto transition-transform duration-200 ease-in-out
+          fixed top-0 bottom-0 left-0 z-50 w-64 bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10 shadow-2xl
+          overflow-y-auto overflow-x-hidden transform-gpu transition-transform duration-[350ms] ease-out
           md:hidden flex flex-col pt-[116px]
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
