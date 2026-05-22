@@ -215,21 +215,9 @@ export function CsrIcon({ size = 24, strokeWidth = 2, className = '' }) {
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      {/* Badge circle at top */}
-      <circle cx="12" cy="3" r="2.5" />
-      {/* Stem */}
-      <path d="M12 5.5v4.5" />
-      {/* Left leaf */}
-      <path d="M12 8c-1 -1.5 -3 -1.5 -4 -0.5" />
-      {/* Right leaf */}
-      <path d="M12 8c1 -1.5 3 -1.5 4 -0.5" />
-      {/* Four fingers (index → pinky, uniform height) */}
-      <path d="M8 12v-2a1 1 0 0 1 2 0v2" />
-      <path d="M10 12v-2a1 1 0 0 1 2 0v2" />
-      <path d="M12 12v-2a1 1 0 0 1 2 0v2" />
-      <path d="M14 12v-2a1 1 0 0 1 2 0v2" />
-      {/* Palm wrapping the fingers */}
-      <path d="M7 12h-1a2 2 0 0 0 -2 2v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-1a2 2 0 0 0 -2 -2h-1" />
+      <path d="M12 21 L12 7" />
+      <path d="M12 16 C10 16 7 15 7 12 C8 12 12 13 12 16 Z" />
+      <path d="M12 11 C14 11 17 10 17 7 C16 7 12 8 12 11 Z" />
     </Svg>
   )
 }
