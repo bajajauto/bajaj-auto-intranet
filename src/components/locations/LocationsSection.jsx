@@ -174,7 +174,7 @@ function GlobePresence() {
 
       const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(35, mount.clientWidth / mount.clientHeight, 0.1, 100)
-      camera.position.set(0, 0, 5.4)
+      camera.position.set(0, 0, 5.45)
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -202,6 +202,7 @@ function GlobePresence() {
       }
 
       const globeGroup = new THREE.Group()
+      globeGroup.position.x = 0.95
       globeGroup.rotation.y = -0.75
       const baseRotationX = THREE.MathUtils.degToRad(-8)
       globeGroup.rotation.x = baseRotationX
@@ -228,6 +229,7 @@ function GlobePresence() {
         depthWrite: false,
       })
       const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
+      atmosphere.position.x = 0.95
       scene.add(atmosphere)
 
       const starGeometry = new THREE.BufferGeometry()
@@ -347,62 +349,52 @@ function GlobePresence() {
   }, [])
 
   return (
-    <div className="relative min-h-[560px] overflow-hidden rounded-card border border-white/10 bg-[#061f48]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(96,165,250,0.16),transparent_55%),linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:100%_100%,48px_48px,48px_48px]" />
+    <div className="relative min-h-[460px] overflow-hidden rounded-card border border-brand-primary/10 bg-gradient-to-br from-brand-light/80 via-white to-sky-50 shadow-card">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.14),transparent_55%)]" />
       <div ref={mountRef} className="absolute inset-0" aria-hidden="true" />
 
       {/* Header overlay */}
-      <div className="pointer-events-none absolute left-6 top-6 z-20">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-medium text-white/80 backdrop-blur-sm">
+      <div className="pointer-events-none absolute left-5 top-5 z-20">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-[11px] font-medium text-brand-primary">
           <Globe2 size={12} />
           Global Presence
         </div>
-        <p className="mt-3 text-5xl font-bold leading-none tracking-tight text-white">
-          {MARKET_COUNT}
-        </p>
-        <p className="mt-1 text-sm text-white/50">Countries worldwide</p>
-        <div className="mt-4 inline-flex max-w-[15rem] items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
-          <span className="h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.8)]" />
-          {activeCountry === 'India' ? 'India - HQ market' : activeCountry}
-        </div>
       </div>
 
-      <div className="absolute right-5 top-5 z-20 hidden w-72 rounded-card border border-white/10 bg-black/25 p-3 text-white shadow-modal backdrop-blur-md lg:block">
-        <div className="mb-3 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Markets</p>
-            <p className="text-sm font-semibold text-white">Country presence</p>
-          </div>
-          <span className="rounded-full bg-white/10 px-2 py-1 text-[11px] font-semibold text-white/70">
-            {MARKET_COUNT}
-          </span>
+      <div className="absolute left-5 top-16 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
+        <div className="mb-4 rounded-card border border-white/10 bg-white/10 px-3 py-3">
+          <p className="text-4xl font-bold leading-none tracking-tight">{MARKET_COUNT}</p>
+          <p className="mt-1 text-sm text-white/65">Countries worldwide</p>
         </div>
-        <div className="grid max-h-[392px] grid-cols-2 gap-1.5 overflow-y-auto pr-1 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/35">
-          {BAJAJ_COUNTRIES.map((country) => {
-            const isActive = activeCountry === country.name
-            return (
-              <button
-                key={country.name}
-                type="button"
-                className={`min-w-0 rounded-btn border px-2.5 py-2 text-left text-[11px] font-medium transition-all focus-ring ${
-                  isActive
-                    ? 'border-white/50 bg-white text-brand-dark shadow-[0_0_18px_rgba(255,255,255,0.22)]'
-                    : 'border-white/10 bg-white/5 text-white/70 hover:border-white/30 hover:bg-white/15 hover:text-white'
-                }`}
-                onMouseEnter={() => setActiveCountry(country.name)}
-                onMouseLeave={() => {
-                  if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
-                }}
-                onFocus={() => setActiveCountry(country.name)}
-                onBlur={() => {
-                  if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
-                }}
-                onClick={() => flyToCountry(country)}
-              >
-                <span className="block truncate">{country.name}</span>
-              </button>
-            )
-          })}
+
+        <div className="rounded-card border border-white/10 bg-white/5 p-2">
+          <div className="grid max-h-[230px] grid-cols-2 gap-1.5 overflow-y-auto pr-1 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/35">
+            {BAJAJ_COUNTRIES.map((country) => {
+              const isActive = activeCountry === country.name
+              return (
+                <button
+                  key={country.name}
+                  type="button"
+                  className={`min-w-0 rounded-btn border px-2.5 py-2 text-left text-[11px] font-medium transition-all focus-ring ${
+                    isActive
+                      ? 'border-white/50 bg-white text-brand-dark shadow-[0_0_18px_rgba(255,255,255,0.22)]'
+                      : 'border-white/10 bg-white/5 text-white/70 hover:border-white/30 hover:bg-white/15 hover:text-white'
+                  }`}
+                  onMouseEnter={() => setActiveCountry(country.name)}
+                  onMouseLeave={() => {
+                    if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
+                  }}
+                  onFocus={() => setActiveCountry(country.name)}
+                  onBlur={() => {
+                    if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
+                  }}
+                  onClick={() => flyToCountry(country)}
+                >
+                  <span className="block truncate">{country.name}</span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
@@ -413,8 +405,8 @@ function GlobePresence() {
             type="button"
             className={`flex-shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-all focus-ring ${
               activeCountry === country.name
-                ? 'border-white/60 bg-white text-brand-dark'
-                : 'border-white/10 bg-black/25 text-white/70 backdrop-blur-sm'
+                ? 'border-brand-primary bg-brand-primary text-white'
+                : 'border-brand-primary/10 bg-white/90 text-brand-primary backdrop-blur-sm'
             }`}
             onMouseEnter={() => setActiveCountry(country.name)}
             onMouseLeave={() => {
@@ -429,18 +421,6 @@ function GlobePresence() {
             {country.name}
           </button>
         ))}
-      </div>
-
-      {/* Legend */}
-      <div className="pointer-events-none absolute bottom-6 left-6 z-20 hidden items-center gap-2 lg:flex">
-        <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-[11px] text-white/55 backdrop-blur-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-sky-300/80" />
-          Export market
-        </div>
-        <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-[11px] text-white/55 backdrop-blur-sm">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
-          India HQ
-        </div>
       </div>
 
       {/* Country marker overlays */}
@@ -465,16 +445,16 @@ function GlobePresence() {
             {country.primary ? (
               <>
                 <span className="relative flex h-4 w-4 items-center justify-center rounded-full">
-                  <span className={`absolute inset-0 rounded-full bg-white/50 ${isActive ? 'animate-ping' : ''}`} />
+                  <span className={`absolute inset-0 rounded-full bg-brand-primary/40 ${isActive ? 'animate-ping' : ''}`} />
                   <span
-                    className={`relative rounded-full bg-white transition-all duration-200 ${
+                    className={`relative rounded-full bg-brand-primary transition-all duration-200 ${
                       isActive
-                        ? 'h-5 w-5 shadow-[0_0_20px_rgba(255,255,255,0.95)]'
-                        : 'h-4 w-4 shadow-[0_0_12px_rgba(255,255,255,0.75)]'
+                        ? 'h-5 w-5 shadow-[0_0_20px_rgba(37,99,235,0.65)]'
+                        : 'h-4 w-4 shadow-[0_0_12px_rgba(37,99,235,0.45)]'
                     }`}
                   />
                 </span>
-                <span className="pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-white px-2.5 py-1 text-[11px] font-bold text-brand-dark shadow-md">
+                <span className="pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-brand-primary px-2.5 py-1 text-[11px] font-bold text-white shadow-md">
                   India - HQ
                 </span>
               </>
@@ -483,15 +463,15 @@ function GlobePresence() {
                 <span
                   className={`block rounded-full ring-white/15 transition-all duration-200 ${
                     isActive
-                      ? 'h-4 w-4 scale-125 bg-white ring-2 shadow-[0_0_16px_rgba(255,255,255,0.9)]'
-                      : 'h-2 w-2 bg-sky-300/70 ring-1 group-hover:scale-[1.9] group-hover:bg-white group-hover:ring-2 group-hover:ring-white/50 group-hover:shadow-[0_0_7px_rgba(255,255,255,0.55)]'
+                      ? 'h-4 w-4 scale-125 bg-brand-primary ring-2 shadow-[0_0_16px_rgba(37,99,235,0.6)]'
+                      : 'h-2 w-2 bg-sky-500/80 ring-1 group-hover:scale-[1.9] group-hover:bg-brand-primary group-hover:ring-2 group-hover:ring-brand-primary/30 group-hover:shadow-[0_0_7px_rgba(37,99,235,0.5)]'
                   }`}
                 />
                 <span
                   className={`pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-0.5 text-[10px] font-semibold text-brand-dark shadow-sm transition-all duration-150 ${
                     isActive
-                      ? 'bg-white opacity-100 shadow-[0_0_14px_rgba(255,255,255,0.45)]'
-                      : 'bg-white/80 opacity-90 group-hover:bg-white group-hover:opacity-100'
+                      ? 'bg-brand-primary text-white opacity-100 shadow-[0_0_14px_rgba(37,99,235,0.35)]'
+                      : 'bg-white/90 opacity-90 ring-1 ring-brand-primary/10 group-hover:bg-white group-hover:opacity-100'
                   }`}
                 >
                   {country.name}
@@ -583,27 +563,37 @@ function GroupTile({ group, onEnter }) {
     <button
       type="button"
       onClick={onEnter}
-      className="group site-surface-interactive relative w-full rounded-card border p-5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring"
+      className="group site-surface-interactive relative w-full rounded-card border p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring"
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white">
-          <Icon size={22} />
+        <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white">
+          <Icon size={21} />
         </span>
         <ChevronRight
           size={16}
           className="mt-0.5 flex-shrink-0 text-text-secondary transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
         />
       </div>
-      <div className="mt-3">
+      <div className="mt-2.5">
         <p className="text-sm font-semibold text-text-primary">{group.label}</p>
         <p className="mt-0.5 text-xs text-text-secondary">{group.description}</p>
       </div>
-      <div className="mt-3">
+      <div className="mt-2.5">
         <span className="rounded-full bg-brand-light px-2.5 py-1 text-[11px] font-semibold text-brand-primary">
           {group.locations.length} {group.locations.length === 1 ? 'location' : 'locations'}
         </span>
       </div>
     </button>
+  )
+}
+
+function LocationGroupRail({ onEnterGroup }) {
+  return (
+    <div className="hidden h-[460px] flex-col justify-between lg:flex">
+      {LOCATION_GROUPS.map((group) => (
+        <GroupTile key={group.id} group={group} onEnter={() => onEnterGroup(group.id)} />
+      ))}
+    </div>
   )
 }
 
@@ -625,7 +615,10 @@ export default function LocationsSection({ title }) {
 
   return (
     <div className="space-y-5">
-      <GlobePresence />
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
+        <GlobePresence />
+        {!enteredGroup && <LocationGroupRail onEnterGroup={handleEnter} />}
+      </div>
       {title && (
         <div className="site-surface rounded-card border px-4 py-3">
           <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
@@ -633,7 +626,7 @@ export default function LocationsSection({ title }) {
       )}
 
       {!enteredGroup ? (
-        <div key={viewKey} className="animate-in slide-in-from-left grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div key={viewKey} className="animate-in slide-in-from-left grid grid-cols-1 gap-4 sm:grid-cols-3 lg:hidden">
           {LOCATION_GROUPS.map((g) => (
             <GroupTile key={g.id} group={g} onEnter={() => handleEnter(g.id)} />
           ))}
