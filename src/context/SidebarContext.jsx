@@ -5,6 +5,7 @@ const SidebarContext = createContext(null)
 export function SidebarProvider({ children }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isMobileOpen, setMobileOpen] = useState(false)
+  const [isFooterVisible, setFooterVisible] = useState(false)
 
   function collapseSidebar() {
     setIsExpanded(false)
@@ -19,7 +20,7 @@ export function SidebarProvider({ children }) {
   }
 
   return (
-    <SidebarContext.Provider value={{ isExpanded, toggleSidebar, collapseSidebar, expandSidebar, isMobileOpen, setMobileOpen }}>
+    <SidebarContext.Provider value={{ isExpanded, toggleSidebar, collapseSidebar, expandSidebar, isMobileOpen, setMobileOpen, isFooterVisible, setFooterVisible }}>
       {children}
     </SidebarContext.Provider>
   )

@@ -20,7 +20,8 @@ function NavItem({ item, isExpanded, isActive, onNavigate }) {
     <button
       onClick={() => onNavigate(item.sectionId)}
       data-active={isActive ? 'true' : undefined}
-      className={`group relative w-full flex items-center gap-3 rounded-btn border-l-4 px-3 py-2 text-sm transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
+      className={`group relative w-full flex items-center rounded-btn border-l-4 py-2 text-sm transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
+        ${isExpanded ? 'gap-3 px-3' : 'justify-center px-0'}
         ${
           isActive
             ? 'border-brand-primary bg-white text-brand-primary font-medium shadow-sm'
@@ -75,7 +76,8 @@ function GroupButton({
     <button
       onClick={handleClick}
       data-active={isActive ? 'true' : undefined}
-      className={`group relative w-full flex items-center gap-3 rounded-card border-l-4 px-3 py-3 transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
+      className={`group relative w-full flex items-center rounded-card border-l-4 py-3 transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
+        ${isExpanded ? 'gap-3 px-3' : 'justify-center px-0'}
         ${
           isActive
             ? 'border-brand-primary bg-white text-brand-primary shadow-sm'
@@ -165,7 +167,7 @@ export default function Sidebar({ activeSection, onForceSection }) {
       <aside
         ref={desktopRef}
         className={`
-          sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto overflow-x-hidden bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
+          sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto overflow-x-hidden scrollbar-none bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
           transition-[width] duration-300 ease-in-out flex-shrink-0
           ${isExpanded ? 'w-72' : 'w-16'}
           hidden md:flex flex-col
@@ -179,13 +181,14 @@ export default function Sidebar({ activeSection, onForceSection }) {
           expandedGroups={expandedGroups}
           onToggleGroup={toggleGroup}
         />
+        <div className="pointer-events-none sticky bottom-0 h-16 flex-shrink-0 bg-gradient-to-t from-white to-transparent" />
       </aside>
 
       <aside
         ref={mobileRef}
         className={`
           fixed top-0 bottom-0 left-0 z-50 w-64 bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10 shadow-2xl
-          overflow-y-auto overflow-x-hidden transform-gpu transition-transform duration-[350ms] ease-out
+          overflow-y-auto overflow-x-hidden scrollbar-none transform-gpu transition-transform duration-[350ms] ease-out
           md:hidden flex flex-col pt-[116px]
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         `}

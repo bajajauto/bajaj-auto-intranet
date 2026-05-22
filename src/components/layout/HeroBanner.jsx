@@ -296,11 +296,8 @@ function AutoRickshawScene({ timeOfDay }) {
         ))}
 
         {/* ── AUTO RICKSHAW (driving left) ── */}
-        {/* Outer group: horizontal drive animation */}
         <g style={{ animation: 'ars-drive 11s linear infinite' }}>
-          {/* Inner group: vertical bounce */}
           <g style={{ animation: 'ars-bounce-y 0.65s ease-in-out infinite' }}>
-            {/* Auto positioned: wheel bottoms touch field at y=155 */}
             <g transform="translate(0, 155) scale(1 0.82)">
               <AutoBody/>
             </g>
@@ -383,9 +380,6 @@ export default function HeroBanner() {
           <div className="mt-3 max-w-sm rounded-card border border-white/15 bg-white/10 px-3.5 py-3 shadow-modal backdrop-blur-md">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/50">
-                  Sales snapshot
-                </p>
                 <p className="mt-0.5 text-sm font-semibold text-white">Month overview</p>
               </div>
               <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2 py-1 text-[11px] font-semibold text-emerald-100">
