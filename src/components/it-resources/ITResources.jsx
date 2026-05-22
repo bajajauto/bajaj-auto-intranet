@@ -95,10 +95,13 @@ function ResourceLink({ label, sublabel, icon: Icon, href, iconBg, iconColor, ho
   )
 }
 
-export default function ITResources() {
+export default function ITResources({ title }) {
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
       <div className="site-surface rounded-card border p-5">
+        {title && (
+          <h2 className="mb-4 text-lg font-semibold text-brand-primary">{title}</h2>
+        )}
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-primary/60">
           Support Desk
         </p>

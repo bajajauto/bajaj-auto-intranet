@@ -216,15 +216,20 @@ export default function DashboardUpdatesPanel() {
   const [calendarTab, setCalendarTab] = useState('calendar')
   const calendarItems = calendarService.getEvents()
   const events = calendarItems.filter((item) => item.type === 'event')
+  const meetings = calendarItems.filter((item) => item.type === 'meeting')
   const holidays = calendarItems.filter((item) => item.type === 'holiday')
   const notifications = notificationService.getAll()
+  const title =
+    activeTab === 'events'
+      ? 'Upcoming Events'
+      : activeTab === 'meetings'
+        ? 'Meetings'
+        : 'Notifications'
 
   return (
     <div className="site-surface rounded-card border overflow-hidden">
       <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-gray-100">
-        <h3 className="text-sm font-semibold text-text-primary">
-          {activeTab === 'events' ? 'Upcoming Events' : 'Notifications'}
-        </h3>
+        <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
 
         <div className="flex flex-shrink-0 rounded-btn bg-bg-alt p-0.5">
           <button
@@ -237,6 +242,17 @@ export default function DashboardUpdatesPanel() {
             }`}
           >
             Events
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('meetings')}
+            className={`px-3 py-1 text-xs font-medium rounded-btn transition-colors focus-ring ${
+              activeTab === 'meetings'
+                ? 'bg-white text-brand-primary shadow-card'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            Meetings
           </button>
           <button
             type="button"
@@ -256,6 +272,12 @@ export default function DashboardUpdatesPanel() {
         <div className="space-y-3 px-4 py-4">
           {events.map((event, index) => (
             <EventCard key={`${event.date}-${event.label}`} event={event} index={index} />
+          ))}
+        </div>
+      ) : activeTab === 'meetings' ? (
+        <div className="space-y-3 px-4 py-4">
+          {meetings.map((meeting, index) => (
+            <EventCard key={`${meeting.date}-${meeting.label}`} event={meeting} index={index} />
           ))}
         </div>
       ) : (

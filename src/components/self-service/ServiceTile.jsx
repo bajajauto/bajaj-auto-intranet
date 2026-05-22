@@ -12,7 +12,6 @@ const tileStyles = {
   // Slate — admin / docs
   policies:           'from-[#3B4E6A] to-[#1C2D42]',
   documents:          'from-[#334460] to-[#192838]',
-  'actions-pending':  'from-[#3B4E6A] to-[#1C2D42]',
   'form-16':          'from-[#334460] to-[#192838]',
 
   // Teal — time / travel

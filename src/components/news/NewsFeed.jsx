@@ -4,7 +4,7 @@ import { newsService } from '@/services/newsService'
 import NewsCard from './NewsCard'
 import NewsDetailModal from './NewsDetailModal'
 
-export default function NewsFeed() {
+export default function NewsFeed({ title }) {
   const articles = newsService.getAll()
   const carouselRef = useRef(null)
   const [selectedArticle, setSelectedArticle] = useState(null)
@@ -20,6 +20,11 @@ export default function NewsFeed() {
   return (
     <>
       <div className="site-surface relative rounded-card border overflow-hidden">
+        {title && (
+          <div className="px-5 pt-5 sm:px-14">
+            <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
+          </div>
+        )}
         <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white via-white/80 to-transparent" />
         <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white via-white/80 to-transparent" />
 

@@ -8,7 +8,7 @@ import NotificationsPanel from '@/components/notifications/NotificationsPanel'
 import logoImage from '@/assets/bajaj-mark-transparent.png'
 
 export default function Header() {
-  const { toggleSidebar, isMobileOpen, setMobileOpen } = useSidebar()
+  const { isMobileOpen, setMobileOpen } = useSidebar()
   const user = useUser()
   const isMobile = useMediaQuery('(max-width: 767px)')
 
@@ -28,11 +28,7 @@ export default function Header() {
   }
 
   function handleMenuClick() {
-    if (isMobile) {
-      setMobileOpen(!isMobileOpen)
-    } else {
-      toggleSidebar()
-    }
+    setMobileOpen(!isMobileOpen)
   }
 
   function handleBellClick() {
@@ -67,14 +63,15 @@ export default function Header() {
   return (
     <header className="fixed top-9 left-0 right-0 z-40 h-20 bg-brand-dark grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4 shadow-modal">
       <div className="flex items-center gap-3 min-w-0">
-        {/* Hamburger */}
-        <button
-          onClick={handleMenuClick}
-          className="p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
-          aria-label="Toggle sidebar"
-        >
-          <Menu size={20} />
-        </button>
+        {isMobile && (
+          <button
+            onClick={handleMenuClick}
+            className="p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+        )}
 
         {/* Logo */}
         <div className="flex items-center gap-2 flex-shrink-0 select-none">

@@ -7,6 +7,7 @@ export default function TopBanner() {
   const [isSosOpen, setIsSosOpen] = useState(false)
 
   const links = [
+    { label: 'About Us', href: '#' },
     { label: 'Integrity Matters – Ethics Helpline', href: '#' },
     { label: 'POSH Information', href: '#' },
     { label: 'Vision & Mission', href: '#' },

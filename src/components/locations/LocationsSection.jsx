@@ -607,7 +607,7 @@ function GroupTile({ group, onEnter }) {
   )
 }
 
-export default function LocationsSection() {
+export default function LocationsSection({ title }) {
   const [enteredGroup, setEnteredGroup] = useState(null)
   const [viewKey, setViewKey] = useState(0)
 
@@ -626,6 +626,11 @@ export default function LocationsSection() {
   return (
     <div className="space-y-5">
       <GlobePresence />
+      {title && (
+        <div className="site-surface rounded-card border px-4 py-3">
+          <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
+        </div>
+      )}
 
       {!enteredGroup ? (
         <div key={viewKey} className="animate-in slide-in-from-left grid grid-cols-1 gap-4 sm:grid-cols-3">

@@ -4,7 +4,7 @@ import FeedbackModal from './FeedbackModal'
 
 const HEADING = 'Help us improve your experience'
 
-export default function FeedbackSection() {
+export default function FeedbackSection({ title }) {
   const [modalOpen, setModalOpen] = useState(false)
   const [defaultCategory, setDefaultCategory] = useState('')
 
@@ -30,6 +30,10 @@ export default function FeedbackSection() {
         }
       `}</style>
 
+      <div className="site-surface rounded-card border p-4">
+        {title && (
+          <h2 className="mb-3 text-lg font-semibold text-brand-primary">{title}</h2>
+        )}
       <div className="flex items-center justify-center gap-4 py-4 flex-wrap">
         <h3 className="text-lg font-bold leading-snug select-none sm:text-xl">
           {HEADING.split('').map((char, i) => (
@@ -53,6 +57,7 @@ export default function FeedbackSection() {
           <MessageSquare size={16} />
           Submit Feedback
         </button>
+      </div>
       </div>
 
       <FeedbackModal

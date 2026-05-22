@@ -40,9 +40,12 @@ function CoverArt({ volume }) {
   )
 }
 
-export default function BajajBytes() {
+export default function BajajBytes({ title }) {
   return (
     <div className="site-surface rounded-card border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+      {title && (
+        <h2 className="mb-4 text-lg font-semibold text-brand-primary">{title}</h2>
+      )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {VOLUMES.map((volume) => (
           <a

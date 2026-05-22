@@ -28,12 +28,17 @@ function ContactCard({ label, phone, icon, colorClass }) {
   )
 }
 
-export default function EmergencyContacts() {
+export default function EmergencyContacts({ title }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {emergencyContacts.map((contact) => (
-        <ContactCard key={contact.id} {...contact} />
-      ))}
+    <div className={title ? 'site-surface rounded-card border p-4' : ''}>
+      {title && (
+        <h2 className="mb-4 text-lg font-semibold text-brand-primary">{title}</h2>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {emergencyContacts.map((contact) => (
+          <ContactCard key={contact.id} {...contact} />
+        ))}
+      </div>
     </div>
   )
 }

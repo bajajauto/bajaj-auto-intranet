@@ -191,11 +191,14 @@ const SUBSIDIARIES = [
   },
 ]
 
-export default function CompanyOverview() {
+export default function CompanyOverview({ title }) {
   const [selectedSubsidiary, setSelectedSubsidiary] = useState(null)
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="site-surface space-y-6 rounded-card border p-4 animate-in fade-in duration-500">
+      {title && (
+        <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
+      )}
       {/* Section description */}
       <p className="text-text-secondary text-sm animate-in slide-in-from-bottom-4 duration-500">
         Hover over a subsidiary to explore. Click any card to dive deeper into its business segments.

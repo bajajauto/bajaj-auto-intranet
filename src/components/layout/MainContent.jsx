@@ -41,18 +41,15 @@ export default function MainContent() {
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
-                  <h2 id="self-service-heading" className="text-lg font-bold text-brand-primary mb-4">
+                  <h2 id="self-service-heading" className="sr-only">
                     Employee Self Service
                   </h2>
-                  <ServiceGrid />
+                  <ServiceGrid title="Employee Self Service" />
                   <div id="bajaj-bytes" className="mt-6 scroll-mt-32">
-                    <h2
-                      id="bajaj-bytes-heading"
-                      className="text-lg font-bold text-brand-primary mb-4"
-                    >
+                    <h2 id="bajaj-bytes-heading" className="sr-only">
                       Bajaj Bytes
                     </h2>
-                    <BajajBytes />
+                    <BajajBytes title="Bajaj Bytes" />
                   </div>
                 </section>
               </div>
@@ -63,47 +60,44 @@ export default function MainContent() {
           </ScrollReveal>
 
           <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
-            <h2
-              id="company-overview-heading"
-              className="text-lg font-bold text-brand-primary mb-4"
-            >
+            <h2 id="company-overview-heading" className="sr-only">
               Company Overview
             </h2>
-            <CompanyOverview />
+            <CompanyOverview title="Company Overview" />
           </ScrollReveal>
 
           <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
-            <h2 id="company-news-heading" className="text-lg font-bold text-brand-primary mb-4">
+            <h2 id="company-news-heading" className="sr-only">
               Company News
             </h2>
-            <NewsFeed />
+            <NewsFeed title="Company News" />
           </ScrollReveal>
           <ScrollReveal id="locations" aria-labelledby="locations-heading">
-            <h2 id="locations-heading" className="text-lg font-bold text-brand-primary mb-4">
+            <h2 id="locations-heading" className="sr-only">
               Bajaj Auto Presence
             </h2>
-            <LocationsSection />
+            <LocationsSection title="Bajaj Auto Presence" />
           </ScrollReveal>
 
           <ScrollReveal id="it-resources" aria-labelledby="it-resources-heading">
-            <h2 id="it-resources-heading" className="text-lg font-bold text-brand-primary mb-4">
+            <h2 id="it-resources-heading" className="sr-only">
               IT Resources
             </h2>
-            <ITResources />
+            <ITResources title="IT Resources" />
           </ScrollReveal>
 
           <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
-            <h2 id="emergency-heading" className="text-lg font-bold text-brand-primary mb-4">
+            <h2 id="emergency-heading" className="sr-only">
               Emergency Contacts
             </h2>
-            <EmergencyContacts />
+            <EmergencyContacts title="Emergency Contacts" />
           </ScrollReveal>
 
           <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
             <h2 id="feedback-heading" className="sr-only">
               Feedback and Support
             </h2>
-            <FeedbackSection />
+            <FeedbackSection title="Feedback and Support" />
           </ScrollReveal>
         </div>
       </main>

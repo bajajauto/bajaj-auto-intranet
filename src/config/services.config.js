@@ -110,12 +110,4 @@ export const services = [
     enabled: true,
   },
 
-  // Row 4: S
-  {
-    id: 'actions-pending',
-    label: 'Actions Pending',
-    icon: 'ActionsPendingIcon',
-    redirectUrl: '#',
-    enabled: true,
-  },
 ]
