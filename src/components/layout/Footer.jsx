@@ -1,5 +1,5 @@
 import { Instagram, Linkedin } from 'lucide-react'
-import bajajMark from '@/assets/bajaj-mark-transparent.png'
+import bajajBrandLockup from '@/assets/bajaj-brand-lockup.png'
 
 const SOCIAL_LINKS = [
   {
@@ -15,7 +15,6 @@ const SOCIAL_LINKS = [
 ]
 
 const CURRENT_YEAR = new Date().getFullYear()
-const FOOTER_TITLE = "The World's Favourite Indian"
 const FOOTER_DESCRIPTION =
   "With more than 18 million motorcycles sold in over 100 countries, Bajaj Auto is India's No. 1 motorcycle exporter, with two out of three bikes sold internationally carrying a Bajaj badge. The company is the world's largest manufacturer of three-wheelers and the first two/three-wheeler company to reach a market capitalisation of INR 1 trillion."
 
@@ -25,16 +24,20 @@ export default function Footer() {
       <div className="h-0.5 bg-gradient-to-r from-transparent via-white to-transparent opacity-20" />
 
       <div className="mx-auto max-w-screen-xl px-4 pb-3 pt-4 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.8fr] lg:items-start">
+        <div className="grid gap-5 lg:grid-cols-[1fr_1.8fr] lg:items-start">
           <div>
-            <div className="flex items-center gap-4">
-              <img src={bajajMark} alt="Bajaj Auto" className="h-12 w-auto" />
-              <div className="h-10 w-px bg-white/25 flex-shrink-0" />
-              <div>
-                <p className="font-serif font-semibold text-white text-2xl leading-tight">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+              <img
+                src={bajajBrandLockup}
+                alt="Bajaj Auto - The World's Favourite Indian"
+                className="h-14 w-auto max-w-[12rem] flex-shrink-0 object-contain object-left mix-blend-screen sm:h-16 sm:max-w-none"
+              />
+              <div className="hidden h-14 w-px flex-shrink-0 bg-white/25 sm:block" />
+              <div className="min-w-0">
+                <p className="text-xl font-bold leading-tight text-white sm:text-2xl">
                   Bajaj Auto Ltd.
                 </p>
-                <p className="mt-0.5 font-ekam italic text-white/55 text-sm tracking-wide">
+                <p className="mt-0.5 font-ekam text-xs italic tracking-wide text-white/55 sm:text-sm">
                   Born in India. Loved by the World.
                 </p>
               </div>
@@ -62,10 +65,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h2 className="font-serif text-xl font-semibold text-white md:text-2xl">
-              {FOOTER_TITLE}
-            </h2>
-            <p className="mt-1.5 text-sm leading-6 text-white/65">{FOOTER_DESCRIPTION}</p>
+            <p className="text-sm leading-6 text-white/65 lg:pt-1">{FOOTER_DESCRIPTION}</p>
           </div>
         </div>
       </div>

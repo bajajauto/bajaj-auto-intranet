@@ -31,21 +31,21 @@ export default function MainContent() {
       <Sidebar activeSection={activeSection} onForceSection={forceSection} />
 
       <main className="flex-1 min-h-screen">
-        <div className="max-w-screen-xl mx-auto px-4 md:px-6 py-6 space-y-10">
+        <div className="max-w-screen-xl mx-auto px-3 py-4 space-y-7 sm:px-4 sm:py-5 sm:space-y-9 md:px-6 lg:py-6 lg:space-y-10">
           <HeroBanner />
 
           <ScrollReveal id="dashboard" aria-labelledby="dashboard-heading">
             <h2 id="dashboard-heading" className="sr-only">
               Dashboard
             </h2>
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row">
               <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
                   <h2 id="self-service-heading" className="sr-only">
                     Employee Self Service
                   </h2>
                   <ServiceGrid title="Employee Self Service" />
-                  <div id="bajaj-bytes" className="mt-6 scroll-mt-32">
+                  <div id="bajaj-bytes" className="mt-4 scroll-mt-32 sm:mt-6">
                     <h2 id="bajaj-bytes-heading" className="sr-only">
                       Bajaj Bytes
                     </h2>
@@ -53,7 +53,7 @@ export default function MainContent() {
                   </div>
                 </section>
               </div>
-              <div className="flex flex-col gap-6 w-full lg:w-80 flex-shrink-0">
+              <div className="flex w-full flex-col gap-4 sm:gap-6 lg:w-80 lg:flex-shrink-0">
                 <DashboardUpdatesPanel />
               </div>
             </div>
@@ -97,7 +97,7 @@ export default function MainContent() {
             <h2 id="feedback-heading" className="sr-only">
               Feedback and Support
             </h2>
-            <FeedbackSection title="Feedback and Support" />
+            <FeedbackSection />
           </ScrollReveal>
         </div>
       </main>
