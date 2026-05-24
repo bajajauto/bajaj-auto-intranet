@@ -215,21 +215,16 @@ export function CsrIcon({ size = 24, strokeWidth = 2, className = '' }) {
   return (
     <Svg size={size} strokeWidth={strokeWidth} className={className}>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      {/* Badge circle at top */}
-      <circle cx="12" cy="3" r="2.5" />
-      {/* Stem */}
-      <path d="M12 5.5v4.5" />
-      {/* Left leaf */}
-      <path d="M12 8c-1 -1.5 -3 -1.5 -4 -0.5" />
-      {/* Right leaf */}
-      <path d="M12 8c1 -1.5 3 -1.5 4 -0.5" />
-      {/* Four fingers (index → pinky, uniform height) */}
-      <path d="M8 12v-2a1 1 0 0 1 2 0v2" />
-      <path d="M10 12v-2a1 1 0 0 1 2 0v2" />
-      <path d="M12 12v-2a1 1 0 0 1 2 0v2" />
-      <path d="M14 12v-2a1 1 0 0 1 2 0v2" />
-      {/* Palm wrapping the fingers */}
-      <path d="M7 12h-1a2 2 0 0 0 -2 2v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-1a2 2 0 0 0 -2 -2h-1" />
+      <path d="M20.5 15.5a8.8 8.8 0 0 0 -1.8 -9.4a8.6 8.6 0 0 0 -12.4 0a8.8 8.8 0 0 0 -1.7 9" />
+      <path d="M5.2 7.8c-2.1 1.3 -2.8 3.7 -1.8 6.2c2.2 -.9 3.2 -3.2 2.5 -5.8" />
+      <path d="M12 4.8a6.7 6.7 0 1 0 5.8 10" />
+      <path d="M9.8 5.9c.8 .8 1.6 1.2 2.5 .6" />
+      <path d="M12.7 5.9c-.1 1 -.6 1.6 -1.5 2.1c-.8 .4 -.6 1.1 -1.5 1.6c-.9 .6 -1.2 1.5 -.2 2.4c.8 .7 1.8 1.4 2.4 2.2c.8 1.2 -.4 2.1 -.5 3.1" />
+      <path d="M14.7 6.8c-.2 .8 -.9 1.1 -1.2 1.8c1.2 .2 2.5 -.2 3.3 .9c-1.6 .3 -2.8 .5 -3.4 1.5c-.8 1.3 .6 2.7 1.4 2.1c1.1 -.8 2.2 .3 1.7 1.6" />
+      <path d="M4.7 19l3.1 -2.9c1.6 -1.2 3.1 -.9 4.3 -.9c1 0 2.3 -.9 3 .2c.7 1.2 -1.7 2.1 -3 2.2" />
+      <path d="M8.2 20.8c1.6 -1.7 2.8 -1.5 4.9 -1.3c1.4 .1 3.4 -1.1 5.4 -2.4c.5 -.3 1.3 -.1 1.1 .5c-.3 .8 -3.2 2.8 -5.8 4h-4.7" />
+      <path d="M2.5 18.2l3.4 3.4" />
+      <path d="M3.6 17.1l3.4 3.4" />
     </Svg>
   )
 }

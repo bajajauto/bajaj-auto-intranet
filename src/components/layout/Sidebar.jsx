@@ -142,6 +142,10 @@ export default function Sidebar({ activeSection, onForceSection }) {
     })
   }, [activeSection])
 
+  useEffect(() => {
+    if (!isExpanded) setExpandedGroups({})
+  }, [isExpanded])
+
   function handleNavigate(sectionId) {
     onForceSection?.(sectionId) // highlight immediately; don't wait for IntersectionObserver
     scrollToSection(sectionId)

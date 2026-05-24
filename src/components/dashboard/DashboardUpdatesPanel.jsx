@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 import { calendarService } from '@/services/calendarService'
 import { notificationService } from '@/services/notificationService'
 import NotificationCard from '@/components/notifications/NotificationCard'
@@ -217,6 +217,9 @@ export default function DashboardUpdatesPanel() {
   const calendarItems = calendarService.getEvents()
   const events = calendarItems.filter((item) => item.type === 'event')
   const meetings = calendarItems.filter((item) => item.type === 'meeting')
+  const hasExtraMeetings = meetings.length > 2
+  const visibleMeetings = hasExtraMeetings ? meetings.slice(0, 2) : meetings
+  const hiddenMeetingsCount = meetings.length - visibleMeetings.length
   const holidays = calendarItems.filter((item) => item.type === 'holiday')
   const notifications = notificationService.getAll()
   const title =
@@ -276,9 +279,20 @@ export default function DashboardUpdatesPanel() {
         </div>
       ) : activeTab === 'meetings' ? (
         <div className="space-y-3 px-4 py-4">
-          {meetings.map((meeting, index) => (
+          {visibleMeetings.map((meeting, index) => (
             <EventCard key={`${meeting.date}-${meeting.label}`} event={meeting} index={index} />
           ))}
+          {hasExtraMeetings && (
+            <a
+              href="https://outlook.office.com/calendar/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex w-full items-center justify-center gap-1.5 rounded-btn border border-brand-primary/10 bg-brand-light/60 px-3 py-2 text-xs font-semibold text-brand-primary transition-colors hover:bg-brand-light focus-ring"
+            >
+              <span>View {hiddenMeetingsCount} more on Outlook</span>
+              <ExternalLink size={13} />
+            </a>
+          )}
         </div>
       ) : (
         <div className="max-h-[390px] overflow-y-auto divide-y divide-gray-50 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
