@@ -1,5 +1,5 @@
 import { Instagram, Linkedin } from 'lucide-react'
-import bajajBrandLockup from '@/assets/bajaj-brand-lockup.png'
+import bajajMark from '@/assets/bajaj-mark-transparent.png'
 
 const SOCIAL_LINKS = [
   {
@@ -27,11 +27,26 @@ export default function Footer() {
         <div className="grid gap-5 lg:grid-cols-[1fr_1.8fr] lg:items-start">
           <div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-              <img
-                src={bajajBrandLockup}
-                alt="Bajaj Auto - The World's Favourite Indian"
-                className="h-14 w-auto max-w-[12rem] flex-shrink-0 object-contain object-left mix-blend-screen brightness-[2.2] sm:h-16 sm:max-w-none"
-              />
+              <div className="flex flex-shrink-0 items-center gap-3">
+                <div className="flex h-12 w-[4.25rem] items-center justify-center sm:h-14 sm:w-20">
+                  <img
+                    src={bajajMark}
+                    alt="Bajaj Auto"
+                    className="h-10 w-auto object-contain sm:h-11"
+                  />
+                </div>
+                <div className="-rotate-6 text-white">
+                  <p className="text-[9px] font-black uppercase leading-[0.78] tracking-tight sm:text-[10px]">
+                    The World's
+                  </p>
+                  <p className="text-sm font-black uppercase leading-[0.78] tracking-tight sm:text-[15px]">
+                    Favourite
+                  </p>
+                  <p className="text-sm font-black uppercase leading-[0.78] tracking-tight sm:text-[15px]">
+                    Indian
+                  </p>
+                </div>
+              </div>
               <div className="hidden h-14 w-px flex-shrink-0 bg-white/25 sm:block" />
               <div className="min-w-0">
                 <p className="text-xl font-bold leading-tight text-white sm:text-2xl">

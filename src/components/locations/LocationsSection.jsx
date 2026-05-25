@@ -137,7 +137,7 @@ const BAJAJ_COUNTRIES = [
 
 const MARKET_COUNT = 80
 
-function GlobePresence() {
+function GlobePresence({ title }) {
   const mountRef = useRef(null)
   const markerRefs = useRef({})
   const isPausedRef = useRef(false)
@@ -354,14 +354,15 @@ function GlobePresence() {
       <div ref={mountRef} className="absolute inset-0" aria-hidden="true" />
 
       {/* Header overlay */}
-      <div className="pointer-events-none absolute left-3 top-3 z-20 sm:left-5 sm:top-5">
+      <div className="pointer-events-none absolute left-3 top-3 z-20 space-y-2 sm:left-5 sm:top-5">
+        {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
         <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-[11px] font-medium text-brand-primary">
           <Globe2 size={12} />
           Global Presence
         </div>
       </div>
 
-      <div className="absolute left-5 top-16 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
+      <div className="absolute left-5 top-24 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
         <div className="mb-4 rounded-card border border-white/10 bg-white/10 px-3 py-3">
           <p className="text-4xl font-bold leading-none tracking-tight">{MARKET_COUNT}</p>
           <p className="mt-1 text-sm text-white/65">Countries worldwide</p>
@@ -616,7 +617,7 @@ export default function LocationsSection({ title }) {
           }`}
         >
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
-            <GlobePresence />
+            <GlobePresence title={title} />
             <LocationGroupRail onEnterGroup={setEnteredGroup} />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-3 sm:gap-4 lg:hidden">
@@ -661,12 +662,6 @@ export default function LocationsSection({ title }) {
           )}
         </div>
       </div>
-
-      {title && (
-        <div className="site-surface rounded-card border px-4 py-3">
-          <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
-        </div>
-      )}
     </div>
   )
 }
