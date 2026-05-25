@@ -20,7 +20,7 @@ const tileStyles = {
   'holiday-calendar': 'from-[#0D7E98] to-[#09576C]',
 
   // Amber — recognition / ideas / learning
-  'recognition-gem':  'from-[#BF7C08] to-[#7A4D02]',
+  'recognition-gem':  'from-[#4A91E2] to-[#1A56A8]',
   'bolt-learning':    'from-[#B07008] to-[#6E4302]',
   'idea-hub':         'from-[#BF7C08] to-[#7A4D02]',
 }

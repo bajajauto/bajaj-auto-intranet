@@ -37,7 +37,7 @@ export default function Footer() {
                 </div>
                 <div className="-rotate-6 text-white">
                   <p className="text-[9px] font-black uppercase leading-[0.78] tracking-tight sm:text-[10px]">
-                    The World's
+                    The World&apos;s
                   </p>
                   <p className="text-sm font-black uppercase leading-[0.78] tracking-tight sm:text-[15px]">
                     Favourite
@@ -80,7 +80,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-sm leading-6 text-white/65 lg:pt-1">{FOOTER_DESCRIPTION}</p>
+            <h2 className="text-xl font-bold leading-tight text-white md:text-2xl">
+              The World&apos;s Favourite Indian
+            </h2>
+            <p className="mt-1.5 text-sm leading-6 text-white/65">{FOOTER_DESCRIPTION}</p>
           </div>
         </div>
       </div>
