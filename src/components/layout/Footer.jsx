@@ -30,7 +30,7 @@ export default function Footer() {
               <img
                 src={bajajBrandLockup}
                 alt="Bajaj Auto - The World's Favourite Indian"
-                className="h-14 w-auto max-w-[12rem] flex-shrink-0 object-contain object-left mix-blend-screen sm:h-16 sm:max-w-none"
+                className="h-14 w-auto max-w-[12rem] flex-shrink-0 object-contain object-left mix-blend-screen brightness-[2.2] sm:h-16 sm:max-w-none"
               />
               <div className="hidden h-14 w-px flex-shrink-0 bg-white/25 sm:block" />
               <div className="min-w-0">
