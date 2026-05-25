@@ -81,13 +81,13 @@ export const navGroups = [
   },
   {
     id: 'it-resources-group',
-    label: 'IT Resources',
+    label: 'Resources and Support Services',
     icon: 'Monitor',
     hideChildren: true,
     items: [
       {
         id: 'telecom-contacts',
-        label: 'Telecom Contacts',
+        label: 'Resources and Support Services',
         icon: 'Phone',
         sectionId: 'it-resources',
       },

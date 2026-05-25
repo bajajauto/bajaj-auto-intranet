@@ -1,4 +1,4 @@
-import { BarChart3, FileStack, Globe, Wrench } from 'lucide-react'
+import { Baby, BarChart3, Coffee, DoorOpen, Dumbbell, FileStack, Headphones, Wrench } from 'lucide-react'
 
 function IntercomDeskIcon({ size = 24, className = '' }) {
   return (
@@ -20,7 +20,7 @@ const IT_LINKS = [
   {
     id: 'raise-request',
     label: 'Raise IT Request',
-    sublabel: 'ServiceNow',
+    sublabel: 'IT Summit Portal',
     icon: Wrench,
     href: '#',
     iconBg: 'bg-blue-50',
@@ -39,9 +39,17 @@ const IT_LINKS = [
     hoverBorder: 'hover:border-indigo-200',
     hoverShadow: 'hover:shadow-indigo-100/60',
   },
-]
-
-const SYSTEMS = [
+  {
+    id: 'visitor-gatepass',
+    label: 'Visitor Gatepass',
+    sublabel: 'Guest entry request',
+    icon: DoorOpen,
+    href: '#',
+    iconBg: 'bg-emerald-50',
+    iconColor: 'text-emerald-600',
+    hoverBorder: 'hover:border-emerald-200',
+    hoverShadow: 'hover:shadow-emerald-100/60',
+  },
   {
     id: 'qlik',
     label: 'BI Dashboard',
@@ -64,16 +72,41 @@ const SYSTEMS = [
     hoverBorder: 'hover:border-teal-200',
     hoverShadow: 'hover:shadow-teal-100/60',
   },
+]
+
+const FACILITIES = [
   {
-    id: 'it-portal',
-    label: 'IT Portal',
-    sublabel: 'Self-service portal',
-    icon: Globe,
+    id: 'utsah',
+    label: 'Utsah',
+    sublabel: 'Recreation Centre',
+    icon: Dumbbell,
     href: '#',
-    iconBg: 'bg-sky-50',
-    iconColor: 'text-sky-600',
-    hoverBorder: 'hover:border-sky-200',
-    hoverShadow: 'hover:shadow-sky-100/60',
+    iconBg: 'bg-purple-50',
+    iconColor: 'text-purple-600',
+    hoverBorder: 'hover:border-purple-200',
+    hoverShadow: 'hover:shadow-purple-100/60',
+  },
+  {
+    id: 'cresh',
+    label: 'Cresh',
+    sublabel: 'Childcare',
+    icon: Baby,
+    href: '#',
+    iconBg: 'bg-rose-50',
+    iconColor: 'text-rose-600',
+    hoverBorder: 'hover:border-rose-200',
+    hoverShadow: 'hover:shadow-rose-100/60',
+  },
+  {
+    id: 'delicia',
+    label: 'Delicia',
+    sublabel: 'Canteen',
+    icon: Coffee,
+    href: '#',
+    iconBg: 'bg-amber-50',
+    iconColor: 'text-amber-600',
+    hoverBorder: 'hover:border-amber-200',
+    hoverShadow: 'hover:shadow-amber-100/60',
   },
 ]
 
@@ -97,29 +130,32 @@ function ResourceLink({ label, sublabel, icon: Icon, href, iconBg, iconColor, ho
 
 export default function ITResources({ title }) {
   return (
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-      <div className="site-surface rounded-card border p-5">
-        {title && (
-          <h2 className="mb-4 text-lg font-semibold text-brand-primary">{title}</h2>
-        )}
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-primary/60">
-          Support Desk
-        </p>
-        <div className="space-y-3">
-          {IT_LINKS.map((item) => (
-            <ResourceLink key={item.id} {...item} />
-          ))}
-        </div>
-      </div>
+    <section className="site-surface rounded-card border p-5">
+      <h2 className="mb-5 text-lg font-semibold text-brand-primary">
+        {title ?? 'Resources and Support Services'}
+      </h2>
 
-      <div className="site-surface rounded-card border p-5">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-primary/60">Work Tools</p>
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-          {SYSTEMS.map((item) => (
-            <ResourceLink key={item.id} {...item} />
-          ))}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="site-surface rounded-card border p-5">
+          <h3 className="mb-4 text-lg font-semibold text-brand-primary">
+            Facilities @ Bajaj Auto Limited
+          </h3>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            {FACILITIES.map((item) => (
+              <ResourceLink key={item.id} {...item} />
+            ))}
+          </div>
+        </div>
+
+        <div className="site-surface rounded-card border p-5">
+          <h3 className="mb-4 text-lg font-semibold text-brand-primary">Tools and Services</h3>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            {IT_LINKS.map((item) => (
+              <ResourceLink key={item.id} {...item} />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

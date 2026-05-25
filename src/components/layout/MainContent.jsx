@@ -81,9 +81,9 @@ export default function MainContent() {
 
           <ScrollReveal id="it-resources" aria-labelledby="it-resources-heading">
             <h2 id="it-resources-heading" className="sr-only">
-              IT Resources
+              Resources and Support Services
             </h2>
-            <ITResources title="IT Resources" />
+            <ITResources title="Resources and Support Services" />
           </ScrollReveal>
 
           <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">

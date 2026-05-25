@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
+import { ArrowLeft, Building2, ChevronRight, Code2, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
 
 const LOCATION_GROUPS = [
@@ -8,46 +8,107 @@ const LOCATION_GROUPS = [
     label: 'Bajaj Auto',
     description: 'Manufacturing plants & headquarters',
     icon: Factory,
-    locations: [
+    subGroups: [
       {
-        id: 'akurdi',
-        name: 'Akurdi',
-        type: 'Corporate + EV hub',
-        country: 'India',
-        coordinates: '18.65 deg N, 73.77 deg E',
-        presence: 'Pune campus',
-        mapPosition: { x: '62%', y: '48%' },
-        subLocations: ['R&D', 'DDC', 'Chetak Plant', 'Utsah', 'Library', 'Old Corp', 'Transport'],
+        id: 'manufacturing-plants',
+        label: 'Manufacturing Plants',
+        icon: Factory,
+        locations: [
+          {
+            id: 'chakan',
+            name: 'Chakan',
+            type: 'Manufacturing + engineering',
+            country: 'India',
+            coordinates: '18.75 deg N, 73.86 deg E',
+            presence: 'Pune industrial belt',
+            mapPosition: { x: '64%', y: '45%' },
+            subLocations: ['Plant 1', 'Plant 2', 'Chakan R&D'],
+          },
+          {
+            id: 'waluj',
+            name: 'Waluj',
+            type: 'Manufacturing plant',
+            country: 'India',
+            coordinates: '19.88 deg N, 75.23 deg E',
+            presence: 'Aurangabad cluster',
+            mapPosition: { x: '58%', y: '52%' },
+            subLocations: ['Waluj Plant', 'Admin Block'],
+          },
+          {
+            id: 'pantnagar',
+            name: 'Pantnagar',
+            type: 'Manufacturing plant',
+            country: 'India',
+            coordinates: '29.02 deg N, 79.49 deg E',
+            presence: 'Uttarakhand campus',
+            mapPosition: { x: '70%', y: '30%' },
+            subLocations: ['Plant', 'Township'],
+          },
+        ],
       },
       {
-        id: 'chakan',
-        name: 'Chakan',
-        type: 'Manufacturing + engineering',
-        country: 'India',
-        coordinates: '18.75 deg N, 73.86 deg E',
-        presence: 'Pune industrial belt',
-        mapPosition: { x: '64%', y: '45%' },
-        subLocations: ['Plant 1', 'Plant 2', 'Chakan R&D'],
+        id: 'headquarters',
+        label: 'Headquarters',
+        icon: Building2,
+        locations: [
+          {
+            id: 'akurdi',
+            name: 'Akurdi',
+            type: 'Corporate + EV hub',
+            country: 'India',
+            coordinates: '18.65 deg N, 73.77 deg E',
+            presence: 'Pune campus',
+            mapPosition: { x: '62%', y: '48%' },
+            subLocations: ['R&D', 'DDC', 'Chetak Plant', 'Utsah', 'Library', 'Old Corp', 'Transport'],
+          },
+        ],
       },
       {
-        id: 'waluj',
-        name: 'Waluj',
-        type: 'Manufacturing plant',
-        country: 'India',
-        coordinates: '19.88 deg N, 75.23 deg E',
-        presence: 'Aurangabad cluster',
-        mapPosition: { x: '58%', y: '52%' },
-        subLocations: ['Waluj Plant', 'Admin Block'],
-      },
-      {
-        id: 'pantnagar',
-        name: 'Pantnagar',
-        type: 'Manufacturing plant',
-        country: 'India',
-        coordinates: '29.02 deg N, 79.49 deg E',
-        presence: 'Uttarakhand campus',
-        mapPosition: { x: '70%', y: '30%' },
-        subLocations: ['Plant', 'Township'],
+        id: 'regional-offices',
+        label: 'Regional Offices',
+        icon: MapPin,
+        locations: [
+          {
+            id: 'mumbai-ro',
+            name: 'Mumbai',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '19.07 deg N, 72.87 deg E',
+            presence: 'West India hub',
+            mapPosition: { x: '55%', y: '55%' },
+            subLocations: ['Mumbai RO'],
+          },
+          {
+            id: 'delhi-ro',
+            name: 'Delhi',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '28.61 deg N, 77.20 deg E',
+            presence: 'North India hub',
+            mapPosition: { x: '65%', y: '35%' },
+            subLocations: ['Delhi RO'],
+          },
+          {
+            id: 'chennai-ro',
+            name: 'Chennai',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '13.08 deg N, 80.27 deg E',
+            presence: 'South India hub',
+            mapPosition: { x: '62%', y: '70%' },
+            subLocations: ['Chennai RO'],
+          },
+          {
+            id: 'kolkata-ro',
+            name: 'Kolkata',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '22.57 deg N, 88.36 deg E',
+            presence: 'East India hub',
+            mapPosition: { x: '72%', y: '48%' },
+            subLocations: ['Kolkata RO'],
+          },
+        ],
       },
     ],
   },
@@ -58,32 +119,32 @@ const LOCATION_GROUPS = [
     icon: Building2,
     locations: [
       {
-        id: 'bangalore',
-        name: 'Bangalore',
-        type: 'Regional office',
+        id: 'akurdi-bacl',
+        name: 'Akurdi',
+        type: 'Corporate office',
         country: 'India',
-        coordinates: '12.97 deg N, 77.59 deg E',
-        presence: 'South India office',
-        mapPosition: { x: '54%', y: '72%' },
-        subLocations: ['Bangalore Office'],
+        coordinates: '18.65 deg N, 73.77 deg E',
+        presence: 'Pune campus',
+        mapPosition: { x: '62%', y: '48%' },
+        subLocations: ['BACL Office'],
       },
     ],
   },
   {
-    id: 'regional-offices',
-    label: 'Regional Offices',
-    description: 'Sales & service network',
-    icon: MapPin,
+    id: 'bajaj-auto-technology',
+    label: 'Bajaj Auto Technology Limited',
+    description: 'Technology & digital hub',
+    icon: Code2,
     locations: [
       {
-        id: 'regional-offices',
-        name: 'Regional Offices',
-        type: 'Sales + service network',
+        id: 'bangalore-batl',
+        name: 'Bangalore',
+        type: 'Technology office',
         country: 'India',
-        coordinates: 'Multi-city',
-        presence: 'Metro network',
-        mapPosition: { x: '38%', y: '40%' },
-        subLocations: ['Mumbai RO', 'Delhi RO', 'Chennai RO', 'Kolkata RO'],
+        coordinates: '12.97 deg N, 77.59 deg E',
+        presence: 'South India tech hub',
+        mapPosition: { x: '54%', y: '72%' },
+        subLocations: ['BATL Office'],
       },
     ],
   },
@@ -558,8 +619,39 @@ function PlantCard({ location }) {
   )
 }
 
-function GroupTile({ group, onEnter }) {
+function GroupTile({ group, onEnter, onEnterSubGroup }) {
   const Icon = group.icon
+  const hasSubGroups = Boolean(group.subGroups?.length)
+
+  if (hasSubGroups) {
+    return (
+      <div className="site-surface-interactive relative w-full rounded-card border p-3">
+        <div className="flex items-start justify-between gap-2">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10">
+            <Icon size={19} />
+          </span>
+        </div>
+        <div className="mt-2">
+          <p className="text-[13px] font-semibold text-text-primary">{group.label}</p>
+          <p className="mt-0.5 text-xs text-text-secondary">{group.description}</p>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {group.subGroups.map((sg) => (
+            <button
+              key={sg.id}
+              type="button"
+              onClick={() => onEnterSubGroup(group.id, sg.id)}
+              className="inline-flex items-center gap-1 rounded-full bg-brand-light px-2 py-0.5 text-[11px] font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
+            >
+              {sg.label}
+              <ChevronRight size={10} className="flex-shrink-0 opacity-60" />
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <button
       type="button"
@@ -588,11 +680,16 @@ function GroupTile({ group, onEnter }) {
   )
 }
 
-function LocationGroupRail({ onEnterGroup }) {
+function LocationGroupRail({ onEnterGroup, onEnterSubGroup }) {
   return (
     <div className="hidden h-[460px] flex-col justify-between lg:flex">
       {LOCATION_GROUPS.map((group) => (
-        <GroupTile key={group.id} group={group} onEnter={() => onEnterGroup(group.id)} />
+        <GroupTile
+          key={group.id}
+          group={group}
+          onEnter={() => onEnterGroup(group.id)}
+          onEnterSubGroup={onEnterSubGroup}
+        />
       ))}
     </div>
   )
@@ -600,39 +697,55 @@ function LocationGroupRail({ onEnterGroup }) {
 
 export default function LocationsSection({ title }) {
   const [enteredGroup, setEnteredGroup] = useState(null)
+  const [enteredSubGroup, setEnteredSubGroup] = useState(null)
+
   const group = LOCATION_GROUPS.find((g) => g.id === enteredGroup)
+  const subGroup = group?.subGroups?.find((sg) => sg.id === enteredSubGroup)
+  const displayLocations = subGroup ? subGroup.locations : group?.locations
+  const displayIcon = subGroup ? subGroup.icon : group?.icon
+  const displayLabel = subGroup ? subGroup.label : group?.label
+
+  const handleEnterSubGroup = (groupId, subGroupId) => {
+    setEnteredGroup(groupId)
+    setEnteredSubGroup(subGroupId)
+  }
+
+  const handleBack = () => {
+    setEnteredGroup(null)
+    setEnteredSubGroup(null)
+  }
+
+  const isDetailVisible = Boolean(enteredGroup)
 
   return (
     <div className="space-y-5">
-      {/* Horizontal-slide container — clips x overflow so panels slide seamlessly */}
       <div className="relative [overflow-x:clip]">
-        {/* Globe + group tiles
-            Entering a group  → absolute (removed from flow) + slides out to the left.
-            Going back        → relative (back in flow) + slides in from the left. */}
         <div
           className={`transition-[transform,opacity] duration-500 ease-in-out ${
-            enteredGroup
+            isDetailVisible
               ? 'absolute top-0 left-0 w-full -translate-x-full opacity-0 pointer-events-none'
               : 'relative translate-x-0 opacity-100'
           }`}
         >
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
             <GlobePresence title={title} />
-            <LocationGroupRail onEnterGroup={setEnteredGroup} />
+            <LocationGroupRail onEnterGroup={setEnteredGroup} onEnterSubGroup={handleEnterSubGroup} />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-3 sm:gap-4 lg:hidden">
             {LOCATION_GROUPS.map((g) => (
-              <GroupTile key={g.id} group={g} onEnter={() => setEnteredGroup(g.id)} />
+              <GroupTile
+                key={g.id}
+                group={g}
+                onEnter={() => setEnteredGroup(g.id)}
+                onEnterSubGroup={handleEnterSubGroup}
+              />
             ))}
           </div>
         </div>
 
-        {/* Detail panel
-            Entering a group  → relative (sets container height) + slides in from the right.
-            Going back        → absolute (removed from flow) + slides out to the right. */}
         <div
           className={`transition-[transform,opacity] duration-500 ease-in-out ${
-            enteredGroup
+            isDetailVisible
               ? 'relative translate-x-0 opacity-100'
               : 'absolute top-0 left-0 w-full translate-x-full opacity-0 pointer-events-none'
           }`}
@@ -642,19 +755,19 @@ export default function LocationsSection({ title }) {
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setEnteredGroup(null)}
+                  onClick={handleBack}
                   className="flex items-center gap-1.5 rounded-btn border border-brand-primary/20 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
                 >
                   <ArrowLeft size={13} />
                   Back
                 </button>
                 <div className="flex items-center gap-1.5">
-                  <group.icon size={14} className="text-brand-primary" />
-                  <span className="text-sm font-semibold text-text-primary">{group.label}</span>
+                  {displayIcon && <displayIcon size={14} className="text-brand-primary" />}
+                  <span className="text-sm font-semibold text-text-primary">{displayLabel}</span>
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {group.locations.map((location) => (
+                {displayLocations?.map((location) => (
                   <PlantCard key={location.id} location={location} />
                 ))}
               </div>
