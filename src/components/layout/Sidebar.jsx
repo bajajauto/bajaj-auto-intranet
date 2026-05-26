@@ -1,11 +1,78 @@
 import { useState, useRef, useEffect } from 'react'
-import { Menu } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
 
 // TopBanner 36px + Header 80px + 8px breathing room = 124px
 const TOP_OFFSET = 124
+
+function BikeToggleIcon({ isExpanded }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="30"
+      height="22"
+      viewBox="0 0 32 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={`transition-transform duration-200 ${isExpanded ? 'scale-x-[-1]' : ''}`}
+    >
+      <path d="M2.8 15.8h1.8" className="text-brand-primary/35" />
+      <path d="M1.7 12.8h3.2" className="text-brand-primary/25" />
+      <path d="M3.5 9.8h2.2" className="text-brand-primary/20" />
+      <path d="M25.2 11.2 28 14l-2.8 2.8" strokeWidth="2.1" />
+      <path d="M5.5 16.5h3.2l2.1-4.3h3.7l2.7 4.3h1.3" />
+      <path d="M11 12.2 8.8 9.5h-2" />
+      <path d="M14.5 12.2 16.2 9h2.3" />
+      <path d="M10.8 8.8h3.2" />
+      <path d="M12.8 8.8l1.4 3.4" />
+      <circle cx="5.5" cy="16.5" r="2.5" />
+      <circle cx="18.5" cy="16.5" r="2.5" />
+    </svg>
+  )
+}
+
+const GROUP_COLORS = {
+  blue: {
+    iconIdle:   'bg-blue-50 text-blue-600 ring-blue-100 group-hover:bg-blue-600 group-hover:text-white',
+    iconActive: 'bg-blue-600 text-white ring-blue-200',
+    border:     'border-blue-500',
+    text:       'text-blue-700',
+    dot:        'bg-blue-500',
+  },
+  violet: {
+    iconIdle:   'bg-violet-50 text-violet-600 ring-violet-100 group-hover:bg-violet-600 group-hover:text-white',
+    iconActive: 'bg-violet-600 text-white ring-violet-200',
+    border:     'border-violet-500',
+    text:       'text-violet-700',
+    dot:        'bg-violet-500',
+  },
+  teal: {
+    iconIdle:   'bg-teal-50 text-teal-600 ring-teal-100 group-hover:bg-teal-600 group-hover:text-white',
+    iconActive: 'bg-teal-600 text-white ring-teal-200',
+    border:     'border-teal-500',
+    text:       'text-teal-700',
+    dot:        'bg-teal-500',
+  },
+  rose: {
+    iconIdle:   'bg-rose-50 text-rose-600 ring-rose-100 group-hover:bg-rose-600 group-hover:text-white',
+    iconActive: 'bg-rose-600 text-white ring-rose-200',
+    border:     'border-rose-500',
+    text:       'text-rose-700',
+    dot:        'bg-rose-500',
+  },
+  emerald: {
+    iconIdle:   'bg-emerald-50 text-emerald-600 ring-emerald-100 group-hover:bg-emerald-600 group-hover:text-white',
+    iconActive: 'bg-emerald-600 text-white ring-emerald-200',
+    border:     'border-emerald-500',
+    text:       'text-emerald-700',
+    dot:        'bg-emerald-500',
+  },
+}
 
 function scrollToSection(sectionId) {
   const el = document.getElementById(sectionId)
@@ -56,6 +123,7 @@ function GroupButton({
   onNavigate,
 }) {
   const Icon = iconMap[group.icon] ?? iconMap.Circle
+  const colors = GROUP_COLORS[group.colorKey] ?? GROUP_COLORS.blue
 
   function handleClick() {
     const firstItem = group.items.find((item) => item.enabled !== false)
@@ -77,36 +145,39 @@ function GroupButton({
     <button
       onClick={handleClick}
       data-active={isActive ? 'true' : undefined}
-      className={`group relative w-full flex items-center rounded-card border-l-4 py-3 transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
-        ${isExpanded ? 'gap-3 px-3' : 'justify-center px-0'}
+      className={`group relative w-full flex items-center rounded-card border-l-4 py-2.5 transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
+        ${isExpanded ? 'gap-2.5 px-2.5' : 'justify-center px-0'}
         ${
           isActive
-            ? 'border-brand-primary bg-white text-brand-primary shadow-sm'
+            ? `${colors.border} bg-white ${colors.text} shadow-sm`
             : 'border-transparent text-text-primary hover:bg-white/80 hover:text-brand-primary'
         }`}
       aria-label={group.label}
       aria-expanded={isCollapsible && !group.hideChildren ? isGroupExpanded : undefined}
     >
       <span
-        className={`w-10 h-10 rounded-card flex items-center justify-center flex-shrink-0 shadow-sm ring-1 transition-all duration-200 ${
-          isActive
-            ? 'bg-brand-primary text-white ring-brand-primary/20'
-            : 'bg-brand-light text-brand-primary ring-brand-primary/10 group-hover:bg-brand-primary group-hover:text-white'
+        className={`w-9 h-9 rounded-card flex items-center justify-center flex-shrink-0 shadow-sm ring-1 transition-all duration-200 ${
+          isActive ? colors.iconActive : colors.iconIdle
         }`}
       >
-        <Icon size={22} className="transition-transform duration-200 group-hover:scale-110" />
+        <Icon size={20} className="transition-transform duration-200 group-hover:scale-110" />
       </span>
 
       {isExpanded && (
-        <span className="flex-1 text-left text-sm font-semibold whitespace-normal leading-snug">
-          {group.label}
-        </span>
+        <div className="flex-1 text-left min-w-0">
+          <p className="text-sm font-semibold leading-tight truncate">{group.label}</p>
+          {group.description && (
+            <p className={`text-[11px] leading-tight mt-0.5 truncate ${isActive ? 'opacity-60' : 'text-text-secondary'}`}>
+              {group.description}
+            </p>
+          )}
+        </div>
       )}
 
       {!isExpanded && (
         <>
           {isActive && (
-            <span className="absolute right-1.5 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-brand-primary" />
+            <span className={`absolute right-1.5 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full ${colors.dot}`} />
           )}
           <span className="pointer-events-none absolute left-[calc(100%+0.5rem)] top-1/2 z-50 -translate-y-1/2 rounded-btn bg-brand-dark px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-modal transition-all group-hover:translate-x-1 group-hover:opacity-100">
             {group.label}
@@ -142,6 +213,10 @@ export default function Sidebar({ activeSection, onForceSection }) {
     })
   }, [activeSection])
 
+  useEffect(() => {
+    if (!isExpanded) setExpandedGroups({})
+  }, [isExpanded])
+
   function handleNavigate(sectionId) {
     onForceSection?.(sectionId) // highlight immediately; don't wait for IntersectionObserver
     scrollToSection(sectionId)
@@ -170,7 +245,7 @@ export default function Sidebar({ activeSection, onForceSection }) {
         className={`
           sticky top-[116px] h-[calc(100vh-116px)] overflow-y-auto overflow-x-hidden scrollbar-none bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10
           transition-[width] duration-300 ease-in-out flex-shrink-0
-          ${isExpanded ? 'w-72' : 'w-16'}
+          ${isExpanded ? 'w-64' : 'w-16'}
           hidden md:flex flex-col
         `}
         aria-label="Main navigation"
@@ -219,14 +294,16 @@ function SidebarContent({
 }) {
   return (
     <>
-      <div className="sticky top-0 z-10 flex bg-white/85 px-2 py-3 backdrop-blur-sm">
+      <div className={`sticky top-0 z-10 flex bg-white px-2 py-3 ${isExpanded ? 'justify-end' : 'justify-center'}`}>
         <button
           type="button"
           onClick={onToggleSidebar}
-          className="ml-[0.375rem] flex h-9 w-9 items-center justify-center rounded-full border border-brand-primary/15 bg-white text-brand-primary shadow-sm transition-colors hover:bg-brand-light focus-ring"
+          className="group flex h-8 w-10 items-center justify-center rounded-btn text-brand-primary transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-light/60 focus-ring"
           aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
-          <Menu size={18} />
+          <span className="transition-transform duration-200 group-hover:scale-110">
+            <BikeToggleIcon isExpanded={isExpanded} />
+          </span>
         </button>
       </div>
       <nav className="flex-1 px-2 pb-4 space-y-3">

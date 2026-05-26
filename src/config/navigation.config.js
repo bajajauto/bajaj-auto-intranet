@@ -1,8 +1,10 @@
 export const navGroups = [
   {
     id: 'employee-services',
-    label: 'Employee Self-Service',
-    icon: 'UserCheck',
+    label: 'Employee Pitstop',
+    description: 'HR, payroll & personal services',
+    icon: 'User',
+    colorKey: 'blue',
     collapsible: true,
     items: [
       { id: 'team-directory', label: 'Team Directory', icon: 'Users', sectionId: 'self-service' },
@@ -55,7 +57,9 @@ export const navGroups = [
   {
     id: 'company-resources',
     label: 'Company Resources',
-    icon: 'Newspaper',
+    description: 'News, overview & EV map',
+    icon: 'MapPinned',
+    colorKey: 'violet',
     collapsible: true,
     items: [
       {
@@ -81,13 +85,15 @@ export const navGroups = [
   },
   {
     id: 'it-resources-group',
-    label: 'IT Resources',
-    icon: 'Monitor',
+    label: 'Resources & Support',
+    description: 'IT, telecom & asset help',
+    icon: 'Wrench',
+    colorKey: 'teal',
     hideChildren: true,
     items: [
       {
         id: 'telecom-contacts',
-        label: 'Telecom Contacts',
+        label: 'Resources and Support Services',
         icon: 'Phone',
         sectionId: 'it-resources',
       },
@@ -96,7 +102,9 @@ export const navGroups = [
   {
     id: 'emergency',
     label: 'Emergency Contacts',
-    icon: 'PhoneCall',
+    description: 'Critical & safety numbers',
+    icon: 'Siren',
+    colorKey: 'rose',
     hideChildren: true,
     items: [
       {
@@ -110,7 +118,9 @@ export const navGroups = [
   {
     id: 'support-engagement',
     label: 'Support & Engagement',
-    icon: 'MessageSquare',
+    description: 'Feedback, requests & FAQs',
+    icon: 'HeartHandshake',
+    colorKey: 'emerald',
     hideChildren: true,
     items: [
       {

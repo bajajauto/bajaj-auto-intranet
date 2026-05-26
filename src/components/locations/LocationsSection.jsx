@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
+import { ArrowLeft, Building2, ChevronRight, Code2, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
 
 const LOCATION_GROUPS = [
@@ -8,46 +8,107 @@ const LOCATION_GROUPS = [
     label: 'Bajaj Auto',
     description: 'Manufacturing plants & headquarters',
     icon: Factory,
-    locations: [
+    subGroups: [
       {
-        id: 'akurdi',
-        name: 'Akurdi',
-        type: 'Corporate + EV hub',
-        country: 'India',
-        coordinates: '18.65 deg N, 73.77 deg E',
-        presence: 'Pune campus',
-        mapPosition: { x: '62%', y: '48%' },
-        subLocations: ['R&D', 'DDC', 'Chetak Plant', 'Utsah', 'Library', 'Old Corp', 'Transport'],
+        id: 'manufacturing-plants',
+        label: 'Manufacturing Plants',
+        icon: Factory,
+        locations: [
+          {
+            id: 'chakan',
+            name: 'Chakan',
+            type: 'Manufacturing + engineering',
+            country: 'India',
+            coordinates: '18.75 deg N, 73.86 deg E',
+            presence: 'Pune industrial belt',
+            mapPosition: { x: '64%', y: '45%' },
+            subLocations: ['Plant 1', 'Plant 2', 'Chakan R&D'],
+          },
+          {
+            id: 'waluj',
+            name: 'Waluj',
+            type: 'Manufacturing plant',
+            country: 'India',
+            coordinates: '19.88 deg N, 75.23 deg E',
+            presence: 'Aurangabad cluster',
+            mapPosition: { x: '58%', y: '52%' },
+            subLocations: ['Waluj Plant', 'Admin Block'],
+          },
+          {
+            id: 'pantnagar',
+            name: 'Pantnagar',
+            type: 'Manufacturing plant',
+            country: 'India',
+            coordinates: '29.02 deg N, 79.49 deg E',
+            presence: 'Uttarakhand campus',
+            mapPosition: { x: '70%', y: '30%' },
+            subLocations: ['Plant', 'Township'],
+          },
+        ],
       },
       {
-        id: 'chakan',
-        name: 'Chakan',
-        type: 'Manufacturing + engineering',
-        country: 'India',
-        coordinates: '18.75 deg N, 73.86 deg E',
-        presence: 'Pune industrial belt',
-        mapPosition: { x: '64%', y: '45%' },
-        subLocations: ['Plant 1', 'Plant 2', 'Chakan R&D'],
+        id: 'headquarters',
+        label: 'Headquarters',
+        icon: Building2,
+        locations: [
+          {
+            id: 'akurdi',
+            name: 'Akurdi',
+            type: 'Corporate + EV hub',
+            country: 'India',
+            coordinates: '18.65 deg N, 73.77 deg E',
+            presence: 'Pune campus',
+            mapPosition: { x: '62%', y: '48%' },
+            subLocations: ['R&D', 'DDC', 'Chetak Plant', 'Utsah', 'Library', 'Old Corp', 'Transport'],
+          },
+        ],
       },
       {
-        id: 'waluj',
-        name: 'Waluj',
-        type: 'Manufacturing plant',
-        country: 'India',
-        coordinates: '19.88 deg N, 75.23 deg E',
-        presence: 'Aurangabad cluster',
-        mapPosition: { x: '58%', y: '52%' },
-        subLocations: ['Waluj Plant', 'Admin Block'],
-      },
-      {
-        id: 'pantnagar',
-        name: 'Pantnagar',
-        type: 'Manufacturing plant',
-        country: 'India',
-        coordinates: '29.02 deg N, 79.49 deg E',
-        presence: 'Uttarakhand campus',
-        mapPosition: { x: '70%', y: '30%' },
-        subLocations: ['Plant', 'Township'],
+        id: 'regional-offices',
+        label: 'Regional Offices',
+        icon: MapPin,
+        locations: [
+          {
+            id: 'mumbai-ro',
+            name: 'Mumbai',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '19.07 deg N, 72.87 deg E',
+            presence: 'West India hub',
+            mapPosition: { x: '55%', y: '55%' },
+            subLocations: ['Mumbai RO'],
+          },
+          {
+            id: 'delhi-ro',
+            name: 'Delhi',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '28.61 deg N, 77.20 deg E',
+            presence: 'North India hub',
+            mapPosition: { x: '65%', y: '35%' },
+            subLocations: ['Delhi RO'],
+          },
+          {
+            id: 'chennai-ro',
+            name: 'Chennai',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '13.08 deg N, 80.27 deg E',
+            presence: 'South India hub',
+            mapPosition: { x: '62%', y: '70%' },
+            subLocations: ['Chennai RO'],
+          },
+          {
+            id: 'kolkata-ro',
+            name: 'Kolkata',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '22.57 deg N, 88.36 deg E',
+            presence: 'East India hub',
+            mapPosition: { x: '72%', y: '48%' },
+            subLocations: ['Kolkata RO'],
+          },
+        ],
       },
     ],
   },
@@ -58,32 +119,32 @@ const LOCATION_GROUPS = [
     icon: Building2,
     locations: [
       {
-        id: 'bangalore',
-        name: 'Bangalore',
-        type: 'Regional office',
+        id: 'akurdi-bacl',
+        name: 'Akurdi',
+        type: 'Corporate office',
         country: 'India',
-        coordinates: '12.97 deg N, 77.59 deg E',
-        presence: 'South India office',
-        mapPosition: { x: '54%', y: '72%' },
-        subLocations: ['Bangalore Office'],
+        coordinates: '18.65 deg N, 73.77 deg E',
+        presence: 'Pune campus',
+        mapPosition: { x: '62%', y: '48%' },
+        subLocations: ['BACL Office'],
       },
     ],
   },
   {
-    id: 'regional-offices',
-    label: 'Regional Offices',
-    description: 'Sales & service network',
-    icon: MapPin,
+    id: 'bajaj-auto-technology',
+    label: 'Bajaj Auto Technology Limited',
+    description: 'Technology & digital hub',
+    icon: Code2,
     locations: [
       {
-        id: 'regional-offices',
-        name: 'Regional Offices',
-        type: 'Sales + service network',
+        id: 'bangalore-batl',
+        name: 'Bangalore',
+        type: 'Technology office',
         country: 'India',
-        coordinates: 'Multi-city',
-        presence: 'Metro network',
-        mapPosition: { x: '38%', y: '40%' },
-        subLocations: ['Mumbai RO', 'Delhi RO', 'Chennai RO', 'Kolkata RO'],
+        coordinates: '12.97 deg N, 77.59 deg E',
+        presence: 'South India tech hub',
+        mapPosition: { x: '54%', y: '72%' },
+        subLocations: ['BATL Office'],
       },
     ],
   },
@@ -137,7 +198,7 @@ const BAJAJ_COUNTRIES = [
 
 const MARKET_COUNT = 80
 
-function GlobePresence() {
+function GlobePresence({ title }) {
   const mountRef = useRef(null)
   const markerRefs = useRef({})
   const isPausedRef = useRef(false)
@@ -292,6 +353,9 @@ function GlobePresence() {
 
       const updateMarkers = () => {
         const { clientWidth: w, clientHeight: h } = mount
+        const safeInsetX = 34
+        const safeInsetTop = 52
+        const safeInsetBottom = 34
         countryVecs.forEach(({ name, vec }) => {
           const el = markerRefs.current[name]
           if (!el) return
@@ -300,7 +364,9 @@ function GlobePresence() {
           const visible = world.z > -0.18
           const x = (screen.x * 0.5 + 0.5) * w
           const y = (-screen.y * 0.5 + 0.5) * h
-          el.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`
+          const safeX = Math.min(Math.max(x, safeInsetX), w - safeInsetX)
+          const safeY = Math.min(Math.max(y, safeInsetTop), h - safeInsetBottom)
+          el.style.transform = `translate(calc(${safeX}px - 50%), calc(${safeY}px - 50%))`
           el.style.opacity = visible ? '1' : '0'
           el.style.pointerEvents = visible ? 'auto' : 'none'
           el.tabIndex = visible ? 0 : -1
@@ -349,19 +415,20 @@ function GlobePresence() {
   }, [])
 
   return (
-    <div className="relative min-h-[460px] overflow-hidden rounded-card border border-brand-primary/10 bg-gradient-to-br from-brand-light/80 via-white to-sky-50 shadow-card">
+    <div className="relative min-h-[360px] overflow-hidden rounded-card border border-brand-primary/10 bg-gradient-to-br from-brand-light/80 via-white to-sky-50 shadow-card sm:min-h-[420px] lg:min-h-[460px]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.14),transparent_55%)]" />
       <div ref={mountRef} className="absolute inset-0" aria-hidden="true" />
 
       {/* Header overlay */}
-      <div className="pointer-events-none absolute left-5 top-5 z-20">
+      <div className="pointer-events-none absolute left-3 top-3 z-20 space-y-2 sm:left-5 sm:top-5">
+        {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
         <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-[11px] font-medium text-brand-primary">
           <Globe2 size={12} />
           Global Presence
         </div>
       </div>
 
-      <div className="absolute left-5 top-16 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
+      <div className="absolute left-5 top-24 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
         <div className="mb-4 rounded-card border border-white/10 bg-white/10 px-3 py-3">
           <p className="text-4xl font-bold leading-none tracking-tight">{MARKET_COUNT}</p>
           <p className="mt-1 text-sm text-white/65">Countries worldwide</p>
@@ -398,12 +465,12 @@ function GlobePresence() {
         </div>
       </div>
 
-      <div className="absolute bottom-5 left-5 right-5 z-20 flex gap-1.5 overflow-x-auto pb-1 lg:hidden [&::-webkit-scrollbar]:hidden">
+      <div className="absolute bottom-3 left-3 right-3 z-20 flex gap-1.5 overflow-x-auto pb-1 sm:bottom-5 sm:left-5 sm:right-5 lg:hidden [&::-webkit-scrollbar]:hidden">
         {BAJAJ_COUNTRIES.map((country) => (
           <button
             key={country.name}
             type="button"
-            className={`flex-shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-all focus-ring ${
+            className={`flex-shrink-0 rounded-full border px-2.5 py-1.5 text-[10px] font-semibold transition-all focus-ring sm:px-3 sm:text-[11px] ${
               activeCountry === country.name
                 ? 'border-brand-primary bg-brand-primary text-white'
                 : 'border-brand-primary/10 bg-white/90 text-brand-primary backdrop-blur-sm'
@@ -434,7 +501,7 @@ function GlobePresence() {
               if (node) markerRefs.current[country.name] = node
               else delete markerRefs.current[country.name]
             }}
-            className="absolute left-0 top-0 z-10 group flex h-8 w-8 items-center justify-center rounded-full focus-ring"
+            className="absolute left-0 top-0 z-10 group flex h-7 w-7 items-center justify-center rounded-full focus-ring sm:h-8 sm:w-8"
             aria-label={`${country.name}${country.primary ? ' HQ' : ''}`}
             onMouseEnter={() => pauseOnCountry(country.name)}
             onMouseLeave={resumeGlobe}
@@ -454,7 +521,7 @@ function GlobePresence() {
                     }`}
                   />
                 </span>
-                <span className="pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-brand-primary px-2.5 py-1 text-[11px] font-bold text-white shadow-md">
+                <span className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-brand-primary px-2 py-0.5 text-[9px] font-bold text-white shadow-md sm:mb-2.5 sm:px-2.5 sm:py-1 sm:text-[11px]">
                   India - HQ
                 </span>
               </>
@@ -468,7 +535,7 @@ function GlobePresence() {
                   }`}
                 />
                 <span
-                  className={`pointer-events-none absolute bottom-full left-1/2 mb-2.5 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-0.5 text-[10px] font-semibold text-brand-dark shadow-sm transition-all duration-150 ${
+                  className={`pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[9px] font-semibold text-brand-dark shadow-sm transition-all duration-150 sm:mb-2.5 sm:px-2 sm:text-[10px] ${
                     isActive
                       ? 'bg-brand-primary text-white opacity-100 shadow-[0_0_14px_rgba(37,99,235,0.35)]'
                       : 'bg-white/90 opacity-90 ring-1 ring-brand-primary/10 group-hover:bg-white group-hover:opacity-100'
@@ -557,29 +624,60 @@ function PlantCard({ location }) {
   )
 }
 
-function GroupTile({ group, onEnter }) {
+function GroupTile({ group, onEnter, onEnterSubGroup }) {
   const Icon = group.icon
+  const hasSubGroups = Boolean(group.subGroups?.length)
+
+  if (hasSubGroups) {
+    return (
+      <div className="site-surface-interactive relative w-full rounded-card border p-3">
+        <div className="flex items-start justify-between gap-2">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10">
+            <Icon size={19} />
+          </span>
+        </div>
+        <div className="mt-2">
+          <p className="text-[13px] font-semibold text-text-primary">{group.label}</p>
+          <p className="mt-0.5 text-xs text-text-secondary">{group.description}</p>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {group.subGroups.map((sg) => (
+            <button
+              key={sg.id}
+              type="button"
+              onClick={() => onEnterSubGroup(group.id, sg.id)}
+              className="inline-flex items-center gap-1 rounded-full bg-brand-light px-2 py-0.5 text-[11px] font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
+            >
+              {sg.label}
+              <ChevronRight size={10} className="flex-shrink-0 opacity-60" />
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <button
       type="button"
       onClick={onEnter}
-      className="group site-surface-interactive relative w-full rounded-card border p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring"
+      className="group site-surface-interactive relative w-full rounded-card border p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring"
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white">
-          <Icon size={21} />
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white">
+          <Icon size={19} />
         </span>
         <ChevronRight
           size={16}
           className="mt-0.5 flex-shrink-0 text-text-secondary transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
         />
       </div>
-      <div className="mt-2.5">
-        <p className="text-sm font-semibold text-text-primary">{group.label}</p>
+      <div className="mt-2">
+        <p className="text-[13px] font-semibold text-text-primary">{group.label}</p>
         <p className="mt-0.5 text-xs text-text-secondary">{group.description}</p>
       </div>
-      <div className="mt-2.5">
-        <span className="rounded-full bg-brand-light px-2.5 py-1 text-[11px] font-semibold text-brand-primary">
+      <div className="mt-2">
+        <span className="rounded-full bg-brand-light px-2 py-0.5 text-[11px] font-semibold text-brand-primary">
           {group.locations.length} {group.locations.length === 1 ? 'location' : 'locations'}
         </span>
       </div>
@@ -587,11 +685,16 @@ function GroupTile({ group, onEnter }) {
   )
 }
 
-function LocationGroupRail({ onEnterGroup }) {
+function LocationGroupRail({ onEnterGroup, onEnterSubGroup }) {
   return (
-    <div className="hidden h-[460px] flex-col justify-between lg:flex">
+    <div className="hidden h-[460px] w-[16rem] flex-col justify-between gap-3 lg:flex xl:w-[17rem] 2xl:w-[18rem]">
       {LOCATION_GROUPS.map((group) => (
-        <GroupTile key={group.id} group={group} onEnter={() => onEnterGroup(group.id)} />
+        <GroupTile
+          key={group.id}
+          group={group}
+          onEnter={() => onEnterGroup(group.id)}
+          onEnterSubGroup={onEnterSubGroup}
+        />
       ))}
     </div>
   )
@@ -599,61 +702,84 @@ function LocationGroupRail({ onEnterGroup }) {
 
 export default function LocationsSection({ title }) {
   const [enteredGroup, setEnteredGroup] = useState(null)
-  const [viewKey, setViewKey] = useState(0)
-
-  function handleEnter(groupId) {
-    setEnteredGroup(groupId)
-    setViewKey((k) => k + 1)
-  }
-
-  function handleBack() {
-    setEnteredGroup(null)
-    setViewKey((k) => k + 1)
-  }
+  const [enteredSubGroup, setEnteredSubGroup] = useState(null)
 
   const group = LOCATION_GROUPS.find((g) => g.id === enteredGroup)
+  const subGroup = group?.subGroups?.find((sg) => sg.id === enteredSubGroup)
+  const displayLocations = subGroup ? subGroup.locations : group?.locations
+  const displayIcon = subGroup ? subGroup.icon : group?.icon
+  const displayLabel = subGroup ? subGroup.label : group?.label
+
+  const handleEnterSubGroup = (groupId, subGroupId) => {
+    setEnteredGroup(groupId)
+    setEnteredSubGroup(subGroupId)
+  }
+
+  const handleBack = () => {
+    setEnteredGroup(null)
+    setEnteredSubGroup(null)
+  }
+
+  const isDetailVisible = Boolean(enteredGroup)
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
-        <GlobePresence />
-        {!enteredGroup && <LocationGroupRail onEnterGroup={handleEnter} />}
-      </div>
-      {title && (
-        <div className="site-surface rounded-card border px-4 py-3">
-          <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
-        </div>
-      )}
-
-      {!enteredGroup ? (
-        <div key={viewKey} className="animate-in slide-in-from-left grid grid-cols-1 gap-4 sm:grid-cols-3 lg:hidden">
-          {LOCATION_GROUPS.map((g) => (
-            <GroupTile key={g.id} group={g} onEnter={() => handleEnter(g.id)} />
-          ))}
-        </div>
-      ) : (
-        <div key={viewKey} className="animate-in slide-in-from-right space-y-4">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={handleBack}
-              className="flex items-center gap-1.5 rounded-btn border border-brand-primary/20 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
-            >
-              <ArrowLeft size={13} />
-              Back
-            </button>
-            <div className="flex items-center gap-1.5 text-text-secondary">
-              <group.icon size={14} className="text-brand-primary" />
-              <span className="text-sm font-semibold text-text-primary">{group.label}</span>
-            </div>
+      <div className="relative [overflow-x:clip]">
+        <div
+          className={`transition-[transform,opacity] duration-500 ease-in-out ${
+            isDetailVisible
+              ? 'absolute top-0 left-0 w-full -translate-x-full opacity-0 pointer-events-none'
+              : 'relative translate-x-0 opacity-100'
+          }`}
+        >
+          <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_17rem] 2xl:grid-cols-[minmax(0,1fr)_18rem]">
+            <GlobePresence title={title} />
+            <LocationGroupRail onEnterGroup={setEnteredGroup} onEnterSubGroup={handleEnterSubGroup} />
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {group.locations.map((location) => (
-              <PlantCard key={location.id} location={location} />
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-3 sm:gap-4 lg:hidden">
+            {LOCATION_GROUPS.map((g) => (
+              <GroupTile
+                key={g.id}
+                group={g}
+                onEnter={() => setEnteredGroup(g.id)}
+                onEnterSubGroup={handleEnterSubGroup}
+              />
             ))}
           </div>
         </div>
-      )}
+
+        <div
+          className={`transition-[transform,opacity] duration-500 ease-in-out ${
+            isDetailVisible
+              ? 'relative translate-x-0 opacity-100'
+              : 'absolute top-0 left-0 w-full translate-x-full opacity-0 pointer-events-none'
+          }`}
+        >
+          {group && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="flex items-center gap-1.5 rounded-btn border border-brand-primary/20 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
+                >
+                  <ArrowLeft size={13} />
+                  Back
+                </button>
+                <div className="flex items-center gap-1.5">
+                  {displayIcon && <displayIcon size={14} className="text-brand-primary" />}
+                  <span className="text-sm font-semibold text-text-primary">{displayLabel}</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {displayLocations?.map((location) => (
+                  <PlantCard key={location.id} location={location} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

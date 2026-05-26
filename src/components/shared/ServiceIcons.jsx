@@ -95,17 +95,26 @@ export function CompensationIcon({ size = 24, strokeWidth = 2, className = '' })
   )
 }
 
-export function RecognitionGemIcon({ size = 24, strokeWidth = 2, className = '' }) {
+export function RecognitionGemIcon({ size = 24, className = '' }) {
   return (
-    <Svg size={size} strokeWidth={strokeWidth} className={className}>
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M8 21l8 0" />
-      <path d="M12 17l0 4" />
-      <path d="M7 4l10 0" />
-      <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
-      <path d="M5 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      <path d="M19 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-    </Svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      <g fill="#FFD43B" transform="translate(16 16) scale(1.14) translate(-16 -16)">
+        <path d="M15.2 2.7 20 8.4l-5.5 4.9-3.1-6.8z" />
+        <path d="M22 7.8 29.2 8.5l-4.3 5.5-7.2.2z" />
+        <path d="M8.8 8.5 14 13.6l-7.1.4-3.8-5.9z" />
+        <path d="M17.8 16.4 26 18l-4.7 5.9-5.2-3.7z" />
+        <path d="M11.8 16.8 8.1 24l-5-5.2 6.4-3.8z" />
+        <path d="M14.5 14.8 18 13l2 3.2-3.5 2.5-3.4-.9z" />
+      </g>
+    </svg>
   )
 }
 
@@ -211,13 +220,44 @@ export function MediclaimIcon({ size = 24, strokeWidth = 2, className = '' }) {
   )
 }
 
-export function CsrIcon({ size = 24, strokeWidth = 2, className = '' }) {
+export function CsrIcon({ size = 24, className = '' }) {
   return (
-    <Svg size={size} strokeWidth={strokeWidth} className={className}>
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 21 L12 7" />
-      <path d="M12 16 C10 16 7 15 7 12 C8 12 12 13 12 16 Z" />
-      <path d="M12 11 C14 11 17 10 17 7 C16 7 12 8 12 11 Z" />
-    </Svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      <g transform="translate(0 -1)">
+        <path
+          d="M16 2.8C10.4 8.4 7.7 12.7 7.7 17.1c0 5.1 3.7 8.4 8.3 8.4s8.3-3.3 8.3-8.4c0-4.4-2.7-8.7-8.3-14.3z"
+          fill="#1D63FF"
+          stroke="#082A8C"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        />
+        <ellipse cx="16" cy="15.4" rx="5.8" ry="2.2" fill="#8EC5FF" opacity="0.85" />
+      </g>
+      <g transform="translate(0 0.6)">
+        <path
+          d="M15.4 24.8C10.4 23.6 6.8 20.9 4.7 17c4.6-.5 8.1.9 10.7 4.1z"
+          fill="#43D613"
+          stroke="#169D00"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M16.6 24.8c5-1.2 8.6-3.9 10.7-7.8c-4.6-.5-8.1.9-10.7 4.1z"
+          fill="#43D613"
+          stroke="#169D00"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <path d="M16 21.2v6.3" stroke="#0E8E00" strokeWidth="1.4" strokeLinecap="round" />
+      </g>
+    </svg>
   )
 }

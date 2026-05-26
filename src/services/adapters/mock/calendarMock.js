@@ -1,5 +1,13 @@
+function formatIsoDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+    date.getDate()
+  ).padStart(2, '0')}`
+}
+
 export const calendarMock = {
   getEvents() {
+    const todayKey = formatIsoDate(new Date())
+
     return [
       {
         date: '2026-01-01',
@@ -48,28 +56,28 @@ export const calendarMock = {
         time: '11:00 am - 1:00 pm',
       },
       {
-        date: '2026-05-22',
+        date: todayKey,
         label: 'Leadership Sync',
         type: 'meeting',
         location: 'Board Room',
         time: '9:30 am - 10:00 am',
       },
       {
-        date: '2026-05-22',
+        date: todayKey,
         label: 'Product Review',
         type: 'meeting',
         location: 'Conference Room 2',
         time: '11:00 am - 12:00 pm',
       },
       {
-        date: '2026-05-22',
+        date: todayKey,
         label: 'Dealer Network Check-in',
         type: 'meeting',
         location: 'Teams',
         time: '2:30 pm - 3:00 pm',
       },
       {
-        date: '2026-05-22',
+        date: todayKey,
         label: 'Plant Operations Standup',
         type: 'meeting',
         location: 'Operations War Room',

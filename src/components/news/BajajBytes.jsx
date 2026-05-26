@@ -1,4 +1,5 @@
-import { ArrowRight } from 'lucide-react'
+import { useRef } from 'react'
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const VOLUMES = [
   {
@@ -41,19 +42,62 @@ function CoverArt({ volume }) {
 }
 
 export default function BajajBytes({ title }) {
+  const carouselRef = useRef(null)
+  const hasCarouselControls = VOLUMES.length > 1
+
+  function scrollByPage(direction) {
+    const scrollAmount = carouselRef.current?.clientWidth ?? 720
+    carouselRef.current?.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth',
+    })
+  }
+
   return (
-    <div className="site-surface rounded-card border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+    <div className="site-surface relative overflow-hidden rounded-card border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
       {title && (
-        <h2 className="mb-4 text-lg font-semibold text-brand-primary">{title}</h2>
+        <div className="px-5 pt-5 sm:px-14">
+          <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
+        </div>
       )}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+      {hasCarouselControls && (
+        <>
+          <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white via-white/80 to-transparent" />
+          <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white via-white/80 to-transparent" />
+          <div className="hidden sm:flex pointer-events-none absolute inset-y-0 left-0 right-0 z-20 items-center justify-between px-2">
+            <button
+              type="button"
+              onClick={() => scrollByPage(-1)}
+              className="pointer-events-auto p-2 rounded-full bg-white/90 border border-gray-200 text-text-secondary shadow-card hover:text-brand-primary hover:border-brand-primary/30 hover:bg-brand-light focus-ring transition-all"
+              aria-label="Previous Bajaj Bytes"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByPage(1)}
+              className="pointer-events-auto p-2 rounded-full bg-white/90 border border-gray-200 text-text-secondary shadow-card hover:text-brand-primary hover:border-brand-primary/30 hover:bg-brand-light focus-ring transition-all"
+              aria-label="Next Bajaj Bytes"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </>
+      )}
+
+      <div
+        ref={carouselRef}
+        className="grid auto-cols-[minmax(17rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 py-6 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
+        aria-label="Bajaj Bytes carousel"
+      >
         {VOLUMES.map((volume) => (
           <a
             key={volume.id}
             href={volume.href}
             target="_blank"
             rel="noreferrer"
-            className="site-surface-interactive group overflow-hidden rounded-card border text-left transition-all hover:-translate-y-1 hover:shadow-card focus-ring"
+            className="site-surface-interactive group overflow-hidden rounded-card border text-left transition-all hover:-translate-y-1 hover:shadow-card focus-ring snap-start"
           >
             <div className="relative h-28 min-h-28 overflow-hidden bg-brand-light">
               <CoverArt volume={volume} />
