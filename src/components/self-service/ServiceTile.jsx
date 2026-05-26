@@ -7,7 +7,7 @@ const tileStyles = {
   'health-wellness':  'from-[#1665C0] to-[#0E3E88]',
   compensation:       'from-[#1248A2] to-[#0C2E6A]',
   mediclaim:          'from-[#1A56A8] to-[#133E82]',
-  csr:                'from-[#1665C0] to-[#0E3E88]',
+  csr:                'from-white to-[#f0fdf4]',
 
   // Slate — admin / docs
   policies:           'from-[#3B4E6A] to-[#1C2D42]',
@@ -20,7 +20,7 @@ const tileStyles = {
   'holiday-calendar': 'from-[#0D7E98] to-[#09576C]',
 
   // Amber — recognition / ideas / learning
-  'recognition-gem':  'from-[#4A91E2] to-[#1A56A8]',
+  'recognition-gem':  'from-[#1A56A8] to-[#133E82]',
   'bolt-learning':    'from-[#B07008] to-[#6E4302]',
   'idea-hub':         'from-[#BF7C08] to-[#7A4D02]',
 }

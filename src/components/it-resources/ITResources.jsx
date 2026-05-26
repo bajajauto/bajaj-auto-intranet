@@ -1,4 +1,28 @@
-import { Baby, BarChart3, Coffee, DoorOpen, Dumbbell, FileStack, Headphones, Wrench } from 'lucide-react'
+import { useState } from 'react'
+import { Baby, BarChart3, Coffee, Dumbbell, FileStack, Wrench } from 'lucide-react'
+import VisitorGatepassWizard from './VisitorGatepassWizard'
+
+function VisitorGatepassIcon({ size = 24, className = '' }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+      className={className} aria-hidden>
+      {/* ID card body */}
+      <rect x="1.5" y="5" width="16" height="12" rx="1.5" />
+      {/* Lanyard clip */}
+      <path d="M7.5 5v-1.2a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V5" />
+      {/* Photo circle */}
+      <circle cx="6.5" cy="10.5" r="2.2" />
+      {/* Text lines */}
+      <line x1="10.5" y1="9.5" x2="15" y2="9.5" />
+      <line x1="10.5" y1="12" x2="14" y2="12" />
+      {/* Shield */}
+      <path d="M18 11.5 C18 11.5 16.5 11 16.5 9.5 V7.5 L18 7 L19.5 7.5 V9.5 C19.5 11 18 11.5 18 11.5Z" strokeWidth="1.4" />
+      {/* Shield checkmark */}
+      <polyline points="16.9,9.2 17.6,10 19.1,8.2" strokeWidth="1.3" />
+    </svg>
+  )
+}
 
 function IntercomDeskIcon({ size = 24, className = '' }) {
   return (
@@ -43,7 +67,7 @@ const IT_LINKS = [
     id: 'visitor-gatepass',
     label: 'Visitor Gatepass',
     sublabel: 'Guest entry request',
-    icon: DoorOpen,
+    icon: VisitorGatepassIcon,
     href: '#',
     iconBg: 'bg-emerald-50',
     iconColor: 'text-emerald-600',
@@ -110,11 +134,24 @@ const FACILITIES = [
   },
 ]
 
-function ResourceLink({ label, sublabel, icon: Icon, href, iconBg, iconColor, hoverBorder, hoverShadow }) {
+function ResourceLink({
+  label,
+  sublabel,
+  icon: Icon,
+  href,
+  iconBg,
+  iconColor,
+  hoverBorder,
+  hoverShadow,
+  onClick,
+}) {
   return (
     <a
       href={href}
-      onClick={e => e.preventDefault()}
+      onClick={(e) => {
+        e.preventDefault()
+        onClick?.()
+      }}
       className={`site-surface-interactive group flex items-center gap-3 rounded-card border p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${hoverBorder} ${hoverShadow} focus-ring cursor-pointer`}
     >
       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${iconBg} ring-1 ring-inset ring-black/5 transition-transform duration-200 group-hover:scale-110`}>
@@ -129,33 +166,43 @@ function ResourceLink({ label, sublabel, icon: Icon, href, iconBg, iconColor, ho
 }
 
 export default function ITResources({ title }) {
+  const [gatepassOpen, setGatepassOpen] = useState(false)
+
   return (
-    <section className="site-surface rounded-card border p-5">
-      <h2 className="mb-5 text-lg font-semibold text-brand-primary">
-        {title ?? 'Resources and Support Services'}
-      </h2>
+    <>
+      <section className="site-surface rounded-card border p-5">
+        <h2 className="mb-5 text-lg font-semibold text-brand-primary">
+          {title ?? 'Resources and Support Services'}
+        </h2>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-        <div className="site-surface rounded-card border p-5">
-          <h3 className="mb-4 text-lg font-semibold text-brand-primary">
-            Facilities @ Bajaj Auto Limited
-          </h3>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-            {FACILITIES.map((item) => (
-              <ResourceLink key={item.id} {...item} />
-            ))}
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="site-surface rounded-card border p-5">
+            <h3 className="mb-4 text-lg font-semibold text-brand-primary">
+              Facilities @ Bajaj Auto Limited
+            </h3>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              {FACILITIES.map((item) => (
+                <ResourceLink key={item.id} {...item} />
+              ))}
+            </div>
+          </div>
+
+          <div className="site-surface rounded-card border p-5">
+            <h3 className="mb-4 text-lg font-semibold text-brand-primary">Tools and Services</h3>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              {IT_LINKS.map((item) => (
+                <ResourceLink
+                  key={item.id}
+                  {...item}
+                  onClick={item.id === 'visitor-gatepass' ? () => setGatepassOpen(true) : undefined}
+                />
+              ))}
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="site-surface rounded-card border p-5">
-          <h3 className="mb-4 text-lg font-semibold text-brand-primary">Tools and Services</h3>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-            {IT_LINKS.map((item) => (
-              <ResourceLink key={item.id} {...item} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+      <VisitorGatepassWizard isOpen={gatepassOpen} onClose={() => setGatepassOpen(false)} />
+    </>
   )
 }

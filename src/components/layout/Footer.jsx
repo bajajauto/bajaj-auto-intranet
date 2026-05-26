@@ -1,5 +1,5 @@
 import { Instagram, Linkedin } from 'lucide-react'
-import bajajMark from '@/assets/bajaj-mark-transparent.png'
+import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
 
 const SOCIAL_LINKS = [
   {
@@ -28,24 +28,11 @@ export default function Footer() {
           <div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
               <div className="flex flex-shrink-0 items-center gap-3">
-                <div className="flex h-12 w-[4.25rem] items-center justify-center sm:h-14 sm:w-20">
-                  <img
-                    src={bajajMark}
-                    alt="Bajaj Auto"
-                    className="h-10 w-auto object-contain sm:h-11"
-                  />
-                </div>
-                <div className="-rotate-6 text-white">
-                  <p className="text-[9px] font-black uppercase leading-[0.78] tracking-tight sm:text-[10px]">
-                    The World&apos;s
-                  </p>
-                  <p className="text-sm font-black uppercase leading-[0.78] tracking-tight sm:text-[15px]">
-                    Favourite
-                  </p>
-                  <p className="text-sm font-black uppercase leading-[0.78] tracking-tight sm:text-[15px]">
-                    Indian
-                  </p>
-                </div>
+                <img
+                  src={bajajFooterLockup}
+                  alt="Bajaj Auto - The World's Favourite Indian"
+                  className="h-10 w-auto object-contain sm:h-12"
+                />
               </div>
               <div className="hidden h-14 w-px flex-shrink-0 bg-white/25 sm:block" />
               <div className="min-w-0">
