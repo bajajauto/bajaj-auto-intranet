@@ -27,6 +27,7 @@ function getBotResponse(text) {
 export default function FloatingSupportButton() {
   const [hideForFeedback, setHideForFeedback] = useState(false)
   const [isPromptDismissed, setPromptDismissed] = useState(false)
+  const [isPromptClosing, setPromptClosing] = useState(false)
   const [hasPassedEss, setHasPassedEss] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([
@@ -93,7 +94,18 @@ export default function FloatingSupportButton() {
   }
 
   const showPrompt = !isOpen && !isPromptDismissed && !hasPassedEss
+  const renderPrompt = showPrompt || isPromptClosing
   const showQuickActions = messages.length === 1 && !isTyping
+
+  function dismissPrompt(event) {
+    event.stopPropagation()
+    if (isPromptClosing) return
+    setPromptClosing(true)
+    window.setTimeout(() => {
+      setPromptDismissed(true)
+      setPromptClosing(false)
+    }, 220)
+  }
 
   return (
     <div
@@ -103,7 +115,7 @@ export default function FloatingSupportButton() {
     >
       {/* ── Chat panel ─────────────────────────────────────── */}
       {isOpen && (
-        <div className="mb-3 flex w-80 flex-col overflow-hidden rounded-2xl border border-brand-primary/10 bg-white shadow-[0_8px_40px_rgba(26,86,168,0.18)] animate-in slide-in-from-bottom-4 duration-300 sm:w-[22rem]">
+        <div className="mb-2 flex w-[min(20rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-brand-primary/10 bg-white shadow-[0_8px_40px_rgba(26,86,168,0.18)] animate-in slide-in-from-bottom-4 duration-300 sm:w-[20rem]">
           {/* Header */}
           <div className="flex items-center gap-3 bg-gradient-to-r from-brand-primary to-brand-dark px-4 py-3">
             <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/15 ring-2 ring-white/20">
@@ -127,7 +139,7 @@ export default function FloatingSupportButton() {
           </div>
 
           {/* Messages */}
-          <div className="flex h-72 flex-col gap-3 overflow-y-auto bg-slate-50/70 p-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/20">
+          <div className="flex max-h-[14.5rem] min-h-[10rem] flex-col gap-3 overflow-y-auto bg-slate-50/70 p-3.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/20">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -139,7 +151,7 @@ export default function FloatingSupportButton() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[76%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
+                  className={`max-w-[82%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
                     msg.from === 'user'
                       ? 'rounded-br-sm bg-brand-primary text-white'
                       : 'rounded-bl-sm border border-brand-primary/8 bg-white text-text-primary shadow-sm'
@@ -168,13 +180,13 @@ export default function FloatingSupportButton() {
 
           {/* Quick-action chips (only on welcome screen) */}
           {showQuickActions && (
-            <div className="flex flex-wrap gap-1.5 border-t border-brand-primary/8 bg-white px-4 py-3">
+            <div className="flex flex-wrap gap-1.5 border-t border-brand-primary/8 bg-white px-3.5 py-2.5">
               {QUICK_ACTIONS.map((action) => (
                 <button
                   key={action.id}
                   type="button"
                   onClick={() => sendMessage(action.label)}
-                  className="rounded-full border border-brand-primary/20 bg-brand-light px-3 py-1.5 text-[12px] font-medium text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
+                  className="rounded-full border border-brand-primary/20 bg-brand-light px-2.5 py-1.5 text-[11px] font-medium text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
                 >
                   {action.label}
                 </button>
@@ -183,7 +195,7 @@ export default function FloatingSupportButton() {
           )}
 
           {/* Input */}
-          <div className="flex items-center gap-2 border-t border-brand-primary/8 bg-white px-3 py-3">
+          <div className="flex items-center gap-2 border-t border-brand-primary/8 bg-white px-3 py-2.5">
             <input
               ref={inputRef}
               type="text"
@@ -207,29 +219,32 @@ export default function FloatingSupportButton() {
       )}
 
       {/* ── Pill trigger button ─────────────────────────────── */}
-      <div className="flex max-w-full items-center rounded-full bg-brand-primary text-white shadow-card transition-all hover:bg-brand-dark">
+      <div className="flex max-w-full items-center gap-2">
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          className="flex items-center gap-2 rounded-full px-4 py-3 focus-ring"
+          className="group flex items-center gap-2 rounded-full bg-brand-primary px-4 py-3 text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-modal focus-ring"
           aria-label="Open Jarvis chat"
           title="Jarvis"
         >
-          <BotMessageSquare size={20} />
-          <span className="text-sm font-medium">Jarvis</span>
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/20 transition-colors group-hover:bg-white/20">
+            <BotMessageSquare size={17} />
+          </span>
+          <span className="text-sm font-semibold">Jarvis</span>
         </button>
 
-        {showPrompt && (
-          <div className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/12 py-1.5 pl-3.5 pr-1.5 text-sm font-medium text-white shadow-inner backdrop-blur-sm sm:flex">
-            <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,0.8)]" />
-            <span className="whitespace-nowrap">Need anything? I&apos;m here.</span>
+        {renderPrompt && (
+          <div
+            className={`hidden origin-left items-center gap-2 rounded-full border border-brand-primary/15 bg-white/95 py-2 pl-3 pr-1.5 text-sm font-semibold text-brand-dark shadow-card backdrop-blur-md sm:flex ${
+              isPromptClosing ? 'jarvis-prompt-exit' : 'jarvis-prompt-enter'
+            }`}
+          >
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.75)]" />
+            <span className="whitespace-nowrap">Need help with anything?</span>
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                setPromptDismissed(true)
-              }}
-              className="rounded-full p-1 text-white/75 transition-colors hover:bg-white/10 hover:text-white focus-ring"
+              onClick={dismissPrompt}
+              className="rounded-full p-1 text-text-secondary transition-colors hover:bg-brand-light hover:text-brand-primary focus-ring"
               aria-label="Close Jarvis message"
             >
               <X size={14} />

@@ -42,9 +42,9 @@ export default function MainContent() {
               <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
                   <h2 id="self-service-heading" className="sr-only">
-                    Employee Self Service
+                    Employee Pitstop
                   </h2>
-                  <ServiceGrid title="Employee Self Service" />
+                  <ServiceGrid title="Employee Pitstop" />
                   <div id="bajaj-bytes" className="mt-4 scroll-mt-32 sm:mt-6">
                     <h2 id="bajaj-bytes-heading" className="sr-only">
                       Bajaj Bytes
@@ -72,7 +72,7 @@ export default function MainContent() {
             </h2>
             <NewsFeed title="Company News" />
           </ScrollReveal>
-          <ScrollReveal id="locations" aria-labelledby="locations-heading">
+          <ScrollReveal id="locations" aria-labelledby="locations-heading" className="xl:-mr-8 2xl:-mr-16">
             <h2 id="locations-heading" className="sr-only">
               Bajaj Auto Presence
             </h2>

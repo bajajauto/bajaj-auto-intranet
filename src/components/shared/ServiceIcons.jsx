@@ -220,20 +220,44 @@ export function MediclaimIcon({ size = 24, strokeWidth = 2, className = '' }) {
   )
 }
 
-export function CsrIcon({ size = 24, strokeWidth = 2, className = '' }) {
+export function CsrIcon({ size = 24, className = '' }) {
   return (
-    <Svg size={size} strokeWidth={strokeWidth} className={className}>
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M20.5 15.5a8.8 8.8 0 0 0 -1.8 -9.4a8.6 8.6 0 0 0 -12.4 0a8.8 8.8 0 0 0 -1.7 9" />
-      <path d="M5.2 7.8c-2.1 1.3 -2.8 3.7 -1.8 6.2c2.2 -.9 3.2 -3.2 2.5 -5.8" />
-      <path d="M12 4.8a6.7 6.7 0 1 0 5.8 10" />
-      <path d="M9.8 5.9c.8 .8 1.6 1.2 2.5 .6" />
-      <path d="M12.7 5.9c-.1 1 -.6 1.6 -1.5 2.1c-.8 .4 -.6 1.1 -1.5 1.6c-.9 .6 -1.2 1.5 -.2 2.4c.8 .7 1.8 1.4 2.4 2.2c.8 1.2 -.4 2.1 -.5 3.1" />
-      <path d="M14.7 6.8c-.2 .8 -.9 1.1 -1.2 1.8c1.2 .2 2.5 -.2 3.3 .9c-1.6 .3 -2.8 .5 -3.4 1.5c-.8 1.3 .6 2.7 1.4 2.1c1.1 -.8 2.2 .3 1.7 1.6" />
-      <path d="M4.7 19l3.1 -2.9c1.6 -1.2 3.1 -.9 4.3 -.9c1 0 2.3 -.9 3 .2c.7 1.2 -1.7 2.1 -3 2.2" />
-      <path d="M8.2 20.8c1.6 -1.7 2.8 -1.5 4.9 -1.3c1.4 .1 3.4 -1.1 5.4 -2.4c.5 -.3 1.3 -.1 1.1 .5c-.3 .8 -3.2 2.8 -5.8 4h-4.7" />
-      <path d="M2.5 18.2l3.4 3.4" />
-      <path d="M3.6 17.1l3.4 3.4" />
-    </Svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      <g transform="translate(0 -1)">
+        <path
+          d="M16 2.8C10.4 8.4 7.7 12.7 7.7 17.1c0 5.1 3.7 8.4 8.3 8.4s8.3-3.3 8.3-8.4c0-4.4-2.7-8.7-8.3-14.3z"
+          fill="#1D63FF"
+          stroke="#082A8C"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        />
+        <ellipse cx="16" cy="15.4" rx="5.8" ry="2.2" fill="#8EC5FF" opacity="0.85" />
+      </g>
+      <g transform="translate(0 0.6)">
+        <path
+          d="M15.4 24.8C10.4 23.6 6.8 20.9 4.7 17c4.6-.5 8.1.9 10.7 4.1z"
+          fill="#43D613"
+          stroke="#169D00"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M16.6 24.8c5-1.2 8.6-3.9 10.7-7.8c-4.6-.5-8.1.9-10.7 4.1z"
+          fill="#43D613"
+          stroke="#169D00"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <path d="M16 21.2v6.3" stroke="#0E8E00" strokeWidth="1.4" strokeLinecap="round" />
+      </g>
+    </svg>
   )
 }

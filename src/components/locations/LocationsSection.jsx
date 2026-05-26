@@ -353,6 +353,9 @@ function GlobePresence({ title }) {
 
       const updateMarkers = () => {
         const { clientWidth: w, clientHeight: h } = mount
+        const safeInsetX = 34
+        const safeInsetTop = 52
+        const safeInsetBottom = 34
         countryVecs.forEach(({ name, vec }) => {
           const el = markerRefs.current[name]
           if (!el) return
@@ -361,7 +364,9 @@ function GlobePresence({ title }) {
           const visible = world.z > -0.18
           const x = (screen.x * 0.5 + 0.5) * w
           const y = (-screen.y * 0.5 + 0.5) * h
-          el.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`
+          const safeX = Math.min(Math.max(x, safeInsetX), w - safeInsetX)
+          const safeY = Math.min(Math.max(y, safeInsetTop), h - safeInsetBottom)
+          el.style.transform = `translate(calc(${safeX}px - 50%), calc(${safeY}px - 50%))`
           el.style.opacity = visible ? '1' : '0'
           el.style.pointerEvents = visible ? 'auto' : 'none'
           el.tabIndex = visible ? 0 : -1
@@ -682,7 +687,7 @@ function GroupTile({ group, onEnter, onEnterSubGroup }) {
 
 function LocationGroupRail({ onEnterGroup, onEnterSubGroup }) {
   return (
-    <div className="hidden h-[460px] flex-col justify-between lg:flex">
+    <div className="hidden h-[460px] w-[16rem] flex-col justify-between gap-3 lg:flex xl:w-[17rem] 2xl:w-[18rem]">
       {LOCATION_GROUPS.map((group) => (
         <GroupTile
           key={group.id}
@@ -727,7 +732,7 @@ export default function LocationsSection({ title }) {
               : 'relative translate-x-0 opacity-100'
           }`}
         >
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+          <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_17rem] 2xl:grid-cols-[minmax(0,1fr)_18rem]">
             <GlobePresence title={title} />
             <LocationGroupRail onEnterGroup={setEnteredGroup} onEnterSubGroup={handleEnterSubGroup} />
           </div>
