@@ -42,9 +42,9 @@ export default function MainContent() {
               <div className="flex-1 min-w-0">
                 <section id="self-service" aria-labelledby="self-service-heading">
                   <h2 id="self-service-heading" className="sr-only">
-                    Employee Pitstop
+                    Pitstop
                   </h2>
-                  <ServiceGrid title="Employee Pitstop" />
+                  <ServiceGrid title="Pitstop" />
                   <div id="bajaj-bytes" className="mt-4 scroll-mt-32 sm:mt-6">
                     <h2 id="bajaj-bytes-heading" className="sr-only">
                       Bajaj Bytes

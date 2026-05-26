@@ -1,7 +1,7 @@
 export const navGroups = [
   {
     id: 'employee-services',
-    label: 'Employee Pitstop',
+    label: 'Pitstop',
     description: 'HR, payroll & personal services',
     icon: 'User',
     colorKey: 'blue',
