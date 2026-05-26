@@ -114,8 +114,8 @@ const LOCATION_GROUPS = [
   },
   {
     id: 'bajaj-auto-credit',
-    label: 'Bajaj Auto Technology Limited',
-    description: 'Technology office',
+    label: 'Bajaj Auto Credit Limited',
+    description: 'Financial services office',
     icon: Building2,
     locations: [
       {
