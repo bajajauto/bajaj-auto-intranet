@@ -15,49 +15,23 @@ export default function FeedbackSection({ title }) {
 
   return (
     <>
-      <style>{`
-        @keyframes letter-glow {
-          0%, 100% {
-            color: #1A56A8;
-            text-shadow: none;
-          }
-          50% {
-            color: #2563EB;
-            text-shadow:
-              0 0 4px rgba(37,99,235,0.35),
-              0 0 8px rgba(37,99,235,0.15);
-          }
-        }
-      `}</style>
-
       <div className="px-4 py-3">
         {title && (
           <h2 className="mb-2 text-base font-semibold text-brand-primary">{title}</h2>
         )}
-      <div className="flex items-center justify-center gap-3 py-2 flex-wrap">
-        <h3 className="text-base font-bold leading-snug select-none sm:text-lg">
-          {HEADING.split('').map((char, i) => (
-            <span
-              key={i}
-              style={{
-                display: 'inline-block',
-                animation: 'letter-glow 4s ease-in-out infinite',
-                animationDelay: `${i * 0.08}s`,
-              }}
-            >
-              {char === ' ' ? ' ' : char}
-            </span>
-          ))}
-        </h3>
+        <div className="flex flex-wrap items-center justify-center gap-3 py-2">
+          <h3 className="text-base font-bold leading-snug text-brand-primary sm:text-lg">
+            {HEADING}
+          </h3>
 
-        <button
-          onClick={() => openModal('')}
-          className="flex items-center justify-center gap-2 rounded-btn border border-brand-primary/20 bg-white/70 px-3 py-1.5 text-xs font-semibold text-brand-primary shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-primary/35 hover:bg-brand-light focus-ring"
-        >
-          <MessageSquare size={14} />
-          Submit Feedback
-        </button>
-      </div>
+          <button
+            onClick={() => openModal('')}
+            className="flex items-center justify-center gap-2 rounded-btn border border-brand-primary/20 bg-white/70 px-3 py-1.5 text-xs font-semibold text-brand-primary shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-primary/35 hover:bg-brand-light focus-ring"
+          >
+            <MessageSquare size={14} />
+            Submit Feedback
+          </button>
+        </div>
       </div>
 
       <FeedbackModal

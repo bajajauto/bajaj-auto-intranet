@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Baby, BarChart3, Coffee, FileStack, Wrench } from 'lucide-react'
+import { Baby, Coffee, Wrench } from 'lucide-react'
 import utsahImage from '@/assets/utsah.jpg'
 import VisitorGatepassWizard from './VisitorGatepassWizard'
 
@@ -108,28 +108,6 @@ const IT_LINKS = [
     iconColor: 'text-emerald-600',
     hoverBorder: 'hover:border-emerald-200',
     hoverShadow: 'hover:shadow-emerald-100/60',
-  },
-  {
-    id: 'qlik',
-    label: 'BI Dashboard',
-    sublabel: 'Qlik Sense',
-    icon: BarChart3,
-    href: '#',
-    iconBg: 'bg-amber-50',
-    iconColor: 'text-amber-600',
-    hoverBorder: 'hover:border-amber-200',
-    hoverShadow: 'hover:shadow-amber-100/60',
-  },
-  {
-    id: 'cdms',
-    label: 'CDMS',
-    sublabel: 'Document Management',
-    icon: FileStack,
-    href: '#',
-    iconBg: 'bg-teal-50',
-    iconColor: 'text-teal-600',
-    hoverBorder: 'hover:border-teal-200',
-    hoverShadow: 'hover:shadow-teal-100/60',
   },
 ]
 

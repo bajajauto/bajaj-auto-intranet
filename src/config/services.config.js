@@ -67,7 +67,7 @@ export const services = [
   },
   {
     id: 'documents',
-    label: 'Documents',
+    label: 'Documents / Forms',
     icon: 'DocumentsIcon',
     redirectUrl: '#',
     enabled: true,
@@ -92,13 +92,6 @@ export const services = [
     id: 'mediclaim',
     label: 'Mediclaim Card',
     icon: 'MediclaimIcon',
-    redirectUrl: '#',
-    enabled: true,
-  },
-  {
-    id: 'form-16',
-    label: 'Forms',
-    icon: 'Form16Icon',
     redirectUrl: '#',
     enabled: true,
   },

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { BotMessageSquare, Send, Sparkles, X } from 'lucide-react'
+import { Send, X } from 'lucide-react'
+import jarvisImage from '@/assets/jarvis-blue.png'
 
 const QUICK_ACTIONS = [
   { id: 'leave', label: 'Leave balance' },
@@ -8,6 +9,20 @@ const QUICK_ACTIONS = [
   { id: 'payslip', label: 'My payslip' },
   { id: 'holiday', label: 'Holiday list' },
 ]
+
+function JarvisIcon({ size = 32, className = '' }) {
+  return (
+    <img
+      src={jarvisImage}
+      alt=""
+      width={size}
+      height={size}
+      className={className}
+      draggable="false"
+      aria-hidden="true"
+    />
+  )
+}
 
 function getBotResponse(text) {
   const t = text.toLowerCase()
@@ -118,8 +133,8 @@ export default function FloatingSupportButton() {
         <div className="mb-2 flex w-[min(20rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-brand-primary/10 bg-white shadow-[0_8px_40px_rgba(26,86,168,0.18)] animate-in slide-in-from-bottom-4 duration-300 sm:w-[20rem]">
           {/* Header */}
           <div className="flex items-center gap-3 bg-gradient-to-r from-brand-primary to-brand-dark px-4 py-3">
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/15 ring-2 ring-white/20">
-              <BotMessageSquare size={18} className="text-white" />
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#202020] ring-2 ring-white/20">
+              <JarvisIcon size={40} />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-bold text-white">Jarvis</p>
@@ -146,8 +161,8 @@ export default function FloatingSupportButton() {
                 className={`flex items-end gap-2 ${msg.from === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
               >
                 {msg.from === 'bot' && (
-                  <div className="mb-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary">
-                    <Sparkles size={11} className="text-white" />
+                  <div className="mb-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#202020]">
+                    <JarvisIcon size={28} />
                   </div>
                 )}
                 <div
@@ -165,8 +180,8 @@ export default function FloatingSupportButton() {
             {/* Typing indicator */}
             {isTyping && (
               <div className="flex items-end gap-2">
-                <div className="mb-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary">
-                  <Sparkles size={11} className="text-white" />
+                <div className="mb-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#202020]">
+                  <JarvisIcon size={28} />
                 </div>
                 <div className="flex gap-1.5 rounded-2xl rounded-bl-sm border border-brand-primary/8 bg-white px-4 py-3.5 shadow-sm">
                   <span className="h-2 w-2 animate-bounce rounded-full bg-brand-primary/50 [animation-delay:0ms]" />
@@ -223,12 +238,12 @@ export default function FloatingSupportButton() {
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          className="group flex items-center gap-2 rounded-full bg-brand-primary px-4 py-3 text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-modal focus-ring"
+          className="group flex items-center gap-2 rounded-full bg-brand-primary py-2 pl-2 pr-4 text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-modal focus-ring"
           aria-label="Open Jarvis chat"
           title="Jarvis"
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/20 transition-colors group-hover:bg-white/20">
-            <BotMessageSquare size={17} />
+          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-[#202020] ring-1 ring-white/20 transition-transform duration-200 group-hover:scale-105">
+            <JarvisIcon size={40} />
           </span>
           <span className="text-sm font-semibold">Jarvis</span>
         </button>

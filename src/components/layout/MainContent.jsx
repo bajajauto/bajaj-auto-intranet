@@ -15,10 +15,10 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 const SECTION_IDS = [
   'self-service',
   'bajaj-bytes',
+  'it-resources',
   'company-overview',
   'company-news',
   'locations',
-  'it-resources',
   'emergency-contacts',
   'feedback',
 ]
@@ -59,6 +59,13 @@ export default function MainContent() {
             </div>
           </ScrollReveal>
 
+          <ScrollReveal id="it-resources" aria-labelledby="it-resources-heading">
+            <h2 id="it-resources-heading" className="sr-only">
+              Resources and Support Services
+            </h2>
+            <ITResources title="Resources and Support Services" />
+          </ScrollReveal>
+
           <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
             <h2 id="company-overview-heading" className="sr-only">
               Company Overview
@@ -77,13 +84,6 @@ export default function MainContent() {
               Bajaj Auto Presence
             </h2>
             <LocationsSection title="Bajaj Auto Presence" />
-          </ScrollReveal>
-
-          <ScrollReveal id="it-resources" aria-labelledby="it-resources-heading">
-            <h2 id="it-resources-heading" className="sr-only">
-              Resources and Support Services
-            </h2>
-            <ITResources title="Resources and Support Services" />
           </ScrollReveal>
 
           <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
