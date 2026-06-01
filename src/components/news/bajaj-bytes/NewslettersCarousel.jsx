@@ -1,32 +1,7 @@
-import { useRef } from 'react'
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
-
-const VOLUMES = [
-  {
-    id: 'vol-7',
-    label: 'Volume 7',
-    month: 'May 2026',
-    href: 'https://ting-brochures.netlify.app/bajaj-bytes-vol7-brochure',
-    gradient: 'linear-gradient(135deg, #fbbf24 0%, #f97316 30%, #ec4899 62%, #4c1d95 100%)',
-    accent: 'rgba(244, 114, 182, 0.28)',
-  },
-  {
-    id: 'vol-6',
-    label: 'Volume 6',
-    month: 'April 2026',
-    href: 'https://ting-brochures.netlify.app/bajaj-bytes-vol6-brochure',
-    gradient: 'linear-gradient(135deg, #0f766e 0%, #115e59 48%, #0f172a 100%)',
-    accent: 'rgba(245, 158, 11, 0.28)',
-  },
-  {
-    id: 'vol-5',
-    label: 'Volume 5',
-    month: 'March 2026',
-    href: 'https://ting-brochures.netlify.app/bajaj-bytes-vol6-brochure',
-    gradient: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1f0b37 100%)',
-    accent: 'rgba(251, 113, 133, 0.28)',
-  },
-]
+import { useMemo, useRef } from 'react'
+import { ArrowRight, ChevronLeft, ChevronRight, Headphones } from 'lucide-react'
+import { useBajajBytesVolumes } from '@/hooks/useBajajBytesVolumes'
+import { usePodcastEpisodes } from '@/hooks/usePodcastEpisodes'
 
 function CoverArt({ volume }) {
   return (
@@ -41,9 +16,16 @@ function CoverArt({ volume }) {
   )
 }
 
-export default function NewslettersCarousel() {
+export default function NewslettersCarousel({ onListenToVolume }) {
+  const volumes = useBajajBytesVolumes()
+  const episodes = usePodcastEpisodes()
   const carouselRef = useRef(null)
-  const hasCarouselControls = VOLUMES.length > 1
+  const hasCarouselControls = volumes.length > 1
+
+  const volumesWithPodcast = useMemo(
+    () => new Set(episodes.map((ep) => ep.sourceVolumeId)),
+    [episodes],
+  )
 
   function scrollByPage(direction) {
     const scrollAmount = carouselRef.current?.clientWidth ?? 720
@@ -51,6 +33,13 @@ export default function NewslettersCarousel() {
       left: direction * scrollAmount,
       behavior: 'smooth',
     })
+  }
+
+  function handleListenClick(event, volumeId) {
+    if (!onListenToVolume) return
+    event.preventDefault()
+    event.stopPropagation()
+    onListenToVolume(volumeId)
   }
 
   return (
@@ -85,35 +74,57 @@ export default function NewslettersCarousel() {
         className="grid auto-cols-[minmax(17rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 py-6 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
         aria-label="Bajaj Bytes newsletters carousel"
       >
-        {VOLUMES.map((volume) => (
-          <a
-            key={volume.id}
-            href={volume.href}
-            target="_blank"
-            rel="noreferrer"
-            className="site-surface-interactive group overflow-hidden rounded-card border text-left transition-all hover:-translate-y-1 hover:shadow-card focus-ring snap-start"
-          >
-            <div className="relative h-28 min-h-28 overflow-hidden bg-brand-light">
-              <CoverArt volume={volume} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
-              <div className="absolute bottom-4 left-4 text-white">
-                <p className="text-sm font-bold leading-none">Bajaj Bytes</p>
-                <p className="mt-1 text-[10px] font-semibold text-white/80">
-                  {volume.label.replace('Volume ', 'Vol. ')}
-                </p>
+        {volumes.map((volume) => {
+          const hasPodcast = volumesWithPodcast.has(volume.id)
+          return (
+            <a
+              key={volume.id}
+              href={volume.href}
+              target="_blank"
+              rel="noreferrer"
+              className="site-surface-interactive group overflow-hidden rounded-card border text-left transition-all hover:-translate-y-1 hover:shadow-card focus-ring snap-start"
+            >
+              <div className="relative h-28 min-h-28 overflow-hidden bg-brand-light">
+                <CoverArt volume={volume} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="text-sm font-bold leading-none">Bajaj Bytes</p>
+                  <p className="mt-1 text-[10px] font-semibold text-white/80">
+                    {volume.label.replace('Volume ', 'Vol. ')}
+                  </p>
+                </div>
+                {hasPodcast && (
+                  <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-semibold text-brand-primary shadow-card">
+                    <Headphones size={11} />
+                    Podcast
+                  </span>
+                )}
               </div>
-            </div>
 
-            <div className="p-3">
-              <p className="text-sm font-semibold text-text-primary">{volume.label}</p>
-              <p className="mt-0.5 text-xs text-text-secondary">{volume.month}</p>
-              <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-primary">
-                Read
-                <ArrowRight size={13} />
-              </span>
-            </div>
-          </a>
-        ))}
+              <div className="flex items-center justify-between gap-2 p-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-text-primary">{volume.label}</p>
+                  <p className="mt-0.5 text-xs text-text-secondary">{volume.month}</p>
+                  <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-primary">
+                    Read
+                    <ArrowRight size={13} />
+                  </span>
+                </div>
+                {hasPodcast && (
+                  <button
+                    type="button"
+                    onClick={(e) => handleListenClick(e, volume.id)}
+                    className="inline-flex flex-shrink-0 items-center gap-1 rounded-full border border-brand-primary/30 bg-brand-light px-2.5 py-1 text-[11px] font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
+                    aria-label={`Listen to ${volume.label} podcast`}
+                  >
+                    <Headphones size={12} />
+                    Listen
+                  </button>
+                )}
+              </div>
+            </a>
+          )
+        })}
       </div>
     </div>
   )

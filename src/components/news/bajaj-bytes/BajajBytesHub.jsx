@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BookOpen, Headphones, PlayCircle } from 'lucide-react'
+import { podcastService } from '@/services/podcastService'
 import NewslettersCarousel from './NewslettersCarousel'
 import PodcastSection from './PodcastSection'
 import YouTubeSection from './YouTubeSection'
@@ -12,6 +13,18 @@ const TABS = [
 
 export default function BajajBytesHub({ title }) {
   const [activeTab, setActiveTab] = useState('newsletters')
+  const [initialEpisodeId, setInitialEpisodeId] = useState(null)
+
+  function handleListenToVolume(volumeId) {
+    const episode = podcastService.getByVolume(volumeId)
+    setInitialEpisodeId(episode?.id ?? null)
+    setActiveTab('podcast')
+  }
+
+  function handleTabChange(tabId) {
+    if (tabId !== 'podcast') setInitialEpisodeId(null)
+    setActiveTab(tabId)
+  }
 
   return (
     <div className="site-surface relative overflow-hidden rounded-card border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
@@ -34,7 +47,7 @@ export default function BajajBytesHub({ title }) {
                 aria-selected={isActive}
                 aria-controls={`bytes-panel-${tab.id}`}
                 id={`bytes-tab-${tab.id}`}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={
                   'flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold transition-all focus-ring sm:flex-none ' +
                   (isActive
@@ -55,8 +68,12 @@ export default function BajajBytesHub({ title }) {
         id={`bytes-panel-${activeTab}`}
         aria-labelledby={`bytes-tab-${activeTab}`}
       >
-        {activeTab === 'newsletters' && <NewslettersCarousel />}
-        {activeTab === 'podcast' && <PodcastSection />}
+        {activeTab === 'newsletters' && (
+          <NewslettersCarousel onListenToVolume={handleListenToVolume} />
+        )}
+        {activeTab === 'podcast' && (
+          <PodcastSection key={initialEpisodeId ?? 'default'} initialEpisodeId={initialEpisodeId} />
+        )}
         {activeTab === 'watch' && <YouTubeSection />}
       </div>
     </div>

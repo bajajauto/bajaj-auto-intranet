@@ -1,13 +1,21 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Headphones } from 'lucide-react'
 import { usePodcastEpisodes } from '@/hooks/usePodcastEpisodes'
+import { useBajajBytesVolumes } from '@/hooks/useBajajBytesVolumes'
 import PodcastCard from './PodcastCard'
 import PodcastPlayer from './PodcastPlayer'
 
-export default function PodcastSection() {
+export default function PodcastSection({ initialEpisodeId = null }) {
   const episodes = usePodcastEpisodes()
-  const [activeId, setActiveId] = useState(episodes[0]?.id ?? null)
-  const [isPlaying, setIsPlaying] = useState(false)
+  const volumes = useBajajBytesVolumes()
+  const [activeId, setActiveId] = useState(initialEpisodeId ?? episodes[0]?.id ?? null)
+  const [isPlaying, setIsPlaying] = useState(Boolean(initialEpisodeId))
+
+  const volumesById = useMemo(() => {
+    const map = new Map()
+    for (const v of volumes) map.set(v.id, v)
+    return map
+  }, [volumes])
 
   if (episodes.length === 0) {
     return (
@@ -49,6 +57,7 @@ export default function PodcastSection() {
           <PodcastCard
             key={episode.id}
             episode={episode}
+            sourceVolume={volumesById.get(episode.sourceVolumeId) ?? null}
             isActive={episode.id === activeEpisode.id}
             isPlaying={isPlaying && episode.id === activeEpisode.id}
             onSelect={() => handleSelect(episode.id)}
