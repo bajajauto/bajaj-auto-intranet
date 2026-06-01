@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { PlayCircle } from 'lucide-react'
+import { useMemo, useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight, PlayCircle } from 'lucide-react'
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos'
 import VideoCard from './VideoCard'
 import VideoLightboxModal from './VideoLightboxModal'
@@ -15,11 +15,20 @@ export default function YouTubeSection() {
   const videos = useYoutubeVideos()
   const [activeCategory, setActiveCategory] = useState('all')
   const [playingVideo, setPlayingVideo] = useState(null)
+  const carouselRef = useRef(null)
 
   const visibleVideos = useMemo(() => {
     if (activeCategory === 'all') return videos
     return videos.filter((v) => v.category === activeCategory)
   }, [videos, activeCategory])
+
+  function scrollByPage(direction) {
+    const scrollAmount = carouselRef.current?.clientWidth ?? 720
+    carouselRef.current?.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth',
+    })
+  }
 
   if (videos.length === 0) {
     return (
@@ -37,12 +46,14 @@ export default function YouTubeSection() {
     )
   }
 
+  const hasCarouselControls = visibleVideos.length > 1
+
   return (
-    <div className="space-y-5 px-5 py-6 sm:px-14">
+    <div className="space-y-5 py-6">
       <div
         role="tablist"
         aria-label="Video category"
-        className="flex flex-wrap gap-2"
+        className="flex flex-wrap gap-2 px-5 sm:px-14"
       >
         {CATEGORIES.map((cat) => {
           const isActive = cat.id === activeCategory
@@ -67,14 +78,47 @@ export default function YouTubeSection() {
       </div>
 
       {visibleVideos.length === 0 ? (
-        <p className="py-8 text-center text-sm text-text-secondary">
+        <p className="px-5 py-8 text-center text-sm text-text-secondary sm:px-14">
           No videos in this category yet.
         </p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleVideos.map((video) => (
-            <VideoCard key={video.id} video={video} onPlay={() => setPlayingVideo(video)} />
-          ))}
+        <div className="relative">
+          {hasCarouselControls && (
+            <>
+              <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white via-white/80 to-transparent" />
+              <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white via-white/80 to-transparent" />
+              <div className="hidden sm:flex pointer-events-none absolute inset-y-0 left-0 right-0 z-20 items-center justify-between px-2">
+                <button
+                  type="button"
+                  onClick={() => scrollByPage(-1)}
+                  className="pointer-events-auto p-2 rounded-full bg-white/90 border border-gray-200 text-text-secondary shadow-card hover:text-brand-primary hover:border-brand-primary/30 hover:bg-brand-light focus-ring transition-all"
+                  aria-label="Previous videos"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollByPage(1)}
+                  className="pointer-events-auto p-2 rounded-full bg-white/90 border border-gray-200 text-text-secondary shadow-card hover:text-brand-primary hover:border-brand-primary/30 hover:bg-brand-light focus-ring transition-all"
+                  aria-label="Next videos"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            </>
+          )}
+
+          <div
+            ref={carouselRef}
+            className="grid auto-cols-[minmax(18rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 pb-2 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
+            aria-label="Bajaj Bytes watch carousel"
+          >
+            {visibleVideos.map((video) => (
+              <div key={video.id} className="snap-start">
+                <VideoCard video={video} onPlay={() => setPlayingVideo(video)} />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
