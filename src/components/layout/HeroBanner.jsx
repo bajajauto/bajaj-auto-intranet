@@ -3,6 +3,7 @@ import pulsarImage from '@/assets/pulsar.webp'
 import { useUser } from '@/context/UserContext'
 import { calendarService } from '@/services/calendarService'
 import { notificationService } from '@/services/notificationService'
+import StockTickerTape from '@/components/dashboard/StockTickerTape'
 
 function getHeroMoment() {
   const h = new Date().getHours()
@@ -108,7 +109,7 @@ function PulsarHeroScene() {
       <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#133E82]/80 to-transparent" />
 
       {/* Outer div: horizontal drive + flip */}
-      <div className="hero-pulsar-drive pointer-events-none absolute bottom-3 select-none">
+      <div className="hero-pulsar-drive pointer-events-none absolute bottom-12 select-none">
         {/* Inner div: suspension bob */}
         <div className="hero-pulsar-bob relative inline-block">
           <img
@@ -173,8 +174,9 @@ export default function HeroBanner() {
     <div className="relative mb-5 overflow-hidden rounded-2xl animate-fade-up" style={{ minHeight: '128px' }}>
       <PulsarHeroScene />
 
-      <div className="relative z-10 flex min-h-[128px] flex-col gap-2 p-4 text-white md:px-5 md:py-4 lg:flex-row lg:items-stretch lg:justify-between">
-        <div className="max-w-sm lg:self-end">
+      <div className="relative z-10 flex min-h-[128px] flex-col">
+        <div className="flex flex-1 flex-col gap-2 p-4 text-white md:px-5 md:py-4 lg:flex-row lg:items-stretch lg:justify-between">
+          <div className="max-w-sm lg:self-end">
           <p className="mb-0.5 text-xs font-medium tracking-wide text-white/60">{moment.greeting}</p>
           <h1 className="mb-0.5 text-lg font-bold tracking-tight text-white">
             {user.name}
@@ -253,7 +255,10 @@ export default function HeroBanner() {
               {today}
             </div>
           </div>
+          </div>
         </div>
+
+        <StockTickerTape />
       </div>
     </div>
   )
