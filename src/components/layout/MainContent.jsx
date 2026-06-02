@@ -3,6 +3,7 @@ import Sidebar from './Sidebar'
 import HeroBanner from './HeroBanner'
 import ServiceGrid from '@/components/self-service/ServiceGrid'
 import DashboardUpdatesPanel from '@/components/dashboard/DashboardUpdatesPanel'
+import VolunteerNextCard from '@/components/dashboard/VolunteerNextCard'
 import CompanyOverview from '@/components/company/CompanyOverview'
 import CsrSection from '@/components/csr/CsrSection'
 import NewsFeed from '@/components/news/NewsFeed'
@@ -56,6 +57,7 @@ export default function MainContent() {
                 </section>
               </div>
               <div className="flex w-full flex-col gap-4 sm:gap-6 lg:w-80 lg:flex-shrink-0">
+                <VolunteerNextCard />
                 <DashboardUpdatesPanel />
               </div>
             </div>
