@@ -95,12 +95,4 @@ export const services = [
     redirectUrl: '#',
     enabled: true,
   },
-  {
-    id: 'csr',
-    label: 'CSR',
-    icon: 'CsrIcon',
-    redirectUrl: '#',
-    enabled: true,
-  },
-
 ]

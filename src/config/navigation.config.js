@@ -51,7 +51,6 @@ export const navGroups = [
       },
       { id: 'mediclaim', label: 'Mediclaim Card', icon: 'Shield', sectionId: 'self-service' },
       { id: 'form-16', label: 'Forms', icon: 'FileText', sectionId: 'self-service' },
-      { id: 'csr', label: 'CSR', icon: 'Handshake', sectionId: 'self-service' },
     ],
   },
   {

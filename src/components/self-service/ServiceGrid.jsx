@@ -14,7 +14,6 @@ const pitstopOrder = [
   'benefits',
   'health-wellness',
   'mediclaim',
-  'csr',
   'idea-hub',
 ]
 
