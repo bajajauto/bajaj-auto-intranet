@@ -7,7 +7,6 @@ const tileStyles = {
   'health-wellness':  'from-[#1665C0] to-[#0E3E88]',
   compensation:       'from-[#1248A2] to-[#0C2E6A]',
   mediclaim:          'from-[#1A56A8] to-[#133E82]',
-  csr:                'from-white to-[#f0fdf4]',
 
   // Slate — admin / docs
   policies:           'from-[#3B4E6A] to-[#1C2D42]',
