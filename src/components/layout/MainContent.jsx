@@ -4,6 +4,7 @@ import HeroBanner from './HeroBanner'
 import ServiceGrid from '@/components/self-service/ServiceGrid'
 import DashboardUpdatesPanel from '@/components/dashboard/DashboardUpdatesPanel'
 import CompanyOverview from '@/components/company/CompanyOverview'
+import CsrSection from '@/components/csr/CsrSection'
 import NewsFeed from '@/components/news/NewsFeed'
 import BajajBytes from '@/components/news/BajajBytes'
 import ITResources from '@/components/it-resources/ITResources'
@@ -17,6 +18,7 @@ const SECTION_IDS = [
   'bajaj-bytes',
   'it-resources',
   'company-overview',
+  'csr',
   'company-news',
   'locations',
   'emergency-contacts',
@@ -71,6 +73,13 @@ export default function MainContent() {
               Company Overview
             </h2>
             <CompanyOverview title="Company Overview" />
+          </ScrollReveal>
+
+          <ScrollReveal id="csr" aria-labelledby="csr-heading">
+            <h2 id="csr-heading" className="sr-only">
+              Community and CSR
+            </h2>
+            <CsrSection title="Community & CSR" />
           </ScrollReveal>
 
           <ScrollReveal id="company-news" aria-labelledby="company-news-heading">

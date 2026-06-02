@@ -83,6 +83,22 @@ export const navGroups = [
     ],
   },
   {
+    id: 'community-csr',
+    label: 'Community & CSR',
+    description: 'Foundation, programmes & volunteering',
+    icon: 'CsrIcon',
+    colorKey: 'emerald',
+    hideChildren: true,
+    items: [
+      {
+        id: 'csr',
+        label: 'Community & CSR',
+        icon: 'HeartHandshake',
+        sectionId: 'csr',
+      },
+    ],
+  },
+  {
     id: 'it-resources-group',
     label: 'Resources & Support',
     description: 'IT, telecom & asset help',
