@@ -295,7 +295,7 @@ export default function DashboardUpdatesPanel() {
           )}
         </div>
       ) : (
-        <div className="max-h-[390px] overflow-y-auto divide-y divide-gray-50 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
+        <div className="max-h-[390px] overflow-y-auto divide-y divide-gray-50 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
           {notifications.map((notification) => (
             <NotificationCard key={notification.id} {...notification} />
           ))}

@@ -7,9 +7,10 @@ function formatDate(iso) {
 
 export default function CsrStoryCard({ story }) {
   return (
-    <a
-      href="#"
-      className="site-surface-interactive group flex h-full flex-col overflow-hidden rounded-card border transition-all hover:-translate-y-1 hover:shadow-card focus-ring"
+    <button
+      type="button"
+      aria-label={`Read impact story: ${story.headline}`}
+      className="site-surface-interactive group flex h-full w-full flex-col overflow-hidden rounded-card border text-left transition-all hover:-translate-y-1 hover:shadow-card focus-ring"
     >
       <div className="relative h-28 overflow-hidden bg-bg-alt">
         <img
@@ -34,6 +35,6 @@ export default function CsrStoryCard({ story }) {
           </span>
         </div>
       </div>
-    </a>
+    </button>
   )
 }

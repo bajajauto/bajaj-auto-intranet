@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react'
-import { Search, Bell, Menu, LogOut, ChevronDown } from 'lucide-react'
+import { Search, Megaphone, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { useUser } from '@/context/UserContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { notificationService } from '@/services/notificationService'
-import NotificationsPanel from '@/components/notifications/NotificationsPanel'
+import { noticeService } from '@/services/noticeService'
+import NoticesPanel from '@/components/notices/NoticesPanel'
 import logoImage from '@/assets/bajaj-mark-transparent.png'
 
 export default function Header() {
@@ -13,17 +13,18 @@ export default function Header() {
   const isMobile = useMediaQuery('(max-width: 767px)')
 
   const [searchQuery, setSearchQuery] = useState('')
-  const [isNotifOpen, setNotifOpen] = useState(false)
+  const [isNoticesOpen, setNoticesOpen] = useState(false)
   const [isProfileOpen, setProfileOpen] = useState(false)
+  const [noticesSeen, setNoticesSeen] = useState(false)
 
-  const notifications = notificationService.getAll()
-  const unreadCount = notifications.length
+  const notices = noticeService.getAll()
+  const noticeCount = notices.length
 
-  const notifRef = useRef(null)
+  const noticesRef = useRef(null)
   const profileRef = useRef(null)
 
   function closeAll() {
-    setNotifOpen(false)
+    setNoticesOpen(false)
     setProfileOpen(false)
   }
 
@@ -31,34 +32,35 @@ export default function Header() {
     setMobileOpen(!isMobileOpen)
   }
 
-  function handleBellClick() {
+  function handleNoticesClick() {
     setProfileOpen(false)
-    setNotifOpen((v) => !v)
+    setNoticesOpen((v) => !v)
+    setNoticesSeen(true)
   }
 
   function handleProfileClick() {
-    setNotifOpen(false)
+    setNoticesOpen(false)
     setProfileOpen((v) => !v)
   }
 
   useEffect(() => {
-    if (!isNotifOpen && !isProfileOpen) return
+    if (!isNoticesOpen && !isProfileOpen) return
     function onMouseDown(e) {
-      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false)
+      if (noticesRef.current && !noticesRef.current.contains(e.target)) setNoticesOpen(false)
       if (profileRef.current && !profileRef.current.contains(e.target)) setProfileOpen(false)
     }
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
-  }, [isNotifOpen, isProfileOpen])
+  }, [isNoticesOpen, isProfileOpen])
 
   useEffect(() => {
-    if (!isNotifOpen && !isProfileOpen) return
+    if (!isNoticesOpen && !isProfileOpen) return
     function onKeyDown(e) {
       if (e.key === 'Escape') closeAll()
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [isNotifOpen, isProfileOpen])
+  }, [isNoticesOpen, isProfileOpen])
 
   return (
     <header className="fixed top-9 left-0 right-0 z-40 h-20 bg-brand-dark grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4 shadow-modal">
@@ -103,26 +105,26 @@ export default function Header() {
 
       {/* Right actions */}
       <div className="flex items-center justify-end gap-2 min-w-0">
-        {/* Notification bell */}
-        <div className="relative" ref={notifRef}>
+        {/* Announcements */}
+        <div className="relative" ref={noticesRef}>
           <button
-            onClick={handleBellClick}
-            aria-label="Notifications"
-            aria-expanded={isNotifOpen}
+            onClick={handleNoticesClick}
+            aria-label="Notices"
+            aria-expanded={isNoticesOpen}
             aria-haspopup="true"
             className="relative p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
           >
-            <Bell size={20} />
-            {unreadCount > 0 && (
+            <Megaphone size={20} />
+            {noticeCount > 0 && !noticesSeen && (
               <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-medium">
-                {unreadCount > 9 ? '9+' : unreadCount}
+                {noticeCount > 9 ? '9+' : noticeCount}
               </span>
             )}
           </button>
 
-          {isNotifOpen && (
-            <div className="absolute top-full right-0 mt-2 w-80 z-50">
-              <NotificationsPanel />
+          {isNoticesOpen && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 z-50">
+              <NoticesPanel />
             </div>
           )}
         </div>

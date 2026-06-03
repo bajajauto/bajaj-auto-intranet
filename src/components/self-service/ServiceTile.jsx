@@ -22,6 +22,9 @@ const tileStyles = {
   'recognition-gem':  'from-[#1A56A8] to-[#133E82]',
   'bolt-learning':    'from-[#B07008] to-[#6E4302]',
   'idea-hub':         'from-[#BF7C08] to-[#7A4D02]',
+
+  // Teal — IT
+  'it-summit':        'from-[#0D7E98] to-[#09576C]',
 }
 
 export default function ServiceTile({ id, label, icon, redirectUrl }) {

@@ -1,6 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Building2, ChevronRight, Code2, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
+import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
+import chetakSkeletonLogo from '@/assets/Chetak skeleton.png'
+
+function ChetakLogoIcon({ size = 19, className = '' }) {
+  return (
+    <img
+      src={chetakSkeletonLogo}
+      alt=""
+      aria-hidden="true"
+      className={`max-w-none object-contain ${className}`}
+      style={{ width: Math.round(size * 1.85), height: size }}
+    />
+  )
+}
 
 const LOCATION_GROUPS = [
   {
@@ -115,18 +128,72 @@ const LOCATION_GROUPS = [
   {
     id: 'bajaj-auto-credit',
     label: 'Bajaj Auto Credit Limited',
-    description: 'Financial office',
+    description: 'Financial office network',
     icon: Building2,
-    locations: [
+    subGroups: [
       {
-        id: 'akurdi-bacl',
-        name: 'Akurdi',
-        type: 'Corporate office',
-        country: 'India',
-        coordinates: '18.65 deg N, 73.77 deg E',
-        presence: 'Pune campus',
-        mapPosition: { x: '62%', y: '48%' },
-        subLocations: ['BACL Office'],
+        id: 'headquarters',
+        label: 'Headquarters',
+        icon: Building2,
+        locations: [
+          {
+            id: 'akurdi-bacl',
+            name: 'Akurdi',
+            type: 'Corporate office',
+            country: 'India',
+            coordinates: '18.65 deg N, 73.77 deg E',
+            presence: 'Pune campus',
+            mapPosition: { x: '62%', y: '48%' },
+            subLocations: ['BACL Office'],
+          },
+        ],
+      },
+      {
+        id: 'regional-offices',
+        label: 'Regional Offices',
+        icon: MapPin,
+        locations: [
+          {
+            id: 'mumbai-bacl',
+            name: 'Mumbai',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '19.07 deg N, 72.87 deg E',
+            presence: 'West India hub',
+            mapPosition: { x: '55%', y: '55%' },
+            subLocations: ['BACL Mumbai RO'],
+          },
+          {
+            id: 'delhi-bacl',
+            name: 'Delhi',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '28.61 deg N, 77.20 deg E',
+            presence: 'North India hub',
+            mapPosition: { x: '65%', y: '35%' },
+            subLocations: ['BACL Delhi RO'],
+          },
+          {
+            id: 'chennai-bacl',
+            name: 'Chennai',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '13.08 deg N, 80.27 deg E',
+            presence: 'South India hub',
+            mapPosition: { x: '62%', y: '70%' },
+            subLocations: ['BACL Chennai RO'],
+          },
+          {
+            id: 'kolkata-bacl',
+            name: 'Kolkata',
+            type: 'Regional office',
+            country: 'India',
+            coordinates: '22.57 deg N, 88.36 deg E',
+            presence: 'East India hub',
+            mapPosition: { x: '72%', y: '48%' },
+            subLocations: ['BACL Kolkata RO'],
+          },
+        ],
       },
     ],
   },
@@ -134,7 +201,9 @@ const LOCATION_GROUPS = [
     id: 'bajaj-auto-technology',
     label: 'Bajaj Auto Technology Limited',
     description: 'Technology & digital hub',
-    icon: Code2,
+    icon: ChetakLogoIcon,
+    iconSize: 27,
+    preserveIconOnHover: true,
     locations: [
       {
         id: 'bangalore-batl',
@@ -627,13 +696,14 @@ function PlantCard({ location }) {
 function GroupTile({ group, onEnter, onEnterSubGroup }) {
   const Icon = group.icon
   const hasSubGroups = Boolean(group.subGroups?.length)
+  const iconSize = group.iconSize ?? 19
 
   if (hasSubGroups) {
     return (
       <div className="site-surface-interactive relative w-full rounded-card border p-3">
         <div className="flex items-start justify-between gap-2">
           <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10">
-            <Icon size={19} />
+            <Icon size={iconSize} />
           </span>
         </div>
         <div className="mt-2">
@@ -664,8 +734,12 @@ function GroupTile({ group, onEnter, onEnterSubGroup }) {
       className="group site-surface-interactive relative w-full rounded-card border p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring"
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white">
-          <Icon size={19} />
+        <span
+          className={`flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 ${
+            group.preserveIconOnHover ? '' : 'group-hover:bg-brand-primary group-hover:text-white'
+          }`}
+        >
+          <Icon size={iconSize} />
         </span>
         <ChevronRight
           size={16}

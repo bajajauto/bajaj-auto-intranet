@@ -126,7 +126,7 @@ const FACILITIES = [
   },
   {
     id: 'cresh',
-    label: 'Cresh',
+    label: 'Chrèche',
     sublabel: 'Childcare',
     icon: Baby,
     href: '#',

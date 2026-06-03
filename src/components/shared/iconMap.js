@@ -34,6 +34,7 @@ import {
   Lightbulb,
   Map,
   MapPinned,
+  Megaphone,
   MessageSquare,
   Monitor,
   Newspaper,
@@ -66,6 +67,7 @@ import {
   ActionsPendingIcon,
   Form16Icon,
   MediclaimIcon,
+  ItSummitIcon,
   CsrIcon,
 } from './ServiceIcons'
 
@@ -86,6 +88,7 @@ export const iconMap = {
   ActionsPendingIcon,
   Form16Icon,
   MediclaimIcon,
+  ItSummitIcon,
   CsrIcon,
   // lucide icons (used elsewhere in the app)
   AlertCircle,
@@ -124,6 +127,7 @@ export const iconMap = {
   Lightbulb,
   Map,
   MapPinned,
+  Megaphone,
   MessageSquare,
   Monitor,
   Newspaper,

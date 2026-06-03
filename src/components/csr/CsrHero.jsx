@@ -1,4 +1,4 @@
-import { ArrowDown, HeartHandshake } from 'lucide-react'
+import { ChevronRight, HeartHandshake } from 'lucide-react'
 import ImpactCounter from './ImpactCounter'
 
 export default function CsrHero({ onJumpToVolunteer }) {
@@ -24,10 +24,10 @@ export default function CsrHero({ onJumpToVolunteer }) {
           <button
             type="button"
             onClick={onJumpToVolunteer}
-            className="mt-4 inline-flex items-center gap-2 rounded-btn bg-white px-4 py-2 text-sm font-semibold text-emerald-700 shadow-card transition-all hover:-translate-y-0.5 hover:bg-emerald-50 focus-ring"
+            className="mt-4 inline-flex items-center gap-0 rounded-btn bg-white px-4 py-2 text-sm font-semibold text-emerald-700 shadow-card transition-all hover:-translate-y-0.5 hover:bg-emerald-50 focus-ring"
           >
             Volunteer with BAF
-            <ArrowDown size={14} />
+            <ChevronRight size={14} />
           </button>
         </div>
 

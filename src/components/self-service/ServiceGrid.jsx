@@ -4,17 +4,18 @@ import ServiceTile from './ServiceTile'
 const pitstopOrder = [
   'team-directory',
   'leave-attendance',
-  'holiday-calendar',
-  'documents',
+  'benefits',
+  'idea-hub',
   'bolt-learning',
   'compensation',
   'travel',
   'policies',
   'recognition-gem',
-  'benefits',
+  'holiday-calendar',
   'health-wellness',
   'mediclaim',
-  'idea-hub',
+  'documents',
+  'it-summit',
 ]
 
 function orderServices(enabled, ids) {

@@ -36,7 +36,7 @@ export const services = [
     enabled: true,
   },
 
-  // Row 2: T · N · A · N · S
+  // Row 2: T · N · A · N · S (Benefits↔Holiday Calendar, Documents↔Idea Hub)
   {
     id: 'leave-attendance',
     label: 'Leave / Attendance',
@@ -45,9 +45,9 @@ export const services = [
     enabled: true,
   },
   {
-    id: 'benefits',
-    label: 'Benefits',
-    icon: 'BenefitsIcon',
+    id: 'holiday-calendar',
+    label: 'Holiday Calendar',
+    icon: 'HolidayCalendarIcon',
     redirectUrl: '#',
     enabled: true,
   },
@@ -66,25 +66,25 @@ export const services = [
     enabled: true,
   },
   {
-    id: 'documents',
-    label: 'Documents / Forms',
-    icon: 'DocumentsIcon',
-    redirectUrl: '#',
-    enabled: true,
-  },
-
-  // Row 3: A · T · N · S · N
-  {
     id: 'idea-hub',
     label: 'Idea Hub',
     icon: 'IdeaHubIcon',
     redirectUrl: '#',
     enabled: true,
   },
+
+  // Row 3: A · T · N · S · N
   {
-    id: 'holiday-calendar',
-    label: 'Holiday Calendar',
-    icon: 'HolidayCalendarIcon',
+    id: 'documents',
+    label: 'Documents / Forms',
+    icon: 'DocumentsIcon',
+    redirectUrl: '#',
+    enabled: true,
+  },
+  {
+    id: 'benefits',
+    label: 'Benefits',
+    icon: 'BenefitsIcon',
     redirectUrl: '#',
     enabled: true,
   },
@@ -92,6 +92,13 @@ export const services = [
     id: 'mediclaim',
     label: 'Mediclaim Card',
     icon: 'MediclaimIcon',
+    redirectUrl: '#',
+    enabled: true,
+  },
+  {
+    id: 'it-summit',
+    label: 'IT Summit',
+    icon: 'ItSummitIcon',
     redirectUrl: '#',
     enabled: true,
   },
