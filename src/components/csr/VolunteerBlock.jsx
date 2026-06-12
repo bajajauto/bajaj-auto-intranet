@@ -84,7 +84,7 @@ const VolunteerBlock = forwardRef(function VolunteerBlock(_, ref) {
 
         <div
           ref={carouselRef}
-          className="grid auto-cols-[minmax(15rem,1fr)] grid-flow-col gap-4 overflow-x-auto pb-1 snap-x snap-mandatory scroll-smooth lg:auto-cols-[calc((100%-2rem)/3)]"
+          className="scrollbar-none grid auto-cols-[minmax(15rem,1fr)] grid-flow-col gap-4 overflow-x-auto pb-1 snap-x snap-mandatory scroll-smooth lg:auto-cols-[calc((100%-2rem)/3)]"
           aria-label="Upcoming volunteer opportunities"
         >
           {opportunities.map((opp) => (

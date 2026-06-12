@@ -3,6 +3,15 @@
 // Bajaj Auto channel video IDs.
 const VIDEOS = [
   {
+    id: 'vid-teams-event-1',
+    title: 'Events - Teams video',
+    category: 'md-meetings',
+    externalUrl:
+      'https://teams.microsoft.com/l/message/48:notes/1781256673545?context=%7B%22contextType%22%3A%22chat%22%2C%22oid%22%3A%228%3Aorgid%3A9afb3f05-a891-487e-8051-3ed5274b7eb4%22%7D',
+    publishedOn: '2026-06-12',
+    description: 'Microsoft Teams event video shared with employees.',
+  },
+  {
     id: 'vid-1',
     title: 'MD Town Hall · Q4 FY26 results review',
     category: 'md-meetings',

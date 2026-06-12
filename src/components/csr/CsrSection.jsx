@@ -1,14 +1,18 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import CsrHero from './CsrHero'
 import ProgramsGrid from './ProgramsGrid'
 import VolunteerBlock from './VolunteerBlock'
 import CsrStoriesCarousel from './CsrStoriesCarousel'
 
 export default function CsrSection({ title }) {
-  const volunteerRef = useRef(null)
+  const contentRef = useRef(null)
+  const [activeView, setActiveView] = useState(null)
 
-  function handleJumpToVolunteer() {
-    volunteerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  function showView(view) {
+    setActiveView(view)
+    window.setTimeout(() => {
+      contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 0)
   }
 
   return (
@@ -18,9 +22,15 @@ export default function CsrSection({ title }) {
       )}
 
       <div className="space-y-6">
-        <CsrHero onJumpToVolunteer={handleJumpToVolunteer} />
-        <ProgramsGrid />
-        <VolunteerBlock ref={volunteerRef} />
+        <CsrHero
+          activeView={activeView}
+          onShowPrograms={() => showView('programs')}
+          onShowVolunteer={() => showView('volunteer')}
+        />
+        <div ref={contentRef}>
+          {activeView === 'programs' && <ProgramsGrid />}
+          {activeView === 'volunteer' && <VolunteerBlock />}
+        </div>
         <CsrStoriesCarousel />
       </div>
     </div>

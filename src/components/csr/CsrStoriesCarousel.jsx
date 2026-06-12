@@ -47,7 +47,7 @@ export default function CsrStoriesCarousel() {
 
         <div
           ref={carouselRef}
-          className="grid auto-cols-[minmax(16rem,1fr)] grid-flow-col gap-4 overflow-x-auto pb-1 snap-x snap-mandatory scroll-smooth lg:auto-cols-[calc((100%-2rem)/3)]"
+          className="scrollbar-none grid auto-cols-[minmax(16rem,1fr)] grid-flow-col gap-4 overflow-x-auto pb-1 snap-x snap-mandatory scroll-smooth lg:auto-cols-[calc((100%-2rem)/3)]"
           aria-label="CSR impact stories carousel"
         >
           {stories.map((story) => (

@@ -1,7 +1,14 @@
-import { ChevronRight, HeartHandshake } from 'lucide-react'
+import { ChevronRight, Grid3X3, HeartHandshake } from 'lucide-react'
 import ImpactCounter from './ImpactCounter'
 
-export default function CsrHero({ onJumpToVolunteer }) {
+export default function CsrHero({ activeView, onShowPrograms, onShowVolunteer }) {
+  const buttonBase =
+    'inline-flex items-center justify-center gap-1 rounded-btn px-4 py-2 text-sm font-semibold shadow-card transition-all hover:-translate-y-0.5 focus-ring'
+  const primaryButton =
+    'bg-white text-emerald-700 hover:bg-emerald-50'
+  const secondaryButton =
+    'border border-white/35 bg-white/10 text-white hover:bg-white/20'
+
   return (
     <div className="relative overflow-hidden rounded-card border border-emerald-900/10">
       <div className="absolute inset-0 bg-[linear-gradient(120deg,#064e3b_0%,#047857_45%,#0f766e_100%)]" />
@@ -21,14 +28,26 @@ export default function CsrHero({ onJumpToVolunteer }) {
             India. Every Bajaj employee can contribute.
           </p>
 
-          <button
-            type="button"
-            onClick={onJumpToVolunteer}
-            className="mt-4 inline-flex items-center gap-0 rounded-btn bg-white px-4 py-2 text-sm font-semibold text-emerald-700 shadow-card transition-all hover:-translate-y-0.5 hover:bg-emerald-50 focus-ring"
-          >
-            Volunteer with BAF
-            <ChevronRight size={14} />
-          </button>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            <button
+              type="button"
+              onClick={onShowVolunteer}
+              aria-pressed={activeView === 'volunteer'}
+              className={`${buttonBase} ${activeView === 'volunteer' ? primaryButton : secondaryButton}`}
+            >
+              Volunteer with BAF
+              <ChevronRight size={14} />
+            </button>
+            <button
+              type="button"
+              onClick={onShowPrograms}
+              aria-pressed={activeView === 'programs'}
+              className={`${buttonBase} ${activeView === 'programs' ? primaryButton : secondaryButton}`}
+            >
+              <Grid3X3 size={14} />
+              What we do
+            </button>
+          </div>
         </div>
 
         <ImpactCounter />

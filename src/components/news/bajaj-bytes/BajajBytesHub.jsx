@@ -34,7 +34,7 @@ export default function BajajBytesHub({ title }) {
         <div
           role="tablist"
           aria-label="Bajaj Bytes content type"
-          className="inline-flex w-full overflow-x-auto rounded-full bg-bg-alt p-1 sm:w-auto"
+          className="scrollbar-none inline-flex w-full overflow-x-auto rounded-full bg-bg-alt p-1 sm:w-auto"
         >
           {TABS.map((tab) => {
             const Icon = tab.icon

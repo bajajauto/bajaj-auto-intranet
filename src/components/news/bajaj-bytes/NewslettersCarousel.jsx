@@ -71,7 +71,7 @@ export default function NewslettersCarousel({ onListenToVolume }) {
 
       <div
         ref={carouselRef}
-        className="grid auto-cols-[minmax(17rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 py-6 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
+        className="scrollbar-none grid auto-cols-[minmax(17rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 py-6 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
         aria-label="Bajaj Bytes newsletters carousel"
       >
         {volumes.map((volume) => {

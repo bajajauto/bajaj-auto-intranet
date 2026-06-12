@@ -6,7 +6,7 @@ import VideoLightboxModal from './VideoLightboxModal'
 
 const CATEGORIES = [
   { id: 'all', label: 'All' },
-  { id: 'md-meetings', label: 'MD Meetings' },
+  { id: 'md-meetings', label: 'Events' },
   { id: 'interviews', label: 'Interviews' },
   { id: 'stories', label: 'Stories' },
 ]
@@ -28,6 +28,14 @@ export default function YouTubeSection() {
       left: direction * scrollAmount,
       behavior: 'smooth',
     })
+  }
+
+  function handleVideoPlay(video) {
+    if (video.externalUrl) {
+      window.open(video.externalUrl, '_blank', 'noopener,noreferrer')
+      return
+    }
+    setPlayingVideo(video)
   }
 
   if (videos.length === 0) {
@@ -110,12 +118,12 @@ export default function YouTubeSection() {
 
           <div
             ref={carouselRef}
-            className="grid auto-cols-[minmax(18rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 pb-2 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
+            className="scrollbar-none grid auto-cols-[minmax(18rem,1fr)] grid-flow-col gap-6 overflow-x-auto px-5 pb-2 snap-x snap-mandatory scroll-smooth sm:px-14 lg:auto-cols-[calc((100%-3rem)/3)]"
             aria-label="Bajaj Bytes watch carousel"
           >
             {visibleVideos.map((video) => (
               <div key={video.id} className="snap-start">
-                <VideoCard video={video} onPlay={() => setPlayingVideo(video)} />
+                <VideoCard video={video} onPlay={() => handleVideoPlay(video)} />
               </div>
             ))}
           </div>
