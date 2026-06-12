@@ -5,7 +5,8 @@ import { useUser } from '@/context/UserContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { noticeService } from '@/services/noticeService'
 import NoticesPanel from '@/components/notices/NoticesPanel'
-import logoImage from '@/assets/bajaj-mark-transparent.png'
+import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
+import ekamWordmark from '@/assets/ekam-wordmark-transparent.png'
 
 export default function Header() {
   const { isMobileOpen, setMobileOpen } = useSidebar()
@@ -76,12 +77,14 @@ export default function Header() {
         )}
 
         {/* Logo */}
-        <div className="flex items-center gap-2 flex-shrink-0 select-none">
-          <img src={logoImage} alt="Bajaj Auto Logo" className="h-12 w-auto" />
+        <div className="flex items-center gap-3 flex-shrink-0 select-none">
+          <img
+            src={bajajFooterLockup}
+            alt="Bajaj Auto - The World's Favourite Indian"
+            className="h-12 w-auto object-contain"
+          />
           <div className="h-9 w-px bg-white/35" aria-hidden="true" />
-          <div className="font-ekam italic text-white font-normal text-3xl tracking-[0.16em] leading-none">
-            EKAM
-          </div>
+          <img src={ekamWordmark} alt="EKAM" className="mt-3 h-8 w-auto object-contain" />
         </div>
       </div>
 

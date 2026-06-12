@@ -32,16 +32,10 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
   const badge = tileStyles[id] ?? 'from-brand-primary to-brand-dark'
   const isClickable = redirectUrl && redirectUrl !== '#'
 
-  function handleClick() {
-    if (isClickable) window.location.href = redirectUrl
-  }
-
-  return (
-    <button
-      onClick={handleClick}
-      className="group flex flex-col items-center justify-center gap-1.5 w-full py-1 px-1 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-ring"
-      aria-label={label}
-    >
+  const className =
+    'group flex flex-col items-center justify-center gap-1.5 w-full py-1 px-1 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-ring'
+  const content = (
+    <>
       <span className={`relative z-10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${badge} shadow-sm transition-transform duration-200 group-hover:scale-110`}>
         <Icon size={23} strokeWidth={1.65} className="text-white" />
       </span>
@@ -49,6 +43,26 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
       <span className="relative z-10 line-clamp-2 px-1 text-center text-[9px] font-semibold uppercase leading-tight tracking-wide text-gray-500">
         {label}
       </span>
+    </>
+  )
+
+  if (isClickable) {
+    return (
+      <a
+        href={redirectUrl}
+        target="_blank"
+        rel="noreferrer"
+        className={className}
+        aria-label={label}
+      >
+        {content}
+      </a>
+    )
+  }
+
+  return (
+    <button type="button" className={className} aria-label={label}>
+      {content}
     </button>
   )
 }
