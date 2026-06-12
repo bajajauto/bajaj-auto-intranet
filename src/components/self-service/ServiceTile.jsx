@@ -33,7 +33,7 @@ const tileStyles = {
   'it-summit':        'from-[#0D7E98] to-[#09576C]',
 }
 
-function HolidayCalendarModal({ onClose }) {
+function ServiceDocumentModal({ title, titleId, onClose, children }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function HolidayCalendarModal({ onClose }) {
       onClick={handleClose}
       aria-modal="true"
       role="dialog"
-      aria-labelledby="holiday-calendar-title"
+      aria-labelledby={titleId}
     >
       <div
         className={`relative flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-500 ease-out ${
@@ -75,25 +75,21 @@ function HolidayCalendarModal({ onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between bg-gradient-to-br from-brand-primary to-brand-dark px-5 py-4 text-white sm:px-6">
-          <h2 id="holiday-calendar-title" className="text-base font-semibold">
-            Holiday Calendar
+          <h2 id={titleId} className="text-base font-semibold">
+            {title}
           </h2>
           <button
             type="button"
             onClick={handleClose}
             className="rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:rotate-90 hover:bg-white/20 focus-ring"
-            aria-label="Close Holiday Calendar"
+            aria-label={`Close ${title}`}
           >
             <X size={20} />
           </button>
         </div>
 
         <div className="flex min-h-0 flex-1 justify-center overflow-auto bg-bg-alt p-3 sm:p-4">
-          <img
-            src={holidayCalendarImage}
-            alt="Holiday Calendar"
-            className="h-auto max-h-[calc(88vh-6rem)] w-auto max-w-full rounded-card object-contain shadow-card"
-          />
+          {children}
         </div>
       </div>
     </div>,
@@ -149,7 +145,17 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
         </button>
 
         {isHolidayCalendarOpen && (
-          <HolidayCalendarModal onClose={() => setHolidayCalendarOpen(false)} />
+          <ServiceDocumentModal
+            title="Holiday Calendar"
+            titleId="holiday-calendar-title"
+            onClose={() => setHolidayCalendarOpen(false)}
+          >
+            <img
+              src={holidayCalendarImage}
+              alt="Holiday Calendar"
+              className="h-auto max-h-[calc(88vh-6rem)] w-auto max-w-full rounded-card object-contain shadow-card"
+            />
+          </ServiceDocumentModal>
         )}
       </>
     )

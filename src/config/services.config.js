@@ -1,3 +1,5 @@
+import benefitsAnnexurePdf from '@/assets/Benefits Annexure.pdf'
+
 export const services = [
   // Row 1: N · S · T · A · N
   {
@@ -85,7 +87,7 @@ export const services = [
     id: 'benefits',
     label: 'Benefits',
     icon: 'BenefitsIcon',
-    redirectUrl: '#',
+    redirectUrl: benefitsAnnexurePdf,
     enabled: true,
   },
   {
