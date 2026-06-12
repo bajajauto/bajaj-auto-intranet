@@ -107,6 +107,7 @@ export const navGroups = [
     label: 'Community & CSR',
     description: 'Foundation, programmes & volunteering',
     icon: 'CsrIcon',
+    imageIcon: 'csrSvg',
     colorKey: 'emerald',
     hideChildren: true,
     items: [

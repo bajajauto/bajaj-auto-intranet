@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { iconMap } from '@/components/shared/iconMap'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
+import csrSvgIcon from '@/assets/csr svg.svg'
 
 // TopBanner 36px + Header 80px + 8px breathing room = 124px
 const TOP_OFFSET = 124
@@ -74,6 +75,10 @@ const GROUP_COLORS = {
   },
 }
 
+const imageIconMap = {
+  csrSvg: csrSvgIcon,
+}
+
 function scrollToSection(sectionId) {
   const el = document.getElementById(sectionId)
   if (!el) return
@@ -124,6 +129,12 @@ function GroupButton({
 }) {
   const Icon = iconMap[group.icon] ?? iconMap.Circle
   const colors = GROUP_COLORS[group.colorKey] ?? GROUP_COLORS.blue
+  const imageIcon = group.imageIcon ? imageIconMap[group.imageIcon] : null
+  const iconFrameClass = imageIcon
+    ? 'bg-emerald-600 text-white ring-emerald-200 group-hover:bg-emerald-700'
+    : isActive
+      ? colors.iconActive
+      : colors.iconIdle
 
   function handleClick() {
     const firstItem = group.items.find((item) => item.enabled !== false)
@@ -157,10 +168,18 @@ function GroupButton({
     >
       <span
         className={`w-9 h-9 rounded-card flex items-center justify-center flex-shrink-0 shadow-sm ring-1 transition-all duration-200 ${
-          isActive ? colors.iconActive : colors.iconIdle
+          iconFrameClass
         }`}
       >
-        <Icon size={20} className="transition-transform duration-200 group-hover:scale-110" />
+        {imageIcon ? (
+          <img
+            src={imageIcon}
+            alt=""
+            className="h-9 w-9 object-cover transition-transform duration-200 group-hover:scale-110"
+          />
+        ) : (
+          <Icon size={20} className="transition-transform duration-200 group-hover:scale-110" />
+        )}
       </span>
 
       {isExpanded && (

@@ -1,4 +1,10 @@
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { X } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
+import holidayCalendarImage from '@/assets/holiday calendar.jpg'
+
+const MODAL_TRANSITION_MS = 500
 
 const tileStyles = {
   // Navy — brand core
@@ -27,10 +33,80 @@ const tileStyles = {
   'it-summit':        'from-[#0D7E98] to-[#09576C]',
 }
 
+function HolidayCalendarModal({ onClose }) {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    document.getElementById('root')?.classList.add('modal-open')
+    setVisible(true)
+
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') handleClose()
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      document.getElementById('root')?.classList.remove('modal-open')
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
+  function handleClose() {
+    setVisible(false)
+    setTimeout(onClose, MODAL_TRANSITION_MS)
+  }
+
+  return createPortal(
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-500 sm:p-6 ${
+        visible ? 'bg-black/25' : 'pointer-events-none bg-transparent'
+      }`}
+      onClick={handleClose}
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="holiday-calendar-title"
+    >
+      <div
+        className={`relative flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-500 ease-out ${
+          visible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-8 scale-95 opacity-0'
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between bg-gradient-to-br from-brand-primary to-brand-dark px-5 py-4 text-white sm:px-6">
+          <h2 id="holiday-calendar-title" className="text-base font-semibold">
+            Holiday Calendar
+          </h2>
+          <button
+            type="button"
+            onClick={handleClose}
+            className="rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:rotate-90 hover:bg-white/20 focus-ring"
+            aria-label="Close Holiday Calendar"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="flex min-h-0 flex-1 justify-center overflow-auto bg-bg-alt p-3 sm:p-4">
+          <img
+            src={holidayCalendarImage}
+            alt="Holiday Calendar"
+            className="h-auto max-h-[calc(88vh-6rem)] w-auto max-w-full rounded-card object-contain shadow-card"
+          />
+        </div>
+      </div>
+    </div>,
+    document.getElementById('modal-root')
+  )
+}
+
 export default function ServiceTile({ id, label, icon, redirectUrl }) {
+  const [isHolidayCalendarOpen, setHolidayCalendarOpen] = useState(false)
   const Icon = iconMap[icon] ?? iconMap.ExternalLink
   const badge = tileStyles[id] ?? 'from-brand-primary to-brand-dark'
   const isClickable = redirectUrl && redirectUrl !== '#'
+  const opensHolidayCalendar = id === 'holiday-calendar'
 
   const className =
     'group flex flex-col items-center justify-center gap-1.5 w-full py-1 px-1 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-ring'
@@ -57,6 +133,25 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
       >
         {content}
       </a>
+    )
+  }
+
+  if (opensHolidayCalendar) {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => setHolidayCalendarOpen(true)}
+          className={className}
+          aria-label={label}
+        >
+          {content}
+        </button>
+
+        {isHolidayCalendarOpen && (
+          <HolidayCalendarModal onClose={() => setHolidayCalendarOpen(false)} />
+        )}
+      </>
     )
   }
 
