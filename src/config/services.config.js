@@ -94,7 +94,7 @@ export const services = [
     id: 'mediclaim',
     label: 'Mediclaim Card',
     icon: 'MediclaimIcon',
-    redirectUrl: '#',
+    redirectUrl: 'https://elephant.in/eb360',
     enabled: true,
   },
   {
