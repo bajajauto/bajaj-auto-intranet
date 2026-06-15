@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { X } from 'lucide-react'
+import { X, FileText, ExternalLink, ChevronRight } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import holidayCalendarImage from '@/assets/holiday calendar.jpg'
+import { documentForms } from '@/config/documents.config'
+import PoliciesBenefitsModal from './PoliciesBenefitsModal'
 
 const MODAL_TRANSITION_MS = 500
 
@@ -99,10 +101,14 @@ function ServiceDocumentModal({ title, titleId, onClose, children }) {
 
 export default function ServiceTile({ id, label, icon, redirectUrl }) {
   const [isHolidayCalendarOpen, setHolidayCalendarOpen] = useState(false)
+  const [isPoliciesOpen, setPoliciesOpen] = useState(false)
+  const [isDocumentsOpen, setDocumentsOpen] = useState(false)
   const Icon = iconMap[icon] ?? iconMap.ExternalLink
   const badge = tileStyles[id] ?? 'from-brand-primary to-brand-dark'
   const isClickable = redirectUrl && redirectUrl !== '#'
   const opensHolidayCalendar = id === 'holiday-calendar'
+  const opensPolicies = id === 'policies'
+  const opensDocuments = id === 'documents'
 
   const className =
     'group flex flex-col items-center justify-center gap-1.5 w-full py-1 px-1 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-ring'
@@ -155,6 +161,79 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
               alt="Holiday Calendar"
               className="h-auto max-h-[calc(88vh-6rem)] w-auto max-w-full rounded-card object-contain shadow-card"
             />
+          </ServiceDocumentModal>
+        )}
+      </>
+    )
+  }
+
+  if (opensPolicies) {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => setPoliciesOpen(true)}
+          className={className}
+          aria-label={label}
+        >
+          {content}
+        </button>
+
+        {isPoliciesOpen && <PoliciesBenefitsModal onClose={() => setPoliciesOpen(false)} />}
+      </>
+    )
+  }
+
+  if (opensDocuments) {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => setDocumentsOpen(true)}
+          className={className}
+          aria-label={label}
+        >
+          {content}
+        </button>
+
+        {isDocumentsOpen && (
+          <ServiceDocumentModal
+            title="Documents / Forms"
+            titleId="documents-forms-title"
+            onClose={() => setDocumentsOpen(false)}
+          >
+            <ul className="w-full max-w-xl space-y-2.5 self-start">
+              {documentForms.map((doc) => (
+                <li key={doc.id}>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-center gap-3 rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-primary/30 hover:shadow-card focus-ring"
+                  >
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#334460] to-[#192838] text-white">
+                      <FileText size={18} strokeWidth={1.75} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold text-text-primary group-hover:text-brand-primary">
+                        {doc.label}
+                      </span>
+                      {doc.description && (
+                        <span className="mt-0.5 block text-xs text-text-secondary">{doc.description}</span>
+                      )}
+                    </span>
+                    <ExternalLink
+                      size={15}
+                      className="flex-shrink-0 text-text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    />
+                    <ChevronRight
+                      size={16}
+                      className="flex-shrink-0 text-text-secondary transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </ServiceDocumentModal>
         )}
       </>
