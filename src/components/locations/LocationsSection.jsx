@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
-import chetakSkeletonLogo from '@/assets/Chetak skeleton.png'
+import chetakSkeletonLogo from '@/assets/chetak logo.jpg'
 
 function ChetakLogoIcon({ size = 19, className = '' }) {
   return (
@@ -265,7 +265,7 @@ const BAJAJ_COUNTRIES = [
   { name: 'Zambia', lat: -13, lng: 27 },
 ]
 
-const MARKET_COUNT = 80
+const MARKET_COUNT = 108
 
 function GlobePresence({ title }) {
   const mountRef = useRef(null)
