@@ -8,9 +8,9 @@ export default function TopBanner() {
 
   const links = [
     { label: 'About Us', href: '#' },
+    { label: 'Vision & Mission', href: '#' },
     { label: 'Integrity Matters – Ethics Helpline', href: '#' },
     { label: 'POSH Information', href: '#' },
-    { label: 'Vision & Mission', href: '#' },
   ]
 
   return (

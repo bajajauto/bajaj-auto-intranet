@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Gauge, Truck, Zap, CreditCard,
+  Gauge, Truck, Zap, Globe2,
   Banknote, TrendingUp, Smartphone, ShieldCheck,
   Code2, Satellite, Globe, Rocket,
   GraduationCap, BookOpen, HeartPulse, Sprout,
@@ -40,11 +40,11 @@ const SUBSIDIARIES = [
         highlights: ['Chetak', 'EV Future', 'Battery Tech'],
       },
       {
-        id: 'finance-leasing',
-        name: 'Finance & Leasing Division',
-        icon: CreditCard,
-        focus: 'Financing solutions for customers',
-        highlights: ['Auto Finance', 'Leasing', 'Credit'],
+        id: 'exports-business-units',
+        name: 'Exports Business Units',
+        icon: Globe2,
+        focus: 'International market growth and export operations',
+        highlights: ['LATAM', 'Brazil', 'MENA'],
       },
     ],
     keyFocus: [
