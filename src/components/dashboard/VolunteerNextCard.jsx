@@ -45,7 +45,7 @@ export default function VolunteerNextCard() {
       </div>
 
       <div className="px-3 pb-3 pt-2.5">
-        <p className="line-clamp-2 text-sm font-semibold text-text-primary">{next.title}</p>
+        <p className="line-clamp-2 text-sm font-semibold text-brand-primary">{next.title}</p>
 
         <ul className="mt-1.5 space-y-0.5 text-[11px] text-text-secondary">
           <li className="flex items-center gap-1.5">
@@ -62,7 +62,7 @@ export default function VolunteerNextCard() {
           <span className="text-text-secondary">
             {next.slotsTaken}/{next.slotsTotal} signed up
           </span>
-          <span className="inline-flex items-center gap-1 font-semibold text-emerald-700">
+          <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 dark:text-emerald-400">
             Sign up
             <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
           </span>

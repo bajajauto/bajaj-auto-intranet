@@ -14,6 +14,30 @@
 }
 
 @layer base {
+  /* Theme tokens — RGB channels so Tailwind's /opacity modifiers still work. */
+  :root {
+    --bg-main: 255 255 255;
+    --bg-alt: 249 250 251;
+    --text-primary: 31 41 55;
+    --text-secondary: 107 114 128;
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg-main: 14 21 37;
+    --bg-alt: 22 31 51;
+    --text-primary: 226 232 240;
+    --text-secondary: 154 167 189;
+    color-scheme: dark;
+  }
+
+  /* Concrete dark fills for the page shell so no transparent gap can show white. */
+  .dark body,
+  .dark #root,
+  .dark main {
+    background-color: #0e1525;
+  }
+
   *,
   *::before,
   *::after {
@@ -28,6 +52,7 @@
     @apply text-text-primary bg-bg-main font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1,
@@ -331,6 +356,172 @@
   .site-surface-interactive:hover {
     border-color: rgba(26, 86, 168, 0.28);
   }
+
+  /* Dark theme — recolour the shared elevated surfaces. */
+  .dark .site-surface {
+    border-color: rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(circle at 100% 0%, rgba(37, 99, 201, 0.2), transparent 38%),
+      linear-gradient(180deg, #1a2440 0%, #131c30 38%, #101725 100%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .dark .site-surface-interactive {
+    border-color: rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(circle at 100% 0%, rgba(37, 99, 201, 0.18), transparent 38%),
+      linear-gradient(180deg, #1a2440 0%, #131c30 40%, #101725 100%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .dark .site-surface-interactive:hover {
+    border-color: rgba(120, 160, 230, 0.4);
+  }
+}
+
+/*
+ * Dark-mode remap for raw Tailwind literals used across the app.
+ * `.dark .bg-white` outweighs `.bg-white` on specificity, so card surfaces,
+ * text and borders flip without hand-editing every component.
+ * (Translucent variants like bg-white/95 are separate classes and untouched.)
+ */
+.dark .bg-white {
+  background-color: #151d30;
+}
+
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-slate-50 {
+  background-color: #1b2540;
+}
+
+.dark .hover\:bg-white:hover,
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-gray-100:hover {
+  background-color: #222d4a;
+}
+
+.dark .text-black,
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-700,
+.dark .text-gray-600 {
+  color: #dbe2ee;
+}
+
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: #9aa7bd;
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Pale-blue brand fills (bg-brand-light, 40+ uses) become a dark tint. */
+.dark .bg-brand-light {
+  background-color: #16233f;
+}
+.dark .hover\:bg-brand-light:hover {
+  background-color: #1d2c4a;
+}
+/* Translucent pale-blue panels (e.g. the podcast "Now playing" box). */
+.dark .bg-brand-light\/30,
+.dark .bg-brand-light\/40,
+.dark .bg-brand-light\/50,
+.dark .bg-brand-light\/60,
+.dark .bg-brand-light\/70 {
+  background-color: rgba(34, 51, 86, 0.55);
+}
+
+/*
+ * White gradient stops → dark, so gradient panels (e.g. the calendar) stop
+ * glowing white. Tailwind's from/to reference --tw-gradient vars, so we just
+ * recolour those; via-white inlines #fff into the stops, so rebuild them.
+ */
+.dark .from-white {
+  --tw-gradient-from: #131c30 var(--tw-gradient-from-position);
+}
+.dark .to-white {
+  --tw-gradient-to: #131c30 var(--tw-gradient-to-position);
+}
+.dark .via-white,
+.dark .via-white\/80 {
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(19, 28, 48, 0.85) var(--tw-gradient-via-position),
+    var(--tw-gradient-to);
+}
+
+/*
+ * Force the semantic text tokens light in dark mode. The var already resolves
+ * light, but this concrete override guarantees readability even if an element
+ * re-scopes the variable, so no primary text can come out dark-on-dark.
+ */
+.dark .text-text-primary {
+  color: #e6ebf4;
+}
+.dark .text-text-secondary {
+  color: #9aa7bd;
+}
+
+/* Brand-blue used as foreground text is too dark on dark — lift to a readable blue. */
+.dark .text-brand-primary {
+  color: #6fa8e8;
+}
+/* brand-dark text (e.g. globe country labels) sits on light pills that go dark — lift it. */
+.dark .text-brand-dark {
+  color: #aecbf0;
+}
+.dark .text-brand-primary\/70 {
+  color: rgba(111, 168, 232, 0.7);
+}
+.dark .text-brand-primary\/60 {
+  color: rgba(111, 168, 232, 0.6);
+}
+.dark .text-brand-primary\/50 {
+  color: rgba(111, 168, 232, 0.5);
+}
+.dark .text-brand-primary\/40 {
+  color: rgba(111, 168, 232, 0.45);
+}
+
+/*
+ * High-opacity translucent whites are "surface" glass (cards, calendar cells,
+ * inputs) that glow on dark — drop them to a faint light-on-dark panel.
+ * Low-opacity whites (/5–/35) are intentional sheens on coloured elements
+ * (tile gloss, avatar) and are deliberately left untouched.
+ */
+.dark .bg-white\/90,
+.dark .bg-white\/95 {
+  background-color: rgba(13, 21, 40, 0.92);
+}
+.dark .bg-white\/60,
+.dark .bg-white\/70,
+.dark .bg-white\/80 {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+/* Remaining light stragglers. */
+.dark .bg-gray-300 {
+  background-color: #2a3550;
+}
+.dark .to-slate-50 {
+  --tw-gradient-to: #131c30 var(--tw-gradient-to-position);
+}
+
+/* Pale-blue gradient tops → dark tint. */
+.dark .from-brand-light\/55,
+.dark .from-brand-light\/70,
+.dark .from-brand-light\/80 {
+  --tw-gradient-from: rgba(22, 35, 63, 0.85) var(--tw-gradient-from-position);
+}
+.dark .to-brand-light\/60 {
+  --tw-gradient-to: rgba(22, 35, 63, 0.85) var(--tw-gradient-to-position);
 }
 
 @keyframes globe-pan {

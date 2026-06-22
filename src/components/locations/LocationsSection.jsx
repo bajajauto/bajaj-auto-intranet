@@ -484,7 +484,9 @@ function GlobePresence({ title }) {
   }, [])
 
   return (
-    <div className="relative min-h-[360px] overflow-hidden rounded-card border border-brand-primary/10 bg-gradient-to-br from-brand-light/80 via-white to-sky-50 shadow-card sm:min-h-[420px] lg:min-h-[460px]">
+    <div className="relative min-h-[360px] overflow-hidden rounded-card border border-brand-primary/10 dark:border-white/10 bg-gradient-to-br from-brand-light/80 via-white to-sky-50 shadow-card sm:min-h-[420px] lg:min-h-[460px]">
+      {/* Dark-mode space backdrop — minimal deep-space gradient behind the globe */}
+      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_68%_30%,#11244a_0%,#0a1430_40%,#04060f_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.14),transparent_55%)]" />
       <div ref={mountRef} className="absolute inset-0" aria-hidden="true" />
 

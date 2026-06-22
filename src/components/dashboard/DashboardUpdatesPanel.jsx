@@ -60,7 +60,7 @@ function EventCard({ event, index }) {
         aria-label={event.label}
       >
         <div className="relative z-10">
-          <p className="line-clamp-2 text-sm font-semibold leading-snug text-text-primary">
+          <p className="line-clamp-2 text-sm font-semibold leading-snug text-brand-primary">
             {event.label}
           </p>
           <p className="mt-1 text-xs text-text-secondary">{event.location}</p>

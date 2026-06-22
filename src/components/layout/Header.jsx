@@ -5,6 +5,7 @@ import { useUser } from '@/context/UserContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { noticeService } from '@/services/noticeService'
 import NoticesPanel from '@/components/notices/NoticesPanel'
+import ThemeToggle from '@/components/shared/ThemeToggle'
 import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
 import ekamWordmark from '@/assets/ekam-wordmark-transparent.png'
 
@@ -108,6 +109,9 @@ export default function Header() {
 
       {/* Right actions */}
       <div className="flex items-center justify-end gap-2 min-w-0">
+        {/* Light / dark theme toggle */}
+        <ThemeToggle />
+
         {/* Announcements */}
         <div className="relative" ref={noticesRef}>
           <button
@@ -155,7 +159,7 @@ export default function Header() {
           </button>
 
           {isProfileOpen && (
-            <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-card shadow-modal border border-gray-100 z-50">
+            <div className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-[#161f33] rounded-card shadow-modal border border-gray-100 dark:border-white/10 z-50">
               {/* Profile header */}
               <div className="px-4 py-3 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-brand-primary flex items-center justify-center text-white text-base font-semibold flex-shrink-0">
@@ -167,12 +171,12 @@ export default function Header() {
                 </div>
               </div>
 
-              <div className="px-4 py-2 border-t border-gray-100">
+              <div className="px-4 py-2 border-t border-gray-100 dark:border-white/10">
                 <p className="text-xs text-text-secondary">{user.designation}</p>
                 <p className="text-xs text-text-secondary">{user.department}</p>
               </div>
 
-              <div className="border-t border-gray-100 p-2">
+              <div className="border-t border-gray-100 dark:border-white/10 p-2">
                 <button
                   disabled
                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-secondary rounded-btn opacity-50 cursor-not-allowed"

@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -9,18 +10,21 @@ export default {
         ekam: ['Cormorant Garamond', 'Georgia', 'serif'],
       },
       colors: {
+        // Brand identity stays constant across themes.
         brand: {
           primary: '#1A56A8',
           light: '#EBF2FA',
           dark: '#133E82',
         },
+        // Surface + text tokens are theme-aware (see CSS vars in index.css),
+        // so any component using them flips automatically in dark mode.
         text: {
-          primary: '#1F2937',
-          secondary: '#6B7280',
+          primary: 'rgb(var(--text-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
         },
         bg: {
-          main: '#FFFFFF',
-          alt: '#F9FAFB',
+          main: 'rgb(var(--bg-main) / <alpha-value>)',
+          alt: 'rgb(var(--bg-alt) / <alpha-value>)',
         },
       },
       borderRadius: {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { ThemeProvider } from '@/context/ThemeContext'
 import { SidebarProvider, useSidebar } from '@/context/SidebarContext'
 import { UserProvider } from '@/context/UserContext'
 import TopBanner from '@/components/layout/TopBanner'
@@ -48,13 +49,13 @@ export default function App() {
   const [splashDone, setSplashDone] = useState(false)
 
   return (
-    <>
+    <ThemeProvider>
       {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
       <UserProvider>
         <SidebarProvider>
           <AppShell />
         </SidebarProvider>
       </UserProvider>
-    </>
+    </ThemeProvider>
   )
 }
