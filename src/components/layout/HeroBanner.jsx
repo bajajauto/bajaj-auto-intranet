@@ -24,15 +24,11 @@ function DistinctlyAheadScene() {
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#0E4E87]">
       <div
-        className="absolute inset-0 bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${distinctlyAheadBanner})`,
-          backgroundPosition: '64% 34%',
-          backgroundSize: '88% auto',
-        }}
+        className="absolute inset-0 bg-no-repeat bg-[length:150%_auto] bg-[position:80%_42%] md:bg-[length:88%_auto] md:bg-[position:64%_34%]"
+        style={{ backgroundImage: `url(${distinctlyAheadBanner})` }}
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#083D73]/85 via-[#083D73]/30 to-[#083D73]/10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#083D73]/95 via-[#083D73]/60 to-[#083D73]/20 md:from-[#083D73]/85 md:via-[#083D73]/30 md:to-[#083D73]/10" />
       <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#062A55]/85 to-transparent" />
     </div>
   )
