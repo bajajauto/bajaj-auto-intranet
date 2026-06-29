@@ -27,7 +27,7 @@ function DistinctlyAheadScene() {
         className="absolute inset-0 bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${distinctlyAheadBanner})`,
-          backgroundPosition: 'center 34%',
+          backgroundPosition: '64% 34%',
           backgroundSize: '88% auto',
         }}
         aria-hidden="true"
@@ -58,7 +58,7 @@ export default function HeroBanner() {
       <DistinctlyAheadScene />
 
       <div className="relative z-10 flex h-[320px] flex-col">
-        <div className="flex flex-1 flex-col justify-between gap-3 p-4 text-white md:px-5 md:py-4">
+        <div className="flex flex-1 flex-col justify-start gap-2.5 p-4 text-white md:px-5 md:py-4">
           <div className="max-w-sm">
             <p className="mb-0.5 text-xs font-medium tracking-wide text-white/60">{moment.greeting}</p>
             <h1 className="mb-0.5 text-lg font-bold tracking-tight text-white">{user.name}</h1>
@@ -67,36 +67,34 @@ export default function HeroBanner() {
             </p>
           </div>
 
-          <div className="max-w-sm">
-            <div className="mt-1.5 w-56 max-w-full rounded-card border border-white/15 bg-white/10 px-3.5 py-2 shadow-modal backdrop-blur-md">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
-                    Meetings Today
-                  </p>
-                  <div className="mt-1.5 flex items-end gap-2">
-                    <span className="text-[1.35rem] font-bold leading-none text-white">
-                      {meetingsTodayCount}
-                    </span>
-                    <span className="pb-1 text-xs font-medium text-white/55">scheduled</span>
-                  </div>
+          <div className="w-48 max-w-full rounded-card border border-white/15 bg-white/10 px-3 py-2 shadow-modal backdrop-blur-md">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                  Meetings Today
+                </p>
+                <div className="mt-1.5 flex items-end gap-2">
+                  <span className="text-[1.35rem] font-bold leading-none text-white">
+                    {meetingsTodayCount}
+                  </span>
+                  <span className="pb-1 text-xs font-medium text-white/55">scheduled</span>
                 </div>
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-white">
-                  <CalendarDays size={16} />
-                </span>
               </div>
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-white">
+                <CalendarDays size={16} />
+              </span>
             </div>
+          </div>
 
-            <div className="mt-1.5 flex flex-wrap gap-2">
-              <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur-sm">
-                <Bell size={12} className="text-amber-300" />
-                <span className="text-amber-200">{unreadCount} new</span>
-                <span className="text-white/50">notifications</span>
-              </div>
-              <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/70 backdrop-blur-sm">
-                <CalendarDays size={12} />
-                {today}
-              </div>
+          <div className="flex max-w-sm flex-col items-start gap-2">
+            <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/70 backdrop-blur-sm">
+              <CalendarDays size={12} />
+              {today}
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur-sm">
+              <Bell size={12} className="text-amber-300" />
+              <span className="text-amber-200">{unreadCount} new</span>
+              <span className="text-white/50">notifications</span>
             </div>
           </div>
         </div>

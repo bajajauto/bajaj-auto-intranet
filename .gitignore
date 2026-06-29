@@ -10,3 +10,6 @@ Thumbs.db
 *.log
 coverage
 .vite
+
+# Local mobile screenshot audits
+.mobile-shots/

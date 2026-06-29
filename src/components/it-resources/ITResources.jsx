@@ -184,7 +184,7 @@ function ResourceLink({
   )
 }
 
-export default function ITResources({ title }) {
+export default function ITResources({ title, stacked = false }) {
   const [gatepassOpen, setGatepassOpen] = useState(false)
 
   return (
@@ -194,7 +194,7 @@ export default function ITResources({ title }) {
           {title ?? 'Resources and Support Services'}
         </h2>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className={`grid grid-cols-1 gap-5 ${stacked ? '' : 'lg:grid-cols-[0.95fr_1.05fr]'}`}>
           <div className="site-surface rounded-card border p-5">
             <h3 className="mb-4 text-lg font-semibold text-brand-primary">
               Facilities @ Bajaj Auto Limited

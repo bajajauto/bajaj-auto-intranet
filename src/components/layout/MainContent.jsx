@@ -16,12 +16,12 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 
 const SECTION_IDS = [
   'self-service',
-  'bajaj-bytes',
   'it-resources',
+  'locations',
+  'company-news',
+  'bajaj-bytes',
   'company-overview',
   'csr',
-  'company-news',
-  'locations',
   'emergency-contacts',
   'feedback',
 ]
@@ -33,7 +33,7 @@ export default function MainContent() {
     <>
       <Sidebar activeSection={activeSection} onForceSection={forceSection} />
 
-      <main className="flex-1 min-h-screen">
+      <main className="flex-1 min-w-0 min-h-screen">
         <div className="max-w-screen-xl mx-auto px-3 py-4 space-y-7 sm:px-4 sm:py-5 sm:space-y-9 md:px-6 lg:py-6 lg:space-y-10">
           <HeroBanner />
 
@@ -42,18 +42,18 @@ export default function MainContent() {
               Dashboard
             </h2>
             <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row">
-              <div className="flex-1 min-w-0">
+              <div className="flex flex-1 min-w-0 flex-col gap-4 sm:gap-6">
                 <section id="self-service" aria-labelledby="self-service-heading">
                   <h2 id="self-service-heading" className="sr-only">
                     Pitstop
                   </h2>
                   <ServiceGrid title="Pitstop" />
-                  <div id="bajaj-bytes" className="mt-4 scroll-mt-32 sm:mt-6">
-                    <h2 id="bajaj-bytes-heading" className="sr-only">
-                      Bajaj Bytes
-                    </h2>
-                    <BajajBytes title="Bajaj Bytes" />
-                  </div>
+                </section>
+                <section id="it-resources" aria-labelledby="it-resources-heading" className="scroll-mt-32">
+                  <h2 id="it-resources-heading" className="sr-only">
+                    Resources and Support Services
+                  </h2>
+                  <ITResources title="Resources and Support Services" stacked />
                 </section>
               </div>
               <div className="flex w-full flex-col gap-4 sm:gap-6 lg:w-80 lg:flex-shrink-0">
@@ -63,11 +63,25 @@ export default function MainContent() {
             </div>
           </ScrollReveal>
 
-          <ScrollReveal id="it-resources" aria-labelledby="it-resources-heading">
-            <h2 id="it-resources-heading" className="sr-only">
-              Resources and Support Services
+          <ScrollReveal id="locations" aria-labelledby="locations-heading" className="xl:-mr-8 2xl:-mr-16">
+            <h2 id="locations-heading" className="sr-only">
+              Bajaj Auto Presence
             </h2>
-            <ITResources title="Resources and Support Services" />
+            <LocationsSection title="Bajaj Auto Presence" />
+          </ScrollReveal>
+
+          <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
+            <h2 id="company-news-heading" className="sr-only">
+              Company News
+            </h2>
+            <NewsFeed title="Company News" />
+          </ScrollReveal>
+
+          <ScrollReveal id="bajaj-bytes" aria-labelledby="bajaj-bytes-heading">
+            <h2 id="bajaj-bytes-heading" className="sr-only">
+              Bajaj Bytes
+            </h2>
+            <BajajBytes title="Bajaj Bytes" />
           </ScrollReveal>
 
           <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
@@ -82,19 +96,6 @@ export default function MainContent() {
               Community and CSR
             </h2>
             <CsrSection title="Community & CSR" />
-          </ScrollReveal>
-
-          <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
-            <h2 id="company-news-heading" className="sr-only">
-              Company News
-            </h2>
-            <NewsFeed title="Company News" />
-          </ScrollReveal>
-          <ScrollReveal id="locations" aria-labelledby="locations-heading" className="xl:-mr-8 2xl:-mr-16">
-            <h2 id="locations-heading" className="sr-only">
-              Bajaj Auto Presence
-            </h2>
-            <LocationsSection title="Bajaj Auto Presence" />
           </ScrollReveal>
 
           <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
