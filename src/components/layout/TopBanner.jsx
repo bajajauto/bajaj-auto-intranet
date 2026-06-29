@@ -15,16 +15,16 @@ export default function TopBanner() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 h-9 bg-brand-light dark:bg-[#111a2e] border-b border-brand-primary/20 dark:border-white/10 flex items-center gap-3 px-4">
+      <div className="fixed top-0 left-0 right-0 z-50 flex h-8 items-center gap-2 border-b border-brand-primary/15 bg-white/95 px-2 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#111a2e] sm:px-4 md:h-9 md:gap-3">
         <nav
-          className="flex min-w-0 flex-1 items-center gap-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:gap-6 [&::-webkit-scrollbar]:hidden"
           aria-label="Policy links"
         >
           {links.map((link, i) => (
-            <span key={link.label} className="flex items-center gap-6">
+            <span key={link.label} className="flex items-center gap-4 sm:gap-6">
               <a
                 href={link.href}
-                className="text-xs text-brand-primary dark:text-blue-300 hover:underline focus-ring rounded"
+                className="rounded text-[10px] font-semibold text-brand-primary hover:underline focus-ring dark:text-blue-300 sm:text-xs"
               >
                 {link.label}
               </a>
@@ -36,7 +36,7 @@ export default function TopBanner() {
         </nav>
         <button
           onClick={() => setIsSosOpen(true)}
-          className="flex-shrink-0 px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded text-xs font-semibold flex items-center gap-1 focus-ring"
+          className="flex flex-shrink-0 items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-1 text-[10px] font-bold text-red-700 shadow-sm transition-colors hover:bg-red-100 focus-ring sm:text-xs"
           aria-label="Open SOS emergency contacts"
         >
           <AlertTriangle size={14} />

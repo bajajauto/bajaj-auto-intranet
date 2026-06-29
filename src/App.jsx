@@ -34,7 +34,7 @@ function AppShell() {
       <FooterObserver footerRef={footerRef} />
       <TopBanner />
       <Header />
-      <div className="flex flex-1 pt-[calc(36px+80px)]">
+      <div className="flex flex-1 pt-[96px] md:pt-[116px]">
         <MainContent />
       </div>
       <div ref={footerRef}>

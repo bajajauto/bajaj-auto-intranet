@@ -4,7 +4,7 @@ import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
 import csrSvgIcon from '@/assets/csr svg.svg'
 
-// TopBanner 36px + Header 80px + 8px breathing room = 124px
+// TopBanner 36px + Header 80px on desktop + 8px breathing room = 124px
 const TOP_OFFSET = 124
 
 function BikeToggleIcon({ isExpanded }) {
@@ -285,7 +285,7 @@ export default function Sidebar({ activeSection, onForceSection }) {
         className={`
           fixed top-0 bottom-0 left-0 z-50 w-64 bg-gradient-to-b from-white via-white to-brand-light/60 border-r border-brand-primary/10 shadow-2xl
           overflow-y-auto overflow-x-hidden scrollbar-none transform-gpu transition-transform duration-[350ms] ease-out
-          md:hidden flex flex-col pt-[116px]
+          md:hidden flex flex-col pt-[96px]
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
         aria-label="Main navigation"

@@ -65,12 +65,12 @@ export default function Header() {
   }, [isNoticesOpen, isProfileOpen])
 
   return (
-    <header className="fixed top-9 left-0 right-0 z-40 h-20 bg-brand-dark grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4 shadow-modal">
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="fixed left-0 right-0 top-8 z-40 grid h-16 grid-cols-[auto_1fr_auto] items-center gap-2 bg-brand-dark py-0 pl-3 pr-1.5 shadow-modal md:top-9 md:h-20 md:gap-4 md:px-4">
+      <div className="flex min-w-0 items-center gap-2 md:gap-3">
         {isMobile && (
           <button
             onClick={handleMenuClick}
-            className="p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
+            className="rounded-btn p-1.5 text-white/80 hover:bg-white/10 hover:text-white focus-ring"
             aria-label="Open sidebar"
           >
             <Menu size={20} />
@@ -78,14 +78,14 @@ export default function Header() {
         )}
 
         {/* Logo */}
-        <div className="flex items-center gap-3 flex-shrink-0 select-none">
+        <div className="flex min-w-0 flex-shrink select-none items-center gap-2 md:flex-shrink-0 md:gap-3">
           <img
             src={bajajFooterLockup}
             alt="Bajaj Auto - The World's Favourite Indian"
-            className="h-12 w-auto object-contain"
+            className="h-8 w-auto object-contain sm:h-9 md:h-12"
           />
-          <div className="h-9 w-px bg-white/35" aria-hidden="true" />
-          <img src={ekamWordmark} alt="EKAM" className="mt-3 h-8 w-auto object-contain" />
+          <div className="h-7 w-px bg-white/30 md:h-9" aria-hidden="true" />
+          <img src={ekamWordmark} alt="EKAM" className="mt-1 h-6 w-auto object-contain sm:h-7 md:mt-3 md:h-8" />
         </div>
       </div>
 
@@ -108,7 +108,7 @@ export default function Header() {
       </div>
 
       {/* Right actions */}
-      <div className="flex items-center justify-end gap-2 min-w-0">
+      <div className="flex min-w-0 translate-x-1 items-center justify-end gap-1 md:translate-x-0 md:gap-2">
         {/* Light / dark theme toggle */}
         <ThemeToggle />
 
