@@ -65,7 +65,7 @@ export default function Header() {
   }, [isNoticesOpen, isProfileOpen])
 
   return (
-    <header className="fixed top-9 left-0 right-0 z-40 h-20 bg-brand-dark grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4 shadow-modal">
+    <header className="app-header-chrome fixed top-9 left-0 right-0 z-40 h-20 grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4">
       <div className="flex items-center gap-3 min-w-0">
         {isMobile && (
           <button

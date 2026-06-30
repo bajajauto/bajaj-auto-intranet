@@ -3,37 +3,19 @@ import { iconMap } from '@/components/shared/iconMap'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
 import csrSvgIcon from '@/assets/csr svg.svg'
+import chetakSvgIcon from '@/assets/chetak svg.svg'
 
 // TopBanner 36px + Header 80px + 8px breathing room = 124px
 const TOP_OFFSET = 124
 
 function BikeToggleIcon({ isExpanded }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="22"
-      viewBox="0 0 32 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-      className={`transition-transform duration-200 ${isExpanded ? 'scale-x-[-1]' : ''}`}
-    >
-      <path d="M2.8 15.8h1.8" className="text-brand-primary/35" />
-      <path d="M1.7 12.8h3.2" className="text-brand-primary/25" />
-      <path d="M3.5 9.8h2.2" className="text-brand-primary/20" />
-      <path d="M25.2 11.2 28 14l-2.8 2.8" strokeWidth="2.1" />
-      <path d="M5.5 16.5h3.2l2.1-4.3h3.7l2.7 4.3h1.3" />
-      <path d="M11 12.2 8.8 9.5h-2" />
-      <path d="M14.5 12.2 16.2 9h2.3" />
-      <path d="M10.8 8.8h3.2" />
-      <path d="M12.8 8.8l1.4 3.4" />
-      <circle cx="5.5" cy="16.5" r="2.5" />
-      <circle cx="18.5" cy="16.5" r="2.5" />
-    </svg>
+    <img
+      src={chetakSvgIcon}
+      alt=""
+      aria-hidden="true"
+      className={`h-12 w-12 object-contain transition-transform duration-200 ${isExpanded ? 'scale-x-[-1]' : ''}`}
+    />
   )
 }
 

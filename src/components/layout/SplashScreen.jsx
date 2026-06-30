@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import bajajMark from '@/assets/bajaj-mark-transparent.png'
+import ekamWordmark from '@/assets/ekam-wordmark-transparent.png'
 
 export default function SplashScreen({ onDone }) {
   const [entered, setEntered] = useState(false)
@@ -48,17 +49,17 @@ export default function SplashScreen({ onDone }) {
             }}
           />
 
-          <span
-            className="font-ekam italic text-white text-[3rem] tracking-[0.18em] leading-none select-none"
+          <img
+            src={ekamWordmark}
+            alt="EKAM"
+            className="mt-4 h-11 w-auto select-none object-contain"
             style={{
               opacity: entered ? 1 : 0,
               transform: entered ? 'translateX(0)' : 'translateX(18px)',
               transition: 'opacity 550ms ease-out, transform 550ms ease-out',
               transitionDelay: '650ms',
             }}
-          >
-            EKAM
-          </span>
+          />
         </div>
 
         <p

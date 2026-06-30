@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { calendarService } from '@/services/calendarService'
 
-const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -31,7 +31,7 @@ export default function CalendarWidget() {
     else setMonth((m) => m + 1)
   }
 
-  const firstDay = new Date(year, month, 1).getDay()
+  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const cells = Array(firstDay).fill(null).concat(
     Array.from({ length: daysInMonth }, (_, i) => i + 1)
@@ -55,15 +55,27 @@ export default function CalendarWidget() {
       </div>
 
       <div className="grid grid-cols-7 gap-0.5 text-center">
-        {DAYS.map((d) => (
-          <div key={d} className="text-[10px] font-semibold text-text-secondary py-1">{d}</div>
-        ))}
+        {DAYS.map((d) => {
+          const isWeekendHeader = d === 'Sa' || d === 'Su'
+          return (
+            <div
+              key={d}
+              className={`py-1 text-[10px] font-semibold ${
+                isWeekendHeader ? 'text-indigo-500/75' : 'text-text-secondary'
+              }`}
+            >
+              {d}
+            </div>
+          )
+        })}
         {cells.map((day, i) => {
           if (!day) return <div key={`empty-${i}`} />
           const key = toKey(year, month, day)
           const event = eventMap[key]
           const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate()
           const isSelected = selectedDate === day
+          const dayOfWeek = new Date(year, month, day).getDay()
+          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
 
           return (
             <button
@@ -72,7 +84,8 @@ export default function CalendarWidget() {
               className={`relative flex flex-col items-center justify-center text-xs py-1 rounded focus-ring
                 ${isToday ? 'bg-brand-primary text-white font-semibold' : ''}
                 ${isSelected && !isToday ? 'bg-brand-light text-brand-primary font-semibold' : ''}
-                ${!isToday && !isSelected ? 'text-text-primary hover:bg-bg-alt' : ''}
+                ${!isToday && !isSelected && isWeekend ? 'bg-indigo-100/45 text-indigo-500/80 hover:bg-indigo-100/65' : ''}
+                ${!isToday && !isSelected && !isWeekend ? 'text-text-primary hover:bg-bg-alt' : ''}
               `}
               aria-label={`${day} ${MONTHS[month]}${event ? `, ${event.label}` : ''}`}
             >

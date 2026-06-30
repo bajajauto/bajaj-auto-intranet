@@ -311,6 +311,25 @@ export function ItSummitIcon({ size = 24, className = '' }) {
   )
 }
 
+export function DeliciaIcon({ size = 24, className = '' }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="currentColor"
+      className={className}
+      aria-hidden
+    >
+      <path d="M27.2 7.4C15.8 7.4 6.6 18.4 6.6 32s9.2 24.6 20.6 24.6V45.5C21.1 45.5 16 39.5 16 32s5.1-13.5 11.2-13.5V7.4z" />
+      <path d="M27.2 20.5C22.1 20.5 18 25.7 18 32s4.1 11.5 9.2 11.5v-23z" />
+      <path d="M37.4 7.4c-1 0-1.8.8-1.8 1.8V26c0 2.4 1.2 4.6 3.2 5.9 1.3.9 2.1 2.3 2.1 3.9l-1.2 17a4.3 4.3 0 0 0 8.6 0l-1.2-17c0-1.6.8-3 2.1-3.9 2-1.3 3.2-3.5 3.2-5.9V9.2c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v15.7c0 .9-.7 1.6-1.6 1.6s-1.6-.7-1.6-1.6V9.2c0-1-.8-1.8-1.8-1.8S42 8.2 42 9.2v15.7c0 .9-.7 1.6-1.6 1.6s-1.6-.7-1.6-1.6V9.2c.4-1-.4-1.8-1.4-1.8z" />
+      <path d="M58.4 9.5c-.2-1.2-1.7-1.7-2.6-.8-3 3-4.8 7.4-4.8 11.8v9.1c0 1.5 1.2 2.7 2.7 2.7h.7l-1.8 20.3a4 4 0 0 0 8 0L58.4 9.5z" />
+    </svg>
+  )
+}
+
 export function CsrIcon({ size = 24, className = '' }) {
   return (
     <svg

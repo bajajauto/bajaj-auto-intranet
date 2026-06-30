@@ -1,4 +1,3 @@
-import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 
 export default function ThemeToggle() {
@@ -13,9 +12,18 @@ export default function ThemeToggle() {
       aria-checked={isDark}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Light mode' : 'Dark mode'}
-      className="p-2 rounded-btn text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-ring"
+      className={`theme-toggle focus-ring ${isDark ? 'is-dark' : 'is-light'}`}
     >
-      {isDark ? <Sun size={20} /> : <Moon size={20} />}
+      <span className="theme-toggle-sky" aria-hidden="true">
+        <span className="theme-toggle-stars" />
+        <span className="theme-toggle-cloud theme-toggle-cloud-back" />
+        <span className="theme-toggle-cloud theme-toggle-cloud-front" />
+        <span className="theme-toggle-orb">
+          <span className="theme-toggle-crater crater-one" />
+          <span className="theme-toggle-crater crater-two" />
+          <span className="theme-toggle-crater crater-three" />
+        </span>
+      </span>
     </button>
   )
 }

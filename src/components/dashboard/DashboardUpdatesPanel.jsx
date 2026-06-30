@@ -77,7 +77,7 @@ function HolidayCalendar({ holidays }) {
   const [visibleDate, setVisibleDate] = useState(today)
   const year = visibleDate.getFullYear()
   const month = visibleDate.getMonth()
-  const firstDay = new Date(year, month, 1).getDay()
+  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const holidayMap = new Map(holidays.map((holiday) => [holiday.date, holiday]))
   const cells = Array(firstDay)
@@ -117,20 +117,29 @@ function HolidayCalendar({ holidays }) {
       </div>
 
       <div className="mt-4 grid grid-cols-7 gap-1.5 text-center">
-        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
+        {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day) => {
+          const isWeekendHeader = day === 'Sa' || day === 'Su'
+          return (
           <div
             key={day}
-            className="rounded-full bg-white/70 py-1 text-[10px] font-semibold text-brand-primary/70"
+            className={`rounded-full py-1 text-[10px] font-semibold ${
+              isWeekendHeader
+                ? 'bg-indigo-100/55 text-indigo-500/80'
+                : 'bg-white/70 text-brand-primary/70'
+            }`}
           >
             {day}
           </div>
-        ))}
+          )
+        })}
         {cells.map((day, index) => {
           if (!day) return <div key={`empty-${index}`} className="aspect-square" />
 
           const key = toKey(day)
           const holiday = holidayMap.get(key)
           const isToday = key === todayKey
+          const dayOfWeek = new Date(year, month, day).getDay()
+          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
 
           return (
             <button
@@ -141,7 +150,9 @@ function HolidayCalendar({ holidays }) {
                   ? 'bg-brand-primary font-semibold text-white ring-1 ring-brand-primary/20 hover:-translate-y-0.5 hover:bg-brand-dark'
                   : isToday
                     ? 'bg-white font-semibold text-brand-primary ring-2 ring-brand-primary/40'
-                    : 'bg-white/80 text-text-secondary ring-1 ring-brand-primary/5 hover:-translate-y-0.5 hover:bg-white hover:text-brand-primary hover:ring-brand-primary/20'
+                    : isWeekend
+                      ? 'bg-indigo-100/45 text-indigo-500/80 ring-1 ring-indigo-200/50 hover:-translate-y-0.5 hover:bg-indigo-100/65 hover:text-indigo-600'
+                      : 'bg-white/80 text-text-secondary ring-1 ring-brand-primary/5 hover:-translate-y-0.5 hover:bg-white hover:text-brand-primary hover:ring-brand-primary/20'
               }`}
               aria-label={holiday ? `${day}, ${holiday.label}` : `${day}`}
             >

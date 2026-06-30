@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
-import chetakSkeletonLogo from '@/assets/chetak logo.jpg'
+import earthNightUrl from '@/assets/globe/earth-night.jpg'
+import chetakSvgLogo from '@/assets/chetak svg.svg'
 
 function ChetakLogoIcon({ size = 19, className = '' }) {
   return (
     <img
-      src={chetakSkeletonLogo}
+      src={chetakSvgLogo}
       alt=""
       aria-hidden="true"
-      className={`max-w-none object-contain ${className}`}
-      style={{ width: Math.round(size * 1.85), height: size }}
+      style={{ width: size, height: size }}
+      className={`object-contain ${className}`}
     />
   )
 }
@@ -202,7 +203,7 @@ const LOCATION_GROUPS = [
     label: 'Bajaj Auto Technology Limited',
     description: 'Technology & digital hub',
     icon: ChetakLogoIcon,
-    iconSize: 27,
+    iconSize: 72,
     preserveIconOnHover: true,
     locations: [
       {
@@ -274,6 +275,67 @@ function GlobePresence({ title }) {
   const targetCountryRef = useRef(null)
   const [activeCountry, setActiveCountry] = useState('India')
 
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
+  const isDarkRef = useRef(isDark)
+
+  const earthMaterialRef = useRef(null)
+  const sunLightRef = useRef(null)
+  const ambientLightRef = useRef(null)
+  const rimLightRef = useRef(null)
+  const atmosphereMaterialRef = useRef(null)
+  const dayTextureRef = useRef(null)
+  const nightTextureRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const dark = document.documentElement.classList.contains('dark')
+      setIsDark(dark)
+      isDarkRef.current = dark
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const mat = earthMaterialRef.current
+    if (!mat) return
+    if (isDark) {
+      const tex = nightTextureRef.current
+      if (tex) {
+        mat.map = tex
+        mat.emissiveMap = tex
+        mat.emissive.set('#ffe066')
+        mat.emissiveIntensity = 2.5
+        mat.needsUpdate = true
+      }
+      if (ambientLightRef.current) ambientLightRef.current.intensity = 0.04
+      if (sunLightRef.current) sunLightRef.current.intensity = 0.0
+      if (rimLightRef.current) rimLightRef.current.intensity = 0.0
+      if (atmosphereMaterialRef.current) {
+        atmosphereMaterialRef.current.color.set('#4c1d95')
+        atmosphereMaterialRef.current.opacity = 0.1
+        atmosphereMaterialRef.current.needsUpdate = true
+      }
+    } else {
+      const tex = dayTextureRef.current
+      if (tex) {
+        mat.map = tex
+        mat.emissiveMap = null
+        mat.emissive.set('#03152e')
+        mat.emissiveIntensity = 0.08
+        mat.needsUpdate = true
+      }
+      if (ambientLightRef.current) ambientLightRef.current.intensity = 0.7
+      if (sunLightRef.current) sunLightRef.current.intensity = 3.2
+      if (rimLightRef.current) rimLightRef.current.intensity = 1.1
+      if (atmosphereMaterialRef.current) {
+        atmosphereMaterialRef.current.color.set('#8bdcff')
+        atmosphereMaterialRef.current.opacity = 0.18
+        atmosphereMaterialRef.current.needsUpdate = true
+      }
+    }
+  }, [isDark])
+
   const pauseOnCountry = (countryName) => {
     isPausedRef.current = true
     setActiveCountry(countryName)
@@ -313,13 +375,25 @@ function GlobePresence({ title }) {
       mount.appendChild(renderer.domElement)
 
       const loader = new THREE.TextureLoader()
-      const earthTexture = await loader.loadAsync(earthMapUrl)
+      const [earthTexture, nightTexture] = await Promise.all([
+        loader.loadAsync(earthMapUrl),
+        loader.loadAsync(earthNightUrl),
+      ])
       if (disposed) {
         earthTexture.dispose()
+        nightTexture.dispose()
         return
       }
+
       earthTexture.colorSpace = THREE.SRGBColorSpace
       earthTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
+      nightTexture.colorSpace = THREE.SRGBColorSpace
+      nightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
+
+      dayTextureRef.current = earthTexture
+      nightTextureRef.current = nightTexture
+
+      const currentDark = isDarkRef.current
 
       const latLngToVector3 = (lat, lng, radius) => {
         const phi = THREE.MathUtils.degToRad(90 - lat)
@@ -340,24 +414,27 @@ function GlobePresence({ title }) {
 
       const earthGeometry = new THREE.SphereGeometry(1.55, 128, 128)
       const earthMaterial = new THREE.MeshStandardMaterial({
-        map: earthTexture,
+        map: currentDark ? nightTexture : earthTexture,
         roughness: 0.88,
         metalness: 0.02,
-        emissive: new THREE.Color('#03152e'),
-        emissiveIntensity: 0.08,
+        emissive: new THREE.Color(currentDark ? '#ffe066' : '#03152e'),
+        emissiveMap: currentDark ? nightTexture : null,
+        emissiveIntensity: currentDark ? 2.5 : 0.08,
       })
+      earthMaterialRef.current = earthMaterial
       const earth = new THREE.Mesh(earthGeometry, earthMaterial)
       globeGroup.add(earth)
 
       const atmosphereGeometry = new THREE.SphereGeometry(1.66, 128, 128)
       const atmosphereMaterial = new THREE.MeshBasicMaterial({
-        color: '#8bdcff',
+        color: currentDark ? '#4c1d95' : '#8bdcff',
         transparent: true,
-        opacity: 0.18,
+        opacity: currentDark ? 0.1 : 0.18,
         blending: THREE.AdditiveBlending,
         side: THREE.BackSide,
         depthWrite: false,
       })
+      atmosphereMaterialRef.current = atmosphereMaterial
       const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
       atmosphere.position.x = 0.95
       scene.add(atmosphere)
@@ -377,11 +454,15 @@ function GlobePresence({ title }) {
       const stars = new THREE.Points(starGeometry, starMaterial)
       scene.add(stars)
 
-      scene.add(new THREE.AmbientLight('#9cc9ff', 0.7))
-      const sunLight = new THREE.DirectionalLight('#ffffff', 3.2)
+      const ambientLight = new THREE.AmbientLight('#9cc9ff', currentDark ? 0.04 : 0.7)
+      ambientLightRef.current = ambientLight
+      scene.add(ambientLight)
+      const sunLight = new THREE.DirectionalLight('#ffffff', currentDark ? 0.0 : 3.2)
+      sunLightRef.current = sunLight
       sunLight.position.set(4, 2.4, 5)
       scene.add(sunLight)
-      const rimLight = new THREE.DirectionalLight('#67e8f9', 1.1)
+      const rimLight = new THREE.DirectionalLight('#67e8f9', currentDark ? 0.0 : 1.1)
+      rimLightRef.current = rimLight
       rimLight.position.set(-4, 0.4, -1.8)
       scene.add(rimLight)
 
@@ -471,6 +552,14 @@ function GlobePresence({ title }) {
         starGeometry.dispose()
         starMaterial.dispose()
         earthTexture.dispose()
+        nightTexture.dispose()
+        earthMaterialRef.current = null
+        sunLightRef.current = null
+        ambientLightRef.current = null
+        rimLightRef.current = null
+        atmosphereMaterialRef.current = null
+        dayTextureRef.current = null
+        nightTextureRef.current = null
         renderer.dispose()
       }
     }

@@ -15,13 +15,13 @@ export default function TopBanner() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 h-9 bg-brand-light dark:bg-[#111a2e] border-b border-brand-primary/20 dark:border-white/10 flex items-center justify-between px-4 overflow-x-auto">
+      <div className="app-topbar-chrome fixed top-0 left-0 right-0 z-50 h-9 flex items-center justify-between px-4 overflow-x-auto">
         <nav className="flex items-center gap-6 whitespace-nowrap min-w-max" aria-label="Policy links">
           {links.map((link, i) => (
             <span key={link.label} className="flex items-center gap-6">
               <a
                 href={link.href}
-                className="text-xs text-brand-primary dark:text-blue-300 hover:underline focus-ring rounded"
+                className="text-xs text-brand-primary dark:text-[#a9bdd8] hover:underline focus-ring rounded"
               >
                 {link.label}
               </a>

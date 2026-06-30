@@ -20,7 +20,7 @@ const FOOTER_DESCRIPTION =
 
 export default function Footer() {
   return (
-    <footer className="mt-8 bg-brand-dark text-white">
+    <footer className="app-footer-chrome mt-8 text-white">
       <div className="h-0.5 bg-gradient-to-r from-transparent via-white to-transparent opacity-20" />
 
       <div className="mx-auto max-w-screen-xl px-4 pb-3 pt-4 md:px-6">

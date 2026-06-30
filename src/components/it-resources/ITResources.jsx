@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Baby, Coffee, Wrench } from 'lucide-react'
+import { Wrench } from 'lucide-react'
 import utsahImage from '@/assets/utsah.jpg'
+import { DeliciaIcon } from '@/components/shared/ServiceIcons'
 import VisitorGatepassWizard from './VisitorGatepassWizard'
 
 function UtsahIcon({ size = 24, className = '' }) {
@@ -24,6 +25,85 @@ function UtsahIcon({ size = 24, className = '' }) {
       <circle cx="4.2" cy="5.5" r="0.7" fill="currentColor" opacity="0.35" />
       <circle cx="19.8" cy="5.5" r="0.7" fill="currentColor" opacity="0.35" />
       <circle cx="2.5" cy="12" r="0.7" fill="currentColor" opacity="0.3" />
+    </svg>
+  )
+}
+
+function CrecheIcon({ size = 24, className = '' }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 130 96"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      {/* Ground */}
+      <ellipse cx="65" cy="91" rx="60" ry="7" fill="#57BB5A" />
+
+      {/* Left rainbow — drawn first so children appear on top */}
+      <path d="M5,89 C5,30 34,12 57,36" stroke="#E53935" strokeWidth="5" strokeLinecap="round" />
+      <path d="M11,89 C11,36 40,18 57,43" stroke="#FF9800" strokeWidth="5" strokeLinecap="round" />
+      <path d="M17,89 C17,42 46,24 57,50" stroke="#FDD835" strokeWidth="5" strokeLinecap="round" />
+      <path d="M23,89 C23,48 52,30 57,57" stroke="#43A047" strokeWidth="5" strokeLinecap="round" />
+      <path d="M29,89 C29,54 58,36 57,64" stroke="#1E88E5" strokeWidth="5" strokeLinecap="round" />
+
+      {/* Right rainbow */}
+      <path d="M125,89 C125,30 96,12 73,36" stroke="#E53935" strokeWidth="5" strokeLinecap="round" />
+      <path d="M119,89 C119,36 90,18 73,43" stroke="#FF9800" strokeWidth="5" strokeLinecap="round" />
+      <path d="M113,89 C113,42 84,24 73,50" stroke="#FDD835" strokeWidth="5" strokeLinecap="round" />
+      <path d="M107,89 C107,48 78,30 73,57" stroke="#43A047" strokeWidth="5" strokeLinecap="round" />
+      <path d="M101,89 C101,54 72,36 73,64" stroke="#1E88E5" strokeWidth="5" strokeLinecap="round" />
+
+      {/* Tree trunk */}
+      <line x1="65" y1="86" x2="65" y2="14" stroke="#6D4C41" strokeWidth="6" strokeLinecap="round" />
+      <line x1="65" y1="48" x2="49" y2="32" stroke="#6D4C41" strokeWidth="4" strokeLinecap="round" />
+      <line x1="65" y1="40" x2="81" y2="27" stroke="#6D4C41" strokeWidth="4" strokeLinecap="round" />
+      <line x1="65" y1="60" x2="47" y2="51" stroke="#6D4C41" strokeWidth="3.5" strokeLinecap="round" />
+      <line x1="65" y1="54" x2="83" y2="46" stroke="#6D4C41" strokeWidth="3.5" strokeLinecap="round" />
+      <line x1="65" y1="28" x2="56" y2="15" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
+      <line x1="65" y1="24" x2="74" y2="14" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
+
+      {/* Hearts — 9, well spaced across canopy */}
+      <path d="M49,24.5C48.3,21 43.7,21 43.7,24.85C43.7,28 49,32.9 49,32.9C49,32.9 54.3,28 54.3,24.85C54.3,21 49.7,21 49,24.5Z" fill="#E53935" />
+      <path d="M65,6C64.4,3 60.5,3 60.5,6.3C60.5,9 65,13.2 65,13.2C65,13.2 69.5,9 69.5,6.3C69.5,3 65.6,3 65,6Z" fill="#66BB6A" />
+      <path d="M81,19.5C80.3,16 75.7,16 75.7,19.85C75.7,23 81,27.9 81,27.9C81,27.9 86.3,23 86.3,19.85C86.3,16 81.7,16 81,19.5Z" fill="#1E88E5" />
+      <path d="M47,15.5C46.5,13 43.25,13 43.25,15.75C43.25,18 47,21.5 47,21.5C47,21.5 50.75,18 50.75,15.75C50.75,13 47.5,13 47,15.5Z" fill="#FDD835" />
+      <path d="M83,13.5C82.5,11 79.25,11 79.25,13.75C79.25,16 83,19.5 83,19.5C83,19.5 86.75,16 86.75,13.75C86.75,11 83.5,11 83,13.5Z" fill="#FF9800" />
+      <path d="M55,7.5C54.5,5 51.25,5 51.25,7.75C51.25,10 55,13.5 55,13.5C55,13.5 58.75,10 58.75,7.75C58.75,5 55.5,5 55,7.5Z" fill="#8E24AA" />
+      <path d="M75,5.5C74.5,3 71.25,3 71.25,5.75C71.25,8 75,11.5 75,11.5C75,11.5 78.75,8 78.75,5.75C78.75,3 75.5,3 75,5.5Z" fill="#E91E63" />
+      <path d="M88,33.5C87.5,31 84.25,31 84.25,33.75C84.25,36 88,39.5 88,39.5C88,39.5 91.75,36 91.75,33.75C91.75,31 88.5,31 88,33.5Z" fill="#8BC34A" />
+      <path d="M42,38.5C41.5,36 38.25,36 38.25,38.75C38.25,41 42,44.5 42,44.5C42,44.5 45.75,41 45.75,38.75C45.75,36 42.5,36 42,38.5Z" fill="#26C6DA" />
+
+      {/* Left child — white halo first so red pops off the rainbow */}
+      <circle cx="19" cy="59" r="13" fill="white" />
+      <ellipse cx="19" cy="74" rx="17" ry="15" fill="white" />
+      <ellipse cx="20" cy="83" rx="18" ry="9" fill="white" />
+      <circle cx="19" cy="59" r="12" fill="#E53935" />
+      <ellipse cx="19" cy="74" rx="16" ry="14" fill="#E53935" />
+      <ellipse cx="20" cy="83" rx="17" ry="8" fill="#E53935" />
+
+      {/* Right child — white halo first */}
+      <circle cx="101" cy="78" r="13" fill="none" stroke="white" strokeWidth="5" />
+      <circle cx="116" cy="78" r="13" fill="none" stroke="white" strokeWidth="5" />
+      <path d="M101,78 L109,60 L116,78" stroke="white" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M109,60 L116,67" stroke="white" strokeWidth="7" strokeLinecap="round" />
+      <circle cx="108" cy="50" r="13" fill="white" />
+      <path d="M108,63 L106,74" stroke="white" strokeWidth="12" strokeLinecap="round" />
+      <path d="M106,73 L101,79" stroke="white" strokeWidth="8" strokeLinecap="round" />
+      <path d="M106,73 L112,78" stroke="white" strokeWidth="8" strokeLinecap="round" />
+      {/* Blue bicycle + rider on top of halo */}
+      <circle cx="101" cy="78" r="12" fill="none" stroke="#1565C0" strokeWidth="3.5" />
+      <circle cx="116" cy="78" r="12" fill="none" stroke="#1565C0" strokeWidth="3.5" />
+      <path d="M101,78 L109,60 L116,78" stroke="#1565C0" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M109,60 L116,67" stroke="#1565C0" strokeWidth="4.5" strokeLinecap="round" />
+      <path d="M105,62 L113,60" stroke="#1565C0" strokeWidth="3.5" strokeLinecap="round" />
+      <circle cx="108" cy="50" r="12" fill="#1565C0" />
+      <path d="M108,62 L106,73" stroke="#1565C0" strokeWidth="10" strokeLinecap="round" />
+      <path d="M106,72 L101,78" stroke="#1565C0" strokeWidth="6" strokeLinecap="round" />
+      <path d="M106,72 L112,77" stroke="#1565C0" strokeWidth="6" strokeLinecap="round" />
     </svg>
   )
 }
@@ -119,8 +199,8 @@ const FACILITIES = [
     icon: UtsahIcon,
     image: utsahImage,
     href: '#',
-    iconBg: 'bg-purple-50',
-    iconColor: 'text-purple-600',
+    imageClass: 'scale-[3] object-cover object-[48%_40%]',
+    floatingIcon: true,
     hoverBorder: 'hover:border-purple-200',
     hoverShadow: 'hover:shadow-purple-100/60',
   },
@@ -128,10 +208,12 @@ const FACILITIES = [
     id: 'cresh',
     label: 'Chrèche',
     sublabel: 'Childcare',
-    icon: Baby,
+    icon: CrecheIcon,
     href: '#',
-    iconBg: 'bg-rose-50',
-    iconColor: 'text-rose-600',
+    iconColor: '',
+    floatingIcon: true,
+    largeIcon: true,
+    iconSize: 60,
     hoverBorder: 'hover:border-rose-200',
     hoverShadow: 'hover:shadow-rose-100/60',
   },
@@ -139,10 +221,10 @@ const FACILITIES = [
     id: 'delicia',
     label: 'Delicia',
     sublabel: 'Canteen',
-    icon: Coffee,
+    icon: DeliciaIcon,
     href: '#',
-    iconBg: 'bg-amber-50',
-    iconColor: 'text-amber-600',
+    iconColor: 'text-[#3E3E40]',
+    floatingIcon: true,
     hoverBorder: 'hover:border-amber-200',
     hoverShadow: 'hover:shadow-amber-100/60',
   },
@@ -153,9 +235,13 @@ function ResourceLink({
   sublabel,
   icon: Icon,
   image,
+  imageClass = 'object-cover object-center',
   href,
   iconBg,
   iconColor,
+  floatingIcon = false,
+  largeIcon = false,
+  iconSize,
   hoverBorder,
   hoverShadow,
   onClick,
@@ -169,11 +255,28 @@ function ResourceLink({
       }}
       className={`site-surface-interactive group flex items-center gap-3 rounded-card border p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${hoverBorder} ${hoverShadow} focus-ring cursor-pointer`}
     >
-      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${iconBg} ring-1 ring-inset ring-black/5 transition-transform duration-200 group-hover:scale-110`}>
+      <div
+        className={`flex flex-shrink-0 items-center justify-center transition-transform duration-200 group-hover:scale-110 ${
+          largeIcon ? 'h-14 w-14' : 'h-10 w-10'
+        } ${
+          floatingIcon
+            ? image
+              ? 'overflow-hidden rounded-full drop-shadow-[0_5px_7px_rgba(15,23,42,0.2)]'
+              : ''
+            : `overflow-hidden rounded-xl ${iconBg} ring-1 ring-inset ring-black/5`
+        }`}
+      >
         {image ? (
-          <img src={image} alt="" className="h-full w-full rounded-xl object-cover" />
+          <img
+            src={image}
+            alt=""
+            className={`h-full w-full ${imageClass} mix-blend-multiply dark:bg-white`}
+          />
         ) : (
-          <Icon size={18} className={iconColor} />
+          <Icon
+            size={iconSize ?? (floatingIcon ? (largeIcon ? 52 : 36) : 18)}
+            className={`${iconColor} ${floatingIcon ? 'drop-shadow-[0_5px_7px_rgba(15,23,42,0.2)]' : ''}`}
+          />
         )}
       </div>
       <div className="min-w-0 flex-1">
