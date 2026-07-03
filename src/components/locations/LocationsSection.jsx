@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, Globe2, MapPin, Satellite } from 'lucide-react'
+import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, MapPin, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
 import chetakSkeletonLogo from '@/assets/chetak logo.jpg'
 
@@ -331,8 +331,13 @@ function GlobePresence({ title }) {
         )
       }
 
+      // On desktop the globe is nudged right to clear the country-list panel;
+      // on mobile there is no panel, so keep it centered.
+      const getOffsetX = (w) => (w >= 1024 ? 0.95 : 0)
+      let globeOffsetX = getOffsetX(mount.clientWidth)
+
       const globeGroup = new THREE.Group()
-      globeGroup.position.x = 0.95
+      globeGroup.position.x = globeOffsetX
       globeGroup.rotation.y = -0.75
       const baseRotationX = THREE.MathUtils.degToRad(-8)
       globeGroup.rotation.x = baseRotationX
@@ -359,7 +364,7 @@ function GlobePresence({ title }) {
         depthWrite: false,
       })
       const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
-      atmosphere.position.x = 0.95
+      atmosphere.position.x = globeOffsetX
       scene.add(atmosphere)
 
       const starGeometry = new THREE.BufferGeometry()
@@ -417,6 +422,9 @@ function GlobePresence({ title }) {
         camera.aspect = width / height
         camera.updateProjectionMatrix()
         renderer.setSize(width, height)
+        globeOffsetX = getOffsetX(width)
+        globeGroup.position.x = globeOffsetX
+        atmosphere.position.x = globeOffsetX
       })
       resizeObserver.observe(mount)
 
@@ -488,15 +496,11 @@ function GlobePresence({ title }) {
       {/* Dark-mode space backdrop — minimal deep-space gradient behind the globe */}
       <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_68%_30%,#11244a_0%,#0a1430_40%,#04060f_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.14),transparent_55%)]" />
-      <div ref={mountRef} className="absolute inset-0" aria-hidden="true" />
+      <div ref={mountRef} className="absolute inset-x-0 bottom-0 top-14 sm:top-16 lg:top-0" aria-hidden="true" />
 
       {/* Header overlay */}
       <div className="pointer-events-none absolute left-3 top-3 z-20 space-y-2 sm:left-5 sm:top-5">
         {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-[11px] font-medium text-brand-primary">
-          <Globe2 size={12} />
-          Global Presence
-        </div>
       </div>
 
       <div className="absolute left-5 top-24 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
