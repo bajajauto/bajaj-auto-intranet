@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { Search, Megaphone, Menu, LogOut, ChevronDown } from 'lucide-react'
+import { Search, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { useUser } from '@/context/UserContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -8,6 +8,31 @@ import NoticesPanel from '@/components/notices/NoticesPanel'
 import ThemeToggle from '@/components/shared/ThemeToggle'
 import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
 import ekamWordmark from '@/assets/ekam-wordmark-transparent.png'
+
+function AnnouncementIcon({ className = '' }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M13 35.5 7.7 40.8c-1.2 1.2-.4 3.2 1.3 3.2h13.5L13 35.5Z" fill="#1A56A8" />
+      <path d="M21.7 38.8 31 53.6c.7 1.2 2.4 1.4 3.4.4l3-3c.7-.7.8-1.8.3-2.6L30.8 37l-9.1 1.8Z" fill="#E5E7EB" />
+      <path d="M21.7 38.8 31 53.6c.7 1.2 2.4 1.4 3.4.4l3-3c.7-.7.8-1.8.3-2.6L30.8 37" stroke="#C7CCD3" strokeWidth="2.2" strokeLinejoin="round" />
+      <path d="M10 22.8c-2.9 1.2-4.8 4-4.8 7.2s1.9 6 4.8 7.2l10.5 4.5V18.3L10 22.8Z" fill="#1A56A8" />
+      <path d="M20.5 18.3 45 8v44L20.5 41.7V18.3Z" fill="#F4F6F8" />
+      <path d="M20.5 18.3 45 8v44L20.5 41.7V18.3Z" stroke="#1A56A8" strokeWidth="3" strokeLinejoin="round" />
+      <path d="M25 21.8 40.5 15v34L25 42.2V21.8Z" fill="#EAF3FF" />
+      <ellipse cx="45" cy="30" rx="8" ry="22" fill="#F7FBFF" stroke="#1A56A8" strokeWidth="3" />
+      <ellipse cx="45" cy="30" rx="3.7" ry="9" fill="#1A56A8" />
+      <path d="M54 15 61 7l-3.1 10.7 5.4-.7-8.7 9.3 3-9.6-3.6-1.7Z" fill="#7DD3FC" />
+      <path d="M55 30.5 62 28l-5.1 5.2 4.4 1.8-8 2 3.6-4.2-1.9-2.3Z" fill="#7DD3FC" />
+      <path d="M54 44.5 62 53l-10.7-4 1.7 5.6-8.9-9.6 9.1 3.6.8-4.1Z" fill="#7DD3FC" />
+    </svg>
+  )
+}
 
 export default function Header() {
   const { isMobileOpen, setMobileOpen } = useSidebar()
@@ -65,12 +90,13 @@ export default function Header() {
   }, [isNoticesOpen, isProfileOpen])
 
   return (
-    <header className="app-header-chrome fixed top-9 left-0 right-0 z-40 h-20 grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center px-4 gap-4">
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="app-header-chrome fixed left-0 right-0 top-8 md:top-9 z-40 h-16 md:h-20 grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center gap-2 md:gap-4 pl-3 pr-1.5 md:px-4">
+      <div className="flex min-w-0 items-center gap-2 md:gap-3">
+
         {isMobile && (
           <button
             onClick={handleMenuClick}
-            className="p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
+            className="rounded-btn p-1.5 text-white/80 hover:bg-white/10 hover:text-white focus-ring"
             aria-label="Open sidebar"
           >
             <Menu size={20} />
@@ -78,14 +104,14 @@ export default function Header() {
         )}
 
         {/* Logo */}
-        <div className="flex items-center gap-3 flex-shrink-0 select-none">
+        <div className="flex min-w-0 flex-shrink select-none items-center gap-2 md:flex-shrink-0 md:gap-3">
           <img
             src={bajajFooterLockup}
             alt="Bajaj Auto - The World's Favourite Indian"
-            className="h-12 w-auto object-contain"
+            className="h-8 w-auto object-contain sm:h-9 md:h-12"
           />
-          <div className="h-9 w-px bg-white/35" aria-hidden="true" />
-          <img src={ekamWordmark} alt="EKAM" className="mt-3 h-8 w-auto object-contain" />
+          <div className="h-7 w-px bg-white/30 md:h-9" aria-hidden="true" />
+          <img src={ekamWordmark} alt="EKAM" className="mt-1 h-6 w-auto object-contain sm:h-7 md:mt-3 md:h-8" />
         </div>
       </div>
 
@@ -108,7 +134,7 @@ export default function Header() {
       </div>
 
       {/* Right actions */}
-      <div className="flex items-center justify-end gap-2 min-w-0">
+      <div className="flex min-w-0 translate-x-1 items-center justify-end gap-1 md:translate-x-0 md:gap-2">
         {/* Light / dark theme toggle */}
         <ThemeToggle />
 
@@ -119,11 +145,11 @@ export default function Header() {
             aria-label="Notices"
             aria-expanded={isNoticesOpen}
             aria-haspopup="true"
-            className="relative p-2 rounded-btn text-white/80 hover:bg-white/10 hover:text-white focus-ring"
+            className="relative flex h-9 w-9 items-center justify-center rounded-btn text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-ring md:h-10 md:w-10"
           >
-            <Megaphone size={20} />
+            <AnnouncementIcon className="h-6 w-6 drop-shadow-sm" />
             {noticeCount > 0 && !noticesSeen && (
-              <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-medium">
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-brand-dark">
                 {noticeCount > 9 ? '9+' : noticeCount}
               </span>
             )}

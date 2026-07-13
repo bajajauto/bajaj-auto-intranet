@@ -15,13 +15,16 @@ export default function TopBanner() {
 
   return (
     <>
-      <div className="app-topbar-chrome fixed top-0 left-0 right-0 z-50 h-9 flex items-center justify-between px-4 overflow-x-auto">
-        <nav className="flex items-center gap-6 whitespace-nowrap min-w-max" aria-label="Policy links">
+      <div className="app-topbar-chrome fixed top-0 left-0 right-0 z-50 flex h-8 md:h-9 items-center gap-2 md:gap-3 px-2 sm:px-4">
+        <nav
+          className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:gap-6 [&::-webkit-scrollbar]:hidden"
+          aria-label="Policy links"
+        >
           {links.map((link, i) => (
-            <span key={link.label} className="flex items-center gap-6">
+            <span key={link.label} className="flex items-center gap-4 sm:gap-6">
               <a
                 href={link.href}
-                className="text-xs text-brand-primary dark:text-[#a9bdd8] hover:underline focus-ring rounded"
+                className="rounded text-[10px] font-semibold text-brand-primary dark:text-[#a9bdd8] hover:underline focus-ring sm:text-xs"
               >
                 {link.label}
               </a>
@@ -33,7 +36,7 @@ export default function TopBanner() {
         </nav>
         <button
           onClick={() => setIsSosOpen(true)}
-          className="ml-auto flex-shrink-0 px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded text-xs font-semibold flex items-center gap-1 focus-ring"
+          className="flex flex-shrink-0 items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-1 text-[10px] font-bold text-red-700 shadow-sm transition-colors hover:bg-red-100 focus-ring sm:text-xs"
           aria-label="Open SOS emergency contacts"
         >
           <AlertTriangle size={14} />
