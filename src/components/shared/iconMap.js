@@ -37,6 +37,7 @@ import {
   Megaphone,
   MessageSquare,
   Monitor,
+  MonitorSmartphone,
   Newspaper,
   Phone,
   PhoneCall,
@@ -69,6 +70,15 @@ import {
   MediclaimIcon,
   ItSummitIcon,
   CsrIcon,
+  PitstopIcon,
+  BajajBytesIcon,
+  ResourcesSupportIcon,
+  CompanyOverviewIcon,
+  NewsAnnouncementIcon,
+  PresenceIcon,
+  EmergencyContactsIcon,
+  FeedbackIcon,
+  RaiseItRequestIcon,
 } from './ServiceIcons'
 
 export const iconMap = {
@@ -90,6 +100,16 @@ export const iconMap = {
   MediclaimIcon,
   ItSummitIcon,
   CsrIcon,
+  // custom sidebar navigation icons
+  PitstopIcon,
+  BajajBytesIcon,
+  ResourcesSupportIcon,
+  CompanyOverviewIcon,
+  NewsAnnouncementIcon,
+  PresenceIcon,
+  EmergencyContactsIcon,
+  FeedbackIcon,
+  RaiseItRequestIcon,
   // lucide icons (used elsewhere in the app)
   AlertCircle,
   AppWindow,
@@ -130,6 +150,7 @@ export const iconMap = {
   Megaphone,
   MessageSquare,
   Monitor,
+  MonitorSmartphone,
   Newspaper,
   Phone,
   PhoneCall,

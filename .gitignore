@@ -13,3 +13,8 @@ coverage
 
 # Local mobile screenshot audits
 .mobile-shots/
+
+# Local design source archives & exports — not part of the app
+/*.zip
+/*.pdf
+/Gemini_Generated_Image_*.png

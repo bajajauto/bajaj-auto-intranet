@@ -371,3 +371,139 @@ export function CsrIcon({ size = 24, className = '' }) {
     </svg>
   )
 }
+
+/* ------------------------------------------------------------------ *
+ * Sidebar navigation glyphs
+ *
+ * Drawn from the "Intranet Icons - Glass Preview" set, but only the
+ * glyph idea is carried over — the pink glass tile from that deck is
+ * dropped, because the sidebar supplies its own coloured frame via
+ * GROUP_COLORS. Same two-tone convention as the service icons above:
+ * solid currentColor body, 0.4-opacity secondary mass, INK for detail.
+ * ------------------------------------------------------------------ */
+
+// Speedometer — the Pitstop hub, read as a racing dial.
+export function PitstopIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path
+        d="M12 3.8A9.2 9.2 0 0 0 2.8 13v1.7c0 .7.5 1.2 1.2 1.2h2.2c.7 0 1.2-.5 1.2-1.2V13a4.6 4.6 0 0 1 9.2 0v1.7c0 .7.5 1.2 1.2 1.2h2.2c.7 0 1.2-.5 1.2-1.2V13A9.2 9.2 0 0 0 12 3.8z"
+        fillOpacity="0.4"
+      />
+      <path d="M15.9 8.7c.4.4.5 1 .1 1.5l-2.6 3.3a1.9 1.9 0 1 1-2.3-2.3l3.3-2.6c.5-.4 1.1-.3 1.5.1z" />
+      <rect x="7.4" y="17.8" width="9.2" height="2.4" rx="1.2" fillOpacity="0.4" />
+    </FilledSvg>
+  )
+}
+
+// Open book — Bajaj Bytes (newsletters, podcast, watch).
+export function BajajBytesIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path d="M11.2 6.6C9.5 5.3 7.4 4.7 4.6 4.6A1.6 1.6 0 0 0 3 6.2v10.5c0 .9.7 1.6 1.6 1.6 2.4.1 4.3.6 5.8 1.6.4.3.9 0 .9-.5V6.6z" />
+      <path
+        d="M12.8 6.6c1.7-1.3 3.8-1.9 6.6-2a1.6 1.6 0 0 1 1.6 1.6v10.5c0 .9-.7 1.6-1.6 1.6-2.4.1-4.3.6-5.8 1.6-.4.3-.9 0-.9-.5V6.6z"
+        fillOpacity="0.4"
+      />
+      <path d="M5.6 8.4c1.3.1 2.5.4 3.5.9" stroke={INK} strokeOpacity="0.25" strokeWidth="1.1" strokeLinecap="round" fill="none" />
+      <path d="M5.6 11.4c1.3.1 2.5.4 3.5.9" stroke={INK} strokeOpacity="0.25" strokeWidth="1.1" strokeLinecap="round" fill="none" />
+    </FilledSvg>
+  )
+}
+
+// Headset — Resources & Support, the IT / support desk.
+export function ResourcesSupportIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path
+        d="M12 3.2A8.2 8.2 0 0 0 3.8 11.4v1.3a1 1 0 0 0 2 0v-1.3a6.2 6.2 0 0 1 12.4 0v1.3a1 1 0 0 0 2 0v-1.3A8.2 8.2 0 0 0 12 3.2z"
+        fillOpacity="0.4"
+      />
+      <rect x="3" y="11.4" width="4.2" height="6.6" rx="2.1" />
+      <rect x="16.8" y="11.4" width="4.2" height="6.6" rx="2.1" />
+      <path d="M18.9 18v.7a2.6 2.6 0 0 1-2.6 2.6h-2.1v-1.8h2.1c.4 0 .8-.4.8-.8V18h1.8z" />
+      <rect x="10.6" y="19.4" width="3.4" height="2.2" rx="1.1" />
+    </FilledSvg>
+  )
+}
+
+// Tower block — Company Overview.
+export function CompanyOverviewIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path d="M4.2 8.4h7.2v12.4H3.4a1 1 0 0 1-1-1V9.4c0-.6.4-1 1-1h.8z" fillOpacity="0.4" />
+      <path d="M12.6 3.2h7a1 1 0 0 1 1 1v15.6a1 1 0 0 1-1 1h-7V3.2z" />
+      <g fill={INK} fillOpacity="0.28">
+        <rect x="14.3" y="5.6" width="1.9" height="1.9" rx="0.5" />
+        <rect x="17.1" y="5.6" width="1.9" height="1.9" rx="0.5" />
+        <rect x="14.3" y="9" width="1.9" height="1.9" rx="0.5" />
+        <rect x="17.1" y="9" width="1.9" height="1.9" rx="0.5" />
+        <rect x="14.3" y="12.4" width="1.9" height="1.9" rx="0.5" />
+        <rect x="17.1" y="12.4" width="1.9" height="1.9" rx="0.5" />
+        <rect x="5.6" y="11.2" width="1.8" height="1.8" rx="0.5" />
+        <rect x="8.2" y="11.2" width="1.8" height="1.8" rx="0.5" />
+        <rect x="5.6" y="14.6" width="1.8" height="1.8" rx="0.5" />
+        <rect x="8.2" y="14.6" width="1.8" height="1.8" rx="0.5" />
+      </g>
+    </FilledSvg>
+  )
+}
+
+// Megaphone — News & Announcement.
+export function NewsAnnouncementIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path d="M19.4 3.6a1.2 1.2 0 0 0-1.9-1L11 7.4v7.6l6.5 4.8a1.2 1.2 0 0 0 1.9-1V3.6z" />
+      <path d="M9.4 8H5.2a2.4 2.4 0 0 0-2.4 2.4v1.6A2.4 2.4 0 0 0 5.2 14.4h4.2V8z" fillOpacity="0.4" />
+      <path d="M6 14.4h2.6l.7 5.2a1.3 1.3 0 0 1-2.6.3L6 14.4z" fillOpacity="0.4" />
+      <path d="M21 9.6a1 1 0 0 1 0 2h-.4v-2h.4z" />
+    </FilledSvg>
+  )
+}
+
+// Map pin — Bajaj Auto Presence (locations).
+export function PresenceIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <ellipse cx="12" cy="20.1" rx="6" ry="1.9" fillOpacity="0.4" />
+      <path d="M12 2.2c-4 0-7.2 3.2-7.2 7.2 0 5.1 6.1 10.3 6.4 10.5.5.4 1.2.4 1.7 0 .3-.2 6.4-5.4 6.4-10.5 0-4-3.2-7.2-7.3-7.2z" />
+      <circle cx="12" cy="9.3" r="2.7" fill={INK} fillOpacity="0.3" />
+    </FilledSvg>
+  )
+}
+
+// Handset with alert ring — Emergency Contacts.
+export function EmergencyContactsIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path d="M7.6 3.2c.7-.4 1.6-.2 2 .5l1.9 3.1c.4.7.2 1.6-.5 2l-1.5.9c.7 1.9 2.2 3.4 4.1 4.1l.9-1.5c.4-.7 1.3-.9 2-.5l3.1 1.9c.7.4.9 1.3.5 2l-1 1.7a3.4 3.4 0 0 1-3.8 1.6C10.4 17.4 6 13 4.3 6.7A3.4 3.4 0 0 1 5.9 2.9l1.7-1z" />
+      <path
+        d="M14.6 2.4a1 1 0 0 1 1.2-.8 7 7 0 0 1 5.4 5.4 1 1 0 0 1-2 .4 5 5 0 0 0-3.8-3.8 1 1 0 0 1-.8-1.2z"
+        fillOpacity="0.4"
+      />
+    </FilledSvg>
+  )
+}
+
+// Speech bubble with a rating tick — Feedback.
+export function FeedbackIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path d="M4 3.4h16a2 2 0 0 1 2 2v9.4a2 2 0 0 1-2 2h-7.7l-4.2 3.6a1 1 0 0 1-1.7-.8v-2.8H4a2 2 0 0 1-2-2V5.4a2 2 0 0 1 2-2z" fillOpacity="0.4" />
+      <path
+        d="M10.9 13.5 7.6 10.2a1.1 1.1 0 0 1 1.6-1.6l1.7 1.7 4.1-4.1a1.1 1.1 0 0 1 1.6 1.6l-4.9 4.9c-.2.2-.5.3-.8.3z"
+      />
+    </FilledSvg>
+  )
+}
+
+// Monitor with a spanner — Raise IT Request.
+export function RaiseItRequestIcon({ size = 24, className = '' }) {
+  return (
+    <FilledSvg size={size} className={className}>
+      <path d="M3.4 4h17.2a1.4 1.4 0 0 1 1.4 1.4v9.2a1.4 1.4 0 0 1-1.4 1.4H3.4A1.4 1.4 0 0 1 2 14.6V5.4A1.4 1.4 0 0 1 3.4 4z" fillOpacity="0.4" />
+      <path d="M9.4 17.6h5.2l.5 2.2h1.3a1 1 0 0 1 0 2H7.6a1 1 0 0 1 0-2h1.3l.5-2.2z" fillOpacity="0.4" />
+      <path d="M15.6 6.2a3.7 3.7 0 0 0-4.7 4.5l-3 3a1.4 1.4 0 0 0 2 2l3-3a3.7 3.7 0 0 0 4.5-4.7l-1.9 1.9-1.8-.5-.5-1.8 1.9-1.9z" />
+    </FilledSvg>
+  )
+}

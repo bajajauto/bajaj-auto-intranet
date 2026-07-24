@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { Bell, CalendarDays } from 'lucide-react'
-import distinctlyAheadBanner from '@/assets/distinctly-ahead-banner-small-text.png'
+import { heroBanner } from '@/config/banner.config'
 import { useUser } from '@/context/UserContext'
+import { useVehicles } from '@/hooks/useVehicles'
 import { calendarService } from '@/services/calendarService'
 import { notificationService } from '@/services/notificationService'
 import StockTickerTape from '@/components/dashboard/StockTickerTape'
+import VehicleHotspots from '@/components/vehicles/VehicleHotspots'
+import VehicleSpinModal from '@/components/vehicles/VehicleSpinModal'
 
 function getHeroMoment() {
   const h = new Date().getHours()
@@ -20,22 +24,41 @@ function formatIsoDate(date) {
   ).padStart(2, '0')}`
 }
 
-function DistinctlyAheadScene() {
+// The artwork and the hotspot overlay must occupy the exact same box for the
+// vehicles' stored coordinates to land on the vehicles. Sharing one geometry
+// string — rather than a CSS-cropped background — is what makes that true at
+// every breakpoint. The plate sits above the ticker tape so no wheels are cut.
+const PLATE_BOX =
+  'absolute bottom-9 left-[-10%] w-[120%] aspect-[2012/782] sm:bottom-6 sm:left-[-4%] sm:w-[108%] md:bottom-5 md:left-[4%] md:w-[92%]'
+
+function DistinctlyAheadScene({ vehicles, onSelectVehicle }) {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#0E4E87]">
-      <div
-        className="absolute inset-0 bg-no-repeat bg-[length:auto_86%] bg-[position:48%_center] sm:bg-[length:auto_96%] sm:bg-[position:60%_center] md:bg-[length:88%_auto] md:bg-[position:64%_34%]"
-        style={{ backgroundImage: `url(${distinctlyAheadBanner})` }}
-        aria-hidden="true"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#083D73]/92 via-[#083D73]/45 to-[#083D73]/5 md:from-[#083D73]/85 md:via-[#083D73]/30 md:to-[#083D73]/10" />
-      <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#062A55]/90 via-[#062A55]/30 to-transparent" />
+    <div className="absolute inset-0 overflow-hidden bg-[#053e7c]">
+      <div className={PLATE_BOX} aria-hidden="true">
+        <img
+          src={heroBanner.src}
+          alt=""
+          draggable={false}
+          className="h-full w-full select-none object-cover"
+        />
+      </div>
+
+      {/* Scrim keeps the greeting legible. Kept lighter than a full mask so the
+          left-hand vehicles stay visible enough to read as clickable. */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#083D73]/78 via-[#083D73]/40 to-[#083D73]/5 md:from-[#083D73]/72 md:via-[#083D73]/26 md:to-[#083D73]/10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#062A55]/90 via-[#062A55]/30 to-transparent" />
+
+      <div className={PLATE_BOX}>
+        <VehicleHotspots vehicles={vehicles} onSelect={onSelectVehicle} />
+      </div>
     </div>
   )
 }
 
 export default function HeroBanner() {
   const user = useUser()
+  const vehicles = useVehicles()
+  const [activeVehicle, setActiveVehicle] = useState(null)
   const moment = getHeroMoment()
   const unreadCount = notificationService.getAll().length
   const todayKey = formatIsoDate(new Date())
@@ -51,11 +74,14 @@ export default function HeroBanner() {
 
   return (
     <div className="relative mb-5 overflow-hidden rounded-2xl animate-fade-up">
-      <DistinctlyAheadScene />
+      <DistinctlyAheadScene vehicles={vehicles} onSelectVehicle={setActiveVehicle} />
 
-      <div className="relative z-10 flex h-[218px] flex-col sm:h-[258px] md:h-[320px]">
-        <div className="flex flex-1 flex-col justify-start gap-1 p-2.5 pt-3 text-white sm:gap-2 sm:p-4 md:gap-2.5 md:px-5 md:py-4">
-          <div className="max-w-[11.5rem] sm:max-w-sm">
+      {/* The greeting column floats over the vehicles, so it only claims pointer
+          events where it actually paints — everywhere else clicks fall through
+          to the hotspots beneath. */}
+      <div className="pointer-events-none relative z-10 flex h-[218px] flex-col sm:h-[258px] md:h-[320px]">
+        <div className="flex flex-1 flex-col items-start justify-start gap-1 p-2.5 pt-3 text-white sm:gap-2 sm:p-4 md:gap-2.5 md:px-5 md:py-4">
+          <div className="pointer-events-auto max-w-[11.5rem] sm:max-w-sm">
             <p className="text-[9px] font-medium leading-tight tracking-wide text-white/65 sm:mb-0.5 sm:text-xs">{moment.greeting}</p>
             <h1 className="text-sm font-bold leading-tight tracking-tight text-white sm:mb-0.5 sm:text-lg">{user.name}</h1>
             <p className="text-[9px] font-medium leading-tight text-white/60 sm:text-xs">
@@ -63,7 +89,7 @@ export default function HeroBanner() {
             </p>
           </div>
 
-          <div className="w-24 max-w-full rounded-lg border border-white/15 bg-white/10 px-1.5 py-1 shadow-modal backdrop-blur-md sm:w-40 sm:px-2.5 sm:py-2 md:w-48 md:px-3">
+          <div className="pointer-events-auto w-24 max-w-full rounded-lg border border-white/15 bg-white/10 px-1.5 py-1 shadow-modal backdrop-blur-md sm:w-40 sm:px-2.5 sm:py-2 md:w-48 md:px-3">
             <div className="flex items-start justify-between gap-1 sm:gap-2">
               <div>
                 <p className="text-[7px] font-semibold uppercase leading-tight tracking-[0.1em] text-white/55 sm:text-[10px] sm:tracking-[0.16em]">
@@ -82,7 +108,7 @@ export default function HeroBanner() {
             </div>
           </div>
 
-          <div className="flex max-w-sm flex-col items-start gap-1.5 sm:gap-2">
+          <div className="pointer-events-auto flex max-w-sm flex-col items-start gap-1.5 sm:gap-2">
             <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-medium text-white/75 backdrop-blur-sm sm:px-3 sm:text-xs">
               <CalendarDays size={12} />
               {today}
@@ -95,8 +121,19 @@ export default function HeroBanner() {
           </div>
         </div>
 
-        <StockTickerTape />
+        <div className="pointer-events-auto">
+          <StockTickerTape />
+        </div>
       </div>
+
+      {activeVehicle && (
+        <VehicleSpinModal
+          vehicles={vehicles}
+          vehicle={activeVehicle}
+          onSelect={setActiveVehicle}
+          onClose={() => setActiveVehicle(null)}
+        />
+      )}
     </div>
   )
 }

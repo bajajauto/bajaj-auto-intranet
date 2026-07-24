@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Wrench } from 'lucide-react'
 import utsahImage from '@/assets/utsah.jpg'
-import { DeliciaIcon } from '@/components/shared/ServiceIcons'
+import { DeliciaIcon, RaiseItRequestIcon } from '@/components/shared/ServiceIcons'
 import VisitorGatepassWizard from './VisitorGatepassWizard'
 
 function UtsahIcon({ size = 24, className = '' }) {
@@ -160,7 +159,7 @@ const IT_LINKS = [
     id: 'raise-request',
     label: 'Raise IT Request',
     sublabel: 'IT Summit Portal',
-    icon: Wrench,
+    icon: RaiseItRequestIcon,
     href: '#',
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',

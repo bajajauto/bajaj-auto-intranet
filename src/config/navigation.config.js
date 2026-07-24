@@ -3,7 +3,7 @@ export const navGroups = [
     id: 'employee-services',
     label: 'Pitstop',
     description: 'HR, payroll & personal services',
-    icon: 'User',
+    icon: 'PitstopIcon',
     colorKey: 'blue',
     collapsible: true,
     items: [
@@ -58,7 +58,7 @@ export const navGroups = [
     id: 'it-resources-group',
     label: 'Resources & Support',
     description: 'IT, telecom & asset help',
-    icon: 'Wrench',
+    icon: 'ResourcesSupportIcon',
     colorKey: 'teal',
     hideChildren: true,
     items: [
@@ -74,7 +74,7 @@ export const navGroups = [
     id: 'locations-group',
     label: 'Bajaj Auto Presence',
     description: 'Locations & EV map',
-    icon: 'MapPinned',
+    icon: 'PresenceIcon',
     colorKey: 'violet',
     hideChildren: true,
     items: [
@@ -85,7 +85,7 @@ export const navGroups = [
     id: 'company-news-group',
     label: 'Company News',
     description: 'Announcements & updates',
-    icon: 'Newspaper',
+    icon: 'NewsAnnouncementIcon',
     colorKey: 'violet',
     hideChildren: true,
     items: [
@@ -101,7 +101,7 @@ export const navGroups = [
     id: 'bajaj-bytes-group',
     label: 'Bajaj Bytes',
     description: 'Newsletters, podcasts & videos',
-    icon: 'BookOpen',
+    icon: 'BajajBytesIcon',
     colorKey: 'violet',
     hideChildren: true,
     items: [
@@ -117,7 +117,7 @@ export const navGroups = [
     id: 'company-overview-group',
     label: 'Company Overview',
     description: 'Group structure & businesses',
-    icon: 'Building2',
+    icon: 'CompanyOverviewIcon',
     colorKey: 'violet',
     hideChildren: true,
     items: [
@@ -150,7 +150,7 @@ export const navGroups = [
     id: 'emergency',
     label: 'Emergency Contacts',
     description: 'Critical & safety numbers',
-    icon: 'Siren',
+    icon: 'EmergencyContactsIcon',
     colorKey: 'rose',
     hideChildren: true,
     items: [
@@ -166,7 +166,7 @@ export const navGroups = [
     id: 'support-engagement',
     label: 'Support & Engagement',
     description: 'Feedback, requests & FAQs',
-    icon: 'HeartHandshake',
+    icon: 'FeedbackIcon',
     colorKey: 'emerald',
     hideChildren: true,
     items: [

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import ImagePlaceholder from '@/components/shared/ImagePlaceholder'
 
 const TAG_COLORS = {
@@ -15,6 +16,8 @@ function formatDate(iso) {
 }
 
 export default function NewsCard({ headline, excerpt, date, sourceTag, image, onClick }) {
+  const [imageFailed, setImageFailed] = useState(false)
+
   return (
     <button
       type="button"
@@ -24,13 +27,14 @@ export default function NewsCard({ headline, excerpt, date, sourceTag, image, on
       aria-haspopup="dialog"
     >
       <div className="overflow-hidden bg-brand-light">
-        {image ? (
+        {image && !imageFailed ? (
           <img
             src={image}
             alt=""
             className="h-[156px] w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
             loading="lazy"
             referrerPolicy="no-referrer"
+            onError={() => setImageFailed(true)}
           />
         ) : (
           <ImagePlaceholder
