@@ -9,8 +9,11 @@ import { buildFrameUrls } from '@/config/vehicleFrames'
  * not. Loading is deferred to modal-open — a full sequence has no business in
  * the initial page load.
  */
-export function useFrameSequence(vehicleId, frameCount = 0) {
-  const urls = useMemo(() => buildFrameUrls(vehicleId, frameCount), [vehicleId, frameCount])
+export function useFrameSequence(vehicleId, frameCount = 0, frameSource = null) {
+  const urls = useMemo(
+    () => buildFrameUrls(vehicleId, frameCount, frameSource),
+    [vehicleId, frameCount, frameSource]
+  )
 
   const [loaded, setLoaded] = useState(0)
   const [ready, setReady] = useState(urls.length === 0)

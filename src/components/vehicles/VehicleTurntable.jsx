@@ -83,8 +83,10 @@ export default function VehicleTurntable({ vehicle }) {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const { images, frameCount, hasFrames, ready, progress } = useFrameSequence(
     vehicle.id,
-    vehicle.frameCount
+    vehicle.frameCount,
+    vehicle.frameSource
   )
+  const isPhotoReal = Boolean(vehicle.frameSource)
   const { frame, angle, isDragging, hasInteracted, step, goToFrame, dragHandlers } = useTurntable({
     frameCount,
     enabled: ready && hasFrames,
@@ -116,6 +118,24 @@ export default function VehicleTurntable({ vehicle }) {
     observer.observe(canvas)
     return () => observer.disconnect()
   }, [hasFrames, images, frame])
+
+  // No photographed frame sequence published for this vehicle, but a real
+  // interactive 3D model is — embed it in place of the canvas turntable.
+  if (vehicle.embedUrl) {
+    return (
+      <div className="relative h-[230px] sm:h-[280px] md:h-[330px]">
+        <iframe
+          title={`${vehicle.name} 3D model`}
+          src={vehicle.embedUrl}
+          className="h-full w-full bg-transparent"
+          style={{ backgroundColor: 'transparent' }}
+          frameBorder="0"
+          allow="autoplay; fullscreen; xr-spatial-tracking"
+          allowFullScreen
+        />
+      </div>
+    )
+  }
 
   if (!hasFrames) {
     return (
@@ -152,10 +172,15 @@ export default function VehicleTurntable({ vehicle }) {
           className={`h-full w-full touch-none rounded-2xl focus-ring ${
             isDragging ? 'cursor-grabbing' : 'cursor-grab'
           }`}
+          style={vehicle.frameTint ? { filter: vehicle.frameTint } : undefined}
         />
 
-        {/* Turntable plinth — grounds the vehicle so it isn't floating in space. */}
-        <div className="pointer-events-none absolute inset-x-[18%] bottom-5 h-6 rounded-[50%] bg-black/45 blur-md" />
+        {/* Turntable plinth — grounds the vehicle so it isn't floating in
+            space. Real photo frames already carry their own soft shadow, so
+            only the generated placeholder frames need this drawn in. */}
+        {!isPhotoReal && (
+          <div className="pointer-events-none absolute inset-x-[18%] bottom-5 h-6 rounded-[50%] bg-black/45 blur-md" />
+        )}
 
         {!ready && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl bg-black/30 backdrop-blur-sm">

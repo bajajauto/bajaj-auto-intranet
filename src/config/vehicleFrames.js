@@ -20,9 +20,21 @@ const EXTENSION = 'svg'
 /**
  * Frame URLs for a vehicle, in turntable order. Returns [] when the vehicle
  * has no published frames, which is what drives the poster fallback.
+ *
+ * `source`, when given, points a vehicle at a real photographed sequence
+ * (e.g. Bajaj's own product-site CDN) instead of the generated placeholder
+ * frames under public/vehicles/ — same shape, different origin and naming.
  */
-export function buildFrameUrls(vehicleId, frameCount) {
+export function buildFrameUrls(vehicleId, frameCount, source) {
   if (!vehicleId || !frameCount) return []
+
+  if (source) {
+    const { baseUrl, prefix = '', extension = 'png' } = source
+    return Array.from(
+      { length: frameCount },
+      (_, index) => `${baseUrl}/${prefix}${String(index).padStart(2, '0')}.${extension}`
+    )
+  }
 
   return Array.from(
     { length: frameCount },
