@@ -2,8 +2,9 @@ export const navGroups = [
   {
     id: 'employee-services',
     label: 'Pitstop',
-    description: 'HR, payroll & personal services',
+    description: 'Self-service hub',
     icon: 'PitstopIcon',
+    imageIcon: 'pitstopSidebar',
     colorKey: 'blue',
     collapsible: true,
     items: [
@@ -55,53 +56,11 @@ export const navGroups = [
     ],
   },
   {
-    id: 'it-resources-group',
-    label: 'Resources & Support',
-    description: 'IT, telecom & asset help',
-    icon: 'ResourcesSupportIcon',
-    colorKey: 'teal',
-    hideChildren: true,
-    items: [
-      {
-        id: 'telecom-contacts',
-        label: 'Resources and Support Services',
-        icon: 'Phone',
-        sectionId: 'it-resources',
-      },
-    ],
-  },
-  {
-    id: 'locations-group',
-    label: 'Bajaj Auto Presence',
-    description: 'Locations & EV map',
-    icon: 'PresenceIcon',
-    colorKey: 'violet',
-    hideChildren: true,
-    items: [
-      { id: 'locations', label: 'Bajaj Auto Presence', icon: 'Map', sectionId: 'locations' },
-    ],
-  },
-  {
-    id: 'company-news-group',
-    label: 'Company News',
-    description: 'Announcements & updates',
-    icon: 'NewsAnnouncementIcon',
-    colorKey: 'violet',
-    hideChildren: true,
-    items: [
-      {
-        id: 'company-news',
-        label: 'Company News',
-        icon: 'Newspaper',
-        sectionId: 'company-news',
-      },
-    ],
-  },
-  {
     id: 'bajaj-bytes-group',
     label: 'Bajaj Bytes',
-    description: 'Newsletters, podcasts & videos',
+    description: 'News, podcast & watch',
     icon: 'BajajBytesIcon',
+    imageIcon: 'bajajBytesSidebar',
     colorKey: 'violet',
     hideChildren: true,
     items: [
@@ -114,10 +73,28 @@ export const navGroups = [
     ],
   },
   {
+    id: 'it-resources-group',
+    label: 'Resources & Support',
+    description: 'IT & support desk',
+    icon: 'ResourcesSupportIcon',
+    imageIcon: 'resourcesSidebar',
+    colorKey: 'teal',
+    hideChildren: true,
+    items: [
+      {
+        id: 'telecom-contacts',
+        label: 'Resources and Support Services',
+        icon: 'Phone',
+        sectionId: 'it-resources',
+      },
+    ],
+  },
+  {
     id: 'company-overview-group',
     label: 'Company Overview',
-    description: 'Group structure & businesses',
+    description: 'About Bajaj Auto',
     icon: 'CompanyOverviewIcon',
+    imageIcon: 'companySidebar',
     colorKey: 'violet',
     hideChildren: true,
     items: [
@@ -131,10 +108,10 @@ export const navGroups = [
   },
   {
     id: 'community-csr',
-    label: 'Community & CSR',
-    description: 'Foundation, programmes & volunteering',
+    label: 'CSR',
+    description: 'Sustainability & impact',
     icon: 'CsrIcon',
-    imageIcon: 'csrSvg',
+    imageIcon: 'csrSidebar',
     colorKey: 'emerald',
     hideChildren: true,
     items: [
@@ -147,10 +124,40 @@ export const navGroups = [
     ],
   },
   {
+    id: 'company-news-group',
+    label: 'News and Announcement',
+    description: 'Announcements',
+    icon: 'NewsAnnouncementIcon',
+    imageIcon: 'newsSidebar',
+    colorKey: 'violet',
+    hideChildren: true,
+    items: [
+      {
+        id: 'company-news',
+        label: 'Company News',
+        icon: 'Newspaper',
+        sectionId: 'company-news',
+      },
+    ],
+  },
+  {
+    id: 'locations-group',
+    label: 'Bajaj Auto Presence',
+    description: 'Global locations',
+    icon: 'PresenceIcon',
+    imageIcon: 'presenceSidebar',
+    colorKey: 'orange',
+    hideChildren: true,
+    items: [
+      { id: 'locations', label: 'Bajaj Auto Presence', icon: 'Map', sectionId: 'locations' },
+    ],
+  },
+  {
     id: 'emergency',
     label: 'Emergency Contacts',
-    description: 'Critical & safety numbers',
+    description: 'Helpline contacts',
     icon: 'EmergencyContactsIcon',
+    imageIcon: 'emergencySidebar',
     colorKey: 'rose',
     hideChildren: true,
     items: [
@@ -164,10 +171,11 @@ export const navGroups = [
   },
   {
     id: 'support-engagement',
-    label: 'Support & Engagement',
-    description: 'Feedback, requests & FAQs',
+    label: 'Feedback',
+    description: 'Share your thoughts',
     icon: 'FeedbackIcon',
-    colorKey: 'emerald',
+    imageIcon: 'feedbackSidebar',
+    colorKey: 'blue',
     hideChildren: true,
     items: [
       {

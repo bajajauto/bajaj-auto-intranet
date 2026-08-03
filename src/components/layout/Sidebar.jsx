@@ -4,6 +4,15 @@ import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
 import csrSvgIcon from '@/assets/csr svg.svg'
 import chetakSvgIcon from '@/assets/chetak svg.svg'
+import pitstopSidebarIcon from '@/Sidebar/Pitstop.svg'
+import bajajBytesSidebarIcon from '@/Sidebar/Bajaj Bytes.svg'
+import resourcesSidebarIcon from '@/Sidebar/Resources & Support.svg'
+import companySidebarIcon from '@/Sidebar/Company Overview.svg'
+import csrSidebarIcon from '@/Sidebar/CSR.svg'
+import newsSidebarIcon from '@/Sidebar/News & Announcements 02.svg'
+import presenceSidebarIcon from '@/Sidebar/Bajaj Auto Presence 01.svg'
+import emergencySidebarIcon from '@/Sidebar/Emergecy Contacts.svg'
+import feedbackSidebarIcon from '@/Sidebar/Feedback.svg'
 
 // TopBanner 36px + Header 80px on desktop + 8px breathing room = 124px
 const TOP_OFFSET = 124
@@ -21,44 +30,60 @@ function BikeToggleIcon({ isExpanded }) {
 
 const GROUP_COLORS = {
   blue: {
-    iconIdle:   'bg-blue-50 text-blue-600 ring-blue-100 group-hover:bg-blue-600 group-hover:text-white',
-    iconActive: 'bg-blue-600 text-white ring-blue-200',
+    iconIdle:   'bg-gradient-to-br from-[#82b3ff] via-[#3475df] to-[#17479d] text-white ring-blue-100',
+    iconActive: 'bg-gradient-to-br from-[#82b3ff] via-[#3475df] to-[#17479d] text-white ring-blue-200',
     border:     'border-blue-500',
     text:       'text-blue-700',
     dot:        'bg-blue-500',
   },
   violet: {
-    iconIdle:   'bg-violet-50 text-violet-600 ring-violet-100 group-hover:bg-violet-600 group-hover:text-white',
-    iconActive: 'bg-violet-600 text-white ring-violet-200',
+    iconIdle:   'bg-gradient-to-br from-[#ae7aee] via-[#6841bd] to-[#302075] text-white ring-violet-100',
+    iconActive: 'bg-gradient-to-br from-[#ae7aee] via-[#6841bd] to-[#302075] text-white ring-violet-200',
     border:     'border-violet-500',
     text:       'text-violet-700',
     dot:        'bg-violet-500',
   },
   teal: {
-    iconIdle:   'bg-teal-50 text-teal-600 ring-teal-100 group-hover:bg-teal-600 group-hover:text-white',
-    iconActive: 'bg-teal-600 text-white ring-teal-200',
+    iconIdle:   'bg-gradient-to-br from-[#65d2d2] via-[#299fa4] to-[#176b73] text-white ring-teal-100',
+    iconActive: 'bg-gradient-to-br from-[#65d2d2] via-[#299fa4] to-[#176b73] text-white ring-teal-200',
     border:     'border-teal-500',
     text:       'text-teal-700',
     dot:        'bg-teal-500',
   },
   rose: {
-    iconIdle:   'bg-rose-50 text-rose-600 ring-rose-100 group-hover:bg-rose-600 group-hover:text-white',
-    iconActive: 'bg-rose-600 text-white ring-rose-200',
+    iconIdle:   'bg-gradient-to-br from-[#ff9298] via-[#e34b58] to-[#aa263b] text-white ring-rose-100',
+    iconActive: 'bg-gradient-to-br from-[#ff9298] via-[#e34b58] to-[#aa263b] text-white ring-rose-200',
     border:     'border-rose-500',
     text:       'text-rose-700',
     dot:        'bg-rose-500',
   },
   emerald: {
-    iconIdle:   'bg-emerald-50 text-emerald-600 ring-emerald-100 group-hover:bg-emerald-600 group-hover:text-white',
-    iconActive: 'bg-emerald-600 text-white ring-emerald-200',
+    iconIdle:   'bg-gradient-to-br from-[#79d8b8] via-[#2caf85] to-[#168064] text-white ring-emerald-100',
+    iconActive: 'bg-gradient-to-br from-[#79d8b8] via-[#2caf85] to-[#168064] text-white ring-emerald-200',
     border:     'border-emerald-500',
     text:       'text-emerald-700',
     dot:        'bg-emerald-500',
+  },
+  orange: {
+    iconIdle:   'bg-gradient-to-br from-[#ffc06c] via-[#f47b29] to-[#cf451c] text-white ring-orange-100',
+    iconActive: 'bg-gradient-to-br from-[#ffc06c] via-[#f47b29] to-[#cf451c] text-white ring-orange-200',
+    border:     'border-orange-500',
+    text:       'text-orange-700',
+    dot:        'bg-orange-500',
   },
 }
 
 const imageIconMap = {
   csrSvg: csrSvgIcon,
+  pitstopSidebar: pitstopSidebarIcon,
+  bajajBytesSidebar: bajajBytesSidebarIcon,
+  resourcesSidebar: resourcesSidebarIcon,
+  companySidebar: companySidebarIcon,
+  csrSidebar: csrSidebarIcon,
+  newsSidebar: newsSidebarIcon,
+  presenceSidebar: presenceSidebarIcon,
+  emergencySidebar: emergencySidebarIcon,
+  feedbackSidebar: feedbackSidebarIcon,
 }
 
 function scrollToSection(sectionId) {
@@ -166,7 +191,7 @@ function GroupButton({
 
       {isExpanded && (
         <div className="flex-1 text-left min-w-0">
-          <p className="text-sm font-semibold leading-tight truncate">{group.label}</p>
+          <p className="text-sm font-semibold leading-tight">{group.label}</p>
           {group.description && (
             <p className={`text-[11px] leading-tight mt-0.5 truncate ${isActive ? 'opacity-60' : 'text-text-secondary'}`}>
               {group.description}
