@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Hand, ImageOff } from 'lucide-react'
 import { heroBanner } from '@/config/banner.config'
 import { useFrameSequence } from '@/hooks/useFrameSequence'
@@ -6,6 +6,53 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useTurntable } from '@/hooks/useTurntable'
 
 const HINT_STORAGE_KEY = 'bajaj:turntable-hint-seen'
+
+function wrapIndex(index, count) {
+  return ((index % count) + count) % count
+}
+
+/**
+ * Paints the frame nearest the current angle, and only that one.
+ *
+ * Bajaj publishes eight photographs for most models — one every 45° — and an
+ * earlier pass tried to disguise the gap two ways at once: cross-fading
+ * between the frames either side of the angle, and above a walking-pace spin
+ * smearing up to four trailing samples behind it. Between them that was as
+ * many as ten composited draws a tick, and what it bought was ghosting: every
+ * part of the bodywork that moved between two shots sat on screen twice. It
+ * read as smear rather than as speed, and the spin felt worse than the plain
+ * one frame per tick it replaced. So: one frame per tick.
+ */
+function paintFrame(context, images, count, position, width, height) {
+  const image = images[wrapIndex(Math.round(position), count)]
+  if (!image?.naturalWidth) return
+  const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight)
+  const drawWidth = image.naturalWidth * scale
+  const drawHeight = image.naturalHeight * scale
+  context.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight)
+}
+
+function drawTurntable(canvas, images, count, position) {
+  if (!canvas || !count) return
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const width = canvas.clientWidth
+  const height = canvas.clientHeight
+  if (!width || !height) return
+
+  const targetWidth = Math.round(width * dpr)
+  const targetHeight = Math.round(height * dpr)
+  if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
+    canvas.width = targetWidth
+    canvas.height = targetHeight
+  }
+
+  const context = canvas.getContext('2d')
+  context.setTransform(dpr, 0, 0, dpr, 0, 0)
+  context.clearRect(0, 0, width, height)
+
+  paintFrame(context, images, count, position, width, height)
+}
 
 function readHintSeen() {
   try {
@@ -22,30 +69,6 @@ function markHintSeen() {
   } catch {
     /* no-op */
   }
-}
-
-function drawFrame(canvas, image) {
-  if (!canvas || !image?.naturalWidth) return
-
-  const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  const width = canvas.clientWidth
-  const height = canvas.clientHeight
-  const targetWidth = Math.round(width * dpr)
-  const targetHeight = Math.round(height * dpr)
-
-  if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
-    canvas.width = targetWidth
-    canvas.height = targetHeight
-  }
-
-  const context = canvas.getContext('2d')
-  context.setTransform(dpr, 0, 0, dpr, 0, 0)
-  context.clearRect(0, 0, width, height)
-
-  const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight)
-  const drawWidth = image.naturalWidth * scale
-  const drawHeight = image.naturalHeight * scale
-  context.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight)
 }
 
 /**
@@ -81,19 +104,31 @@ function VehiclePoster({ vehicle }) {
 
 export default function VehicleTurntable({ vehicle }) {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const { images, frameCount, hasFrames, ready, progress } = useFrameSequence(
+  const { images, frameCount, hasFrames, interactive, ready, progress } = useFrameSequence(
     vehicle.id,
     vehicle.frameCount,
     vehicle.frameSource
   )
   const isPhotoReal = Boolean(vehicle.frameSource)
-  const { frame, angle, isDragging, hasInteracted, step, goToFrame, dragHandlers } = useTurntable({
-    frameCount,
-    enabled: ready && hasFrames,
-    reducedMotion,
-  })
-
   const canvasRef = useRef(null)
+
+  // The turntable loop calls this directly, off React's render path — a spin
+  // should not cost a commit.
+  const paint = useCallback(
+    (position) => {
+      drawTurntable(canvasRef.current, images.current, frameCount, position)
+    },
+    [images, frameCount]
+  )
+
+  const { frame, angle, isDragging, hasInteracted, step, goToFrame, invalidate, dragHandlers } =
+    useTurntable({
+      frameCount,
+      enabled: interactive && hasFrames,
+      reducedMotion,
+      onRender: paint,
+    })
+
   const [hintDismissed, setHintDismissed] = useState(readHintSeen)
 
   useEffect(() => {
@@ -103,21 +138,22 @@ export default function VehicleTurntable({ vehicle }) {
     }
   }, [hasInteracted, hintDismissed])
 
+  // Repaint as frames arrive, so the first angles are visible while the rest
+  // of the sequence is still downloading.
   useEffect(() => {
-    if (!hasFrames) return
-    drawFrame(canvasRef.current, images.current[frame])
-  }, [hasFrames, images, frame, ready])
+    if (hasFrames) invalidate()
+  }, [hasFrames, progress, invalidate])
 
-  // Redraw on resize so the vehicle stays centred and crisp.
+  // Redraw on resize so the vehicle stays centred and crisp. Observing once
+  // and asking the loop to repaint keeps this off the per-frame path — the
+  // observer used to be torn down and rebuilt on every frame of every spin.
   useEffect(() => {
-    if (!hasFrames) return undefined
     const canvas = canvasRef.current
-    if (!canvas) return undefined
-
-    const observer = new ResizeObserver(() => drawFrame(canvas, images.current[frame]))
+    if (!hasFrames || !canvas) return undefined
+    const observer = new ResizeObserver(() => invalidate())
     observer.observe(canvas)
     return () => observer.disconnect()
-  }, [hasFrames, images, frame])
+  }, [hasFrames, invalidate])
 
   // No photographed frame sequence published for this vehicle, but a real
   // interactive 3D model is — embed it in place of the canvas turntable.
@@ -145,7 +181,7 @@ export default function VehicleTurntable({ vehicle }) {
     )
   }
 
-  const showHint = !hintDismissed && ready
+  const showHint = !hintDismissed && interactive
 
   return (
     <div className="flex flex-col gap-3">
@@ -182,7 +218,9 @@ export default function VehicleTurntable({ vehicle }) {
           <div className="pointer-events-none absolute inset-x-[18%] bottom-5 h-6 rounded-[50%] bg-black/45 blur-md" />
         )}
 
-        {!ready && (
+        {/* The overlay clears as soon as enough of the sequence exists to spin
+            through; the remaining frames stream in underneath it. */}
+        {!interactive && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl bg-black/30 backdrop-blur-sm">
             <div className="h-1 w-40 overflow-hidden rounded-full bg-white/15">
               <div
@@ -214,7 +252,8 @@ export default function VehicleTurntable({ vehicle }) {
           value={frame}
           onChange={(event) => goToFrame(Number(event.target.value))}
           aria-label={`Scrub the ${vehicle.name} rotation`}
-          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/25 accent-white focus-ring"
+          disabled={!ready}
+          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/25 accent-white focus-ring disabled:cursor-default disabled:opacity-40"
         />
         <span className="w-12 shrink-0 text-right text-xs font-semibold tabular-nums text-white/70">
           {angle}°

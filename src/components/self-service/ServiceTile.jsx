@@ -8,85 +8,87 @@ import PoliciesBenefitsModal from './PoliciesBenefitsModal'
 
 const MODAL_TRANSITION_MS = 500
 
-// Pitstop colour system — one colour per category, so like things read alike.
-// Each badge gets a gradient plus a category-matched glow that fires on hover.
-const categoryStyles = {
-  people: {
-    badge: 'from-[#2563C9] to-[#123A78]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(37,99,201,0.6)]',
-  },
-  pay: {
-    badge: 'from-[#3D52B5] to-[#1E2A66]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(61,82,181,0.6)]',
-  },
-  time: {
-    badge: 'from-[#0E96B0] to-[#075E72]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(14,150,176,0.6)]',
-  },
-  admin: {
-    badge: 'from-[#52668A] to-[#2C3A56]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(82,102,138,0.6)]',
-  },
-  growth: {
-    badge: 'from-[#D6890C] to-[#945905]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(214,137,12,0.6)]',
-  },
-  health: {
-    badge: 'from-[#D9536E] to-[#9B2C46]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(217,83,110,0.6)]',
-  },
-  it: {
-    badge: 'from-[#6B4FC4] to-[#3C2A7A]',
-    glow: 'group-hover:shadow-[0_8px_20px_-6px_rgba(107,79,196,0.6)]',
-  },
+// Pitstop colour system — one tone per grid row, assigned in ServiceGrid.
+// Each badge gets a gradient plus a tone-matched glow that fires on hover.
+//
+// Three tones for three rows. Green and amber are the wellness lotus's and the
+// idea bulb's own colours, promoted from the artwork onto the badge behind it —
+// which only became available once those icons were recoloured to white, since
+// a green lotus on green was exactly the clash the old palette was dodging.
+//
+// Both run darker than their source hex: white icons need the badge to carry
+// some depth, and amber is the shallowest of the three even after darkening.
+// Each row lightens left to right — 2.6% lightness per column on both gradient
+// stops, five steps, so a row spans about 10% end to end. Written out rather
+// than computed because Tailwind only sees class strings that exist literally
+// in the source.
+//
+// The ramp runs with the ordering: leftmost is most-used and stays the most
+// saturated, so weight falls off the way attention does.
+//
+// Amber is what caps this. Its white icons sit at 2.01:1 against the light stop
+// on the first tile and 1.75:1 on the last; blue and green have far more room
+// (5.67 → 3.93 and 3.42 → 2.11). Pushing the ramp further would wash the amber
+// row's icons out before either of the others showed strain.
+const toneRamps = {
+  blue: [
+    'from-[#2563C9] to-[#123A78]',
+    'from-[#2769D4] to-[#144084]',
+    'from-[#3070D9] to-[#15458F]',
+    'from-[#3B77DB] to-[#174B9B]',
+    'from-[#467FDD] to-[#1950A6]',
+  ],
+  green: [
+    'from-[#1E9E68] to-[#0A5334]',
+    'from-[#20A96F] to-[#0B5F3B]',
+    'from-[#22B477] to-[#0D6B43]',
+    'from-[#24BF7E] to-[#0E774A]',
+    'from-[#26CB85] to-[#108252]',
+  ],
+  amber: [
+    'from-[#FCA407] to-[#9A5B02]',
+    'from-[#FCA914] to-[#A76302]',
+    'from-[#FCAE21] to-[#B46A02]',
+    'from-[#FCB22E] to-[#C17203]',
+    'from-[#FDB73B] to-[#CE7A03]',
+  ],
 }
 
-// Access-frequency tiers — the grid's pecking order, read left-to-right.
-// hot = daily drivers (prominent: deeper shadow, bright ring, bold label),
-// warm = neutral, cool = occasional (quiet: flatter, desaturated, recedes).
-const tierStyles = {
-  hot: { ring: 'ring-white/30', extra: '', shadow: 'shadow-lg', label: 'text-gray-700' },
-  warm: { ring: 'ring-white/20', extra: '', shadow: 'shadow-md', label: 'text-gray-500' },
-  cool: { ring: 'ring-white/10', extra: 'opacity-90 saturate-[0.8]', shadow: 'shadow-sm', label: 'text-gray-400' },
+// Glow stays keyed to the row rather than the column: it fires one tile at a
+// time on hover, so there is nothing next to it to read a ramp against.
+const toneGlows = {
+  blue: 'group-hover:shadow-[0_8px_20px_-6px_rgba(37,99,201,0.6)]',
+  green: 'group-hover:shadow-[0_8px_20px_-6px_rgba(30,158,104,0.6)]',
+  amber: 'group-hover:shadow-[0_8px_20px_-6px_rgba(252,164,7,0.6)]',
 }
 
-const serviceTier = {
-  'team-directory': 'hot',
-  'leave-attendance': 'hot',
-  'holiday-calendar': 'hot',
-  compensation: 'warm',
-  benefits: 'warm',
-  'recognition-gem': 'warm',
-  'idea-hub': 'warm',
-  'bolt-learning': 'warm',
-  travel: 'warm',
-  policies: 'warm',
-  'health-wellness': 'warm',
-  mediclaim: 'cool',
-  documents: 'cool',
-  'form-16': 'cool',
-  'it-summit': 'cool',
+// Every tile now gets the same weight. The old access-frequency tiers ranked
+// tiles hot/warm/cool by how often they get used, which desaturated the cool
+// ones and greyed their labels — that reads as three shades inside a row and
+// works against a single colour per row. Frequency is no longer what the grid
+// is sorted by either, so the tiers had nothing left to signal.
+const BADGE_BASE = 'shadow-md ring-white/20'
+const LABEL_BASE = 'font-medium text-text-primary'
+
+// Services whose icon is supplied artwork rather than a glyph drawn for this
+// grid, mapped to the scale that squares them with their neighbours: the
+// artwork carries its own padding inside its canvas where the glyphs run edge
+// to edge, so at the shared size it sits noticeably smaller in the badge.
+//
+// Artwork also brings its own palette, which the badge gradient behind it can
+// work against. Compensation, health & wellness and idea hub are recoloured to
+// currentColor + INK inside ServiceIcons so they read as white on the badge;
+// holiday calendar still carries its own cyan.
+const artworkServices = {
+  compensation: 1.4,
+  'holiday-calendar': 1.35,
+  'idea-hub': 1.35,
+  'health-wellness': 1.4,
 }
 
-const serviceCategory = {
-  'team-directory': 'people',
-  benefits: 'pay',
-  compensation: 'pay',
-  'form-16': 'pay',
-  'leave-attendance': 'time',
-  travel: 'time',
-  'holiday-calendar': 'time',
-  policies: 'admin',
-  documents: 'admin',
-  'idea-hub': 'growth',
-  'bolt-learning': 'growth',
-  'recognition-gem': 'growth',
-  'health-wellness': 'health',
-  mediclaim: 'health',
-  'it-summit': 'it',
-}
+const ICON_SIZE = 26
 
-const DEFAULT_STYLE = categoryStyles.people
+const DEFAULT_TONE = 'blue'
 
 function ServiceDocumentModal({ title, titleId, onClose, children }) {
   const [visible, setVisible] = useState(false)
@@ -152,13 +154,17 @@ function ServiceDocumentModal({ title, titleId, onClose, children }) {
   )
 }
 
-export default function ServiceTile({ id, label, icon, redirectUrl }) {
+export default function ServiceTile({ id, label, icon, redirectUrl, tone, step = 0 }) {
   const [isHolidayCalendarOpen, setHolidayCalendarOpen] = useState(false)
   const [isPoliciesOpen, setPoliciesOpen] = useState(false)
   const [isDocumentsOpen, setDocumentsOpen] = useState(false)
   const Icon = iconMap[icon] ?? iconMap.ExternalLink
-  const { badge, glow } = categoryStyles[serviceCategory[id]] ?? DEFAULT_STYLE
-  const tier = tierStyles[serviceTier[id]] ?? tierStyles.warm
+  const artworkScale = artworkServices[id]
+  const ramp = toneRamps[tone] ?? toneRamps[DEFAULT_TONE]
+  // clamp rather than wrap: a sixth tile in a row should sit at the ramp's end,
+  // not snap back to the darkest and break the run.
+  const badge = ramp[Math.min(step, ramp.length - 1)]
+  const glow = toneGlows[tone] ?? toneGlows[DEFAULT_TONE]
   const isClickable = redirectUrl && redirectUrl !== '#'
   const opensHolidayCalendar = id === 'holiday-calendar'
   const opensPolicies = id === 'policies'
@@ -168,17 +174,26 @@ export default function ServiceTile({ id, label, icon, redirectUrl }) {
     'group flex flex-col items-center justify-center gap-1.5 w-full py-1 px-1 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-ring'
   const content = (
     <>
-      <span className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${badge} ${tier.extra} ${tier.shadow} ring-1 ring-inset ${tier.ring} transition-all duration-300 group-hover:scale-110 ${glow}`}>
+      <span className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${badge} ${BADGE_BASE} ring-1 ring-inset transition-all duration-300 group-hover:scale-110 ${glow}`}>
         {/* convex gloss — the glossy app-icon highlight */}
         <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_85%_at_28%_12%,rgba(255,255,255,0.5),rgba(255,255,255,0)_55%)]" />
         {/* rim light + inner shadow — gives the tile a rounded, 3D body */}
         <span className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_-6px_10px_-5px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.45)]" />
         {/* Pitstop speed-sweep — a racing shine that streaks across on hover */}
         <span className="pointer-events-none absolute inset-y-0 left-[-60%] w-2/3 skew-x-[-20deg] bg-white/30 blur-[2px] transition-all duration-500 ease-out group-hover:left-[140%]" />
-        <Icon size={26} strokeWidth={2} className="relative z-10 text-white drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.3)]" />
+        <Icon
+          size={Math.round(ICON_SIZE * (artworkScale ?? 1))}
+          strokeWidth={2}
+          className="relative z-10 text-white drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.3)]"
+        />
       </span>
 
-      <span className={`relative z-10 line-clamp-2 px-1 text-center text-[9px] font-semibold uppercase leading-tight tracking-wide ${tier.label}`}>
+      {/* min-height reserves both lines whether or not this label needs them,
+          so a wrapping name does not push its row taller than its neighbours.
+          Set in em, so it follows the step up at lg. */}
+      <span
+        className={`relative z-10 line-clamp-2 min-h-[2.5em] px-1 text-center text-[11px] uppercase leading-tight tracking-wide lg:text-xs ${LABEL_BASE}`}
+      >
         {label}
       </span>
     </>

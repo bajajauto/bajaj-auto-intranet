@@ -332,9 +332,27 @@ function GlobePresence({ title }) {
         )
       }
 
-      // On desktop the globe is nudged right to clear the country-list panel;
-      // on mobile there is no panel, so keep it centered.
-      const getOffsetX = (w) => (w >= 1024 ? 1.25 : 0)
+      // The globe is nudged right to clear the country-list panel that overlays
+      // its left; on mobile there is no panel, so keep it centered.
+      //
+      // The width being tested is the canvas, not the window — and the canvas
+      // is a good deal narrower, about 890px inside a 1280px viewport. Against
+      // the old 1024 threshold the nudge therefore never fired on ordinary
+      // desktops: the branch that existed to clear the panel was dead, and the
+      // globe sat centred with its left limb and those countries' labels
+      // behind the panel. 640 is the canvas width that corresponds to the `lg`
+      // viewport where the panel appears.
+      //
+      // The offset then scales with the canvas rather than being one constant:
+      // a small desktop needs enough to clear the panel, a wide one has far
+      // more room to the right and looks lopsided if it barely moves. Units are
+      // world units — the sphere's own radius is 1.55, the atmosphere shell
+      // 1.66 — and the ceiling is what keeps the right limb off the edge.
+      const getOffsetX = (w) => {
+        if (w < 640) return 0
+        const t = Math.min(Math.max((w - 640) / 700, 0), 1)
+        return 0.55 + t * 0.65
+      }
       let globeOffsetX = getOffsetX(mount.clientWidth)
 
       const globeGroup = new THREE.Group()
@@ -451,9 +469,37 @@ function GlobePresence({ title }) {
         })
       }
 
+      // The globe used to render and rewrite every marker's transform on every
+      // frame for as long as the page was open — scrolled past, tab in the
+      // background, or buried under a modal, it made no difference.
+      //
+      // Buried under a modal is the expensive one. `#root.modal-open` puts a
+      // 6px blur over the whole app, and a blur has to be recomputed for the
+      // entire viewport whenever anything inside it moves. The globe moved
+      // sixty times a second, so opening the vehicle turntable meant re-blurring
+      // the page under every spin, on top of the spin's own work.
+      //
+      // Nothing here is worth drawing when it cannot be seen, so it isn't. The
+      // rAF loop stays alive to notice when that changes, which costs nothing —
+      // what costs is the render and the marker writes, and those are skipped.
+      let onScreen = true
+      const visibility = new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting
+        },
+        { threshold: 0.01 }
+      )
+      visibility.observe(mount)
+
+      const root = document.getElementById('root')
+      const isVisible = () =>
+        onScreen && !document.hidden && !root?.classList.contains('modal-open')
+
       let frameId = 0
       const animate = () => {
         frameId = window.requestAnimationFrame(animate)
+        if (!isVisible()) return
+
         const targetCountry = targetCountryRef.current
 
         if (targetCountry) {
@@ -471,6 +517,7 @@ function GlobePresence({ title }) {
 
       cleanupGlobe = () => {
         window.cancelAnimationFrame(frameId)
+        visibility.disconnect()
         resizeObserver.disconnect()
         if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
         earthGeometry.dispose()

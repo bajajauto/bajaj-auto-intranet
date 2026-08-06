@@ -89,34 +89,40 @@ export default function HeroBanner() {
             </p>
           </div>
 
-          <div className="pointer-events-auto w-24 max-w-full rounded-lg border border-white/15 bg-white/10 px-1.5 py-1 shadow-modal backdrop-blur-md sm:w-40 sm:px-2.5 sm:py-2 md:w-48 md:px-3">
-            <div className="flex items-start justify-between gap-1 sm:gap-2">
-              <div>
-                <p className="text-[7px] font-semibold uppercase leading-tight tracking-[0.1em] text-white/55 sm:text-[10px] sm:tracking-[0.16em]">
-                  Meetings Today
-                </p>
-                <div className="mt-0.5 flex items-end gap-1 sm:mt-1.5 sm:gap-2">
-                  <span className="text-sm font-bold leading-none text-white sm:text-xl md:text-[1.35rem]">
-                    {meetingsTodayCount}
-                  </span>
-                  <span className="pb-px text-[7px] font-medium leading-none text-white/60 sm:text-[10px] md:pb-1 md:text-xs">scheduled</span>
+          {/* One column, one width. The meetings card and the two chips under it
+              were three different widths stacked left — a fixed w-24/40/48 card
+              and two that sized to their text — which left a ragged right edge
+              running down over the vehicles. Sharing a width lines both edges
+              up, and the wider mobile figure stops "Meetings Today" wrapping
+              inside a 6rem card. */}
+          <div className="pointer-events-auto flex w-40 max-w-full flex-col items-stretch gap-1.5 sm:w-52 sm:gap-2 md:w-60">
+            <div className="rounded-lg border border-white/15 bg-white/10 px-2 py-1.5 shadow-modal backdrop-blur-md sm:px-2.5 sm:py-2 md:px-3">
+              <div className="flex items-start justify-between gap-1 sm:gap-2">
+                <div>
+                  <p className="text-[7px] font-semibold uppercase leading-tight tracking-[0.1em] text-white/55 sm:text-[10px] sm:tracking-[0.16em]">
+                    Meetings Today
+                  </p>
+                  <div className="mt-0.5 flex items-end gap-1 sm:mt-1.5 sm:gap-2">
+                    <span className="text-sm font-bold leading-none text-white sm:text-xl md:text-[1.35rem]">
+                      {meetingsTodayCount}
+                    </span>
+                    <span className="pb-px text-[7px] font-medium leading-none text-white/60 sm:text-[10px] md:pb-1 md:text-xs">scheduled</span>
+                  </div>
                 </div>
+                <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-white sm:h-8 sm:w-8 md:h-9 md:w-9">
+                  <CalendarDays size={10} className="sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
+                </span>
               </div>
-              <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-white sm:h-8 sm:w-8 md:h-9 md:w-9">
-                <CalendarDays size={10} className="sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
-              </span>
             </div>
-          </div>
 
-          <div className="pointer-events-auto flex max-w-sm flex-col items-start gap-1.5 sm:gap-2">
             <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-medium text-white/75 backdrop-blur-sm sm:px-3 sm:text-xs">
-              <CalendarDays size={12} />
-              {today}
+              <CalendarDays size={12} className="flex-shrink-0" />
+              <span className="truncate">{today}</span>
             </div>
             <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-medium backdrop-blur-sm sm:px-3 sm:text-xs">
-              <Bell size={12} className="text-amber-300" />
+              <Bell size={12} className="flex-shrink-0 text-amber-300" />
               <span className="text-amber-200">{unreadCount} new</span>
-              <span className="text-white/50">notifications</span>
+              <span className="truncate text-white/50">notifications</span>
             </div>
           </div>
         </div>

@@ -30,7 +30,7 @@ function ContactCard({ label, phone, icon, colorClass }) {
 
 export default function EmergencyContacts({ title }) {
   return (
-    <div className={title ? 'site-surface rounded-card border p-4' : ''}>
+    <div className={title ? 'site-surface-tint tint-blush rounded-card border p-4' : ''}>
       {title && (
         <h2 className="mb-4 text-lg font-semibold text-brand-primary">{title}</h2>
       )}

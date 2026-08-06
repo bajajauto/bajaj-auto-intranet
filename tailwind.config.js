@@ -7,7 +7,10 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Lora', 'Georgia', 'serif'],
-        ekam: ['Cormorant Garamond', 'Georgia', 'serif'],
+        // The product wordmark's voice. Named for the role, not the brand, so
+        // a rename never has to touch every usage — as the EKAM → Bajaj One
+        // one would have.
+        wordmark: ['Cormorant Garamond', 'Georgia', 'serif'],
       },
       colors: {
         // Brand identity stays constant across themes.

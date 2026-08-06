@@ -27,7 +27,7 @@ export default function BajajBytesHub({ title }) {
   }
 
   return (
-    <div className="site-surface relative overflow-hidden rounded-card border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
+    <div className="site-surface-tint tint-cream relative overflow-hidden rounded-card border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
       <div className="flex flex-col gap-3 px-5 pt-5 sm:flex-row sm:items-center sm:justify-between sm:px-14">
         {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
 

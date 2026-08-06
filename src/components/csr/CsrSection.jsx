@@ -16,7 +16,7 @@ export default function CsrSection({ title }) {
   }
 
   return (
-    <div className="site-surface rounded-card border p-4 sm:p-5">
+    <div className="site-surface-tint tint-cream rounded-card border p-4 sm:p-5">
       {title && (
         <h2 className="mb-4 text-lg font-bold text-brand-primary sm:mb-5">{title}</h2>
       )}

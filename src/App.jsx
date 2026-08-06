@@ -26,14 +26,16 @@ function FooterObserver({ footerRef }) {
   return null
 }
 
-function AppShell() {
+function AppShell({ splashDone }) {
   const footerRef = useRef(null)
 
   return (
     <div className="flex flex-col min-h-screen">
       <FooterObserver footerRef={footerRef} />
       <TopBanner />
-      <Header />
+      {/* The shell mounts under the splash, so the header's mark would form
+          where nobody could see it. It replays as the splash clears instead. */}
+      <Header revealMark={splashDone} />
       <div className="flex flex-1 pt-[96px] md:pt-[116px]">
         <MainContent />
       </div>
@@ -53,7 +55,7 @@ export default function App() {
       {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
       <UserProvider>
         <SidebarProvider>
-          <AppShell />
+          <AppShell splashDone={splashDone} />
         </SidebarProvider>
       </UserProvider>
     </ThemeProvider>

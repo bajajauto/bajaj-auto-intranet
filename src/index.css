@@ -7,6 +7,27 @@
   .theme-toggle-sky::after {
     transition-duration: 0.01ms !important;
   }
+
+  /* The splash's crowd is the animation itself, so with motion off only the
+     mark they form is shown — cancelling the rest leaves the numeral at its
+     resting state, legible and unblurred. */
+  .union-arrive,
+  .union-depart,
+  .union-merge,
+  .union-arm,
+  .union-tone,
+  .union-head,
+  .union-clasp,
+  .union-reveal,
+  .union-bloom {
+    animation: none !important;
+  }
+
+  /* With the animations cancelled the reveal's clip is already at full size, so
+     the numeral stands on its own once the crowd is out of the way. */
+  .union-figure {
+    display: none;
+  }
 }
 
 #root.modal-open {
@@ -291,6 +312,71 @@
 
   .jarvis-prompt-exit {
     animation: jarvis-prompt-exit 220ms ease-in both;
+  }
+
+  /* Splash mark. People and vehicles converge on the centre line, shake hands,
+     and are then drawn inward as the numeral fades up through them — the blur
+     on both halves of that hand-off is what makes it read as a merge rather
+     than a swap. Each figure's delay and travel distance are set inline from
+     UnionMark.jsx, so the choreography stays a data detail instead of a class
+     per figure. */
+  .union-arrive {
+    animation: union-arrive 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .union-depart {
+    animation: union-depart 720ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* The merge, the arm retracting into the shoulder and the tinted figure
+     whitening are one move in three places: identical duration, delay and
+     easing, which is the whole reason the clasp stays pinned to the centre
+     line while the bodies close on it. Change one and change all three. */
+  .union-merge,
+  .union-arm,
+  .union-tone {
+    animation-duration: 720ms;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
+    animation-fill-mode: both;
+  }
+
+  .union-merge {
+    animation-name: union-merge;
+  }
+
+  .union-arm {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation-name: union-arm;
+  }
+
+  .union-tone {
+    animation-name: union-tone;
+  }
+
+  .union-head {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: union-head 340ms ease-in both;
+  }
+
+  .union-clasp {
+    fill: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: union-clasp 800ms ease-out both;
+  }
+
+  /* fill-box so the reveal is measured against the clip rect's own box — the
+     origin is the clasped hands, set inline from the scene. Without it SVG
+     would scale about the top-left of the whole viewBox. */
+  .union-reveal {
+    transform-box: fill-box;
+    animation: union-reveal 860ms both;
+  }
+
+  .union-bloom {
+    animation: union-bloom 900ms ease-out both;
   }
 
   .affection-scene {
@@ -610,6 +696,93 @@
   .dark .site-surface-interactive:hover {
     border-color: rgba(120, 160, 230, 0.4);
   }
+
+  /*
+   * Section tints — light mode only.
+   *
+   * One formula, one knob. `.site-surface-tint` carries the exact geometry of
+   * .site-surface (same shadow, same inset highlight, same gradient stops); the
+   * `.tint-*` modifiers only set a hue and a saturation. Because every tint is
+   * mixed at the same lightness, they all land at the same subtlety — no tint
+   * can drift louder than its neighbours.
+   *
+   * Saturation is dialled per hue, not shared: the eye is far more sensitive to
+   * pale yellow-green than to pale blue, so cream runs 85% and green 45% to
+   * arrive at the same perceived strength.
+   *
+   * Dark mode deliberately drops every tint back to the standard .site-surface
+   * navy — the tints are a light-mode wayfinding device only.
+   */
+  .site-surface-tint {
+    --tint-h: 210;
+    --tint-s: 60%;
+    --surface-fade: hsl(var(--tint-h) var(--tint-s) 97.5%);
+    border-color: hsl(var(--tint-h) var(--tint-s) 40% / 0.18);
+    background:
+      radial-gradient(circle at 100% 0%, hsl(var(--tint-h) var(--tint-s) 45% / 0.14), transparent 34%),
+      linear-gradient(
+        180deg,
+        hsl(var(--tint-h) var(--tint-s) 94.5%) 0%,
+        hsl(var(--tint-h) var(--tint-s) 97.5%) 34%,
+        #ffffff 100%
+      );
+    box-shadow:
+      0 1px 3px rgba(15, 23, 42, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.84);
+  }
+
+  /*
+   * The palette. Only cream and blush are in use — sections alternate between
+   * the two down the page rather than each taking a hue of its own, so the
+   * tints now read as rhythm rather than as per-section wayfinding. The unused
+   * hues stay because the alternation is a styling choice, not a rewrite of the
+   * formula, and switching back is a class swap.
+   */
+  .tint-cream  { --tint-h: 45;  --tint-s: 85%; }
+  .tint-mint   { --tint-h: 168; --tint-s: 55%; }
+  .tint-blush  { --tint-h: 348; --tint-s: 75%; }
+  .tint-violet { --tint-h: 272; --tint-s: 60%; }
+  .tint-sky    { --tint-h: 205; --tint-s: 80%; }
+  .tint-green  { --tint-h: 122; --tint-s: 45%; }
+  .tint-peach  { --tint-h: 20;  --tint-s: 85%; }
+
+  .dark .site-surface-tint {
+    --surface-fade: #131c30;
+    border-color: rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(circle at 100% 0%, rgba(37, 99, 201, 0.2), transparent 38%),
+      linear-gradient(180deg, #1a2440 0%, #131c30 38%, #101725 100%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /*
+   * Carousel edge fades. These used to be hardcoded `from-white`, which left a
+   * white notch over a tinted section. Reading --surface-fade instead makes the
+   * fade adopt whatever surface it sits on, tinted or not.
+   */
+  .surface-fade-l,
+  .surface-fade-r {
+    background-image: linear-gradient(
+      var(--surface-fade-dir),
+      var(--surface-fade),
+      color-mix(in srgb, var(--surface-fade) 80%, transparent),
+      transparent
+    );
+  }
+
+  .surface-fade-l { --surface-fade-dir: to right; }
+  .surface-fade-r { --surface-fade-dir: to left; }
+}
+
+/* Default surface colour for fades outside any tinted section. */
+:root {
+  --surface-fade: #ffffff;
+}
+
+.dark {
+  --surface-fade: #131c30;
 }
 
 /*
@@ -799,6 +972,123 @@
     opacity: 0;
     transform: translateX(-0.8rem) scaleX(0.82) scaleY(0.9);
     filter: blur(2px);
+  }
+}
+
+/* The distances are custom properties because each figure enters from its own
+   side and is drawn back toward the stem by its own amount. */
+@keyframes union-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(var(--union-from, 0px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* No blur on the way out. At this stroke weight a blurred hairline turns to
+   smoke before it fades, which read as smudge rather than departure. */
+@keyframes union-depart {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  60% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--union-to, 0px), -4px);
+  }
+}
+
+@keyframes union-clasp {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  30% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes union-merge {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--union-to, 0px));
+  }
+}
+
+/* Collapses into the shoulder it hangs off, at the rate the body advances. */
+@keyframes union-arm {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Two tones arriving as one. */
+@keyframes union-tone {
+  from {
+    opacity: var(--union-tone, 1);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The numeral has no room for a head, so it lifts away just before the bodies
+   touch rather than being buried under the upright. */
+@keyframes union-head {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.7);
+  }
+}
+
+/* Two moves in one clip, so the mark never stops growing between them: up out
+   of the joined bodies to a stem-wide sliver running the full height, then open
+   sideways into the flag and the serif. Each half carries its own easing — the
+   rise leads out fast and settles, the opening is gentler still. */
+@keyframes union-reveal {
+  0% {
+    transform: scale(var(--union-seed, 0.25), 0);
+    animation-timing-function: cubic-bezier(0.22, 0.9, 0.3, 1);
+  }
+  50% {
+    transform: scale(var(--union-seed, 0.25), 1);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+/* Starts and ends at a zero-radius transparent shadow rather than `none`, so
+   the bloom interpolates instead of snapping on and off. */
+@keyframes union-bloom {
+  0% {
+    filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+  }
+  45% {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.32));
+  }
+  100% {
+    filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
   }
 }
 

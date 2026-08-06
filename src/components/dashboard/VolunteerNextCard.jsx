@@ -22,11 +22,15 @@ export default function VolunteerNextCard() {
   const slotsRemaining = next.slotsTotal - next.slotsTaken
   const isAlmostFull = slotsRemaining <= 5
 
+  // Blush to pair with Pitstop, the left-column panel this sits beside. The
+  // tint replaces site-surface-interactive rather than stacking on it — that
+  // class's hover rule sets a blue border, which fought the pink — so the hover
+  // cue is restated below in the brand tone instead.
   return (
     <button
       type="button"
       onClick={jumpToCsr}
-      className="site-surface-interactive group relative w-full overflow-hidden rounded-card border text-left transition-all hover:-translate-y-0.5 hover:shadow-card focus-ring"
+      className="site-surface-tint tint-blush group relative w-full overflow-hidden rounded-card border text-left transition-all hover:-translate-y-0.5 hover:border-brand-primary/30 hover:shadow-card focus-ring"
       aria-label={`Volunteer for ${next.title}`}
     >
       <div className="relative h-16 overflow-hidden" style={{ background: next.coverGradient }}>

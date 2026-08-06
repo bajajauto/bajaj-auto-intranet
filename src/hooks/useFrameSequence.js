@@ -9,6 +9,18 @@ import { buildFrameUrls } from '@/config/vehicleFrames'
  * not. Loading is deferred to modal-open — a full sequence has no business in
  * the initial page load.
  */
+// A sparse sequence has to arrive complete: with eight frames, a missing one
+// is a 45° hole the vehicle vanishes into. Dense sequences are the opposite —
+// waiting for all 72 wastes the time the user could already be spinning, and
+// a gap there is a few degrees nobody notices before it fills in.
+const DENSE_SEQUENCE = 16
+const DENSE_READY_FRACTION = 0.5
+
+function interactiveThreshold(total) {
+  if (total <= DENSE_SEQUENCE) return total
+  return Math.ceil(total * DENSE_READY_FRACTION)
+}
+
 export function useFrameSequence(vehicleId, frameCount = 0, frameSource = null) {
   const urls = useMemo(
     () => buildFrameUrls(vehicleId, frameCount, frameSource),
@@ -57,6 +69,9 @@ export function useFrameSequence(vehicleId, frameCount = 0, frameSource = null) 
     hasFrames: urls.length > 0,
     loaded,
     ready,
+    // Whether the spin can be handed over. Never `ready` for a dense
+    // sequence, which becomes usable well before it is complete.
+    interactive: urls.length === 0 || loaded >= interactiveThreshold(urls.length),
     progress: urls.length === 0 ? 1 : loaded / urls.length,
   }
 }

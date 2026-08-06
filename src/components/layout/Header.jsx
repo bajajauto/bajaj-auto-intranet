@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useCallback, useRef, useState, useEffect } from 'react'
 import { Search, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { useUser } from '@/context/UserContext'
@@ -6,8 +6,9 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { noticeService } from '@/services/noticeService'
 import NoticesPanel from '@/components/notices/NoticesPanel'
 import ThemeToggle from '@/components/shared/ThemeToggle'
+import UnionMark from '@/components/layout/UnionMark'
 import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
-import ekamWordmark from '@/assets/ekam-wordmark-transparent.png'
+import { productBrand } from '@/config/brand.config'
 
 function AnnouncementIcon({ className = '' }) {
   return (
@@ -34,10 +35,14 @@ function AnnouncementIcon({ className = '' }) {
   )
 }
 
-export default function Header() {
+// How often the header mark replays itself.
+const MARK_REPLAY_MS = 5000
+
+export default function Header({ revealMark = false }) {
   const { isMobileOpen, setMobileOpen } = useSidebar()
   const user = useUser()
   const isMobile = useMediaQuery('(max-width: 767px)')
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
   const [searchQuery, setSearchQuery] = useState('')
   const [isNoticesOpen, setNoticesOpen] = useState(false)
@@ -49,6 +54,30 @@ export default function Header() {
 
   const noticesRef = useRef(null)
   const profileRef = useRef(null)
+
+  // Remounting the mark is what restarts its animation — a CSS animation will
+  // not re-run on an element that never left. The header mounts underneath the
+  // splash, so the first run happens unseen; `revealMark` fires the one that
+  // matters, as the splash clears, and hovering the lockup asks for it again.
+  const [markRun, setMarkRun] = useState(0)
+  const replayMark = useCallback(() => setMarkRun((run) => run + 1), [])
+
+  useEffect(() => {
+    if (revealMark) replayMark()
+  }, [revealMark, replayMark])
+
+  // ...and then on a loop. The mark's own run finishes around 2.3s (UnionMark's
+  // BLOOM_MS is 2050 plus the bloom itself), so a 5s cycle lands a clear pause
+  // between runs rather than clipping one mid-flight.
+  //
+  // Skipped entirely under reduced-motion: this is the one animation on the
+  // page that repeats forever on its own, so leaving it running is exactly what
+  // that preference is asking us not to do. The mark still renders, settled.
+  useEffect(() => {
+    if (prefersReducedMotion) return
+    const id = setInterval(replayMark, MARK_REPLAY_MS)
+    return () => clearInterval(id)
+  }, [replayMark, prefersReducedMotion])
 
   function closeAll() {
     setNoticesOpen(false)
@@ -104,14 +133,29 @@ export default function Header() {
         )}
 
         {/* Logo */}
-        <div className="flex min-w-0 flex-shrink select-none items-center gap-2 md:flex-shrink-0 md:gap-3">
+        <div
+          className="flex min-w-0 flex-shrink select-none items-center gap-2 md:flex-shrink-0 md:gap-3"
+          onMouseEnter={replayMark}
+        >
           <img
             src={bajajFooterLockup}
             alt="Bajaj Auto - The World's Favourite Indian"
             className="h-8 w-auto object-contain sm:h-9 md:h-12"
           />
           <div className="h-7 w-px bg-white/30 md:h-9" aria-hidden="true" />
-          <img src={ekamWordmark} alt="EKAM" className="mt-1 h-6 w-auto object-contain sm:h-7 md:mt-3 md:h-8" />
+          {/* The logo to the left carries "Bajaj", so only the numeral is
+              drawn — and it assembles itself exactly as the splash's does,
+              crowd included. The scene is far wider than the mark it settles
+              into and overflows its box on both sides, so for the couple of
+              seconds it runs it passes over the lockup to its left. The full
+              name is what assistive tech reads. */}
+          {/* Nudged off the rule. The scene overflows its box by a good deal
+              more than the mark is wide, so sitting tight against the divider
+              put the motorcycle over the lockup on the way in. */}
+          <span className="ml-2 leading-none sm:ml-3 md:ml-5">
+            <span className="sr-only">{productBrand.name}</span>
+            <UnionMark key={markRun} className="h-6 w-auto text-white sm:h-7 md:h-8" />
+          </span>
         </div>
       </div>
 

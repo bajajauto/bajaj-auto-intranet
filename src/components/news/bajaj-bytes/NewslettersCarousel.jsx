@@ -46,8 +46,8 @@ export default function NewslettersCarousel({ onListenToVolume }) {
     <div className="relative">
       {hasCarouselControls && (
         <>
-          <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white via-white/80 to-transparent" />
-          <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white via-white/80 to-transparent" />
+          <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 z-10 w-16 surface-fade-l" />
+          <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 z-10 w-16 surface-fade-r" />
           <div className="hidden sm:flex pointer-events-none absolute inset-y-0 left-0 right-0 z-20 items-center justify-between px-2">
             <button
               type="button"

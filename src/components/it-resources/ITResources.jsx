@@ -1,159 +1,85 @@
 import { useState } from 'react'
-import utsahImage from '@/assets/utsah.jpg'
+import utsahLogo from '@/assets/utsah-logo.svg'
+import CrecheIcon from '@/components/shared/CrecheIcon'
 import { DeliciaIcon, RaiseItRequestIcon } from '@/components/shared/ServiceIcons'
 import VisitorGatepassWizard from './VisitorGatepassWizard'
 
+// Supplied artwork (UTSAH.svg): a rounded-square gradient tile with the name
+// set across it. It goes through the icon slot rather than the card's `image`
+// slot on purpose — that slot crops to a circle and multiplies the blend,
+// which suits the photograph it was built for and would cut the corners off a
+// logo and muddy its gradient.
 function UtsahIcon({ size = 24, className = '' }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
-      fill="none" className={className} aria-hidden>
-      {/* Outer grounds ring */}
-      <circle cx="12" cy="12" r="11" fill="currentColor" opacity="0.12" />
-      {/* Pool surround */}
-      <circle cx="12" cy="12" r="8.5" fill="currentColor" opacity="0.18" />
-      {/* Yin-yang outer circle */}
-      <circle cx="12" cy="12" r="6.5" fill="currentColor" opacity="0.9" />
-      {/* Light half of yin-yang (top) */}
-      <path d="M12 5.5 a6.5 6.5 0 0 1 0 13 a3.25 3.25 0 0 0 0-6.5 a3.25 3.25 0 0 1 0-6.5Z" fill="white" opacity="0.9" />
-      {/* Small dot — dark side dot */}
-      <circle cx="12" cy="9.25" r="1.1" fill="currentColor" />
-      {/* Small dot — light side dot */}
-      <circle cx="12" cy="14.75" r="1.1" fill="white" />
-      {/* Greenery dots around perimeter */}
-      <circle cx="12" cy="1.8" r="0.9" fill="currentColor" opacity="0.4" />
-      <circle cx="4.2" cy="5.5" r="0.7" fill="currentColor" opacity="0.35" />
-      <circle cx="19.8" cy="5.5" r="0.7" fill="currentColor" opacity="0.35" />
-      <circle cx="2.5" cy="12" r="0.7" fill="currentColor" opacity="0.3" />
-    </svg>
-  )
+  return <img src={utsahLogo} alt="" width={size} height={size} className={className} />
 }
 
-function CrecheIcon({ size = 24, className = '' }) {
+// Supplied artwork ("Visitor Gatepass.svg"), drawn on a 77x72 canvas. Its colours are its
+// own, so it does not answer to `currentColor` the way the line icons do.
+function VisitorGatepassIcon({ size = 24, className = '' }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 130 96"
+      viewBox="0 0 77 72"
       fill="none"
       className={className}
       aria-hidden
     >
-      {/* Ground */}
-      <ellipse cx="65" cy="91" rx="60" ry="7" fill="#57BB5A" />
-
-      {/* Left rainbow — drawn first so children appear on top */}
-      <path d="M5,89 C5,30 34,12 57,36" stroke="#E53935" strokeWidth="5" strokeLinecap="round" />
-      <path d="M11,89 C11,36 40,18 57,43" stroke="#FF9800" strokeWidth="5" strokeLinecap="round" />
-      <path d="M17,89 C17,42 46,24 57,50" stroke="#FDD835" strokeWidth="5" strokeLinecap="round" />
-      <path d="M23,89 C23,48 52,30 57,57" stroke="#43A047" strokeWidth="5" strokeLinecap="round" />
-      <path d="M29,89 C29,54 58,36 57,64" stroke="#1E88E5" strokeWidth="5" strokeLinecap="round" />
-
-      {/* Right rainbow */}
-      <path d="M125,89 C125,30 96,12 73,36" stroke="#E53935" strokeWidth="5" strokeLinecap="round" />
-      <path d="M119,89 C119,36 90,18 73,43" stroke="#FF9800" strokeWidth="5" strokeLinecap="round" />
-      <path d="M113,89 C113,42 84,24 73,50" stroke="#FDD835" strokeWidth="5" strokeLinecap="round" />
-      <path d="M107,89 C107,48 78,30 73,57" stroke="#43A047" strokeWidth="5" strokeLinecap="round" />
-      <path d="M101,89 C101,54 72,36 73,64" stroke="#1E88E5" strokeWidth="5" strokeLinecap="round" />
-
-      {/* Tree trunk */}
-      <line x1="65" y1="86" x2="65" y2="14" stroke="#6D4C41" strokeWidth="6" strokeLinecap="round" />
-      <line x1="65" y1="48" x2="49" y2="32" stroke="#6D4C41" strokeWidth="4" strokeLinecap="round" />
-      <line x1="65" y1="40" x2="81" y2="27" stroke="#6D4C41" strokeWidth="4" strokeLinecap="round" />
-      <line x1="65" y1="60" x2="47" y2="51" stroke="#6D4C41" strokeWidth="3.5" strokeLinecap="round" />
-      <line x1="65" y1="54" x2="83" y2="46" stroke="#6D4C41" strokeWidth="3.5" strokeLinecap="round" />
-      <line x1="65" y1="28" x2="56" y2="15" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
-      <line x1="65" y1="24" x2="74" y2="14" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
-
-      {/* Hearts — 9, well spaced across canopy */}
-      <path d="M49,24.5C48.3,21 43.7,21 43.7,24.85C43.7,28 49,32.9 49,32.9C49,32.9 54.3,28 54.3,24.85C54.3,21 49.7,21 49,24.5Z" fill="#E53935" />
-      <path d="M65,6C64.4,3 60.5,3 60.5,6.3C60.5,9 65,13.2 65,13.2C65,13.2 69.5,9 69.5,6.3C69.5,3 65.6,3 65,6Z" fill="#66BB6A" />
-      <path d="M81,19.5C80.3,16 75.7,16 75.7,19.85C75.7,23 81,27.9 81,27.9C81,27.9 86.3,23 86.3,19.85C86.3,16 81.7,16 81,19.5Z" fill="#1E88E5" />
-      <path d="M47,15.5C46.5,13 43.25,13 43.25,15.75C43.25,18 47,21.5 47,21.5C47,21.5 50.75,18 50.75,15.75C50.75,13 47.5,13 47,15.5Z" fill="#FDD835" />
-      <path d="M83,13.5C82.5,11 79.25,11 79.25,13.75C79.25,16 83,19.5 83,19.5C83,19.5 86.75,16 86.75,13.75C86.75,11 83.5,11 83,13.5Z" fill="#FF9800" />
-      <path d="M55,7.5C54.5,5 51.25,5 51.25,7.75C51.25,10 55,13.5 55,13.5C55,13.5 58.75,10 58.75,7.75C58.75,5 55.5,5 55,7.5Z" fill="#8E24AA" />
-      <path d="M75,5.5C74.5,3 71.25,3 71.25,5.75C71.25,8 75,11.5 75,11.5C75,11.5 78.75,8 78.75,5.75C78.75,3 75.5,3 75,5.5Z" fill="#E91E63" />
-      <path d="M88,33.5C87.5,31 84.25,31 84.25,33.75C84.25,36 88,39.5 88,39.5C88,39.5 91.75,36 91.75,33.75C91.75,31 88.5,31 88,33.5Z" fill="#8BC34A" />
-      <path d="M42,38.5C41.5,36 38.25,36 38.25,38.75C38.25,41 42,44.5 42,44.5C42,44.5 45.75,41 45.75,38.75C45.75,36 42.5,36 42,38.5Z" fill="#26C6DA" />
-
-      {/* Left child — white halo first so red pops off the rainbow */}
-      <circle cx="19" cy="59" r="13" fill="white" />
-      <ellipse cx="19" cy="74" rx="17" ry="15" fill="white" />
-      <ellipse cx="20" cy="83" rx="18" ry="9" fill="white" />
-      <circle cx="19" cy="59" r="12" fill="#E53935" />
-      <ellipse cx="19" cy="74" rx="16" ry="14" fill="#E53935" />
-      <ellipse cx="20" cy="83" rx="17" ry="8" fill="#E53935" />
-
-      {/* Right child — white halo first */}
-      <circle cx="101" cy="78" r="13" fill="none" stroke="white" strokeWidth="5" />
-      <circle cx="116" cy="78" r="13" fill="none" stroke="white" strokeWidth="5" />
-      <path d="M101,78 L109,60 L116,78" stroke="white" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M109,60 L116,67" stroke="white" strokeWidth="7" strokeLinecap="round" />
-      <circle cx="108" cy="50" r="13" fill="white" />
-      <path d="M108,63 L106,74" stroke="white" strokeWidth="12" strokeLinecap="round" />
-      <path d="M106,73 L101,79" stroke="white" strokeWidth="8" strokeLinecap="round" />
-      <path d="M106,73 L112,78" stroke="white" strokeWidth="8" strokeLinecap="round" />
-      {/* Blue bicycle + rider on top of halo */}
-      <circle cx="101" cy="78" r="12" fill="none" stroke="#1565C0" strokeWidth="3.5" />
-      <circle cx="116" cy="78" r="12" fill="none" stroke="#1565C0" strokeWidth="3.5" />
-      <path d="M101,78 L109,60 L116,78" stroke="#1565C0" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M109,60 L116,67" stroke="#1565C0" strokeWidth="4.5" strokeLinecap="round" />
-      <path d="M105,62 L113,60" stroke="#1565C0" strokeWidth="3.5" strokeLinecap="round" />
-      <circle cx="108" cy="50" r="12" fill="#1565C0" />
-      <path d="M108,62 L106,73" stroke="#1565C0" strokeWidth="10" strokeLinecap="round" />
-      <path d="M106,72 L101,78" stroke="#1565C0" strokeWidth="6" strokeLinecap="round" />
-      <path d="M106,72 L112,77" stroke="#1565C0" strokeWidth="6" strokeLinecap="round" />
+      <path d="M49.5928 0.0170898C49.699 0.0467844 49.8052 0.076479 49.9104 0.107132C49.7774 0.16748 49.6474 0.214416 49.5928 0.0170898Z" fill="#0B0C0C"/>
+      <path d="M51.468 0C51.4658 0.00322321 51.4647 0.00643987 51.4626 0.00966309C51.4604 0.0107309 51.4572 0.0107309 51.4551 0.0107309C51.4562 0.00751427 51.4583 0.00536547 51.4594 0.00214881C51.4626 0.00107441 51.4647 0.00107441 51.468 0Z" fill="#0B0C0C"/>
+      <path d="M49.5928 0.0170898C49.699 0.0467844 49.8052 0.076479 49.9104 0.107132C49.7774 0.16748 49.6474 0.214416 49.5928 0.0170898Z" fill="#0B0C0C"/>
+      <path d="M51.468 0C51.4658 0.00322321 51.4647 0.00643987 51.4626 0.00966309C51.4604 0.0107309 51.4572 0.0107309 51.4551 0.0107309C51.4562 0.00751427 51.4583 0.00536547 51.4594 0.00214881C51.4626 0.00107441 51.4647 0.00107441 51.468 0Z" fill="#0B0C0C"/>
+      <path d="M51.468 0L51.4551 0.0107309C51.4562 0.00751427 51.4583 0.00536547 51.4594 0.00214881C51.4626 0.00107441 51.4647 0.00107441 51.468 0Z" fill="#0B0C0C"/>
+      <path d="M51.468 0C51.4658 0.00322321 51.4647 0.00643987 51.4626 0.00966309C51.4604 0.0107309 51.4572 0.0107309 51.4551 0.0107309C51.4562 0.00751427 51.4583 0.00536547 51.4594 0.00214881C51.4626 0.00107441 51.4647 0.00107441 51.468 0Z" fill="#FEFEFE"/>
+      <path d="M51.468 0C51.4658 0.00322321 51.4647 0.00643987 51.4626 0.00966309C51.4604 0.0107309 51.4572 0.0107309 51.4551 0.0107309C51.4562 0.00751427 51.4583 0.00536547 51.4594 0.00214881C51.4626 0.00107441 51.4647 0.00107441 51.468 0Z" fill="#FEFEFE"/>
+      <path d="M49.9104 0.107132C49.7774 0.16748 49.6474 0.214416 49.5928 0.0170898C49.699 0.0467844 49.8052 0.076479 49.9104 0.107132Z" fill="#FEFEFE"/>
+      <path d="M66.9689 25.6375C66.9292 26.1979 66.4707 26.605 65.5684 26.9364C65.5992 29.0131 65.6379 31.0898 65.6518 33.1666C65.6528 33.4616 65.8106 33.6359 65.9694 33.8342C66.1114 32.5736 66.4578 31.3935 66.9719 30.3159V25.6375H66.9689ZM65.9645 36.3477C65.5069 37.9685 65.8831 39.619 65.7808 41.2522C65.7501 41.757 65.759 42.2637 65.7501 42.7704C66.3496 43.0425 66.7605 43.4611 66.9719 43.9487V40.1314C66.426 38.9915 66.0727 37.7242 65.9645 36.3477ZM49.1971 71.082C49.214 71.083 49.2309 71.083 49.2487 71.083C53.7341 71.082 58.6761 71.0897 58.6761 71.0897C58.6761 71.0897 59.0662 71.198 59.5575 71.082H49.1971ZM53.5733 23.3845C54.6334 23.3807 55.6934 23.3769 56.7535 23.373V23.3721C55.6924 23.3769 54.6324 23.3807 53.5733 23.3845ZM45.5911 67.0349H45.5901C45.5901 67.0349 45.5137 67.4104 45.5336 67.9334C45.5762 67.7926 45.5941 67.6154 45.5931 67.3932C45.5921 67.2734 45.5911 67.1547 45.5911 67.0349Z" fill="#FEFEFE"/>
+      <path d="M66.972 45.583L66.9719 45.5828C66.7961 46.0321 66.4774 46.4746 66.0072 46.8675C65.0445 47.6712 63.902 48.4241 62.5045 48.1118C61.5109 47.8896 61.5675 48.3781 61.5685 49.0276C61.5725 55.024 61.5794 61.0204 61.5189 67.0169V67.0351C61.5189 67.0925 61.5179 67.1481 61.5169 67.2037C61.4554 70.0936 60.3705 70.8916 59.5596 71.0822C59.5586 71.0822 59.5586 71.0831 59.5576 71.0822H49.1972C46.1242 71.0611 45.5793 69.1195 45.5337 67.9336C45.5764 67.7928 45.5942 67.6156 45.5932 67.3933C45.5922 67.2736 45.5912 67.1548 45.5912 67.0351C45.5535 61.0099 45.5654 54.9818 45.5853 48.9557C45.5883 48.2775 45.5079 48.0237 44.6553 48.1013C41.9624 48.3465 40.0359 46.6376 40.023 44.0331C39.9932 38.2282 39.9922 32.4234 40.021 26.6195C40.0339 24.0025 42.0121 22.1298 44.7267 22.079C45.9644 22.0561 47.2041 22.1097 48.4409 22.0695C49.4712 22.0359 50.1441 22.4028 50.3933 23.3962C50.2305 24.5284 49.4136 24.7688 48.4042 24.7631C47.1664 24.7564 45.9267 24.7324 44.69 24.7736C43.7203 24.8052 43.0542 25.1424 42.9143 26.2593C42.8369 26.881 42.7257 27.4998 42.7257 28.1282C42.7227 32.9933 42.7237 37.8575 42.7237 42.7227C42.7237 43.149 42.7148 43.5762 42.7178 44.0024C42.7257 44.9201 43.2289 45.5083 44.149 45.5178C45.093 45.5274 45.5446 44.8952 45.5793 44.0005C45.5892 43.7457 45.5793 43.489 45.5793 43.2332C45.5783 40.2034 45.5883 37.1736 45.5704 34.1438C45.5644 33.2079 45.8483 32.4847 46.9362 32.5067C48.0002 32.5287 48.3287 33.252 48.291 34.183C48.2821 34.3957 48.289 34.6093 48.289 34.8229C48.289 45.1921 48.289 55.5623 48.288 65.9316C48.288 68.4422 48.29 68.3905 50.9352 68.4489C51.9883 68.4719 52.2503 68.1778 52.2444 67.174C52.1997 59.7493 52.2215 52.3237 52.2235 44.899C52.2235 44.5149 52.2017 44.126 52.2603 43.7495C52.3694 43.0503 52.8737 42.7256 53.5605 42.7083C54.2583 42.6911 54.7546 43.0263 54.8856 43.7132C54.9561 44.0858 54.9332 44.4776 54.9332 44.8607C54.9362 51.9444 54.9362 59.028 54.9342 66.1117C54.9332 68.4298 54.9332 68.3598 57.3839 68.4518C58.6196 68.4987 58.9015 68.1261 58.8965 66.969C58.8499 56.0882 58.8687 45.2065 58.8707 34.3248C58.8707 33.4416 58.8876 32.524 60.1501 32.5144C61.4385 32.5058 61.5794 33.3746 61.5735 34.3641C61.5546 37.3508 61.5645 40.3385 61.5695 43.3252C61.5705 43.7074 61.5774 44.0954 61.6439 44.4689C61.767 45.1538 62.2722 45.5514 62.9402 45.5073C63.5338 45.468 64.2008 45.2161 64.2683 44.5111C64.3348 43.8224 64.6524 43.3779 65.1437 43.0666C65.3234 42.9516 65.5268 42.8549 65.7502 42.7706C66.3497 43.0426 66.7606 43.4612 66.972 43.9488C67.1876 44.4484 67.1916 45.0207 66.972 45.5823V45.583Z" fill="#0B0C0C"/>
+      <path d="M65.9275 36.0824C65.9394 36.1705 65.9513 36.2587 65.9642 36.3468V36.3477C65.5066 37.9685 65.8828 39.619 65.7806 41.2522C65.7498 41.757 65.7587 42.2637 65.7498 42.7704C65.5265 42.8547 65.323 42.9515 65.1433 43.0664C64.652 43.3777 64.3344 43.8222 64.2679 44.5109C64.2004 45.216 63.5334 45.4679 62.9399 45.5072C62.2719 45.5512 61.7667 45.1537 61.6436 44.4688C61.5771 44.0952 61.5701 43.7073 61.5691 43.3251C61.5642 40.3383 61.5542 37.3507 61.5731 34.3639C61.5791 33.3744 61.4381 32.5056 60.1498 32.5142C58.8872 32.5238 58.8704 33.4415 58.8704 34.3247C58.8684 45.2064 58.8495 56.0881 58.8962 66.9688C58.9011 68.126 58.6192 68.4986 57.3835 68.4517C54.9329 68.3597 54.9329 68.4296 54.9339 66.1115C54.9358 59.0279 54.9358 51.9442 54.9329 44.8606C54.9329 44.4774 54.9557 44.0856 54.8852 43.713C54.7542 43.0262 54.2579 42.6909 53.5602 42.7082C52.8733 42.7254 52.3691 43.0501 52.2599 43.7494C52.2013 44.1259 52.2232 44.5148 52.2232 44.8989C52.2212 52.3235 52.1994 59.7492 52.244 67.1738C52.25 68.1777 51.9879 68.4718 50.9348 68.4488C48.2896 68.3904 48.2877 68.4421 48.2877 65.9314C48.2887 55.5622 48.2887 45.192 48.2887 34.8228C48.2887 34.6092 48.2817 34.3956 48.2906 34.1829C48.3284 33.2518 47.9998 32.5286 46.9358 32.5066C45.8479 32.4845 45.5641 33.2078 45.57 34.1436C45.5879 37.1735 45.578 40.2033 45.579 43.2331C45.579 43.4889 45.5889 43.7456 45.579 44.0004C45.5442 44.8951 45.0926 45.5273 44.1487 45.5177C43.2286 45.5081 42.7253 44.92 42.7174 44.0023C42.7144 43.576 42.7234 43.1488 42.7234 42.7225C42.7234 37.8574 42.7224 32.9932 42.7253 28.128C42.7253 27.4997 42.8365 26.8808 42.9139 26.2592C43.0539 25.1423 43.7199 24.8051 44.6896 24.7735C45.9264 24.7323 47.1661 24.7562 48.4038 24.7629C49.4132 24.7687 50.2301 24.5283 50.3929 23.396C52.513 23.3884 54.6321 23.3807 56.7532 23.3721H56.7542C56.8852 24.3434 57.5264 24.7438 58.4723 24.7591C59.5711 24.7763 60.6719 24.8099 61.7676 24.7514C62.9776 24.6882 63.9324 24.9583 64.4327 26.1385C64.5438 26.4009 64.7394 26.5705 64.9716 26.696C65.1563 26.7966 65.3627 26.8684 65.5682 26.9364C65.5989 29.0131 65.6376 31.0898 65.6515 33.1666C65.6525 33.4616 65.8104 33.6359 65.9692 33.8342C65.9602 33.9118 65.9503 33.9904 65.9414 34.0679C65.4044 34.7366 65.4371 35.408 65.9275 36.0824Z" fill="#FFB633"/>
+      <path d="M65.9694 33.8343C65.9605 33.9119 65.9506 33.9904 65.9416 34.068C65.9367 34.7395 65.9327 35.411 65.9277 36.0825C65.9396 36.1706 65.9516 36.2587 65.9645 36.3468V36.3478C66.0727 37.7243 66.426 38.9916 66.9719 40.1315V30.3159C66.4578 31.3936 66.1114 32.5737 65.9694 33.8343Z" fill="#0B0C0C"/>
+      <path d="M53.5289 8.11113C49.7551 8.1437 46.7249 11.071 46.712 14.6967C46.6991 18.375 49.7889 21.332 53.6311 21.3196C57.4227 21.3062 60.5006 18.2715 60.451 14.5951C60.4033 10.9896 57.2946 8.0776 53.5289 8.11113ZM53.6877 18.671C51.3968 18.716 49.5219 16.9947 49.4663 14.7934C49.4107 12.6085 51.2628 10.7674 53.5299 10.754C55.8356 10.7415 57.6629 12.482 57.6778 14.7063C57.6927 16.8452 55.8991 18.6269 53.6877 18.671Z" fill="#0B0C0C"/>
+      <path d="M66.9693 25.6376C66.9296 26.198 66.4711 26.6051 65.5688 26.9365C65.3634 26.8685 65.1569 26.7966 64.9723 26.6961C64.74 26.5706 64.5445 26.401 64.4333 26.1386C63.9331 24.9584 62.9782 24.6883 61.7683 24.7515C60.6725 24.81 59.5718 24.7764 58.473 24.7592C57.5271 24.7439 56.8859 24.3435 56.7549 23.3722C56.7708 23.3128 56.7876 23.2563 56.8065 23.2017C56.8442 23.0925 56.8869 22.9928 56.9365 22.9009C56.9603 22.8549 56.9871 22.8108 57.0139 22.7696C57.0278 22.7486 57.0417 22.7285 57.0566 22.7083C57.0785 22.6777 57.1023 22.648 57.1261 22.6202C57.4834 22.1997 58.0264 22.0436 58.7281 22.0685C59.9648 22.1116 61.2035 22.0608 62.4413 22.0847C64.2616 22.1211 65.6661 22.8779 66.5793 24.4182C66.8621 24.8943 66.9941 25.2947 66.9693 25.6376Z" fill="#0B0C0C"/>
+      <path d="M65.942 34.0684C65.9374 34.7398 65.9327 35.4112 65.9281 36.0829C65.4381 35.4084 65.4047 34.7365 65.942 34.0684Z" fill="#FEFEFE"/>
+      <path d="M57.6772 14.706C57.6917 16.8444 55.8982 18.6264 53.6871 18.6704C51.396 18.716 49.5219 16.9944 49.4661 14.7929C49.4107 12.6078 51.2627 10.767 53.5297 10.754C55.8346 10.7407 57.662 12.482 57.6772 14.706Z" fill="#FEFEFE"/>
+      <path d="M61.5188 67.0166V67.0348C61.5188 67.0923 61.5178 67.1478 61.5168 67.2034C61.4553 70.0934 60.3704 70.8913 59.5595 71.0819C59.5585 71.0819 59.5585 71.0829 59.5575 71.0819C59.0662 71.1978 58.6761 71.0896 58.6761 71.0896C58.6761 71.0896 53.7341 71.0819 49.2487 71.0829C49.2309 71.0829 49.214 71.0829 49.1971 71.0819C46.1241 71.0608 45.5792 69.1192 45.5336 67.9333C45.5137 67.4103 45.5901 67.0348 45.5901 67.0348H45.5911L46.7117 67.3384L49.8572 69.76L54.3435 69.5397L59.2845 69.4659L59.5882 68.146C59.5882 68.146 61.5495 62.2185 61.5188 67.0166Z" fill="#0B0C0C"/>
+      <path d="M66.9721 25.6377V45.583L65.1389 43.5667C65.1389 43.5667 65.1409 43.3875 65.1438 43.0666C65.1686 40.4995 65.2739 28.8677 65.1389 27.4979C65.1071 27.1818 65.0476 26.9174 64.9721 26.6962C64.6813 25.8398 64.1572 25.6377 64.1572 25.6377H66.9721Z" fill="#0B0C0C"/>
+      <path d="M64.4335 26.139C64.4335 26.139 64.936 27.4009 64.936 28.8683V41.1755C64.936 42.354 64.6918 43.5241 64.1884 44.5979C64.0594 44.8732 63.9273 45.1115 63.8047 45.2574C63.3141 45.8414 64.1576 46.5754 64.1576 46.5754L66.4504 43.2263V27.6455L64.8347 23.7812L64.4335 26.139Z" fill="#0B0C0C"/>
+      <rect x="5.04883" y="21.5376" width="16.523" height="44.0614" fill="#282828"/>
+      <circle cx="21.8016" cy="34.1595" r="4.81921" fill="black"/>
+      <rect x="20.6533" y="31.1758" width="55.9946" height="5.50767" rx="2.75383" fill="#575757"/>
+      <circle cx="21.8007" cy="34.1596" r="2.52435" fill="#FFB633"/>
+      <rect y="65.5991" width="26.6204" height="5.50767" fill="#575757"/>
     </svg>
   )
 }
 
-function VisitorGatepassIcon({ size = 24, className = '' }) {
+// Supplied artwork ("Intercom Support 2.svg"), drawn on a 41x36 canvas. Its colours are its
+// own, so it does not answer to `currentColor` the way the line icons do.
+function IntercomDeskIcon({ size = 24, className = '' }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={Math.round(size * 1.45)}
+      width={size}
       height={size}
-      viewBox="0 0 32 24"
+      viewBox="0 0 41 36"
       fill="none"
       className={className}
       aria-hidden
     >
-      <rect x="8.5" y="1" width="5" height="5" rx="0.4" fill="#22a7f2" />
-      <rect x="1.5" y="5" width="24" height="16" rx="1.8" fill="#eaf7ff" stroke="#0584cc" strokeWidth="2" />
-      <rect x="4.2" y="7.8" width="18.5" height="10.4" rx="0.9" fill="#ffffff" stroke="#0b4f7e" strokeWidth="1.2" />
-      <circle cx="9.2" cy="11.2" r="2.4" fill="#17324d" />
-      <path d="M5.7 17.5c0-2.2 1.4-3.9 3.5-3.9s3.6 1.7 3.6 3.9" fill="#17324d" />
-      <path d="M15 10h5.4M15 12.8h5M15 15.6h3.8" stroke="#8aa4b8" strokeWidth="1.25" strokeLinecap="round" />
-      <path
-        d="M23.6 7.2 30 9.1v5.1c0 4.3-3.1 6.7-6.4 8-3.3-1.3-6.4-3.7-6.4-8V9.1l6.4-1.9Z"
-        fill="#17324d"
-        stroke="#ffffff"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path d="M20.5 14.2 22.6 16.2 27.2 11.5" stroke="#ffffff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="23.5879" y="29.4062" width="6.44744" height="8.49175" rx="3.22372" transform="rotate(90 23.5879 29.4062)" fill="#61439D"/>
+      <path d="M5.18945 13.3054C5.81847 9.16057 9.53752 1.25382 19.3424 0.871008C31.1365 0.410524 33.8098 9.16057 34.9106 13.3054" stroke="#61439D" strokeWidth="1.70734" strokeLinecap="round"/>
+      <rect y="11.9058" width="10.3788" height="14.737" rx="4.26834" fill="#61439D"/>
+      <rect x="30.1934" y="11.9058" width="10.3788" height="14.737" rx="4.26834" fill="#61439D"/>
+      <path d="M23.5879 33.0908C27.362 32.6302 32.0796 31.7092 34.4385 25.2617" stroke="#61439D" strokeWidth="1.70734" strokeLinecap="round"/>
     </svg>
   )
 }
 
-function IntercomDeskIcon({ size = 24, className = '' }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
-      fill="currentColor" className={className} aria-hidden>
-      {/* Person card */}
-      <rect x="2" y="2" width="16" height="16" rx="3.2" />
-      {/* Person head */}
-      <circle cx="10" cy="7.5" r="2.8" fill="white" />
-      {/* Person body */}
-      <path d="M4 17c0-3 2.4-5 6-5s6 2 6 5" fill="white" />
-      {/* Badge dot */}
-      <circle cx="18.5" cy="17.5" r="4" fill="currentColor" stroke="white" strokeWidth="1.5" />
-      <rect x="17.8" y="15.5" width="1.4" height="3" rx="0.7" fill="white" />
-      <rect x="17.8" y="19.2" width="1.4" height="1.4" rx="0.7" fill="white" />
-    </svg>
-  )
-}
-
+// These float free like the facilities above rather than sitting on a tinted
+// plate. The plates were built for single-colour line icons that took their
+// tint from `iconColor`; the supplied artwork brings its own palette, which
+// left it stranded at 18px on a pale square whose colour it argued with.
 const IT_LINKS = [
   {
     id: 'raise-request',
@@ -161,8 +87,8 @@ const IT_LINKS = [
     sublabel: 'IT Summit Portal',
     icon: RaiseItRequestIcon,
     href: '#',
-    iconBg: 'bg-blue-50',
-    iconColor: 'text-blue-600',
+    floatingIcon: true,
+    iconSize: 40,
     hoverBorder: 'hover:border-blue-200',
     hoverShadow: 'hover:shadow-blue-100/60',
   },
@@ -172,8 +98,8 @@ const IT_LINKS = [
     sublabel: 'Internal ticketing',
     icon: IntercomDeskIcon,
     href: '#',
-    iconBg: 'bg-indigo-50',
-    iconColor: 'text-indigo-600',
+    floatingIcon: true,
+    iconSize: 40,
     hoverBorder: 'hover:border-indigo-200',
     hoverShadow: 'hover:shadow-indigo-100/60',
   },
@@ -183,8 +109,11 @@ const IT_LINKS = [
     sublabel: 'Guest entry request',
     icon: VisitorGatepassIcon,
     href: '#',
-    iconBg: 'bg-emerald-50',
-    iconColor: 'text-emerald-600',
+    floatingIcon: true,
+    // Runs larger than the 40 its neighbours use: the artwork is a 77x72 canvas,
+    // so `size` sets its width and the shorter height leaves it reading smaller
+    // than the square icons beside it at a matching number.
+    iconSize: 52,
     hoverBorder: 'hover:border-emerald-200',
     hoverShadow: 'hover:shadow-emerald-100/60',
   },
@@ -196,9 +125,8 @@ const FACILITIES = [
     label: 'Utsah',
     sublabel: 'Recreation Centre',
     icon: UtsahIcon,
-    image: utsahImage,
     href: '#',
-    imageClass: 'scale-[3] object-cover object-[48%_40%]',
+    iconSize: 40,
     floatingIcon: true,
     hoverBorder: 'hover:border-purple-200',
     hoverShadow: 'hover:shadow-purple-100/60',
@@ -222,7 +150,10 @@ const FACILITIES = [
     sublabel: 'Canteen',
     icon: DeliciaIcon,
     href: '#',
-    iconColor: 'text-[#3E3E40]',
+    // The artwork carries its own colours, so there is nothing for a text
+    // colour to tint — same as Crèche above.
+    iconColor: '',
+    iconSize: 44,
     floatingIcon: true,
     hoverBorder: 'hover:border-amber-200',
     hoverShadow: 'hover:shadow-amber-100/60',
@@ -291,7 +222,7 @@ export default function ITResources({ title, stacked = false }) {
 
   return (
     <>
-      <section className="site-surface rounded-card border p-5">
+      <section className="site-surface-tint tint-cream rounded-card border p-5">
         <h2 className="mb-5 text-lg font-semibold text-brand-primary">
           {title ?? 'Resources and Support Services'}
         </h2>

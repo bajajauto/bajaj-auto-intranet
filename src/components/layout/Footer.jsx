@@ -1,5 +1,6 @@
 import { Instagram, Linkedin } from 'lucide-react'
 import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
+import { productBrand } from '@/config/brand.config'
 
 const SOCIAL_LINKS = [
   {
@@ -39,7 +40,7 @@ export default function Footer() {
                 <p className="text-xl font-bold leading-tight text-white sm:text-2xl">
                   Bajaj Auto Ltd.
                 </p>
-                <p className="mt-0.5 font-ekam text-xs italic tracking-wide text-white/55 sm:text-sm">
+                <p className="mt-0.5 font-wordmark text-xs italic tracking-wide text-white/55 sm:text-sm">
                   Born in India. Loved by the World.
                 </p>
               </div>
@@ -63,6 +64,11 @@ export default function Footer() {
 
             <p className="mt-2 text-xs text-white/40">
               Copyright {CURRENT_YEAR} Bajaj Auto Ltd. All rights reserved.
+            </p>
+            {/* Build credit — set a step fainter than the copyright above it so
+                it reads as a watermark rather than as a second legal line. */}
+            <p className="mt-1 text-[11px] tracking-wide text-white/30">
+              {productBrand.developedBy}
             </p>
           </div>
 

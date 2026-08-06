@@ -1,3 +1,12 @@
+/*
+ * Sidebar order mirrors the page. Groups run in the same order their sections
+ * appear in MainContent, so scrolling the page walks the rail top to bottom and
+ * the scroll-spy highlight never jumps backwards. MainContent's SECTION_IDS is
+ * the same sequence — if a section moves there, move its group here too.
+ *
+ * Inside Pitstop, items run in the grid's own order: row by row, and within a
+ * row most-used on the left first. That mirrors ServiceGrid's pitstopRows.
+ */
 export const navGroups = [
   {
     id: 'employee-services',
@@ -8,28 +17,48 @@ export const navGroups = [
     colorKey: 'blue',
     collapsible: true,
     items: [
+      // grid row 1 — work and time
       { id: 'team-directory', label: 'Team Directory', icon: 'Users', sectionId: 'self-service' },
-      { id: 'policies', label: 'Policies', icon: 'ClipboardCheck', sectionId: 'self-service' },
-      { id: 'travel', label: 'Travel', icon: 'Plane', sectionId: 'self-service' },
-      {
-        id: 'recognition-gem',
-        label: 'Recognition - GEM',
-        icon: 'Award',
-        sectionId: 'self-service',
-      },
-      {
-        id: 'compensation',
-        label: 'Compensation',
-        icon: 'IndianRupee',
-        sectionId: 'self-service',
-      },
       {
         id: 'leave-attendance',
         label: 'Leave / Attendance',
         icon: 'CalendarCheck',
         sectionId: 'self-service',
       },
+      {
+        id: 'holiday-calendar',
+        label: 'Holiday Calendar',
+        icon: 'CalendarDays',
+        sectionId: 'self-service',
+      },
+      { id: 'travel', label: 'Travel', icon: 'Plane', sectionId: 'self-service' },
+      { id: 'policies', label: 'Policies', icon: 'ClipboardCheck', sectionId: 'self-service' },
+
+      // grid row 2 — pay, benefits and health
+      {
+        id: 'compensation',
+        label: 'Compensation',
+        icon: 'IndianRupee',
+        sectionId: 'self-service',
+      },
       { id: 'benefits', label: 'Benefits', icon: 'Gift', sectionId: 'self-service' },
+      { id: 'documents', label: 'Documents', icon: 'FolderOpen', sectionId: 'self-service' },
+      { id: 'mediclaim', label: 'Mediclaim Card', icon: 'Shield', sectionId: 'self-service' },
+      {
+        id: 'health-wellness',
+        label: 'Health & Wellness',
+        icon: 'HeartPulse',
+        sectionId: 'self-service',
+      },
+
+      // grid row 3 — growth and recognition
+      {
+        id: 'recognition-gem',
+        label: 'Recognition - GEM',
+        icon: 'Award',
+        sectionId: 'self-service',
+      },
+      { id: 'idea-hub', label: 'Idea Hub', icon: 'Lightbulb', sectionId: 'self-service' },
       {
         id: 'bolt-learning',
         label: 'BOLT - Start Learning',
@@ -37,39 +66,16 @@ export const navGroups = [
         sectionId: 'self-service',
       },
       {
-        id: 'health-wellness',
-        label: 'Health & Wellness',
-        icon: 'HeartPulse',
+        id: 'performance-management',
+        label: 'Performance Management',
+        icon: 'Target',
         sectionId: 'self-service',
       },
-      { id: 'documents', label: 'Documents', icon: 'FolderOpen', sectionId: 'self-service' },
-      { id: 'idea-hub', label: 'Idea Hub', icon: 'Lightbulb', sectionId: 'self-service' },
-      {
-        id: 'holiday-calendar',
-        label: 'Holiday Calendar',
-        icon: 'CalendarDays',
-        sectionId: 'self-service',
-      },
-      { id: 'mediclaim', label: 'Mediclaim Card', icon: 'Shield', sectionId: 'self-service' },
-      { id: 'form-16', label: 'Forms', icon: 'FileText', sectionId: 'self-service' },
       { id: 'it-summit', label: 'IT Summit', icon: 'MonitorSmartphone', sectionId: 'self-service' },
-    ],
-  },
-  {
-    id: 'bajaj-bytes-group',
-    label: 'Bajaj Bytes',
-    description: 'News, podcast & watch',
-    icon: 'BajajBytesIcon',
-    imageIcon: 'bajajBytesSidebar',
-    colorKey: 'violet',
-    hideChildren: true,
-    items: [
-      {
-        id: 'bajaj-bytes',
-        label: 'Bajaj Bytes',
-        icon: 'BookOpen',
-        sectionId: 'bajaj-bytes',
-      },
+
+      // No tile in the grid — services.config has no form-16 entry, so this one
+      // has no position to mirror and sits last rather than breaking a row run.
+      { id: 'form-16', label: 'Forms', icon: 'FileText', sectionId: 'self-service' },
     ],
   },
   {
@@ -86,6 +92,52 @@ export const navGroups = [
         label: 'Resources and Support Services',
         icon: 'Phone',
         sectionId: 'it-resources',
+      },
+    ],
+  },
+  {
+    id: 'locations-group',
+    label: 'Bajaj Auto Presence',
+    description: 'Global locations',
+    icon: 'PresenceIcon',
+    imageIcon: 'presenceSidebar',
+    colorKey: 'orange',
+    hideChildren: true,
+    items: [
+      { id: 'locations', label: 'Bajaj Auto Presence', icon: 'Map', sectionId: 'locations' },
+    ],
+  },
+  {
+    id: 'company-news-group',
+    label: 'News and Announcement',
+    description: 'Announcements',
+    icon: 'NewsAnnouncementIcon',
+    imageIcon: 'newsSidebar',
+    colorKey: 'violet',
+    hideChildren: true,
+    items: [
+      {
+        id: 'company-news',
+        label: 'Company News',
+        icon: 'Newspaper',
+        sectionId: 'company-news',
+      },
+    ],
+  },
+  {
+    id: 'bajaj-bytes-group',
+    label: 'Bajaj Bytes',
+    description: 'News, podcast & watch',
+    icon: 'BajajBytesIcon',
+    imageIcon: 'bajajBytesSidebar',
+    colorKey: 'violet',
+    hideChildren: true,
+    items: [
+      {
+        id: 'bajaj-bytes',
+        label: 'Bajaj Bytes',
+        icon: 'BookOpen',
+        sectionId: 'bajaj-bytes',
       },
     ],
   },
@@ -121,35 +173,6 @@ export const navGroups = [
         icon: 'HeartHandshake',
         sectionId: 'csr',
       },
-    ],
-  },
-  {
-    id: 'company-news-group',
-    label: 'News and Announcement',
-    description: 'Announcements',
-    icon: 'NewsAnnouncementIcon',
-    imageIcon: 'newsSidebar',
-    colorKey: 'violet',
-    hideChildren: true,
-    items: [
-      {
-        id: 'company-news',
-        label: 'Company News',
-        icon: 'Newspaper',
-        sectionId: 'company-news',
-      },
-    ],
-  },
-  {
-    id: 'locations-group',
-    label: 'Bajaj Auto Presence',
-    description: 'Global locations',
-    icon: 'PresenceIcon',
-    imageIcon: 'presenceSidebar',
-    colorKey: 'orange',
-    hideChildren: true,
-    items: [
-      { id: 'locations', label: 'Bajaj Auto Presence', icon: 'Map', sectionId: 'locations' },
     ],
   },
   {

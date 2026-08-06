@@ -240,8 +240,10 @@ export default function DashboardUpdatesPanel() {
         ? 'Meetings'
         : 'Notifications'
 
+  // Cream to pair with Resources & Support, the left-column panel it runs
+  // alongside; the Volunteer card above takes blush to pair with Pitstop.
   return (
-    <div className="site-surface rounded-card border overflow-hidden">
+    <div className="site-surface-tint tint-cream rounded-card border overflow-hidden">
       <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-gray-100">
         <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
 

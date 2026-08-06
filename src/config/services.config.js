@@ -98,6 +98,13 @@ export const services = [
     enabled: true,
   },
   {
+    id: 'performance-management',
+    label: 'Performance Management',
+    icon: 'PerformanceManagementIcon',
+    redirectUrl: '#',
+    enabled: true,
+  },
+  {
     id: 'it-summit',
     label: 'IT Summit',
     icon: 'ItSummitIcon',

@@ -195,7 +195,7 @@ export default function CompanyOverview({ title }) {
   const [selectedSubsidiary, setSelectedSubsidiary] = useState(null)
 
   return (
-    <div className="site-surface space-y-6 rounded-card border p-4 animate-in fade-in duration-500">
+    <div className="site-surface-tint tint-blush space-y-6 rounded-card border p-4 animate-in fade-in duration-500">
       {title && (
         <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
       )}
