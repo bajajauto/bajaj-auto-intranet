@@ -51,14 +51,14 @@ export default function StockTickerTape() {
 
   return (
     <div
-      className="relative overflow-hidden bg-slate-900/90 backdrop-blur-sm"
+      className="relative overflow-hidden bg-slate-900/95 backdrop-blur-sm"
       role="region"
       aria-label="Bajaj Auto stock price and sales"
     >
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-slate-900 to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-slate-900 to-transparent" />
 
-      <div className="ticker-tape-viewport flex py-2">
+      <div className="ticker-tape-viewport flex items-center py-2">
         <div className="ticker-tape-track flex flex-shrink-0 items-center gap-10 pr-10">
           {items.map((item) => (
             <TickerEntry key={`a-${item.symbol ?? item.label}`} item={item} />

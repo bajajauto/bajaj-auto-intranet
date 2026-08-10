@@ -228,7 +228,7 @@ export default function ITResources({ title, stacked = false }) {
         </h2>
 
         <div className={`grid grid-cols-1 gap-5 ${stacked ? '' : 'lg:grid-cols-[0.95fr_1.05fr]'}`}>
-          <div className="site-surface rounded-card border p-5">
+          <div className="site-surface-tint tint-sky tint-nested rounded-card border p-5">
             <h3 className="mb-4 text-lg font-semibold text-brand-primary">
               Facilities @ Bajaj Auto Limited
             </h3>
@@ -239,7 +239,7 @@ export default function ITResources({ title, stacked = false }) {
             </div>
           </div>
 
-          <div className="site-surface rounded-card border p-5">
+          <div className="site-surface-tint tint-green tint-nested rounded-card border p-5">
             <h3 className="mb-4 text-lg font-semibold text-brand-primary">Tools and Services</h3>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
               {IT_LINKS.map((item) => (

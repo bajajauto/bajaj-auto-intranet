@@ -2,15 +2,20 @@ import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import Modal from '@/components/shared/Modal'
 import EmergencyContacts from '@/components/emergency/EmergencyContacts'
+import { scrollToSection } from '@/utils/scrollToSection'
 
 export default function TopBanner() {
   const [isSosOpen, setIsSosOpen] = useState(false)
 
+  // A `sectionId` marks a link that jumps down the page rather than out to a
+  // destination of its own — the anchor stays real so the hash is copyable,
+  // and the handler only adds the smooth scroll and the header offset.
   const links = [
     { label: 'About Us', href: '#' },
     { label: 'Vision & Mission', href: '#' },
     { label: 'Integrity Matters – Ethics Helpline', href: '#' },
     { label: 'POSH Information', href: '#' },
+    { label: 'Bajaj Bytes', href: '#bajaj-bytes', sectionId: 'bajaj-bytes' },
   ]
 
   return (
@@ -24,6 +29,14 @@ export default function TopBanner() {
             <span key={link.label} className="flex items-center gap-4 sm:gap-6">
               <a
                 href={link.href}
+                onClick={
+                  link.sectionId
+                    ? (e) => {
+                        e.preventDefault()
+                        scrollToSection(link.sectionId)
+                      }
+                    : undefined
+                }
                 className="rounded text-[10px] font-semibold text-brand-primary dark:text-[#a9bdd8] hover:underline focus-ring sm:text-xs"
               >
                 {link.label}

@@ -1,6 +1,7 @@
 import { Instagram, Linkedin } from 'lucide-react'
 import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
 import { productBrand } from '@/config/brand.config'
+import StockTickerTape from '@/components/dashboard/StockTickerTape'
 
 const SOCIAL_LINKS = [
   {
@@ -22,6 +23,11 @@ const FOOTER_DESCRIPTION =
 export default function Footer() {
   return (
     <footer className="app-footer-chrome mt-8 text-white">
+      {/* The tape used to ride along the foot of the hero banner. With that
+          banner gone it rides the top edge of the footer instead — it belongs
+          to the footer now and is seen only when the footer is. */}
+      <StockTickerTape />
+
       <div className="h-0.5 bg-gradient-to-r from-transparent via-white to-transparent opacity-20" />
 
       <div className="mx-auto max-w-screen-xl px-4 pb-3 pt-4 md:px-6">

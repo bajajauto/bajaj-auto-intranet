@@ -1,7 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { iconMap } from '@/components/shared/iconMap'
 import { useSidebar } from '@/context/SidebarContext'
 import { navGroups } from '@/config/navigation.config'
+import { scrollToSection } from '@/utils/scrollToSection'
 import csrSvgIcon from '@/assets/csr svg.svg'
 import chetakSvgIcon from '@/assets/chetak svg.svg'
 import pitstopSidebarIcon from '@/Sidebar/Pitstop.svg'
@@ -13,9 +15,6 @@ import newsSidebarIcon from '@/Sidebar/News & Announcements 02.svg'
 import presenceSidebarIcon from '@/Sidebar/Bajaj Auto Presence 01.svg'
 import emergencySidebarIcon from '@/Sidebar/Emergecy Contacts.svg'
 import feedbackSidebarIcon from '@/Sidebar/Feedback.svg'
-
-// TopBanner 36px + Header 80px on desktop + 8px breathing room = 124px
-const TOP_OFFSET = 124
 
 function BikeToggleIcon({ isExpanded }) {
   return (
@@ -86,11 +85,47 @@ const imageIconMap = {
   feedbackSidebar: feedbackSidebarIcon,
 }
 
-function scrollToSection(sectionId) {
-  const el = document.getElementById(sectionId)
-  if (!el) return
-  const y = el.getBoundingClientRect().top + window.scrollY - TOP_OFFSET
-  window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
+/*
+ * The collapsed rail is 4rem wide and clips its own horizontal overflow, so a
+ * label positioned just outside a button was in the DOM but never painted.
+ * Reading the button's box on hover and rendering the label into <body> at
+ * those coordinates is what lets it escape the clip; `fixed` keeps it pinned
+ * while the rail scrolls under it.
+ */
+function useRailTip(enabled) {
+  const ref = useRef(null)
+  const [point, setPoint] = useState(null)
+
+  const show = useCallback(() => {
+    if (!enabled || !ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    setPoint({ top: rect.top + rect.height / 2, left: rect.right + 12 })
+  }, [enabled])
+
+  const hide = useCallback(() => setPoint(null), [])
+
+  // Expanding the rail mid-hover would otherwise strand a tip beside a button
+  // that now carries its own label.
+  useEffect(() => {
+    if (!enabled) setPoint(null)
+  }, [enabled])
+
+  return { ref, point, show, hide }
+}
+
+function RailTip({ point, label }) {
+  if (!point) return null
+
+  return createPortal(
+    <span
+      role="tooltip"
+      style={{ top: point.top, left: point.left }}
+      className="pointer-events-none fixed z-[70] -translate-y-1/2 whitespace-nowrap rounded-btn bg-brand-dark px-3 py-1.5 text-xs font-semibold text-white shadow-modal animate-in fade-in slide-in-from-left-1 duration-150"
+    >
+      {label}
+    </span>,
+    document.body
+  )
 }
 
 function NavItem({ item, isExpanded, isActive, onNavigate }) {
@@ -109,7 +144,7 @@ function NavItem({ item, isExpanded, isActive, onNavigate }) {
         }`}
       aria-label={item.label}
     >
-      <Icon size={20} className="flex-shrink-0 transition-transform group-hover:scale-110" />
+      <Icon size={20} className="flex-shrink-0 transition-transform duration-200 group-hover:scale-125" />
       {isExpanded && <span className="truncate">{item.label}</span>}
       {!isExpanded && (
         <>
@@ -137,6 +172,7 @@ function GroupButton({
   const Icon = iconMap[group.icon] ?? iconMap.Circle
   const colors = GROUP_COLORS[group.colorKey] ?? GROUP_COLORS.blue
   const imageIcon = group.imageIcon ? imageIconMap[group.imageIcon] : null
+  const tip = useRailTip(!isExpanded)
   const iconFrameClass = imageIcon
     ? 'bg-emerald-600 text-white ring-emerald-200 group-hover:bg-emerald-700'
     : isActive
@@ -161,7 +197,12 @@ function GroupButton({
 
   return (
     <button
+      ref={tip.ref}
       onClick={handleClick}
+      onMouseEnter={tip.show}
+      onMouseLeave={tip.hide}
+      onFocus={tip.show}
+      onBlur={tip.hide}
       data-active={isActive ? 'true' : undefined}
       className={`group relative w-full flex items-center rounded-card border-l-4 py-2.5 transition-all duration-200 focus-ring hover:scale-[1.02] hover:shadow-sm
         ${isExpanded ? 'gap-2.5 px-2.5' : 'justify-center px-0'}
@@ -173,8 +214,11 @@ function GroupButton({
       aria-label={group.label}
       aria-expanded={isCollapsible && !group.hideChildren ? isGroupExpanded : undefined}
     >
+      {/* The pop. Lifting and enlarging the frame — not just the glyph inside
+          it — is what reads as the icon coming off the rail, and it is the only
+          affordance a collapsed rail has to offer besides the label. */}
       <span
-        className={`w-9 h-9 rounded-card flex items-center justify-center flex-shrink-0 shadow-sm ring-1 transition-all duration-200 ${
+        className={`w-9 h-9 rounded-card flex items-center justify-center flex-shrink-0 shadow-sm ring-1 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:scale-125 group-hover:shadow-lg ${
           iconFrameClass
         }`}
       >
@@ -205,9 +249,7 @@ function GroupButton({
           {isActive && (
             <span className={`absolute right-1.5 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full ${colors.dot}`} />
           )}
-          <span className="pointer-events-none absolute left-[calc(100%+0.5rem)] top-1/2 z-50 -translate-y-1/2 rounded-btn bg-brand-dark px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-modal transition-all group-hover:translate-x-1 group-hover:opacity-100">
-            {group.label}
-          </span>
+          <RailTip point={tip.point} label={group.label} />
         </>
       )}
     </button>

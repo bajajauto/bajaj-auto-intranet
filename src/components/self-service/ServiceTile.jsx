@@ -18,39 +18,41 @@ const MODAL_TRANSITION_MS = 500
 //
 // Both run darker than their source hex: white icons need the badge to carry
 // some depth, and amber is the shallowest of the three even after darkening.
-// Each row lightens left to right — 2.6% lightness per column on both gradient
-// stops, five steps, so a row spans about 10% end to end. Written out rather
-// than computed because Tailwind only sees class strings that exist literally
-// in the source.
+// Each row fades left to right — 4.4% lightness per column on both gradient
+// stops, five steps, so a row travels about 18% end to end and reads as one
+// continuous fade rather than five tiles that happen to differ. Written out
+// rather than computed because Tailwind only sees class strings that exist
+// literally in the source.
 //
-// The ramp runs with the ordering: leftmost is most-used and stays the most
-// saturated, so weight falls off the way attention does.
+// The fade runs with the ordering: leftmost is most-used and stays darkest, so
+// weight falls off the way attention does.
 //
-// Amber is what caps this. Its white icons sit at 2.01:1 against the light stop
-// on the first tile and 1.75:1 on the last; blue and green have far more room
-// (5.67 → 3.93 and 3.42 → 2.11). Pushing the ramp further would wash the amber
-// row's icons out before either of the others showed strain.
+// Contrast below is measured at the badge's gradient midpoint, which is where
+// the icon actually sits — not against the light stop, which only touches the
+// top-left corner. Amber is the floor: 3.17:1 on its first tile down to 1.95:1
+// on its last, where blue still holds 4.18:1 and green 2.37:1. Amber is what
+// gives out first if this is pushed again.
 const toneRamps = {
   blue: [
     'from-[#2563C9] to-[#123A78]',
-    'from-[#2769D4] to-[#144084]',
-    'from-[#3070D9] to-[#15458F]',
-    'from-[#3B77DB] to-[#174B9B]',
-    'from-[#467FDD] to-[#1950A6]',
+    'from-[#2C6DD8] to-[#15438C]',
+    'from-[#3F7ADC] to-[#184D9F]',
+    'from-[#5287DF] to-[#1B56B3]',
+    'from-[#6595E3] to-[#1E60C6]',
   ],
   green: [
     'from-[#1E9E68] to-[#0A5334]',
-    'from-[#20A96F] to-[#0B5F3B]',
-    'from-[#22B477] to-[#0D6B43]',
-    'from-[#24BF7E] to-[#0E774A]',
-    'from-[#26CB85] to-[#108252]',
+    'from-[#22B174] to-[#0C6741]',
+    'from-[#25C481] to-[#0F7B4D]',
+    'from-[#29D68D] to-[#118F5A]',
+    'from-[#3CDA97] to-[#14A366]',
   ],
   amber: [
     'from-[#FCA407] to-[#9A5B02]',
-    'from-[#FCA914] to-[#A76302]',
-    'from-[#FCAE21] to-[#B46A02]',
-    'from-[#FCB22E] to-[#C17203]',
-    'from-[#FDB73B] to-[#CE7A03]',
+    'from-[#FCAC1D] to-[#B06802]',
+    'from-[#FDB433] to-[#C67503]',
+    'from-[#FDBC4A] to-[#DC8203]',
+    'from-[#FDC560] to-[#F38F03]',
   ],
 }
 

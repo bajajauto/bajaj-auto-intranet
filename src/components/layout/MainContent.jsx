@@ -1,6 +1,5 @@
 import { useScrollSpy } from '@/hooks/useScrollSpy'
 import Sidebar from './Sidebar'
-import HeroBanner from './HeroBanner'
 import ServiceGrid from '@/components/self-service/ServiceGrid'
 import DashboardUpdatesPanel from '@/components/dashboard/DashboardUpdatesPanel'
 import VolunteerNextCard from '@/components/dashboard/VolunteerNextCard'
@@ -14,15 +13,19 @@ import LocationsSection from '@/components/locations/LocationsSection'
 import FeedbackSection from '@/components/feedback/FeedbackSection'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 
+// Page order. The sidebar's groups run in this same sequence — see
+// navigation.config.js — so scrolling walks the rail top to bottom and the
+// scroll-spy highlight never jumps backwards. Move a section here, move its
+// group there too.
 const SECTION_IDS = [
   'self-service',
   'it-resources',
-  'locations',
-  'company-news',
-  'bajaj-bytes',
-  'company-overview',
-  'csr',
   'emergency-contacts',
+  'bajaj-bytes',
+  'company-news',
+  'csr',
+  'locations',
+  'company-overview',
   'feedback',
 ]
 
@@ -35,8 +38,6 @@ export default function MainContent() {
 
       <main className="flex-1 min-w-0 min-h-screen">
         <div className="max-w-screen-xl mx-auto px-3 py-4 space-y-7 sm:px-4 sm:py-5 sm:space-y-9 md:px-6 lg:py-6 lg:space-y-10">
-          <HeroBanner />
-
           <ScrollReveal id="dashboard" aria-labelledby="dashboard-heading">
             <h2 id="dashboard-heading" className="sr-only">
               Dashboard
@@ -63,18 +64,11 @@ export default function MainContent() {
             </div>
           </ScrollReveal>
 
-          <ScrollReveal id="locations" aria-labelledby="locations-heading" className="xl:-mr-8 2xl:-mr-16">
-            <h2 id="locations-heading" className="sr-only">
-              Bajaj Auto Presence
+          <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
+            <h2 id="emergency-heading" className="sr-only">
+              Emergency Contacts
             </h2>
-            <LocationsSection title="Bajaj Auto Presence" />
-          </ScrollReveal>
-
-          <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
-            <h2 id="company-news-heading" className="sr-only">
-              Company News
-            </h2>
-            <NewsFeed title="Company News" />
+            <EmergencyContacts title="Emergency Contacts" />
           </ScrollReveal>
 
           <ScrollReveal id="bajaj-bytes" aria-labelledby="bajaj-bytes-heading">
@@ -84,11 +78,11 @@ export default function MainContent() {
             <BajajBytes title="Bajaj Bytes" />
           </ScrollReveal>
 
-          <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
-            <h2 id="company-overview-heading" className="sr-only">
-              Company Overview
+          <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
+            <h2 id="company-news-heading" className="sr-only">
+              Company News
             </h2>
-            <CompanyOverview title="Company Overview" />
+            <NewsFeed title="Company News" />
           </ScrollReveal>
 
           <ScrollReveal id="csr" aria-labelledby="csr-heading">
@@ -98,11 +92,18 @@ export default function MainContent() {
             <CsrSection title="Community & CSR" />
           </ScrollReveal>
 
-          <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
-            <h2 id="emergency-heading" className="sr-only">
-              Emergency Contacts
+          <ScrollReveal id="locations" aria-labelledby="locations-heading" className="xl:-mr-8 2xl:-mr-16">
+            <h2 id="locations-heading" className="sr-only">
+              Bajaj Auto Presence
             </h2>
-            <EmergencyContacts title="Emergency Contacts" />
+            <LocationsSection title="Bajaj Auto Presence" />
+          </ScrollReveal>
+
+          <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
+            <h2 id="company-overview-heading" className="sr-only">
+              Company Overview
+            </h2>
+            <CompanyOverview title="Company Overview" />
           </ScrollReveal>
 
           <ScrollReveal id="feedback" aria-labelledby="feedback-heading">

@@ -713,30 +713,59 @@
    * Dark mode deliberately drops every tint back to the standard .site-surface
    * navy — the tints are a light-mode wayfinding device only.
    */
+  /*
+   * Section containers read as cards, not as washes that dissolve into the
+   * page. The gradient still fades downward — content wants a near-white bed —
+   * but it stops just short of #ffffff, so the bottom edge never becomes the
+   * page colour, and the border carries enough of the section's own hue to
+   * mark where one box ends and the next begins.
+   *
+   * The lift shadow is deliberately only on this class. Inner cards keep the
+   * softer .site-surface elevation, so a section reads as one level above its
+   * contents rather than every box competing at the same depth.
+   */
   .site-surface-tint {
     --tint-h: 210;
     --tint-s: 60%;
     --surface-fade: hsl(var(--tint-h) var(--tint-s) 97.5%);
-    border-color: hsl(var(--tint-h) var(--tint-s) 40% / 0.18);
+    border-color: hsl(var(--tint-h) var(--tint-s) 34% / 0.32);
     background:
       radial-gradient(circle at 100% 0%, hsl(var(--tint-h) var(--tint-s) 45% / 0.14), transparent 34%),
       linear-gradient(
         180deg,
         hsl(var(--tint-h) var(--tint-s) 94.5%) 0%,
         hsl(var(--tint-h) var(--tint-s) 97.5%) 34%,
-        #ffffff 100%
+        hsl(var(--tint-h) var(--tint-s) 99.2%) 100%
       );
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.06),
+      0 10px 28px -14px rgba(15, 23, 42, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.84);
+  }
+
+  /*
+   * A tinted panel nested inside a tinted section keeps the wash but gives up
+   * the lift, so the section it sits in still reads as the outer level. Without
+   * this, Facilities and Tools inside Resources & Support would float at the
+   * same depth as the box holding them.
+   */
+  .site-surface-tint.tint-nested {
     box-shadow:
       0 1px 3px rgba(15, 23, 42, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.84);
   }
 
+  .dark .site-surface-tint.tint-nested {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
   /*
-   * The palette. Only cream and blush are in use — sections alternate between
-   * the two down the page rather than each taking a hue of its own, so the
-   * tints now read as rhythm rather than as per-section wayfinding. The unused
-   * hues stay because the alternation is a styling choice, not a rewrite of the
-   * formula, and switching back is a class swap.
+   * The palette. Sections alternate blush / cream down the page, so those two
+   * carry the rhythm; sky and green are used for the panels nested inside
+   * Resources & Support. The rest stay available — switching a section back to
+   * a hue of its own is a class swap, not a rewrite of the formula.
    */
   .tint-cream  { --tint-h: 45;  --tint-s: 85%; }
   .tint-mint   { --tint-h: 168; --tint-s: 55%; }
@@ -746,14 +775,17 @@
   .tint-green  { --tint-h: 122; --tint-s: 45%; }
   .tint-peach  { --tint-h: 20;  --tint-s: 85%; }
 
+  /* Same job as the light rule above: a firmer edge and a lift, so sections
+     stay separable. Dark mode drops the hue but not the separation. */
   .dark .site-surface-tint {
     --surface-fade: #131c30;
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
     background:
       radial-gradient(circle at 100% 0%, rgba(37, 99, 201, 0.2), transparent 38%),
       linear-gradient(180deg, #1a2440 0%, #131c30 38%, #101725 100%);
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.45),
+      0 1px 2px rgba(0, 0, 0, 0.4),
+      0 10px 28px -14px rgba(0, 0, 0, 0.7),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
@@ -783,6 +815,79 @@
 
 .dark {
   --surface-fade: #131c30;
+}
+
+/*
+ * Calendar seasons — India Meteorological Department's four: summer (Mar–May),
+ * monsoon (Jun–Sep), autumn (Oct–Nov), winter (Dec–Feb). The season is taken
+ * from the month on screen, so paging the calendar re-themes it.
+ *
+ * Each season is a set of tokens rather than a set of utility classes, which is
+ * what lets one class cover both modes: the light block below is overridden
+ * wholesale under `.dark`, and the calendar markup never names a colour. That
+ * also keeps these out of the raw-literal remap block further down.
+ *
+ * Only the wash and the weekend cells are seasonal. Holidays and today stay on
+ * brand blue in every season — they carry meaning, and a state that changes
+ * colour by month stops being readable as a state.
+ */
+.cal-summer {
+  --cal-wash: hsl(43 95% 88% / 0.75);
+  --cal-accent: hsl(32 80% 38%);
+  --cal-accent-bg: hsl(43 92% 90% / 0.7);
+  --cal-accent-ring: hsl(38 85% 62% / 0.45);
+}
+
+.cal-monsoon {
+  --cal-wash: hsl(197 80% 89% / 0.8);
+  --cal-accent: hsl(200 78% 32%);
+  --cal-accent-bg: hsl(197 75% 91% / 0.7);
+  --cal-accent-ring: hsl(199 70% 60% / 0.45);
+}
+
+.cal-autumn {
+  --cal-wash: hsl(24 85% 90% / 0.8);
+  --cal-accent: hsl(18 72% 38%);
+  --cal-accent-bg: hsl(24 80% 91% / 0.7);
+  --cal-accent-ring: hsl(22 75% 62% / 0.45);
+}
+
+.cal-winter {
+  --cal-wash: hsl(214 85% 92% / 0.85);
+  --cal-accent: hsl(224 60% 44%);
+  --cal-accent-bg: hsl(216 80% 93% / 0.75);
+  --cal-accent-ring: hsl(219 70% 68% / 0.45);
+}
+
+/* Dark: same four seasons read against the navy panel. The washes drop to a
+   low-lightness veil and the accents climb well past their light-mode values,
+   because on navy the accent has to out-light its background, not out-dark it. */
+.dark .cal-summer {
+  --cal-wash: hsl(38 45% 20% / 0.55);
+  --cal-accent: hsl(42 90% 68%);
+  --cal-accent-bg: hsl(38 40% 26% / 0.5);
+  --cal-accent-ring: hsl(40 60% 55% / 0.35);
+}
+
+.dark .cal-monsoon {
+  --cal-wash: hsl(200 50% 20% / 0.6);
+  --cal-accent: hsl(196 85% 70%);
+  --cal-accent-bg: hsl(200 45% 26% / 0.5);
+  --cal-accent-ring: hsl(198 60% 55% / 0.35);
+}
+
+.dark .cal-autumn {
+  --cal-wash: hsl(20 45% 20% / 0.55);
+  --cal-accent: hsl(26 85% 68%);
+  --cal-accent-bg: hsl(20 40% 26% / 0.5);
+  --cal-accent-ring: hsl(24 60% 55% / 0.35);
+}
+
+.dark .cal-winter {
+  --cal-wash: hsl(216 50% 22% / 0.6);
+  --cal-accent: hsl(212 90% 76%);
+  --cal-accent-bg: hsl(216 45% 28% / 0.5);
+  --cal-accent-ring: hsl(214 60% 60% / 0.35);
 }
 
 /*

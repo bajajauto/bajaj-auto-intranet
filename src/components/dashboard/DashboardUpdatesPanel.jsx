@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  Sun,
+  CloudRain,
+  Leaf,
+  Snowflake,
+} from 'lucide-react'
 import { calendarService } from '@/services/calendarService'
 import { notificationService } from '@/services/notificationService'
 import NotificationCard from '@/components/notifications/NotificationCard'
@@ -71,6 +79,23 @@ function EventCard({ event, index }) {
   )
 }
 
+// The four IMD seasons. `className` carries the token set defined in index.css;
+// the glyph is what tells a reader the colour means something rather than being
+// decoration. Month is 0-indexed.
+const SEASONS = {
+  winter: { label: 'Winter', Icon: Snowflake, className: 'cal-winter' },
+  summer: { label: 'Summer', Icon: Sun, className: 'cal-summer' },
+  monsoon: { label: 'Monsoon', Icon: CloudRain, className: 'cal-monsoon' },
+  autumn: { label: 'Autumn', Icon: Leaf, className: 'cal-autumn' },
+}
+
+function seasonForMonth(month) {
+  if (month === 11 || month <= 1) return SEASONS.winter // Dec–Feb
+  if (month <= 4) return SEASONS.summer // Mar–May
+  if (month <= 8) return SEASONS.monsoon // Jun–Sep
+  return SEASONS.autumn // Oct–Nov
+}
+
 function HolidayCalendar({ holidays }) {
   const today = new Date()
   const todayKey = formatIsoDate(today)
@@ -92,8 +117,13 @@ function HolidayCalendar({ holidays }) {
     setVisibleDate((current) => new Date(current.getFullYear(), current.getMonth() + delta, 1))
   }
 
+  const season = seasonForMonth(month)
+  const SeasonIcon = season.Icon
+
   return (
-    <div className="bg-gradient-to-b from-brand-light/70 via-white to-white px-4 py-4">
+    <div
+      className={`${season.className} bg-[linear-gradient(to_bottom,var(--cal-wash),transparent_65%)] px-4 py-4`}
+    >
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
@@ -103,7 +133,13 @@ function HolidayCalendar({ holidays }) {
         >
           <ChevronLeft size={16} />
         </button>
-        <p className="rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-primary shadow-sm ring-1 ring-brand-primary/10">
+        <p className="flex items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-primary shadow-sm ring-1 ring-brand-primary/10">
+          <SeasonIcon
+            size={13}
+            className="flex-shrink-0 text-[var(--cal-accent)]"
+            aria-hidden="true"
+          />
+          <span className="sr-only">{season.label} — </span>
           {formatMonthYear(year, month)}
         </p>
         <button
@@ -124,7 +160,7 @@ function HolidayCalendar({ holidays }) {
             key={day}
             className={`rounded-full py-1 text-[10px] font-semibold ${
               isWeekendHeader
-                ? 'bg-indigo-100/55 text-indigo-500/80'
+                ? 'bg-[var(--cal-accent-bg)] text-[var(--cal-accent)]'
                 : 'bg-white/70 text-brand-primary/70'
             }`}
           >
@@ -151,7 +187,7 @@ function HolidayCalendar({ holidays }) {
                   : isToday
                     ? 'bg-white font-semibold text-brand-primary ring-2 ring-brand-primary/40'
                     : isWeekend
-                      ? 'bg-indigo-100/45 text-indigo-500/80 ring-1 ring-indigo-200/50 hover:-translate-y-0.5 hover:bg-indigo-100/65 hover:text-indigo-600'
+                      ? 'bg-[var(--cal-accent-bg)] text-[var(--cal-accent)] ring-1 ring-[var(--cal-accent-ring)] hover:-translate-y-0.5 hover:brightness-95 dark:hover:brightness-125'
                       : 'bg-white/80 text-text-secondary ring-1 ring-brand-primary/5 hover:-translate-y-0.5 hover:bg-white hover:text-brand-primary hover:ring-brand-primary/20'
               }`}
               aria-label={holiday ? `${day}, ${holiday.label}` : `${day}`}
