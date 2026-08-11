@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom'
 import { X, ChevronRight, Dot } from 'lucide-react'
 import { benefitBuckets } from '@/config/benefits.config'
 import { iconMap } from '@/components/shared/iconMap'
+import { usePolicyLibrary } from '@/hooks/usePolicyLibrary'
+import PolicyLibrary from './policies/PolicyLibrary'
 
 const MODAL_TRANSITION_MS = 400
 
@@ -46,7 +48,23 @@ export default function PoliciesBenefitsModal({ onClose }) {
   }
 
   const activeBucket = benefitBuckets.find((b) => b.id === activeId)
+
+  // A bucket whose documents have been collected shows the real library —
+  // category → topic → files, mirroring the folder they arrived in. The rest
+  // still show the benefit list until their documents land.
+  const library = usePolicyLibrary(activeId)
+
   const totalBenefits = activeBucket.categories.reduce((sum, c) => sum + c.items.length, 0)
+  const totalDocuments = library
+    ? library.reduce(
+        (sum, category) =>
+          sum +
+          (category.topics
+            ? category.topics.reduce((n, topic) => n + (topic.documents?.length ?? 0), 0)
+            : (category.documents?.length ?? 0)),
+        0,
+      )
+    : 0
 
   return createPortal(
     <div
@@ -112,7 +130,9 @@ export default function PoliciesBenefitsModal({ onClose }) {
             <div className="min-w-0">
               <h3 className="text-xl font-bold leading-tight text-text-primary">{activeBucket.title}</h3>
               <p className="mt-1 text-xs text-text-secondary">
-                {activeBucket.categories.length} categories · {totalBenefits} benefits
+                {library
+                  ? `${library.length} categories · ${totalDocuments} documents`
+                  : `${activeBucket.categories.length} categories · ${totalBenefits} benefits`}
               </p>
             </div>
             <button
@@ -125,7 +145,9 @@ export default function PoliciesBenefitsModal({ onClose }) {
           </header>
 
           <div key={activeBucket.id} className="flex-1 space-y-2.5 overflow-y-auto px-5 py-5 sm:px-7">
-            {activeBucket.categories.map((category, idx) => {
+            {library && <PolicyLibrary categories={library} />}
+
+            {!library && activeBucket.categories.map((category, idx) => {
               const isOpen = openCategories.includes(category.name)
               return (
                 <div
