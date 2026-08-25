@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, Check, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Check, ChevronRight, Mail } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import PolicyDocumentRow from './PolicyDocumentRow'
 
@@ -121,6 +121,37 @@ export default function PolicyTopicDetail({ category, topic, onBack }) {
               >
                 <Check size={12} strokeWidth={2.5} className="flex-shrink-0" />
                 {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {topic.contacts?.length > 0 && (
+        <section>
+          <h5 className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.12em] text-text-secondary">
+            Who to contact
+          </h5>
+          <ul className="space-y-1.5">
+            {topic.contacts.map((contact) => (
+              <li
+                key={contact.purpose}
+                className="flex items-start gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5"
+              >
+                <Mail size={15} className="mt-0.5 flex-shrink-0 text-brand-primary" />
+                <span className="min-w-0">
+                  <span className="block text-[13px] leading-snug text-text-secondary">
+                    {contact.purpose}
+                  </span>
+                  {contact.email && (
+                    <a
+                      href={`mailto:${contact.email}`}
+                      className="mt-0.5 block break-all text-[13px] font-semibold text-brand-primary hover:underline focus-ring"
+                    >
+                      {contact.email}
+                    </a>
+                  )}
+                </span>
               </li>
             ))}
           </ul>

@@ -15,7 +15,14 @@ export const benefitBuckets = [
       },
       {
         name: 'Savings & Retirement',
-        items: ['Superannuation', 'NPS', 'PF', 'PF Advance', 'Retirement benefits', 'Post-retirement support'],
+        items: [
+          'Superannuation',
+          'NPS',
+          'PF',
+          'PF Advance',
+          'Retirement benefits',
+          'Post-retirement support',
+        ],
       },
       {
         name: 'Financial Wellbeing',
@@ -39,7 +46,13 @@ export const benefitBuckets = [
       },
       {
         name: 'Insurance',
-        items: ['GPA', 'Life insurance', 'Rider insurance', 'Trainees insurance', 'Parental insurance'],
+        items: [
+          'GPA',
+          'Life insurance',
+          'Rider insurance',
+          'Trainees insurance',
+          'Parental insurance',
+        ],
       },
       {
         name: 'Preventive Care',
@@ -123,6 +136,22 @@ export const benefitBuckets = [
       {
         name: 'Reimbursement for transfer and new joiners',
         items: ['Reimbursement Process'],
+      },
+    ],
+  },
+  {
+    id: 'vehicle-mobility',
+    title: 'Vehicle & Mobility',
+    icon: 'Car',
+    gradient: 'from-[#0F6E5C] to-[#08453A]',
+    categories: [
+      {
+        name: 'Vehicle & Asset Benefits',
+        items: [
+          'Company car lease',
+          'Fuel & maintenance (Pluxee)',
+          'Bajaj vehicle purchase benefit',
+        ],
       },
     ],
   },
@@ -227,8 +256,8 @@ export const benefitBuckets = [
     ],
   },
   {
-    id: 'data-policies',
-    title: 'Data Policies',
+    id: 'management-information-systems',
+    title: 'Management Information Systems (MIS)',
     icon: 'Monitor',
     gradient: 'from-[#1B5DB8] to-[#0E3368]',
     categories: [

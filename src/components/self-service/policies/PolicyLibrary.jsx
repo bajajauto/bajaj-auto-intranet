@@ -12,9 +12,11 @@ function topicsOf(category) {
     {
       id: category.id,
       name: category.name,
+      subtitle: category.subtitle,
       icon: category.icon,
       summary: category.summary,
       covered: category.covered,
+      contacts: category.contacts,
       documents: category.documents,
       readables: category.readables,
     },

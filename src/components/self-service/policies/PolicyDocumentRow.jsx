@@ -1,9 +1,18 @@
-import { Download, ExternalLink, FileText } from 'lucide-react'
+import { Download, ExternalLink, FileSpreadsheet, FileText, Image } from 'lucide-react'
 
 const TYPE_STYLES = {
-  pdf: { label: 'PDF', chip: 'bg-red-50 text-red-700 ring-red-100' },
-  docx: { label: 'DOC', chip: 'bg-blue-50 text-blue-700 ring-blue-100' },
+  pdf: { label: 'PDF', chip: 'bg-red-50 text-red-700 ring-red-100', icon: FileText },
+  docx: { label: 'DOC', chip: 'bg-blue-50 text-blue-700 ring-blue-100', icon: FileText },
+  xlsx: {
+    label: 'XLS',
+    chip: 'bg-emerald-50 text-emerald-700 ring-emerald-100',
+    icon: FileSpreadsheet,
+  },
+  png: { label: 'IMG', chip: 'bg-amber-50 text-amber-700 ring-amber-100', icon: Image },
 }
+
+// A browser renders these inline, so they are the only types offered an "Open".
+const VIEWABLE = ['pdf', 'png']
 
 function formatSize(bytes) {
   if (!bytes) return null
@@ -16,12 +25,13 @@ function formatSize(bytes) {
  * all — so the href is encoded here rather than stored pre-escaped, and the
  * download attribute hands the browser a filename a person can read.
  *
- * Only a PDF gets an "Open" action: a browser renders one inline, whereas a
- * .docx would download under either label, and offering "Open" for something
+ * Only a type the browser renders inline gets an "Open" action: a .docx or an
+ * .xlsx would download under either label, and offering "Open" for something
  * that cannot open is worse than not offering it.
  */
 export default function PolicyDocumentRow({ document: doc }) {
   const type = TYPE_STYLES[doc.type] ?? TYPE_STYLES.pdf
+  const TypeIcon = type.icon
   const href = encodeURI(doc.href)
   const size = formatSize(doc.size)
   const fileName = doc.href.split('/').pop()
@@ -31,7 +41,7 @@ export default function PolicyDocumentRow({ document: doc }) {
       <span
         className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ring-1 ${type.chip}`}
       >
-        <FileText size={16} strokeWidth={1.75} />
+        <TypeIcon size={16} strokeWidth={1.75} />
       </span>
 
       <span className="min-w-0 flex-1">
@@ -45,7 +55,7 @@ export default function PolicyDocumentRow({ document: doc }) {
       </span>
 
       <span className="flex flex-shrink-0 items-center gap-1">
-        {doc.type === 'pdf' && (
+        {VIEWABLE.includes(doc.type) && (
           <a
             href={href}
             target="_blank"
