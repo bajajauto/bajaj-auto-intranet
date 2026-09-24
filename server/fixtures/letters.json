@@ -1,0 +1,21 @@
+{
+  "employee": {
+    "name": "DEBOSMITA PAUL",
+    "empId": "118687",
+    "entity": "BAL",
+    "designation": "MGR (HR)",
+    "businessUnit": "HR Digitization",
+    "location": "Akurdi",
+    "dateOfJoining": "2022-05-16",
+    "email": "dpaul1@bajajauto.co.in",
+    "mobile": "+916265403750",
+    "localAddress": "WW - 3/11 BAJAJ VIHAR COLONY, INSIDE BAJAJ CAMPUS, AKURDI - 411035, Maharashtra",
+    "permanentAddress": "SUDIP KUMAR PAUL; SHRISHTI NAGAR; TARANG APARTMENT - 5; FLAT, NEW ASANSOL; SEN RALEIGH ROAD, ASANSOL, PASCHIM BARDHAMAN - 713305, West Bengal"
+  },
+  "signatories": [
+    "MUKUND MADHAV",
+    "CALVIN LYNGDOH",
+    "PRADIP B PALWE",
+    "MOHAN VAMSHI K"
+  ]
+}

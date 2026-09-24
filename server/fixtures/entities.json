@@ -1,0 +1,47 @@
+{
+  "BAL": {
+    "id": "BAL",
+    "name": "Bajaj Auto Ltd.",
+    "address": [
+      "Akurdi, Pune 411035, India"
+    ],
+    "tel": "+91 20 27472851",
+    "fax": "+91 20 27473398",
+    "website": "www.bajajauto.com",
+    "registeredOffice": "51A, Corporate Building, Mumbai Pune Road, Akurdi, Pune, Maharashtra, 411035",
+    "gstin": "27AADCB2923M1ZL",
+    "pan": "AADCB2923M",
+    "contactEmail": "customerservice@bajajauto.co.in"
+  },
+  "BACL": {
+    "id": "BACL",
+    "name": "Bajaj Auto Credit Ltd.",
+    "address": [
+      "Akurdi, Pune 411035, India"
+    ],
+    "tel": "+91 20 27472851",
+    "fax": "+91 20 27473398",
+    "website": "www.bajajautocredit.com"
+  },
+  "BATL": {
+    "id": "BATL",
+    "name": "Bajaj Auto Technology Limited",
+    "formerName": "Formerly known as Chetak Technology Ltd.",
+    "address": [
+      "Akurdi, Pune 411035, India."
+    ],
+    "tel": "+91 20 27472851",
+    "fax": "+91 20 27473398",
+    "website": "www.batltd.com"
+  },
+  "BAF": {
+    "id": "BAF",
+    "name": "Bajaj Auto Foundation",
+    "address": [
+      "Akurdi, Pune 411035, India"
+    ],
+    "tel": "+91 20 27472851",
+    "fax": "+91 20 27473398",
+    "website": null
+  }
+}
