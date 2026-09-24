@@ -18,3 +18,11 @@ coverage
 /*.zip
 /*.pdf
 /Gemini_Generated_Image_*.png
+
+# Local smoke-test & repro screenshots
+.smoke*.png
+.lt-*.png
+.letters-repro.png
+
+# Throwaway repro scripts
+*.tmp.mjs
