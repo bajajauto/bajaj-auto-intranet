@@ -1,5 +1,6 @@
 import { Heart, MapPin, Sparkles, Users } from 'lucide-react'
 import { useCsrImpact } from '@/hooks/useCsrPrograms'
+import Skeleton from '@/components/shared/Skeleton'
 
 const COUNTERS = [
   { key: 'livesTouched', label: 'Lives touched', icon: Heart },
@@ -9,7 +10,8 @@ const COUNTERS = [
 ]
 
 export default function ImpactCounter() {
-  const impact = useCsrImpact()
+  const impactQuery = useCsrImpact()
+  const impact = impactQuery.data
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
@@ -22,9 +24,20 @@ export default function ImpactCounter() {
             <Icon size={14} />
             <span className="text-[10px] font-semibold uppercase tracking-wide">{label}</span>
           </div>
-          <p className="mt-1 text-xl font-bold leading-none text-white sm:text-2xl">
-            {impact[key]}
-          </p>
+          {/*
+            Three states, not two. A skeleton that never resolves is worse than
+            a dash: it promises a number that is never coming. The tiles sit on
+            a dark gradient, so the placeholder is a light wash, not grey.
+          */}
+          {impact ? (
+            <p className="mt-1 text-xl font-bold leading-none text-white sm:text-2xl">
+              {impact[key]}
+            </p>
+          ) : impactQuery.isPending ? (
+            <Skeleton className="mt-1.5 h-6 w-16 bg-white/25" />
+          ) : (
+            <p className="mt-1 text-xl font-bold leading-none text-white/50 sm:text-2xl">—</p>
+          )}
         </div>
       ))}
     </div>

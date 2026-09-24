@@ -1,6 +1,8 @@
 import { useMemo, useRef } from 'react'
 import { ArrowRight, ChevronLeft, ChevronRight, Headphones } from 'lucide-react'
 import { useBajajBytesVolumes } from '@/hooks/useBajajBytesVolumes'
+import Skeleton from '@/components/shared/Skeleton'
+import ErrorState from '@/components/shared/ErrorState'
 import { usePodcastEpisodes } from '@/hooks/usePodcastEpisodes'
 
 function CoverArt({ volume }) {
@@ -17,14 +19,15 @@ function CoverArt({ volume }) {
 }
 
 export default function NewslettersCarousel({ onListenToVolume }) {
-  const volumes = useBajajBytesVolumes()
-  const episodes = usePodcastEpisodes()
+  const volumesQuery = useBajajBytesVolumes()
+  const volumes = volumesQuery.data
+  const episodes = usePodcastEpisodes().data
   const carouselRef = useRef(null)
   const hasCarouselControls = volumes.length > 1
 
   const volumesWithPodcast = useMemo(
     () => new Set(episodes.map((ep) => ep.sourceVolumeId)),
-    [episodes],
+    [episodes]
   )
 
   function scrollByPage(direction) {
@@ -40,6 +43,24 @@ export default function NewslettersCarousel({ onListenToVolume }) {
     event.preventDefault()
     event.stopPropagation()
     onListenToVolume(volumeId)
+  }
+
+  if (volumesQuery.isPending) {
+    return (
+      <div className="flex gap-6 overflow-hidden px-5 py-6 sm:px-14">
+        {Array.from({ length: 3 }, (_, i) => (
+          <Skeleton key={i} className="h-60 w-64 flex-shrink-0" rounded="rounded-card" />
+        ))}
+      </div>
+    )
+  }
+
+  if (volumesQuery.isError) {
+    return (
+      <div className="px-5 py-6 sm:px-14">
+        <ErrorState label="Bajaj Bytes volumes" onRetry={volumesQuery.refetch} />
+      </div>
+    )
   }
 
   return (

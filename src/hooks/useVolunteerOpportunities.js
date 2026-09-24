@@ -1,5 +1,9 @@
 import { csrService } from '@/services/csrService'
+import { queryKeys } from '@/lib/queryClient'
+import { useServiceQuery } from './useServiceQuery'
 
 export function useVolunteerOpportunities() {
-  return csrService.getOpportunities()
+  return useServiceQuery(queryKeys.csrOpportunities, () => csrService.getOpportunities(), {
+    fallback: [],
+  })
 }

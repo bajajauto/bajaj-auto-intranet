@@ -8,8 +8,10 @@ import {
   Leaf,
   Snowflake,
 } from 'lucide-react'
-import { calendarService } from '@/services/calendarService'
-import { notificationService } from '@/services/notificationService'
+import { useCalendarEvents } from '@/hooks/useCalendarEvents'
+import { useNotifications } from '@/hooks/useNotifications'
+import Skeleton from '@/components/shared/Skeleton'
+import QueryBoundary from '@/components/shared/QueryBoundary'
 import NotificationCard from '@/components/notifications/NotificationCard'
 
 const EVENT_BACKGROUNDS = [
@@ -156,16 +158,16 @@ function HolidayCalendar({ holidays }) {
         {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day) => {
           const isWeekendHeader = day === 'Sa' || day === 'Su'
           return (
-          <div
-            key={day}
-            className={`rounded-full py-1 text-[10px] font-semibold ${
-              isWeekendHeader
-                ? 'bg-[var(--cal-accent-bg)] text-[var(--cal-accent)]'
-                : 'bg-white/70 text-brand-primary/70'
-            }`}
-          >
-            {day}
-          </div>
+            <div
+              key={day}
+              className={`rounded-full py-1 text-[10px] font-semibold ${
+                isWeekendHeader
+                  ? 'bg-[var(--cal-accent-bg)] text-[var(--cal-accent)]'
+                  : 'bg-white/70 text-brand-primary/70'
+              }`}
+            >
+              {day}
+            </div>
           )
         })}
         {cells.map((day, index) => {
@@ -258,17 +260,35 @@ function HolidayList({ holidays }) {
   )
 }
 
+/* Three event-card shaped blocks, matching the padding of the real list. */
+function CardsSkeleton({ count = 3 }) {
+  return (
+    <div className="space-y-3 px-4 py-4">
+      {Array.from({ length: count }, (_, i) => (
+        <div key={i} className="flex items-center gap-3 rounded-card bg-bg-alt p-3">
+          <Skeleton className="h-10 w-10 flex-shrink-0" rounded="rounded-btn" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <Skeleton className="h-3.5 w-2/3" />
+            <Skeleton className="h-2.5 w-1/3" />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function DashboardUpdatesPanel() {
   const [activeTab, setActiveTab] = useState('events')
   const [calendarTab, setCalendarTab] = useState('calendar')
-  const calendarItems = calendarService.getEvents()
+  const calendarQuery = useCalendarEvents()
+  const notificationsQuery = useNotifications()
+  const calendarItems = calendarQuery.data
   const events = calendarItems.filter((item) => item.type === 'event')
   const meetings = calendarItems.filter((item) => item.type === 'meeting')
   const hasExtraMeetings = meetings.length > 2
   const visibleMeetings = hasExtraMeetings ? meetings.slice(0, 2) : meetings
   const hiddenMeetingsCount = meetings.length - visibleMeetings.length
   const holidays = calendarItems.filter((item) => item.type === 'holiday')
-  const notifications = notificationService.getAll()
   const title =
     activeTab === 'events'
       ? 'Upcoming Events'
@@ -321,33 +341,65 @@ export default function DashboardUpdatesPanel() {
       </div>
 
       {activeTab === 'events' ? (
-        <div className="space-y-3 px-4 py-4">
-          {events.map((event, index) => (
-            <EventCard key={`${event.date}-${event.label}`} event={event} index={index} />
-          ))}
-        </div>
-      ) : activeTab === 'meetings' ? (
-        <div className="space-y-3 px-4 py-4">
-          {visibleMeetings.map((meeting, index) => (
-            <EventCard key={`${meeting.date}-${meeting.label}`} event={meeting} index={index} />
-          ))}
-          {hasExtraMeetings && (
-            <a
-              href="https://outlook.office.com/calendar/"
-              target="_blank"
-              rel="noreferrer"
-              className="flex w-full items-center justify-center gap-1.5 rounded-btn border border-brand-primary/10 bg-brand-light/60 px-3 py-2 text-xs font-semibold text-brand-primary transition-colors hover:bg-brand-light focus-ring"
-            >
-              <span>View {hiddenMeetingsCount} more on Outlook</span>
-              <ExternalLink size={13} />
-            </a>
+        <QueryBoundary
+          query={calendarQuery}
+          skeleton={<CardsSkeleton />}
+          label="upcoming events"
+          emptyMessage="No events scheduled."
+          isEmpty={() => events.length === 0}
+          compact
+        >
+          {() => (
+            <div className="space-y-3 px-4 py-4">
+              {events.map((event, index) => (
+                <EventCard key={`${event.date}-${event.label}`} event={event} index={index} />
+              ))}
+            </div>
           )}
-        </div>
+        </QueryBoundary>
+      ) : activeTab === 'meetings' ? (
+        <QueryBoundary
+          query={calendarQuery}
+          skeleton={<CardsSkeleton count={2} />}
+          label="your meetings"
+          emptyMessage="No meetings today."
+          isEmpty={() => visibleMeetings.length === 0}
+          compact
+        >
+          {() => (
+            <div className="space-y-3 px-4 py-4">
+              {visibleMeetings.map((meeting, index) => (
+                <EventCard key={`${meeting.date}-${meeting.label}`} event={meeting} index={index} />
+              ))}
+              {hasExtraMeetings && (
+                <a
+                  href="https://outlook.office.com/calendar/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full items-center justify-center gap-1.5 rounded-btn border border-brand-primary/10 bg-brand-light/60 px-3 py-2 text-xs font-semibold text-brand-primary transition-colors hover:bg-brand-light focus-ring"
+                >
+                  <span>View {hiddenMeetingsCount} more on Outlook</span>
+                  <ExternalLink size={13} />
+                </a>
+              )}
+            </div>
+          )}
+        </QueryBoundary>
       ) : (
         <div className="max-h-[390px] overflow-y-auto divide-y divide-gray-50 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/25 hover:[&::-webkit-scrollbar-thumb]:bg-brand-primary/45">
-          {notifications.map((notification) => (
-            <NotificationCard key={notification.id} {...notification} />
-          ))}
+          <QueryBoundary
+            query={notificationsQuery}
+            skeleton={<CardsSkeleton />}
+            label="notifications"
+            emptyMessage="You're all caught up."
+            compact
+          >
+            {(items) =>
+              items.map((notification) => (
+                <NotificationCard key={notification.id} {...notification} />
+              ))
+            }
+          </QueryBoundary>
         </div>
       )}
 

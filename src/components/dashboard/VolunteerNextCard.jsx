@@ -14,7 +14,7 @@ function jumpToCsr() {
 }
 
 export default function VolunteerNextCard() {
-  const opportunities = useVolunteerOpportunities()
+  const opportunities = useVolunteerOpportunities().data
   const next = opportunities[0]
 
   if (!next) return null

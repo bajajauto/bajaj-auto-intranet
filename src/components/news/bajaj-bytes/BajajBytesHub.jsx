@@ -15,10 +15,16 @@ export default function BajajBytesHub({ title }) {
   const [activeTab, setActiveTab] = useState('newsletters')
   const [initialEpisodeId, setInitialEpisodeId] = useState(null)
 
-  function handleListenToVolume(volumeId) {
-    const episode = podcastService.getByVolume(volumeId)
-    setInitialEpisodeId(episode?.id ?? null)
+  /*
+   * Switches to the podcast tab on the episode matching a newsletter volume.
+   * The tab flips immediately rather than waiting on the lookup — the episode
+   * id only decides which player opens, and blocking the tab change on a
+   * request would make the button feel broken.
+   */
+  async function handleListenToVolume(volumeId) {
     setActiveTab('podcast')
+    const episode = await podcastService.getByVolume(volumeId)
+    setInitialEpisodeId(episode?.id ?? null)
   }
 
   function handleTabChange(tabId) {

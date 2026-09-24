@@ -1456,3 +1456,69 @@
     animation-duration: 0.3s;
   }
 }
+
+/*
+ * ── Generated documents ─────────────────────────────────────────────────────
+ *
+ * A generated letter is a document, not a surface. It has to look the same on
+ * screen, in dark mode and out of a printer, because what the employee sees is
+ * what a bank or an RTO ends up holding — so the dark remap above deliberately
+ * stops at its edge. `.dark .document-page` outweighs `.dark .bg-white` on
+ * specificity, which is what keeps the page white once the theme flips.
+ */
+.document-page,
+.dark .document-page {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/*
+ * Printing a letter should yield the letter, not the intranet around it.
+ * Everything outside the document is hidden and the modal chrome is unwound so
+ * the pages flow onto paper at their natural size — each one its own sheet.
+ *
+ * `print-color-adjust` is what keeps the letterhead rule, the seal watermark
+ * and the logo on the page; browsers drop backgrounds and light artwork by
+ * default, and a letter that prints without its seal is not the letter.
+ */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .document-page,
+  .document-page * {
+    visibility: visible;
+  }
+
+  /* Lift the pages out of the modal's fixed/scrolling context so the printer
+     paginates them instead of clipping to the dialog's viewport box. */
+  #modal-root [role='dialog'] {
+    position: static !important;
+    display: block !important;
+    overflow: visible !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+  }
+
+  .document-page {
+    position: relative !important;
+    box-shadow: none !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    break-after: page;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .document-page:last-of-type {
+    break-after: auto;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}

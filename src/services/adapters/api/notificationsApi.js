@@ -1,5 +1,5 @@
+import { api } from './_client'
+
 export const notificationsApi = {
-  async getAll() {
-    throw new Error('notificationsApi not implemented – Phase 2')
-  },
+  getAll: () => api.get('/notifications'),
 }

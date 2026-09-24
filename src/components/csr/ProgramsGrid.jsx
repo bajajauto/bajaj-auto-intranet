@@ -1,8 +1,20 @@
 import { useCsrPrograms } from '@/hooks/useCsrPrograms'
+import Skeleton from '@/components/shared/Skeleton'
+import QueryBoundary from '@/components/shared/QueryBoundary'
 import ProgramCard from './ProgramCard'
 
+function ProgramsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 6 }, (_, i) => (
+        <Skeleton key={i} className="h-36 w-full" rounded="rounded-card" />
+      ))}
+    </div>
+  )
+}
+
 export default function ProgramsGrid() {
-  const programs = useCsrPrograms()
+  const programsQuery = useCsrPrograms()
 
   return (
     <div className="rounded-card border border-emerald-100 bg-white p-4 sm:p-5">
@@ -15,11 +27,21 @@ export default function ProgramsGrid() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {programs.map((program) => (
-          <ProgramCard key={program.id} program={program} />
-        ))}
-      </div>
+      <QueryBoundary
+        query={programsQuery}
+        skeleton={<ProgramsSkeleton />}
+        label="our focus areas"
+        emptyMessage="No programmes published yet."
+        compact
+      >
+        {(items) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((program) => (
+              <ProgramCard key={program.id} program={program} />
+            ))}
+          </div>
+        )}
+      </QueryBoundary>
     </div>
   )
 }

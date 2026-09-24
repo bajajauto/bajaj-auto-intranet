@@ -1,11 +1,21 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { calendarService } from '@/services/calendarService'
+import { useCalendarEvents } from '@/hooks/useCalendarEvents'
 
 const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ]
 
 function toKey(year, month, day) {
@@ -18,24 +28,33 @@ export default function CalendarWidget() {
   const [month, setMonth] = useState(today.getMonth())
   const [selectedDate, setSelectedDate] = useState(null)
 
-  const events = calendarService.getEvents()
+  /*
+   * The grid renders regardless — a month with no marked days is still a usable
+   * calendar, so a failed fetch degrades to a plain month rather than an error
+   * panel that hides the dates.
+   */
+  const events = useCalendarEvents().data
   const eventMap = Object.fromEntries(events.map((e) => [e.date, e]))
 
   function prevMonth() {
-    if (month === 0) { setMonth(11); setYear((y) => y - 1) }
-    else setMonth((m) => m - 1)
+    if (month === 0) {
+      setMonth(11)
+      setYear((y) => y - 1)
+    } else setMonth((m) => m - 1)
   }
 
   function nextMonth() {
-    if (month === 11) { setMonth(0); setYear((y) => y + 1) }
-    else setMonth((m) => m + 1)
+    if (month === 11) {
+      setMonth(0)
+      setYear((y) => y + 1)
+    } else setMonth((m) => m + 1)
   }
 
   const firstDay = (new Date(year, month, 1).getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
-  const cells = Array(firstDay).fill(null).concat(
-    Array.from({ length: daysInMonth }, (_, i) => i + 1)
-  )
+  const cells = Array(firstDay)
+    .fill(null)
+    .concat(Array.from({ length: daysInMonth }, (_, i) => i + 1))
 
   const selectedKey = selectedDate ? toKey(year, month, selectedDate) : null
   const selectedEvent = selectedKey ? eventMap[selectedKey] : null
@@ -43,13 +62,21 @@ export default function CalendarWidget() {
   return (
     <div className="site-surface rounded-card border p-4">
       <div className="flex items-center justify-between mb-3">
-        <button onClick={prevMonth} className="p-1 rounded hover:bg-bg-alt focus-ring" aria-label="Previous month">
+        <button
+          onClick={prevMonth}
+          className="p-1 rounded hover:bg-bg-alt focus-ring"
+          aria-label="Previous month"
+        >
           <ChevronLeft size={16} className="text-text-secondary" />
         </button>
         <span className="text-sm font-semibold text-text-primary">
           {MONTHS[month]} {year}
         </span>
-        <button onClick={nextMonth} className="p-1 rounded hover:bg-bg-alt focus-ring" aria-label="Next month">
+        <button
+          onClick={nextMonth}
+          className="p-1 rounded hover:bg-bg-alt focus-ring"
+          aria-label="Next month"
+        >
           <ChevronRight size={16} className="text-text-secondary" />
         </button>
       </div>
@@ -72,7 +99,8 @@ export default function CalendarWidget() {
           if (!day) return <div key={`empty-${i}`} />
           const key = toKey(year, month, day)
           const event = eventMap[key]
-          const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate()
+          const isToday =
+            year === today.getFullYear() && month === today.getMonth() && day === today.getDate()
           const isSelected = selectedDate === day
           const dayOfWeek = new Date(year, month, day).getDay()
           const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
@@ -91,7 +119,9 @@ export default function CalendarWidget() {
             >
               {day}
               {event && (
-                <span className={`absolute bottom-0.5 w-1 h-1 rounded-full ${event.type === 'holiday' ? 'bg-red-500' : 'bg-brand-primary'} ${isToday ? 'bg-white' : ''}`} />
+                <span
+                  className={`absolute bottom-0.5 w-1 h-1 rounded-full ${event.type === 'holiday' ? 'bg-red-500' : 'bg-brand-primary'} ${isToday ? 'bg-white' : ''}`}
+                />
               )}
             </button>
           )

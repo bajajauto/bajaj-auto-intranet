@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, PlayCircle } from 'lucide-react'
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos'
+import Skeleton from '@/components/shared/Skeleton'
+import ErrorState from '@/components/shared/ErrorState'
 import VideoCard from './VideoCard'
 import VideoLightboxModal from './VideoLightboxModal'
 
@@ -12,7 +14,8 @@ const CATEGORIES = [
 ]
 
 export default function YouTubeSection() {
-  const videos = useYoutubeVideos()
+  const videosQuery = useYoutubeVideos()
+  const videos = videosQuery.data
   const [activeCategory, setActiveCategory] = useState('all')
   const [playingVideo, setPlayingVideo] = useState(null)
   const carouselRef = useRef(null)
@@ -36,6 +39,24 @@ export default function YouTubeSection() {
       return
     }
     setPlayingVideo(video)
+  }
+
+  if (videosQuery.isPending) {
+    return (
+      <div className="flex gap-4 overflow-hidden px-5 py-6 sm:px-14">
+        {Array.from({ length: 3 }, (_, i) => (
+          <Skeleton key={i} className="h-44 w-72 flex-shrink-0" rounded="rounded-card" />
+        ))}
+      </div>
+    )
+  }
+
+  if (videosQuery.isError) {
+    return (
+      <div className="px-5 py-6 sm:px-14">
+        <ErrorState label="videos" onRetry={videosQuery.refetch} />
+      </div>
+    )
   }
 
   if (videos.length === 0) {

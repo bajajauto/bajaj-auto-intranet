@@ -3,8 +3,8 @@ import { Bell, CalendarDays } from 'lucide-react'
 import { heroBanner } from '@/config/banner.config'
 import { useUser } from '@/context/UserContext'
 import { useVehicles } from '@/hooks/useVehicles'
-import { calendarService } from '@/services/calendarService'
-import { notificationService } from '@/services/notificationService'
+import { useMeetings } from '@/hooks/useCalendarEvents'
+import { useNotifications } from '@/hooks/useNotifications'
 import StockTickerTape from '@/components/dashboard/StockTickerTape'
 import VehicleHotspots from '@/components/vehicles/VehicleHotspots'
 import VehicleSpinModal from '@/components/vehicles/VehicleSpinModal'
@@ -57,15 +57,23 @@ function DistinctlyAheadScene({ vehicles, onSelectVehicle }) {
 
 export default function HeroBanner() {
   const user = useUser()
-  const vehicles = useVehicles()
+  const vehicles = useVehicles().data
+  const notificationsQuery = useNotifications()
+  const meetingsQuery = useMeetings()
   const [activeVehicle, setActiveVehicle] = useState(null)
   const moment = getHeroMoment()
-  const unreadCount = notificationService.getAll().length
+
+  /*
+   * Both counters read as an em dash until their query settles. Showing `0` or
+   * `00` while a request is still in flight is a lie the user acts on — they
+   * read "no meetings today" and close the tab.
+   */
+  const unreadCount = notificationsQuery.isPending ? null : notificationsQuery.data.length
   const todayKey = formatIsoDate(new Date())
-  const meetingsToday = calendarService
-    .getEvents()
-    .filter((event) => event.type === 'meeting' && event.date === todayKey)
-  const meetingsTodayCount = String(meetingsToday.length).padStart(2, '0')
+  const meetingsToday = meetingsQuery.data.filter((event) => event.date === todayKey)
+  const meetingsTodayCount = meetingsQuery.isPending
+    ? '—'
+    : String(meetingsToday.length).padStart(2, '0')
   const today = new Date().toLocaleDateString('en-IN', {
     weekday: 'long',
     day: 'numeric',
@@ -82,8 +90,12 @@ export default function HeroBanner() {
       <div className="pointer-events-none relative z-10 flex h-[218px] flex-col sm:h-[258px] md:h-[320px]">
         <div className="flex flex-1 flex-col items-start justify-start gap-1 p-2.5 pt-3 text-white sm:gap-2 sm:p-4 md:gap-2.5 md:px-5 md:py-4">
           <div className="pointer-events-auto max-w-[11.5rem] sm:max-w-sm">
-            <p className="text-[9px] font-medium leading-tight tracking-wide text-white/65 sm:mb-0.5 sm:text-xs">{moment.greeting}</p>
-            <h1 className="text-sm font-bold leading-tight tracking-tight text-white sm:mb-0.5 sm:text-lg">{user.name}</h1>
+            <p className="text-[9px] font-medium leading-tight tracking-wide text-white/65 sm:mb-0.5 sm:text-xs">
+              {moment.greeting}
+            </p>
+            <h1 className="text-sm font-bold leading-tight tracking-tight text-white sm:mb-0.5 sm:text-lg">
+              {user.name}
+            </h1>
             <p className="text-[9px] font-medium leading-tight text-white/60 sm:text-xs">
               {user.designation} &middot; {user.department}
             </p>
@@ -106,7 +118,9 @@ export default function HeroBanner() {
                     <span className="text-sm font-bold leading-none text-white sm:text-xl md:text-[1.35rem]">
                       {meetingsTodayCount}
                     </span>
-                    <span className="pb-px text-[7px] font-medium leading-none text-white/60 sm:text-[10px] md:pb-1 md:text-xs">scheduled</span>
+                    <span className="pb-px text-[7px] font-medium leading-none text-white/60 sm:text-[10px] md:pb-1 md:text-xs">
+                      scheduled
+                    </span>
                   </div>
                 </div>
                 <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-white sm:h-8 sm:w-8 md:h-9 md:w-9">
@@ -121,7 +135,7 @@ export default function HeroBanner() {
             </div>
             <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-medium backdrop-blur-sm sm:px-3 sm:text-xs">
               <Bell size={12} className="flex-shrink-0 text-amber-300" />
-              <span className="text-amber-200">{unreadCount} new</span>
+              <span className="text-amber-200">{unreadCount === null ? '—' : unreadCount} new</span>
               <span className="truncate text-white/50">notifications</span>
             </div>
           </div>

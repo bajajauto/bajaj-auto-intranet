@@ -52,7 +52,7 @@ export default function PoliciesBenefitsModal({ onClose }) {
   // A bucket whose documents have been collected shows the real library —
   // category → topic → files, mirroring the folder they arrived in. The rest
   // still show the benefit list until their documents land.
-  const library = usePolicyLibrary(activeId)
+  const library = usePolicyLibrary(activeId).data
 
   const totalBenefits = activeBucket.categories.reduce((sum, c) => sum + c.items.length, 0)
   const totalDocuments = library

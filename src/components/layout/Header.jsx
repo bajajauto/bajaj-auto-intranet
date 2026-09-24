@@ -2,8 +2,9 @@ import { useCallback, useRef, useState, useEffect } from 'react'
 import { Search, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { useUser } from '@/context/UserContext'
+import { useAuth } from '@/context/AuthContext'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { noticeService } from '@/services/noticeService'
+import { useNotices } from '@/hooks/useNotices'
 import NoticesPanel from '@/components/notices/NoticesPanel'
 import ThemeToggle from '@/components/shared/ThemeToggle'
 import UnionMark from '@/components/layout/UnionMark'
@@ -20,11 +21,27 @@ function AnnouncementIcon({ className = '' }) {
       className={className}
     >
       <path d="M13 35.5 7.7 40.8c-1.2 1.2-.4 3.2 1.3 3.2h13.5L13 35.5Z" fill="#1A56A8" />
-      <path d="M21.7 38.8 31 53.6c.7 1.2 2.4 1.4 3.4.4l3-3c.7-.7.8-1.8.3-2.6L30.8 37l-9.1 1.8Z" fill="#E5E7EB" />
-      <path d="M21.7 38.8 31 53.6c.7 1.2 2.4 1.4 3.4.4l3-3c.7-.7.8-1.8.3-2.6L30.8 37" stroke="#C7CCD3" strokeWidth="2.2" strokeLinejoin="round" />
-      <path d="M10 22.8c-2.9 1.2-4.8 4-4.8 7.2s1.9 6 4.8 7.2l10.5 4.5V18.3L10 22.8Z" fill="#1A56A8" />
+      <path
+        d="M21.7 38.8 31 53.6c.7 1.2 2.4 1.4 3.4.4l3-3c.7-.7.8-1.8.3-2.6L30.8 37l-9.1 1.8Z"
+        fill="#E5E7EB"
+      />
+      <path
+        d="M21.7 38.8 31 53.6c.7 1.2 2.4 1.4 3.4.4l3-3c.7-.7.8-1.8.3-2.6L30.8 37"
+        stroke="#C7CCD3"
+        strokeWidth="2.2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10 22.8c-2.9 1.2-4.8 4-4.8 7.2s1.9 6 4.8 7.2l10.5 4.5V18.3L10 22.8Z"
+        fill="#1A56A8"
+      />
       <path d="M20.5 18.3 45 8v44L20.5 41.7V18.3Z" fill="#F4F6F8" />
-      <path d="M20.5 18.3 45 8v44L20.5 41.7V18.3Z" stroke="#1A56A8" strokeWidth="3" strokeLinejoin="round" />
+      <path
+        d="M20.5 18.3 45 8v44L20.5 41.7V18.3Z"
+        stroke="#1A56A8"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
       <path d="M25 21.8 40.5 15v34L25 42.2V21.8Z" fill="#EAF3FF" />
       <ellipse cx="45" cy="30" rx="8" ry="22" fill="#F7FBFF" stroke="#1A56A8" strokeWidth="3" />
       <ellipse cx="45" cy="30" rx="3.7" ry="9" fill="#1A56A8" />
@@ -41,6 +58,7 @@ const MARK_REPLAY_MS = 5000
 export default function Header({ revealMark = false }) {
   const { isMobileOpen, setMobileOpen } = useSidebar()
   const user = useUser()
+  const { enabled: authEnabled, signOut } = useAuth()
   const isMobile = useMediaQuery('(max-width: 767px)')
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
@@ -49,7 +67,7 @@ export default function Header({ revealMark = false }) {
   const [isProfileOpen, setProfileOpen] = useState(false)
   const [noticesSeen, setNoticesSeen] = useState(false)
 
-  const notices = noticeService.getAll()
+  const notices = useNotices().data
   const noticeCount = notices.length
 
   const noticesRef = useRef(null)
@@ -121,7 +139,6 @@ export default function Header({ revealMark = false }) {
   return (
     <header className="app-header-chrome fixed left-0 right-0 top-8 md:top-9 z-40 h-16 md:h-20 grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_minmax(18rem,36rem)_1fr] items-center gap-2 md:gap-4 pl-3 pr-1.5 md:px-4">
       <div className="flex min-w-0 items-center gap-2 md:gap-3">
-
         {isMobile && (
           <button
             onClick={handleMenuClick}
@@ -220,7 +237,9 @@ export default function Header({ revealMark = false }) {
             </div>
             <div className="hidden md:block text-left">
               <div className="text-sm font-medium text-white leading-tight">{user.name}</div>
-              <div className="text-xs text-white/70 leading-tight">{user.designation}</div>
+              {user.designation && (
+                <div className="text-xs text-white/70 leading-tight">{user.designation}</div>
+              )}
             </div>
             <ChevronDown
               size={14}
@@ -241,16 +260,33 @@ export default function Header({ revealMark = false }) {
                 </div>
               </div>
 
-              <div className="px-4 py-2 border-t border-gray-100 dark:border-white/10">
-                <p className="text-xs text-text-secondary">{user.designation}</p>
-                <p className="text-xs text-text-secondary">{user.department}</p>
-              </div>
+              {/* Both come from optional claims or, later, SuccessFactors. Until
+                  one of those is wired the block would be an empty strip. */}
+              {(user.designation || user.department) && (
+                <div className="px-4 py-2 border-t border-gray-100 dark:border-white/10">
+                  {user.designation && (
+                    <p className="text-xs text-text-secondary">{user.designation}</p>
+                  )}
+                  {user.department && (
+                    <p className="text-xs text-text-secondary">{user.department}</p>
+                  )}
+                </div>
+              )}
 
               <div className="border-t border-gray-100 dark:border-white/10 p-2">
+                {/* Stays disabled with VITE_AUTH_MODE=off: there is no session
+                    to end, and a button that appears to work but does nothing
+                    is worse on a shared terminal than one that plainly cannot. */}
                 <button
-                  disabled
-                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-secondary rounded-btn opacity-50 cursor-not-allowed"
-                  aria-label="Sign out (unavailable in Phase 1)"
+                  type="button"
+                  disabled={!authEnabled}
+                  onClick={authEnabled ? signOut : undefined}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-btn transition-colors ${
+                    authEnabled
+                      ? 'text-text-primary hover:bg-brand-light dark:hover:bg-white/5'
+                      : 'text-text-secondary opacity-50 cursor-not-allowed'
+                  }`}
+                  aria-label={authEnabled ? 'Sign out' : 'Sign out (sign-in is not enabled)'}
                 >
                   <LogOut size={14} />
                   Sign Out

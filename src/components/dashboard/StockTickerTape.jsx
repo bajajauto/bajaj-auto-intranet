@@ -45,8 +45,14 @@ function TickerEntry({ item }) {
 }
 
 export default function StockTickerTape() {
-  const items = useStockTicker()
+  const items = useStockTicker().data
 
+  /*
+   * Deliberately renders nothing while loading or on failure, rather than a
+   * skeleton or an error strip. This is a decorative band across the top of the
+   * hero — an error message about stock prices sitting above the greeting draws
+   * far more attention than the missing prices deserve.
+   */
   if (items.length === 0) return null
 
   return (

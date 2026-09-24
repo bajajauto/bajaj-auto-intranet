@@ -2,6 +2,7 @@ import { forwardRef, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Clock, History } from 'lucide-react'
 import { useVolunteerOpportunities } from '@/hooks/useVolunteerOpportunities'
 import { useUserCsrStats } from '@/hooks/useUserCsrStats'
+import Skeleton from '@/components/shared/Skeleton'
 import VolunteerOpportunityCard from './VolunteerOpportunityCard'
 import VolunteerSignupModal from './VolunteerSignupModal'
 
@@ -11,8 +12,10 @@ function formatDate(iso) {
 }
 
 const VolunteerBlock = forwardRef(function VolunteerBlock(_, ref) {
-  const opportunities = useVolunteerOpportunities()
-  const stats = useUserCsrStats()
+  const opportunitiesQuery = useVolunteerOpportunities()
+  const opportunities = opportunitiesQuery.data
+  const statsQuery = useUserCsrStats()
+  const stats = statsQuery.data
   const carouselRef = useRef(null)
   const [selectedOpportunity, setSelectedOpportunity] = useState(null)
 
@@ -34,28 +37,47 @@ const VolunteerBlock = forwardRef(function VolunteerBlock(_, ref) {
             Volunteer with us — pick a cause this month
           </h3>
           <p className="mt-0.5 text-xs text-text-secondary">
-            Every employee gets up to <strong className="text-emerald-700">3 paid volunteer days</strong>{' '}
-            a year. Sign up below — we&apos;ll handle the logistics.
+            Every employee gets up to{' '}
+            <strong className="text-emerald-700">3 paid volunteer days</strong> a year. Sign up
+            below — we&apos;ll handle the logistics.
           </p>
         </div>
 
         <div className="flex flex-col rounded-card border border-emerald-200/80 bg-white px-3 py-2 sm:flex-row sm:items-center sm:gap-4">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-text-secondary">
-              Your CSR hours · {stats.fiscalYear}
-            </p>
-            <p className="mt-0.5 text-xl font-bold leading-none text-emerald-700">
-              {stats.hoursFiscalYear}h
-            </p>
-          </div>
-          {stats.lastEventTitle && (
-            <div className="mt-2 border-t border-emerald-100 pt-2 text-[11px] text-text-secondary sm:mt-0 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0">
-              <p className="flex items-center gap-1 font-semibold text-text-primary">
-                <History size={11} /> Last event
-              </p>
-              <p className="mt-0.5">{stats.lastEventTitle}</p>
-              <p className="text-text-secondary/80">{formatDate(stats.lastVolunteeredOn)}</p>
+          {!stats ? (
+            /* Skeleton only while it is genuinely still coming. */
+            <div className="w-full space-y-2 py-0.5">
+              {statsQuery.isPending ? (
+                <>
+                  <Skeleton className="h-2.5 w-32" />
+                  <Skeleton className="h-5 w-14" />
+                </>
+              ) : (
+                <p className="text-[11px] text-text-secondary">
+                  Your CSR hours are unavailable right now.
+                </p>
+              )}
             </div>
+          ) : (
+            <>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-text-secondary">
+                  Your CSR hours · {stats.fiscalYear}
+                </p>
+                <p className="mt-0.5 text-xl font-bold leading-none text-emerald-700">
+                  {stats.hoursFiscalYear}h
+                </p>
+              </div>
+              {stats.lastEventTitle && (
+                <div className="mt-2 border-t border-emerald-100 pt-2 text-[11px] text-text-secondary sm:mt-0 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0">
+                  <p className="flex items-center gap-1 font-semibold text-text-primary">
+                    <History size={11} /> Last event
+                  </p>
+                  <p className="mt-0.5">{stats.lastEventTitle}</p>
+                  <p className="text-text-secondary/80">{formatDate(stats.lastVolunteeredOn)}</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

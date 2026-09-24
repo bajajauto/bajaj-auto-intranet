@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { X, FileText, ExternalLink, ChevronRight } from 'lucide-react'
+import { X } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import holidayCalendarImage from '@/assets/holiday calendar.jpg'
-import { documentForms } from '@/config/documents.config'
 import PoliciesBenefitsModal from './PoliciesBenefitsModal'
+import LettersModal from './letters/LettersModal'
 
 const MODAL_TRANSITION_MS = 500
 
@@ -273,46 +273,7 @@ export default function ServiceTile({ id, label, icon, redirectUrl, tone, step =
           {content}
         </button>
 
-        {isDocumentsOpen && (
-          <ServiceDocumentModal
-            title="Documents / Forms"
-            titleId="documents-forms-title"
-            onClose={() => setDocumentsOpen(false)}
-          >
-            <ul className="w-full max-w-xl space-y-2.5 self-start">
-              {documentForms.map((doc) => (
-                <li key={doc.id}>
-                  <a
-                    href={doc.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-center gap-3 rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-primary/30 hover:shadow-card focus-ring"
-                  >
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#334460] to-[#192838] text-white">
-                      <FileText size={18} strokeWidth={1.75} />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-text-primary group-hover:text-brand-primary">
-                        {doc.label}
-                      </span>
-                      {doc.description && (
-                        <span className="mt-0.5 block text-xs text-text-secondary">{doc.description}</span>
-                      )}
-                    </span>
-                    <ExternalLink
-                      size={15}
-                      className="flex-shrink-0 text-text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                    />
-                    <ChevronRight
-                      size={16}
-                      className="flex-shrink-0 text-text-secondary transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ServiceDocumentModal>
-        )}
+        {isDocumentsOpen && <LettersModal onClose={() => setDocumentsOpen(false)} />}
       </>
     )
   }

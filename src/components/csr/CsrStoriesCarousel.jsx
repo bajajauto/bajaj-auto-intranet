@@ -1,10 +1,13 @@
 import { useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useCsrStories } from '@/hooks/useCsrStories'
+import Skeleton from '@/components/shared/Skeleton'
+import ErrorState from '@/components/shared/ErrorState'
 import CsrStoryCard from './CsrStoryCard'
 
 export default function CsrStoriesCarousel() {
-  const stories = useCsrStories()
+  const storiesQuery = useCsrStories()
+  const stories = storiesQuery.data
   const carouselRef = useRef(null)
 
   function scrollByPage(direction) {
@@ -12,6 +15,24 @@ export default function CsrStoriesCarousel() {
     carouselRef.current?.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' })
   }
 
+  if (storiesQuery.isPending) {
+    return (
+      <div>
+        <Skeleton className="mb-3 h-5 w-48" />
+        <div className="flex gap-4 overflow-hidden">
+          {Array.from({ length: 3 }, (_, i) => (
+            <Skeleton key={i} className="h-52 w-72 flex-shrink-0" rounded="rounded-card" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (storiesQuery.isError) {
+    return <ErrorState label="impact stories" onRetry={storiesQuery.refetch} compact />
+  }
+
+  // An empty list is not a failure — the section simply has nothing to show.
   if (stories.length === 0) return null
 
   const hasControls = stories.length > 1
