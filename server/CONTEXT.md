@@ -66,8 +66,16 @@ has its own secret). A verified request carries `request.user` —
 | `AZURE_API_AUDIENCE` | The `bajaj-intranet-api` client id **and** its `api://` URI, comma-separated (v2 tokens carry one, v1 the other) |
 | `AZURE_API_SCOPE` | Delegated scope the `scp` claim must hold. Default `access_as_user` |
 
+| `EMPLOYEE_SOURCE` | `fixture` (default) or `successfactors` (step E, not built) |
+
 `AUTH_MODE=entra` without the tenant or audience refuses to start. App-only
 tokens (no `scp`) are rejected — there is no user behind them.
+
+**Employees come from the token, never the request.** `src/lib/employees.js`
+turns `request.user` into the HR record a letter certifies; `/letters/*` call
+`employeeFor(request, reply)` and nothing else. A signed-in account with no
+record gets 403 — never a fallback employee. The issuance log line carries the
+caller's `oid` beside the `empId`.
 
 ```
 npm test           # signs tokens with a local key; no tenant needed
@@ -75,9 +83,11 @@ npm test           # signs tokens with a local key; no tenant needed
 
 ## Not built yet, and why
 
-- **Employee resolution (auth step D).** Tokens are verified, but routes do not
-  use `request.user` yet: `/letters/*` still composes for the fixture employee.
-  The API must not face the internet until letters are resolved from the token.
+- **SuccessFactors (auth step E).** `EMPLOYEE_SOURCE=successfactors` throws.
+  Until it lands, only the one account whose email matches the fixture employee
+  gets a record; every other signed-in user gets 403 on `/letters/*`.
+- **Per-user CSR stats.** `/csr/me/stats` is authenticated but still serves the
+  fixture's stats to every caller.
 - **Postgres.** Nothing writes yet. Feedback, volunteer signups and the gatepass
   are step 4 on the plan's numbering.
 - **The letter issuance log** is a structured log line, not a table. It becomes a

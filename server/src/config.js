@@ -49,3 +49,10 @@ export const AZURE_API_AUDIENCES = (raw.AZURE_API_AUDIENCE ?? '')
 
 /** The delegated scope the SPA asks for. The `scp` claim must include it. */
 export const AZURE_API_SCOPE = raw.AZURE_API_SCOPE ?? 'access_as_user'
+
+/*
+ * Where the signed-in person's HR record comes from: `fixture` (the generated
+ * employee, served only to the account whose email it carries) or
+ * `successfactors` (step E).
+ */
+export const EMPLOYEE_SOURCE = raw.EMPLOYEE_SOURCE ?? 'fixture'
