@@ -24,3 +24,28 @@ export const CORS_ORIGINS = (
 
 /** Unset means the purge endpoint is disabled rather than open. */
 export const ADMIN_PURGE_TOKEN = raw.ADMIN_PURGE_TOKEN ?? ''
+
+/* --- authentication ------------------------------------------------------ */
+
+/*
+ * `entra` or `off`. Off in development so the server runs on a laptop with no
+ * tenant, the same seam as the front end's VITE_AUTH_MODE. Production defaults
+ * to `entra`, so forgetting the variable fails closed rather than open.
+ */
+export const AUTH_MODE =
+  (raw.AUTH_MODE ?? (IS_PRODUCTION ? 'entra' : 'off')) === 'entra' ? 'entra' : 'off'
+
+export const AZURE_TENANT_ID = raw.AZURE_TENANT_ID ?? ''
+
+/*
+ * Who the token must be issued *to*: the `bajaj-intranet-api` registration.
+ * Entra puts the bare client id in `aud` for v2 tokens and the App ID URI
+ * (`api://...`) for v1, so both forms are accepted — comma-separated.
+ */
+export const AZURE_API_AUDIENCES = (raw.AZURE_API_AUDIENCE ?? '')
+  .split(',')
+  .map((a) => a.trim())
+  .filter(Boolean)
+
+/** The delegated scope the SPA asks for. The `scp` claim must include it. */
+export const AZURE_API_SCOPE = raw.AZURE_API_SCOPE ?? 'access_as_user'
