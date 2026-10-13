@@ -22,7 +22,7 @@ function NewsFeedSkeleton() {
   )
 }
 
-export default function NewsFeed({ title }) {
+export default function NewsFeed() {
   const newsQuery = useNews()
   const articles = newsQuery.data
   const carouselRef = useRef(null)
@@ -38,12 +38,7 @@ export default function NewsFeed({ title }) {
 
   return (
     <>
-      <div className="site-surface-tint tint-blush relative rounded-card border overflow-hidden">
-        {title && (
-          <div className="px-5 pt-5 sm:px-14">
-            <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>
-          </div>
-        )}
+      <div className="relative overflow-hidden rounded-[28px] bg-surface shadow-soft">
         {articles.length > 0 && (
           <>
             <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 z-10 w-16 surface-fade-l" />

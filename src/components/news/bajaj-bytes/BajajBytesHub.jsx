@@ -4,6 +4,7 @@ import { podcastService } from '@/services/podcastService'
 import NewslettersCarousel from './NewslettersCarousel'
 import PodcastSection from './PodcastSection'
 import YouTubeSection from './YouTubeSection'
+import SectionHeading from '@/components/shared/SectionHeading'
 
 const TABS = [
   { id: 'newsletters', label: 'Newsletters', icon: BookOpen },
@@ -11,7 +12,7 @@ const TABS = [
   { id: 'watch', label: 'Watch', icon: PlayCircle },
 ]
 
-export default function BajajBytesHub({ title }) {
+export default function BajajBytesHub({ title, subtitle, headingId }) {
   const [activeTab, setActiveTab] = useState('newsletters')
   const [initialEpisodeId, setInitialEpisodeId] = useState(null)
 
@@ -33,14 +34,12 @@ export default function BajajBytesHub({ title }) {
   }
 
   return (
-    <div className="site-surface-tint tint-cream relative overflow-hidden rounded-card border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal">
-      <div className="flex flex-col gap-3 px-5 pt-5 sm:flex-row sm:items-center sm:justify-between sm:px-14">
-        {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
-
+    <>
+      <SectionHeading id={headingId} title={title} subtitle={subtitle}>
         <div
           role="tablist"
           aria-label="Bajaj Bytes content type"
-          className="scrollbar-none inline-flex w-full overflow-x-auto rounded-full bg-bg-alt p-1 sm:w-auto"
+          className="scrollbar-none inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-chip p-1"
         >
           {TABS.map((tab) => {
             const Icon = tab.icon
@@ -54,25 +53,23 @@ export default function BajajBytesHub({ title }) {
                 aria-controls={`bytes-panel-${tab.id}`}
                 id={`bytes-tab-${tab.id}`}
                 onClick={() => handleTabChange(tab.id)}
-                className={
-                  'flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold transition-all focus-ring sm:flex-none ' +
-                  (isActive
-                    ? 'bg-white text-brand-primary shadow-card'
-                    : 'text-text-secondary hover:text-brand-primary')
-                }
+                className={`flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full px-4 text-sm font-semibold transition-all focus-ring ${
+                  isActive ? 'bg-surface text-ink shadow-sm' : 'text-muted hover:text-ink'
+                }`}
               >
-                <Icon size={14} />
+                <Icon size={15} />
                 {tab.label}
               </button>
             )
           })}
         </div>
-      </div>
+      </SectionHeading>
 
       <div
         role="tabpanel"
         id={`bytes-panel-${activeTab}`}
         aria-labelledby={`bytes-tab-${activeTab}`}
+        className="relative mt-6 overflow-hidden rounded-[28px] bg-surface shadow-soft"
       >
         {activeTab === 'newsletters' && (
           <NewslettersCarousel onListenToVolume={handleListenToVolume} />
@@ -82,6 +79,6 @@ export default function BajajBytesHub({ title }) {
         )}
         {activeTab === 'watch' && <YouTubeSection />}
       </div>
-    </div>
+    </>
   )
 }

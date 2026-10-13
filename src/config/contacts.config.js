@@ -4,27 +4,47 @@ export const emergencyContacts = [
     label: 'Fire',
     phone: 'XXXX-XXXXXX',
     icon: 'Flame',
-    colorClass: 'border-red-500',
+    tone: 'red',
   },
   {
     id: 'dispensary',
-    label: 'Dispensary / Medical',
+    label: 'Dispensary & Medical',
     phone: 'XXXX-XXXXXX',
     icon: 'Stethoscope',
-    colorClass: 'border-green-500',
+    tone: 'green',
   },
   {
     id: 'security',
     label: 'Security Control',
     phone: 'XXXX-XXXXXX',
     icon: 'Shield',
-    colorClass: 'border-blue-500',
+    tone: 'blue',
   },
   {
     id: 'hr-helpline',
-    label: 'HR Helpline',
+    label: 'Support Services',
     phone: 'XXXX-XXXXXX',
     icon: 'HeadphonesIcon',
-    colorClass: 'border-purple-500',
+    tone: 'amber',
+  },
+]
+
+// The two help routes that are not phone numbers. `href: '#'` until the
+// destinations are confirmed; the card says so rather than linking nowhere.
+export const helpLinks = [
+  {
+    id: 'ethics',
+    eyebrow: 'INTEGRITY MATTERS',
+    label: 'Ethics Helpline',
+    description: 'Raise a concern confidentially.',
+    href: '#',
+    featured: true,
+  },
+  {
+    id: 'posh',
+    eyebrow: 'A SAFE WORKPLACE',
+    label: 'POSH Information',
+    description: 'Policy, committee and how to report.',
+    href: '#',
   },
 ]

@@ -1,119 +1,96 @@
-import { useScrollSpy } from '@/hooks/useScrollSpy'
-import Sidebar from './Sidebar'
+import Hero from './Hero'
 import ServiceGrid from '@/components/self-service/ServiceGrid'
-import DashboardUpdatesPanel from '@/components/dashboard/DashboardUpdatesPanel'
-import VolunteerNextCard from '@/components/dashboard/VolunteerNextCard'
-import CompanyOverview from '@/components/company/CompanyOverview'
-import CsrSection from '@/components/csr/CsrSection'
-import NewsFeed from '@/components/news/NewsFeed'
-import BajajBytes from '@/components/news/BajajBytes'
+import HappeningNow from '@/components/dashboard/HappeningNow'
 import ITResources from '@/components/it-resources/ITResources'
-import EmergencyContacts from '@/components/emergency/EmergencyContacts'
+import CalendarWidget from '@/components/calendar/CalendarWidget'
+import HelpSection from '@/components/emergency/HelpSection'
+import CsrSection from '@/components/csr/CsrSection'
 import LocationsSection from '@/components/locations/LocationsSection'
 import FeedbackSection from '@/components/feedback/FeedbackSection'
 import ScrollReveal from '@/components/shared/ScrollReveal'
+import SectionHeading from '@/components/shared/SectionHeading'
+import { CONTAINER } from '@/lib/layout'
 
-// Page order. The sidebar's groups run in this same sequence — see
-// navigation.config.js — so scrolling walks the rail top to bottom and the
-// scroll-spy highlight never jumps backwards. Move a section here, move its
-// group there too.
-const SECTION_IDS = [
-  'self-service',
-  'it-resources',
-  'emergency-contacts',
-  'bajaj-bytes',
-  'company-news',
-  'csr',
-  'locations',
-  'company-overview',
-  'feedback',
-]
+const MONTH = new Date().toLocaleDateString('en-IN', { month: 'long' })
 
+/*
+ * Page order. The header's scroll spy walks these same ids in this same order
+ * (navigation.config's pageSections) — move a section here, move it there too.
+ *
+ * Shelves (Pitstop, Workplace, Happening now) run the full window width and
+ * line their first card up with the column themselves, so only their heading
+ * sits in CONTAINER. Everything else lives inside it.
+ *
+ * Section headings are "Statement. Subtitle" — the subtitle carries no full
+ * stop of its own. Bajaj Bytes lives only on the Happening now shelf, and the
+ * globe panel sits under the page's own heading voice.
+ */
 export default function MainContent() {
-  const [activeSection, forceSection] = useScrollSpy(SECTION_IDS)
-
   return (
-    <>
-      <Sidebar activeSection={activeSection} onForceSection={forceSection} />
+    <main className="min-w-0 flex-1">
+      <Hero />
 
-      <main className="flex-1 min-w-0 min-h-screen">
-        <div className="max-w-screen-xl mx-auto px-3 py-4 space-y-7 sm:px-4 sm:py-5 sm:space-y-9 md:px-6 lg:py-6 lg:space-y-10">
-          <ScrollReveal id="dashboard" aria-labelledby="dashboard-heading">
-            <h2 id="dashboard-heading" className="sr-only">
-              Dashboard
-            </h2>
-            <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row">
-              <div className="flex flex-1 min-w-0 flex-col gap-4 sm:gap-6">
-                <section id="self-service" aria-labelledby="self-service-heading">
-                  <h2 id="self-service-heading" className="sr-only">
-                    Pitstop
-                  </h2>
-                  <ServiceGrid title="Pitstop" />
-                </section>
-                <section id="it-resources" aria-labelledby="it-resources-heading" className="scroll-mt-32">
-                  <h2 id="it-resources-heading" className="sr-only">
-                    Resources and Support Services
-                  </h2>
-                  <ITResources title="Resources and Support Services" stacked />
-                </section>
-              </div>
-              <div className="flex w-full flex-col gap-4 sm:gap-6 lg:w-80 lg:flex-shrink-0">
-                <VolunteerNextCard />
-                <DashboardUpdatesPanel />
-              </div>
-            </div>
-          </ScrollReveal>
+      <section id="self-service" aria-labelledby="self-service-heading" className="scroll-mt-28 pt-2">
+        <h2 id="self-service-heading" className="sr-only">
+          Pitstop
+        </h2>
+        <ServiceGrid />
+      </section>
 
-          <ScrollReveal id="emergency-contacts" aria-labelledby="emergency-heading">
-            <h2 id="emergency-heading" className="sr-only">
-              Emergency Contacts
-            </h2>
-            <EmergencyContacts title="Emergency Contacts" />
-          </ScrollReveal>
+      <ScrollReveal id="it-resources" aria-labelledby="workplace-heading" className="pt-12">
+        <ITResources />
+      </ScrollReveal>
 
-          <ScrollReveal id="bajaj-bytes" aria-labelledby="bajaj-bytes-heading">
-            <h2 id="bajaj-bytes-heading" className="sr-only">
-              Bajaj Bytes
-            </h2>
-            <BajajBytes title="Bajaj Bytes" />
-          </ScrollReveal>
-
-          <ScrollReveal id="company-news" aria-labelledby="company-news-heading">
-            <h2 id="company-news-heading" className="sr-only">
-              Company News
-            </h2>
-            <NewsFeed title="Company News" />
-          </ScrollReveal>
-
-          <ScrollReveal id="csr" aria-labelledby="csr-heading">
-            <h2 id="csr-heading" className="sr-only">
-              Community and CSR
-            </h2>
-            <CsrSection title="Community & CSR" />
-          </ScrollReveal>
-
-          <ScrollReveal id="locations" aria-labelledby="locations-heading" className="xl:-mr-8 2xl:-mr-16">
-            <h2 id="locations-heading" className="sr-only">
-              Bajaj Auto Presence
-            </h2>
-            <LocationsSection title="Bajaj Auto Presence" />
-          </ScrollReveal>
-
-          <ScrollReveal id="company-overview" aria-labelledby="company-overview-heading">
-            <h2 id="company-overview-heading" className="sr-only">
-              Company Overview
-            </h2>
-            <CompanyOverview title="Company Overview" />
-          </ScrollReveal>
-
-          <ScrollReveal id="feedback" aria-labelledby="feedback-heading">
-            <h2 id="feedback-heading" className="sr-only">
-              Feedback and Support
-            </h2>
-            <FeedbackSection />
-          </ScrollReveal>
+      <ScrollReveal id="happening" aria-labelledby="happening-heading" className="pt-6">
+        <div className={CONTAINER}>
+          <SectionHeading
+            id="happening-heading"
+            title="Happening now."
+            subtitle="What's on at Bajaj this month"
+          />
         </div>
-      </main>
-    </>
+        <HappeningNow />
+      </ScrollReveal>
+
+      <ScrollReveal
+        id="calendar"
+        aria-labelledby="calendar-heading"
+        className={`${CONTAINER} space-y-6 pt-8`}
+      >
+        <SectionHeading id="calendar-heading" title="Calendar." subtitle={`${MONTH} at a glance`} />
+        <CalendarWidget />
+      </ScrollReveal>
+
+      <ScrollReveal
+        id="emergency-contacts"
+        aria-labelledby="help-heading"
+        className={`${CONTAINER} space-y-6 pt-14`}
+      >
+        <SectionHeading
+          id="help-heading"
+          title="Help is here."
+          subtitle="Whenever, and however, you need it"
+        />
+        <HelpSection />
+      </ScrollReveal>
+
+      <ScrollReveal id="csr" aria-labelledby="csr-heading" className={`${CONTAINER} space-y-6 pt-14`}>
+        <SectionHeading id="csr-heading" title="Community & CSR." subtitle="Giving back, together" />
+        <CsrSection />
+      </ScrollReveal>
+
+      <ScrollReveal
+        id="locations"
+        aria-labelledby="locations-heading"
+        className={`${CONTAINER} space-y-6 pt-14`}
+      >
+        <SectionHeading id="locations-heading" title="Bajaj Auto." subtitle="Overview and Presence" />
+        <LocationsSection />
+      </ScrollReveal>
+
+      <ScrollReveal id="feedback" aria-labelledby="feedback-heading" className={`${CONTAINER} pt-10`}>
+        <FeedbackSection />
+      </ScrollReveal>
+    </main>
   )
 }

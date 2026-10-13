@@ -1,33 +1,32 @@
 # components/layout/ – Page Shell Components
 
-**Epic:** E2 (Tasks 2.1–2.6)
-**Priority:** P0 Blocker — E3–E7 cannot start until E2 is merged to `develop`
-
-These four components form the fixed structural skeleton. Every content component renders inside `MainContent`.
+The shell every content section renders inside. One scrolling page, no sidebar.
 
 ## Component Map
 
-| Component | Epic Task | What it renders |
-|---|---|---|
-| `TopBanner.jsx` | E2-T2.1 | Fixed 36px strip at the very top: Integrity Matters, POSH, Vision & Mission links |
-| `Header.jsx` | E2-T2.2 | Fixed bar below banner: Bajaj logo, hamburger, search bar, notification bell + badge, user profile dropdown |
-| `Sidebar.jsx` | E2-T2.3 | Collapsible left nav: icon+label when expanded, icon-only with tooltip when collapsed; overlay drawer on mobile |
-| `MainContent.jsx` | E2-T2.4 | Scrollable content wrapper; assigns section `id` anchors; hosts IntersectionObserver scroll spy |
+| Component | What it renders |
+|---|---|
+| `TopBanner.jsx` | Navy utility strip: About Us, Vision & Mission, Ethics Helpline, POSH, Bajaj Bytes, and the SOS button (opens the emergency contacts modal). Scrolls away with the page. |
+| `Header.jsx` | Sticky translucent bar: Bajaj logo + product mark, section nav (scroll spy highlight), search shortcut, theme toggle, notices, profile menu. Below `xl` the nav folds into a menu sheet. |
+| `TodayRibbon.jsx` | One line naming the next company event or holiday. Absent while loading, on error, or when nothing is coming up. |
+| `Hero.jsx` | Date, greeting, quick links (Ask Jarvis, Raise an IT request), the site search and "Popular" chips. |
+| `MainContent.jsx` | Every section in page order, each with its `id` anchor. |
+| `Footer.jsx` | Link columns, brand block, copyright, and the stock ticker along the bottom edge. |
+| `SplashScreen.jsx`, `UnionMark.jsx` | The entry splash and the product mark it assembles. |
 
 ## Layout Stacking (z-index)
 
-- TopBanner: `z-50`, `fixed top-0`
-- Header: `z-40`, `fixed top-[36px]`
-- Sidebar: `z-30` (expanded), `z-50` mobile overlay
-- MainContent: no z-index, scrolls naturally
+- Header: `z-40`, `sticky top-0`
+- Header popovers (notices, profile, menu): `z-50`
+- Hero search results: `z-30`
+- Modals: `z-50`, portalled into `#modal-root`
 
 ## Key Interactions
 
-- Hamburger in Header calls `toggleSidebar()` from `SidebarContext`
-- Sidebar `isExpanded` drives `w-64` (expanded) vs `w-16` (collapsed)
-- Mobile: sidebar is a drawer overlay, closes on nav item click or outside tap — use `isMobileOpen` / `setMobileOpen`
-- Scroll spy lives in `MainContent` via `useScrollSpy` hook; passes active ID back to Sidebar for highlight
-
-## Branch
-
-`feat/E2-top-banner`, `feat/E2-header`, `feat/E2-sidebar`, `feat/E2-main-content`, `feat/E2-responsive-layout`
+- Scroll spy lives in `Header` via `useScrollSpy(pageSections)`; each header link
+  `covers` one or more section ids (see `navigation.config.js`).
+- `scrollToSection()` (utils) applies the sticky-header offset — use it for any
+  in-page jump rather than `scrollIntoView`.
+- The hero search (`useSiteSearch`) finds Pitstop services and page sections,
+  not documents or people. Enter opens the first match; no match offers Jarvis.
+- Anything that wants to open Jarvis calls `openJarvis()` from `src/lib/jarvis.js`.

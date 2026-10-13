@@ -41,7 +41,7 @@ export const services = [
   // Row 2: T · N · A · N · S (Benefits↔Holiday Calendar, Documents↔Idea Hub)
   {
     id: 'leave-attendance',
-    label: 'Leave / Attendance',
+    label: 'Leave & Attendance',
     icon: 'LeaveAttendanceIcon',
     redirectUrl: 'http://ep6prdn.bajajauto.co.in:50000/irj/portal',
     enabled: true,
@@ -55,7 +55,7 @@ export const services = [
   },
   {
     id: 'bolt-learning',
-    label: 'BOLT – Start Learning',
+    label: 'Bolt – Learning',
     icon: 'BoltLearningIcon',
     redirectUrl: 'https://bolt.bajajauto.co.in/#!/',
     enabled: true,
@@ -78,7 +78,7 @@ export const services = [
   // Row 3: A · T · N · S · N
   {
     id: 'documents',
-    label: 'Documents / Forms',
+    label: 'Documents & Forms',
     icon: 'DocumentsIcon',
     redirectUrl: '#',
     enabled: true,
@@ -99,7 +99,7 @@ export const services = [
   },
   {
     id: 'performance-management',
-    label: 'Performance Management',
+    label: 'Performance',
     icon: 'PerformanceManagementIcon',
     redirectUrl: '#',
     enabled: true,

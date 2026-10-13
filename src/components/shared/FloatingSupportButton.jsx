@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Send, X } from 'lucide-react'
 import jarvisImage from '@/assets/jarvis-blue.png'
+import { JARVIS_OPEN_EVENT } from '@/lib/jarvis'
+import { SCROLL_TOP_OFFSET } from '@/lib/layout'
 
 const QUICK_ACTIONS = [
   { id: 'leave', label: 'Leave balance' },
@@ -71,7 +73,7 @@ export default function FloatingSupportButton() {
     const selfService = document.getElementById('self-service')
     if (!selfService) return undefined
     function update() {
-      setHasPassedEss(selfService.getBoundingClientRect().bottom <= 124)
+      setHasPassedEss(selfService.getBoundingClientRect().bottom <= SCROLL_TOP_OFFSET)
     }
     update()
     window.addEventListener('scroll', update, { passive: true })
@@ -80,6 +82,16 @@ export default function FloatingSupportButton() {
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
     }
+  }, [])
+
+  // Other parts of the page (the hero's "Ask Jarvis", search with no match)
+  // open the chat through this event rather than reaching into its state.
+  useEffect(() => {
+    function open() {
+      setIsOpen(true)
+    }
+    window.addEventListener(JARVIS_OPEN_EVENT, open)
+    return () => window.removeEventListener(JARVIS_OPEN_EVENT, open)
   }, [])
 
   useEffect(() => {
@@ -238,14 +250,15 @@ export default function FloatingSupportButton() {
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          className="group flex items-center gap-2 rounded-full bg-brand-primary py-2 pl-2 pr-4 text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-modal focus-ring"
-          aria-label="Open Jarvis chat"
+          className="group flex h-[52px] items-center gap-2.5 rounded-full bg-navy pl-2.5 pr-[22px] text-white shadow-[0_10px_30px_rgba(14,27,46,0.3)] ring-1 ring-white/10 transition-all hover:-translate-y-0.5 focus-ring"
+          aria-label={isOpen ? 'Close Jarvis chat' : 'Open Jarvis chat'}
+          aria-expanded={isOpen}
           title="Jarvis"
         >
-          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-[#202020] ring-1 ring-white/20 transition-transform duration-200 group-hover:scale-105">
-            <JarvisIcon size={40} />
+          <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[#202020] ring-1 ring-white/20 transition-transform duration-200 group-hover:scale-105">
+            <JarvisIcon size={36} />
           </span>
-          <span className="text-sm font-semibold">Jarvis</span>
+          <span className="text-[15px] font-semibold">Ask Jarvis</span>
         </button>
 
         {renderPrompt && (

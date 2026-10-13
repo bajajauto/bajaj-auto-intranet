@@ -33,11 +33,11 @@ build output, never in `npm run dev`.
 ## Folder rules
 ```
 src/config/        ← static data & URLs only, no React
-src/context/       ← SidebarContext, UserContext
+src/context/       ← AuthContext, ThemeContext, UserContext
 src/hooks/         ← custom hooks, no JSX
 src/services/      ← service layer (mock adapters Phase 1, api/ stubs Phase 2)
 src/components/
-  layout/          ← TopBanner, Header, Sidebar, MainContent
+  layout/          ← TopBanner, Header, TodayRibbon, Hero, MainContent, Footer
   self-service/    ← ServiceGrid, ServiceTile
   notifications/   ← NotificationsPanel, NotificationCard
   calendar/        ← CalendarWidget
@@ -66,13 +66,18 @@ Component → useXxx() hook → useServiceQuery → XxxService.getAll() → mock
   while the Documents & Forms modal crashed on open, because nothing opened it.
 - Adding a domain: contract → mock adapter → api adapter → service → hook → component.
 
-## Responsive grid
-| Breakpoint | Cols | Sidebar |
-|---|---|---|
-| `< 768px` | 2 | Drawer |
-| `768–1023px` | 3 | Icon-only |
-| `1024–1279px` | 4 | Expanded |
-| `≥ 1280px` | 5 | Expanded |
+## Layout
+- One scrolling page under a sticky header; no sidebar. Header links scroll to
+  sections and the scroll spy highlights them; below `xl` they fold into a menu.
+- Page order lives in `navigation.config.js` (`pageSections`) and `MainContent` — keep them in step.
+- Content sits in the 1200px column (`CONTAINER` in `src/lib/layout.js`).
+  Pitstop, Workplace and Happening now are full-width sideways shelves (`shared/Shelf`).
+- Surfaces: `canvas` page, `surface` cards, `chip` pills, `ink`/`muted` text — all
+  theme-aware. `navy` and `accent-orange`/`accent-green` are fixed. Headings use
+  `font-display` (Bricolage Grotesque); body is Hanken Grotesk.
+- The global `.dark .bg-white` remap in index.css turns `bg-white` dark. A pill that
+  must stay white on a navy card uses `bg-[#FFFFFF]`.
+- The globe (LocationsSection) keeps its own panel under the page heading "Bajaj Auto. Overview and Presence".
 
 ## Git
 - Branch from `develop`, PR back to `develop`

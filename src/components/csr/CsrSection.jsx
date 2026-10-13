@@ -2,9 +2,8 @@ import { useRef, useState } from 'react'
 import CsrHero from './CsrHero'
 import ProgramsGrid from './ProgramsGrid'
 import VolunteerBlock from './VolunteerBlock'
-import CsrStoriesCarousel from './CsrStoriesCarousel'
 
-export default function CsrSection({ title }) {
+export default function CsrSection() {
   const contentRef = useRef(null)
   const [activeView, setActiveView] = useState(null)
 
@@ -16,11 +15,7 @@ export default function CsrSection({ title }) {
   }
 
   return (
-    <div className="site-surface-tint tint-cream rounded-card border p-4 sm:p-5">
-      {title && (
-        <h2 className="mb-4 text-lg font-bold text-brand-primary sm:mb-5">{title}</h2>
-      )}
-
+    <div className="rounded-[28px] bg-surface p-4 shadow-soft sm:p-6">
       <div className="space-y-6">
         <CsrHero
           activeView={activeView}
@@ -31,7 +26,6 @@ export default function CsrSection({ title }) {
           {activeView === 'programs' && <ProgramsGrid />}
           {activeView === 'volunteer' && <VolunteerBlock />}
         </div>
-        <CsrStoriesCarousel />
       </div>
     </div>
   )

@@ -10,7 +10,8 @@ Changing a tile URL, adding a nav item, or updating a contact number means editi
 | File | What it drives |
 |---|---|
 | `services.config.js` | The 13 Employee Self-Service tiles (id, label, icon name, redirectUrl, enabled) |
-| `navigation.config.js` | Sidebar group/item structure (groups → items → id, label, icon, sectionId) |
+| `navigation.config.js` | Page section order (scroll spy), header nav links, footer link columns |
+| `search.config.js` | Hero search destinations and the "Popular" chips |
 | `contacts.config.js` | Emergency contact entries (name, phone, icon, colorClass) |
 
 ## Rules

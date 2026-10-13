@@ -3,94 +3,81 @@ import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import holidayCalendarImage from '@/assets/holiday calendar.jpg'
+import teamDirectoryArt from '@/assets/icons/pitstop/team-directory.png'
+import leaveAttendanceArt from '@/assets/icons/pitstop/leave-attendance.png'
+import holidayCalendarArt from '@/assets/icons/pitstop/holiday-calendar.png'
+import travelArt from '@/assets/icons/pitstop/travel.png'
+import policiesArt from '@/assets/icons/pitstop/policies.png'
+import compensationArt from '@/assets/icons/pitstop/compensation.png'
+import benefitsArt from '@/assets/icons/pitstop/benefits.png'
+import documentsArt from '@/assets/icons/pitstop/documents-forms.png'
+import mediclaimArt from '@/assets/icons/pitstop/mediclaim-card.png'
+import healthWellnessArt from '@/assets/icons/pitstop/health-wellness.png'
+import gemArt from '@/assets/icons/pitstop/gem.png'
+import ideaHubArt from '@/assets/icons/pitstop/idea-hub.png'
+import boltArt from '@/assets/icons/pitstop/bolt.png'
+import performanceArt from '@/assets/icons/pitstop/performance.png'
+import itSummitArt from '@/assets/icons/pitstop/it-summit.png'
 import PoliciesBenefitsModal from './PoliciesBenefitsModal'
 import LettersModal from './letters/LettersModal'
 
 const MODAL_TRANSITION_MS = 500
 
-// Pitstop colour system — one tone per grid row, assigned in ServiceGrid.
-// Each badge gets a gradient plus a tone-matched glow that fires on hover.
-//
-// Three tones for three rows. Green and amber are the wellness lotus's and the
-// idea bulb's own colours, promoted from the artwork onto the badge behind it —
-// which only became available once those icons were recoloured to white, since
-// a green lotus on green was exactly the clash the old palette was dodging.
-//
-// Both run darker than their source hex: white icons need the badge to carry
-// some depth, and amber is the shallowest of the three even after darkening.
-// Each row fades left to right — 4.4% lightness per column on both gradient
-// stops, five steps, so a row travels about 18% end to end and reads as one
-// continuous fade rather than five tiles that happen to differ. Written out
-// rather than computed because Tailwind only sees class strings that exist
-// literally in the source.
-//
-// The fade runs with the ordering: leftmost is most-used and stays darkest, so
-// weight falls off the way attention does.
-//
-// Contrast below is measured at the badge's gradient midpoint, which is where
-// the icon actually sits — not against the light stop, which only touches the
-// top-left corner. Amber is the floor: 3.17:1 on its first tile down to 1.95:1
-// on its last, where blue still holds 4.18:1 and green 2.37:1. Amber is what
-// gives out first if this is pushed again.
-const toneRamps = {
-  blue: [
-    'from-[#2563C9] to-[#123A78]',
-    'from-[#2C6DD8] to-[#15438C]',
-    'from-[#3F7ADC] to-[#184D9F]',
-    'from-[#5287DF] to-[#1B56B3]',
-    'from-[#6595E3] to-[#1E60C6]',
-  ],
-  green: [
-    'from-[#1E9E68] to-[#0A5334]',
-    'from-[#22B174] to-[#0C6741]',
-    'from-[#25C481] to-[#0F7B4D]',
-    'from-[#29D68D] to-[#118F5A]',
-    'from-[#3CDA97] to-[#14A366]',
-  ],
-  amber: [
-    'from-[#FCA407] to-[#9A5B02]',
-    'from-[#FCAC1D] to-[#B06802]',
-    'from-[#FDB433] to-[#C67503]',
-    'from-[#FDBC4A] to-[#DC8203]',
-    'from-[#FDC560] to-[#F38F03]',
-  ],
+// The 3D artwork each service stands on. A service missing from here falls
+// back to its line icon from iconMap, so adding a service never breaks the row.
+const ARTWORK = {
+  'team-directory': teamDirectoryArt,
+  'leave-attendance': leaveAttendanceArt,
+  'holiday-calendar': holidayCalendarArt,
+  travel: travelArt,
+  policies: policiesArt,
+  compensation: compensationArt,
+  benefits: benefitsArt,
+  documents: documentsArt,
+  mediclaim: mediclaimArt,
+  'health-wellness': healthWellnessArt,
+  'recognition-gem': gemArt,
+  'idea-hub': ideaHubArt,
+  'bolt-learning': boltArt,
+  'performance-management': performanceArt,
+  'it-summit': itSummitArt,
 }
 
-// Glow stays keyed to the row rather than the column: it fires one tile at a
-// time on hover, so there is nothing next to it to read a ramp against.
-const toneGlows = {
-  blue: 'group-hover:shadow-[0_8px_20px_-6px_rgba(37,99,201,0.6)]',
-  green: 'group-hover:shadow-[0_8px_20px_-6px_rgba(30,158,104,0.6)]',
-  amber: 'group-hover:shadow-[0_8px_20px_-6px_rgba(252,164,7,0.6)]',
+/*
+ * One tone per errand group, assigned in ServiceGrid. Each tone is a pastel
+ * pedestal the artwork stands on, a glow of the same hue beneath it, and three
+ * paint-splash dots around it: a large one in the pedestal's tint, a small one
+ * in a complementary colour, a tiny one in the tone's strong shade.
+ *
+ * Written out in full because Tailwind only generates class strings that exist
+ * literally in the source.
+ */
+const TONES = {
+  blue: {
+    splashLarge: 'bg-[#C9DDFB]',
+    splashSmall: 'bg-[#F7A35C]',
+    splashTiny: 'bg-[#5B9BF5]',
+    base: 'from-[#F1F6FE] to-[#D7E6FA] shadow-[inset_0_2px_0_rgba(255,255,255,0.95),inset_0_-4px_8px_rgba(11,79,168,0.10),0_12px_18px_-10px_rgba(11,79,168,0.45)]',
+  },
+  green: {
+    splashLarge: 'bg-[#BDEBD5]',
+    splashSmall: 'bg-[#F5C542]',
+    splashTiny: 'bg-[#34C189]',
+    base: 'from-[#F0FAF5] to-[#D3EFE1] shadow-[inset_0_2px_0_rgba(255,255,255,0.95),inset_0_-4px_8px_rgba(11,110,68,0.10),0_12px_18px_-10px_rgba(11,110,68,0.45)]',
+  },
+  amber: {
+    splashLarge: 'bg-[#FCDDB0]',
+    splashSmall: 'bg-[#5B9BF5]',
+    splashTiny: 'bg-[#F29A1F]',
+    base: 'from-[#FFF7EC] to-[#FBE2C2] shadow-[inset_0_2px_0_rgba(255,255,255,0.95),inset_0_-4px_8px_rgba(196,98,10,0.10),0_12px_18px_-10px_rgba(196,98,10,0.45)]',
+  },
 }
-
-// Every tile now gets the same weight. The old access-frequency tiers ranked
-// tiles hot/warm/cool by how often they get used, which desaturated the cool
-// ones and greyed their labels — that reads as three shades inside a row and
-// works against a single colour per row. Frequency is no longer what the grid
-// is sorted by either, so the tiers had nothing left to signal.
-const BADGE_BASE = 'shadow-md ring-white/20'
-const LABEL_BASE = 'font-medium text-text-primary'
-
-// Services whose icon is supplied artwork rather than a glyph drawn for this
-// grid, mapped to the scale that squares them with their neighbours: the
-// artwork carries its own padding inside its canvas where the glyphs run edge
-// to edge, so at the shared size it sits noticeably smaller in the badge.
-//
-// Artwork also brings its own palette, which the badge gradient behind it can
-// work against. Compensation, health & wellness and idea hub are recoloured to
-// currentColor + INK inside ServiceIcons so they read as white on the badge;
-// holiday calendar still carries its own cyan.
-const artworkServices = {
-  compensation: 1.4,
-  'holiday-calendar': 1.35,
-  'idea-hub': 1.35,
-  'health-wellness': 1.4,
-}
-
-const ICON_SIZE = 26
 
 const DEFAULT_TONE = 'blue'
+
+// The overshoot easing gives the hover its bounce: the artwork hops up, tilts
+// and grows, the pedestal widens under it, and the splashes swell.
+const SPRING = 'ease-[cubic-bezier(.34,1.56,.64,1)]'
 
 function ServiceDocumentModal({ title, titleId, onClose, children }) {
   const [visible, setVisible] = useState(false)
@@ -128,26 +115,26 @@ function ServiceDocumentModal({ title, titleId, onClose, children }) {
       aria-labelledby={titleId}
     >
       <div
-        className={`relative flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-500 ease-out ${
+        className={`relative flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-surface shadow-2xl transition-all duration-500 ease-out ${
           visible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-8 scale-95 opacity-0'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between bg-gradient-to-br from-brand-primary to-brand-dark px-5 py-4 text-white sm:px-6">
-          <h2 id={titleId} className="text-base font-semibold">
+        <div className="flex items-center justify-between bg-navy px-5 py-4 text-white sm:px-6">
+          <h2 id={titleId} className="font-display text-lg font-semibold">
             {title}
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:rotate-90 hover:bg-white/20 focus-ring"
+            className="rounded-full p-2 transition-all duration-300 hover:rotate-90 hover:bg-white/15 focus-ring"
             aria-label={`Close ${title}`}
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="flex min-h-0 flex-1 justify-center overflow-auto bg-bg-alt p-3 sm:p-4">
+        <div className="flex min-h-0 flex-1 justify-center overflow-auto bg-canvas p-3 sm:p-4">
           {children}
         </div>
       </div>
@@ -156,74 +143,69 @@ function ServiceDocumentModal({ title, titleId, onClose, children }) {
   )
 }
 
-export default function ServiceTile({ id, label, icon, redirectUrl, tone, step = 0 }) {
+function TileArt({ id, icon, tone }) {
+  const palette = TONES[tone] ?? TONES[DEFAULT_TONE]
+  const art = ARTWORK[id]
+  const Icon = iconMap[icon] ?? iconMap.ExternalLink
+
+  return (
+    <span className="relative block h-[88px] w-[100px]" aria-hidden="true">
+      <span
+        className={`absolute right-0 top-0.5 h-[22px] w-[22px] rounded-full transition-transform duration-[450ms] ${SPRING} group-hover:scale-125 ${palette.splashLarge}`}
+      />
+      <span
+        className={`absolute bottom-1.5 left-0 h-2.5 w-2.5 rounded-full transition-transform duration-[450ms] ${SPRING} group-hover:scale-125 ${palette.splashSmall}`}
+      />
+      <span
+        className={`absolute left-1 top-[22px] h-1.5 w-1.5 rounded-full transition-transform duration-[450ms] ${SPRING} group-hover:scale-125 ${palette.splashTiny}`}
+      />
+      <span
+        className={`absolute inset-x-3.5 bottom-0 h-14 rounded-[22px] bg-gradient-to-b transition-transform duration-500 ${SPRING} group-hover:scale-x-[1.06] ${palette.base}`}
+      />
+      {art ? (
+        <img
+          src={art}
+          alt=""
+          className={`absolute -top-3.5 left-2.5 h-20 w-20 object-contain drop-shadow-[0_10px_10px_rgba(15,22,32,0.18)] transition-[transform,filter] duration-500 ${SPRING} group-hover:-translate-y-2 group-hover:-rotate-[5deg] group-hover:scale-110 group-hover:drop-shadow-[0_16px_14px_rgba(15,22,32,0.22)]`}
+        />
+      ) : (
+        <Icon
+          size={40}
+          strokeWidth={1.8}
+          className={`absolute left-[30px] top-3 text-brand-primary transition-transform duration-500 ${SPRING} group-hover:-translate-y-2 group-hover:scale-110`}
+        />
+      )}
+    </span>
+  )
+}
+
+export default function ServiceTile({ id, label, icon, redirectUrl, tone }) {
   const [isHolidayCalendarOpen, setHolidayCalendarOpen] = useState(false)
   const [isPoliciesOpen, setPoliciesOpen] = useState(false)
   const [isDocumentsOpen, setDocumentsOpen] = useState(false)
-  const Icon = iconMap[icon] ?? iconMap.ExternalLink
-  const artworkScale = artworkServices[id]
-  const ramp = toneRamps[tone] ?? toneRamps[DEFAULT_TONE]
-  // clamp rather than wrap: a sixth tile in a row should sit at the ramp's end,
-  // not snap back to the darkest and break the run.
-  const badge = ramp[Math.min(step, ramp.length - 1)]
-  const glow = toneGlows[tone] ?? toneGlows[DEFAULT_TONE]
   const isClickable = redirectUrl && redirectUrl !== '#'
-  const opensHolidayCalendar = id === 'holiday-calendar'
-  const opensPolicies = id === 'policies'
-  const opensDocuments = id === 'documents'
 
   const className =
-    'group flex flex-col items-center justify-center gap-1.5 w-full py-1 px-1 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-ring'
+    'group flex w-[120px] flex-col items-center gap-3.5 rounded-2xl px-1 pb-2 pt-7 text-center text-ink focus-ring'
   const content = (
     <>
-      <span className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${badge} ${BADGE_BASE} ring-1 ring-inset transition-all duration-300 group-hover:scale-110 ${glow}`}>
-        {/* convex gloss — the glossy app-icon highlight */}
-        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_85%_at_28%_12%,rgba(255,255,255,0.5),rgba(255,255,255,0)_55%)]" />
-        {/* rim light + inner shadow — gives the tile a rounded, 3D body */}
-        <span className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_-6px_10px_-5px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.45)]" />
-        {/* Pitstop speed-sweep — a racing shine that streaks across on hover */}
-        <span className="pointer-events-none absolute inset-y-0 left-[-60%] w-2/3 skew-x-[-20deg] bg-white/30 blur-[2px] transition-all duration-500 ease-out group-hover:left-[140%]" />
-        <Icon
-          size={Math.round(ICON_SIZE * (artworkScale ?? 1))}
-          strokeWidth={2}
-          className="relative z-10 text-white drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.3)]"
-        />
-      </span>
-
-      {/* min-height reserves both lines whether or not this label needs them,
-          so a wrapping name does not push its row taller than its neighbours.
-          Set in em, so it follows the step up at lg. */}
-      <span
-        className={`relative z-10 line-clamp-2 min-h-[2.5em] px-1 text-center text-[11px] uppercase leading-tight tracking-wide lg:text-xs ${LABEL_BASE}`}
-      >
-        {label}
-      </span>
+      <TileArt id={id} icon={icon} tone={tone} />
+      <span className="text-sm font-semibold leading-tight">{label}</span>
     </>
   )
 
   if (isClickable) {
     return (
-      <a
-        href={redirectUrl}
-        target="_blank"
-        rel="noreferrer"
-        className={className}
-        aria-label={label}
-      >
+      <a href={redirectUrl} target="_blank" rel="noreferrer" className={className}>
         {content}
       </a>
     )
   }
 
-  if (opensHolidayCalendar) {
+  if (id === 'holiday-calendar') {
     return (
       <>
-        <button
-          type="button"
-          onClick={() => setHolidayCalendarOpen(true)}
-          className={className}
-          aria-label={label}
-        >
+        <button type="button" onClick={() => setHolidayCalendarOpen(true)} className={className}>
           {content}
         </button>
 
@@ -236,7 +218,7 @@ export default function ServiceTile({ id, label, icon, redirectUrl, tone, step =
             <img
               src={holidayCalendarImage}
               alt="Holiday Calendar"
-              className="h-auto max-h-[calc(88vh-6rem)] w-auto max-w-full rounded-card object-contain shadow-card"
+              className="h-auto max-h-[calc(88vh-6rem)] w-auto max-w-full rounded-2xl object-contain shadow-soft"
             />
           </ServiceDocumentModal>
         )}
@@ -244,15 +226,10 @@ export default function ServiceTile({ id, label, icon, redirectUrl, tone, step =
     )
   }
 
-  if (opensPolicies) {
+  if (id === 'policies') {
     return (
       <>
-        <button
-          type="button"
-          onClick={() => setPoliciesOpen(true)}
-          className={className}
-          aria-label={label}
-        >
+        <button type="button" onClick={() => setPoliciesOpen(true)} className={className}>
           {content}
         </button>
 
@@ -261,15 +238,10 @@ export default function ServiceTile({ id, label, icon, redirectUrl, tone, step =
     )
   }
 
-  if (opensDocuments) {
+  if (id === 'documents') {
     return (
       <>
-        <button
-          type="button"
-          onClick={() => setDocumentsOpen(true)}
-          className={className}
-          aria-label={label}
-        >
+        <button type="button" onClick={() => setDocumentsOpen(true)} className={className}>
           {content}
         </button>
 
@@ -278,8 +250,16 @@ export default function ServiceTile({ id, label, icon, redirectUrl, tone, step =
     )
   }
 
+  // No destination yet (Team Directory, Performance, IT Summit). Disabled and
+  // labelled as such, rather than a button that silently does nothing.
   return (
-    <button type="button" className={className} aria-label={label}>
+    <button
+      type="button"
+      disabled
+      title="Coming soon"
+      aria-label={`${label} (coming soon)`}
+      className={`${className} cursor-default`}
+    >
       {content}
     </button>
   )

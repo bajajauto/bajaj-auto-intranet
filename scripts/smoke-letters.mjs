@@ -39,7 +39,7 @@ try {
   // Splash gates the shell.
   await page.waitForTimeout(3000)
 
-  await page.getByText(/DOCUMENTS\s*\/\s*FORMS/i).first().click()
+  await page.getByText(/Documents\s*[/&]\s*Forms/i).first().click()
   const dlg = page.locator('[role="dialog"]')
   await dlg.waitFor({ state: 'visible', timeout: 15000 })
   check('modal opens', true)

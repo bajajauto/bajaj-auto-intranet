@@ -25,7 +25,7 @@ E1 Setup → E2 Layout Shell → E3+E4 (parallel) → E5+E6 (parallel) → E7 �
 ## Key decisions
 - Scroll navigation only — no routing
 - All data flows through service layer (`services/` → `components/`, never direct)
-- Config-driven: tile URLs + sidebar nav live in `src/config/`, edit there to change anything
+- Config-driven: tile URLs + header/footer nav live in `src/config/`, edit there to change anything
 - Tailwind brand tokens defined in `tailwind.config.js`
 
 ## Locations: Akurdi · Chakan · Waluj · Pantnagar · Bangalore · Regional Offices

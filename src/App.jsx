@@ -1,62 +1,39 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/lib/queryClient'
 import { AUTH_CALLBACK_PATH, SIGNED_OUT_PATH } from '@/lib/env'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { AuthProvider } from '@/context/AuthContext'
-import { SidebarProvider, useSidebar } from '@/context/SidebarContext'
 import { UserProvider } from '@/context/UserContext'
 import RequireAuth from '@/components/auth/RequireAuth'
 import AuthCallback from '@/components/auth/AuthCallback'
 import SignedOut from '@/components/auth/SignedOut'
 import TopBanner from '@/components/layout/TopBanner'
 import Header from '@/components/layout/Header'
+import TodayRibbon from '@/components/layout/TodayRibbon'
 import MainContent from '@/components/layout/MainContent'
 import Footer from '@/components/layout/Footer'
 import FloatingSupportButton from '@/components/shared/FloatingSupportButton'
 import SplashScreen from '@/components/layout/SplashScreen'
 
-function FooterObserver({ footerRef }) {
-  const { setFooterVisible } = useSidebar()
-
-  useEffect(() => {
-    const el = footerRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => setFooterVisible(entry.isIntersecting),
-      { threshold: 0.05 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [footerRef, setFooterVisible])
-
-  return null
-}
-
 function AppShell({ splashDone }) {
-  const footerRef = useRef(null)
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <FooterObserver footerRef={footerRef} />
+    <div className="flex min-h-screen flex-col">
       <TopBanner />
       {/* The shell mounts under the splash, so the header's mark would form
           where nobody could see it. It replays as the splash clears instead. */}
       <Header revealMark={splashDone} />
-      <div className="flex flex-1 pt-[96px] md:pt-[116px]">
-        <MainContent />
-      </div>
-      <div ref={footerRef}>
-        <Footer />
-      </div>
+      <TodayRibbon />
+      <MainContent />
+      <Footer />
       <FloatingSupportButton />
     </div>
   )
 }
 
 /*
- * The intranet itself: one scrolling page, navigated by the sidebar's scroll
+ * The intranet itself: one scrolling page, navigated by the header's scroll
  * spy rather than by URL. Routing exists at this stage only to give sign-in
  * somewhere to land — deep links into articles and letters are their own piece
  * of work, and turning these sections into routes here would be that work done
@@ -72,9 +49,7 @@ function HomePage() {
     <>
       {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
       <UserProvider>
-        <SidebarProvider>
-          <AppShell splashDone={splashDone} />
-        </SidebarProvider>
+        <AppShell splashDone={splashDone} />
       </UserProvider>
     </>
   )

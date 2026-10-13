@@ -2,7 +2,11 @@ import { useState } from 'react'
 import utsahLogo from '@/assets/utsah-logo.svg'
 import CrecheIcon from '@/components/shared/CrecheIcon'
 import { DeliciaIcon, RaiseItRequestIcon } from '@/components/shared/ServiceIcons'
+import SectionHeading from '@/components/shared/SectionHeading'
+import Shelf from '@/components/shared/Shelf'
+import { CONTAINER } from '@/lib/layout'
 import VisitorGatepassWizard from './VisitorGatepassWizard'
+import { CrecheArt, DeliciaArt, GatepassArt, IntercomArt, RaiseItArt, UtsahArt } from './WorkplaceArt'
 
 // Supplied artwork (UTSAH.svg): a rounded-square gradient tile with the name
 // set across it. It goes through the icon slot rather than the card's `image`
@@ -76,183 +80,224 @@ function IntercomDeskIcon({ size = 24, className = '' }) {
   )
 }
 
-// These float free like the facilities above rather than sitting on a tinted
-// plate. The plates were built for single-colour line icons that took their
-// tint from `iconColor`; the supplied artwork brings its own palette, which
-// left it stranded at 18px on a pale square whose colour it argued with.
-const IT_LINKS = [
-  {
-    id: 'raise-request',
-    label: 'Raise IT Request',
-    sublabel: 'IT Summit Portal',
-    icon: RaiseItRequestIcon,
-    href: '#',
-    floatingIcon: true,
-    iconSize: 40,
-    hoverBorder: 'hover:border-blue-200',
-    hoverShadow: 'hover:shadow-blue-100/60',
-  },
-  {
-    id: 'intercom',
-    label: 'Intercom Support',
-    sublabel: 'Internal ticketing',
-    icon: IntercomDeskIcon,
-    href: '#',
-    floatingIcon: true,
-    iconSize: 40,
-    hoverBorder: 'hover:border-indigo-200',
-    hoverShadow: 'hover:shadow-indigo-100/60',
-  },
-  {
-    id: 'visitor-gatepass',
-    label: 'Visitor Gatepass',
-    sublabel: 'Guest entry request',
-    icon: VisitorGatepassIcon,
-    href: '#',
-    floatingIcon: true,
-    // Runs larger than the 40 its neighbours use: the artwork is a 77x72 canvas,
-    // so `size` sets its width and the shorter height leaves it reading smaller
-    // than the square icons beside it at a matching number.
-    iconSize: 52,
-    hoverBorder: 'hover:border-emerald-200',
-    hoverShadow: 'hover:shadow-emerald-100/60',
-  },
-]
-
-const FACILITIES = [
+/*
+ * Each item carries two looks: `art`, glossy 3D artwork, and `icon`, the supplied flat artwork. The switch beside the
+ * heading picks one, so both can be shown side by side in a review; the
+ * choice is remembered per browser. Neither sits on a card. `href: '#'` marks a destination nobody has given us
+ * yet: that item is shown but does not pretend to be a link.
+ */
+const WORKPLACE = [
   {
     id: 'utsah',
     label: 'Utsah',
-    sublabel: 'Recreation Centre',
     icon: UtsahIcon,
+    art: UtsahArt,
+    iconSize: 50,
     href: '#',
-    iconSize: 40,
-    floatingIcon: true,
-    hoverBorder: 'hover:border-purple-200',
-    hoverShadow: 'hover:shadow-purple-100/60',
   },
   {
     id: 'cresh',
     label: 'Crèche',
-    sublabel: 'Childcare',
     icon: CrecheIcon,
-    href: '#',
-    iconColor: '',
-    floatingIcon: true,
-    largeIcon: true,
+    art: CrecheArt,
     iconSize: 60,
-    hoverBorder: 'hover:border-rose-200',
-    hoverShadow: 'hover:shadow-rose-100/60',
+    href: '#',
   },
   {
     id: 'delicia',
     label: 'Delicia',
-    sublabel: 'Canteen',
     icon: DeliciaIcon,
+    art: DeliciaArt,
+    iconSize: 54,
     href: '#',
-    // The artwork carries its own colours, so there is nothing for a text
-    // colour to tint — same as Crèche above.
-    iconColor: '',
-    iconSize: 44,
-    floatingIcon: true,
-    hoverBorder: 'hover:border-amber-200',
-    hoverShadow: 'hover:shadow-amber-100/60',
+  },
+  {
+    id: 'raise-request',
+    label: 'Raise IT request',
+    icon: RaiseItRequestIcon,
+    art: RaiseItArt,
+    iconSize: 52,
+    href: '#',
+  },
+  {
+    id: 'intercom',
+    label: 'Intercom support',
+    icon: IntercomDeskIcon,
+    art: IntercomArt,
+    iconSize: 50,
+    href: '#',
+  },
+  {
+    id: 'visitor-gatepass',
+    label: 'Visitor gatepass',
+    icon: VisitorGatepassIcon,
+    art: GatepassArt,
+    // The artwork is a 77x72 canvas, so `size` sets its width and the shorter
+    // height leaves it reading smaller than its square neighbours.
+    iconSize: 60,
+    opensGatepass: true,
   },
 ]
 
-function ResourceLink({
-  label,
-  sublabel,
-  icon: Icon,
-  image,
-  imageClass = 'object-cover object-center',
-  href,
-  iconBg,
-  iconColor,
-  floatingIcon = false,
-  largeIcon = false,
-  iconSize,
-  hoverBorder,
-  hoverShadow,
-  onClick,
-}) {
+const STYLE_KEY = 'workplace-icon-style'
+const STYLES = [
+  { id: '3d', label: '3D' },
+  { id: 'classic', label: 'Classic' },
+]
+
+function readStyle() {
+  try {
+    return window.localStorage.getItem(STYLE_KEY) === 'classic' ? 'classic' : '3d'
+  } catch {
+    return '3d'
+  }
+}
+
+function StyleSwitch({ value, onChange }) {
   return (
-    <a
-      href={href}
-      onClick={(e) => {
-        e.preventDefault()
-        onClick?.()
-      }}
-      className={`site-surface-interactive group flex items-center gap-3 rounded-card border p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${hoverBorder} ${hoverShadow} focus-ring cursor-pointer`}
-    >
-      <div
-        className={`flex flex-shrink-0 items-center justify-center transition-transform duration-200 group-hover:scale-110 ${
-          largeIcon ? 'h-14 w-14' : 'h-10 w-10'
-        } ${
-          floatingIcon
-            ? image
-              ? 'overflow-hidden rounded-full drop-shadow-[0_5px_7px_rgba(15,23,42,0.2)]'
-              : ''
-            : `overflow-hidden rounded-xl ${iconBg} ring-1 ring-inset ring-black/5`
-        }`}
-      >
-        {image ? (
-          <img
-            src={image}
-            alt=""
-            className={`h-full w-full ${imageClass} mix-blend-multiply dark:bg-white`}
-          />
-        ) : (
-          <Icon
-            size={iconSize ?? (floatingIcon ? (largeIcon ? 52 : 36) : 18)}
-            className={`${iconColor} ${floatingIcon ? 'drop-shadow-[0_5px_7px_rgba(15,23,42,0.2)]' : ''}`}
-          />
-        )}
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-brand-primary">{label}</p>
-        <p className="text-xs text-brand-primary/55">{sublabel}</p>
-      </div>
-    </a>
+    <div role="radiogroup" aria-label="Icon style" className="flex gap-1 rounded-full bg-chip p-1">
+      {STYLES.map((s) => (
+        <button
+          key={s.id}
+          type="button"
+          role="radio"
+          aria-checked={value === s.id}
+          onClick={() => onChange(s.id)}
+          className={`h-7 rounded-full px-3 text-xs font-semibold transition-colors focus-ring ${
+            value === s.id ? 'bg-surface text-ink shadow-sm' : 'text-muted hover:text-ink'
+          }`}
+        >
+          {s.label}
+        </button>
+      ))}
+    </div>
   )
 }
 
-export default function ITResources({ title, stacked = false }) {
-  const [gatepassOpen, setGatepassOpen] = useState(false)
+const CARD =
+  'group relative flex w-[130px] flex-none snap-start flex-col items-center rounded-2xl px-1 pb-2 pt-4 text-center text-ink'
+
+// The artwork is flat, so the depth is lent to it: a hairline of darker
+// shadow straight beneath reads as an extruded edge, a softer one as lift, and
+// an oval on the "floor" grounds it. The overshoot easing gives the hover the
+// same hop and tilt as the Pitstop tiles.
+const DEPTH =
+  '[filter:drop-shadow(0_1px_0_rgba(15,23,42,0.22))_drop-shadow(0_2px_0_rgba(15,23,42,0.12))_drop-shadow(0_8px_8px_rgba(15,23,42,0.18))]'
+const SPRING = 'ease-[cubic-bezier(.34,1.56,.64,1)]'
+
+// The 3D artwork on its own: no pedestal or splash dots, just a soft oval on
+// the floor, with the Pitstop's overshoot hop and tilt on hover.
+function FloatingArt({ art: Art }) {
+  return (
+    <span className="relative flex h-20 w-20 items-center justify-center" aria-hidden="true">
+      <span
+        className={`absolute -bottom-1 left-1/2 h-2.5 w-14 -translate-x-1/2 rounded-[50%] bg-slate-900/15 blur-[3px] transition-all duration-500 group-hover:w-11 group-hover:bg-slate-900/10 dark:bg-black/50 ${SPRING}`}
+      />
+      <Art
+        size={76}
+        className={`relative drop-shadow-[0_8px_8px_rgba(15,22,32,0.16)] transition-transform duration-500 group-hover:-translate-y-2 group-hover:-rotate-[5deg] group-hover:scale-110 ${SPRING}`}
+      />
+    </span>
+  )
+}
+
+function CardBody({ label, icon: Icon, art, iconSize, linked = true, use3d }) {
+  if (use3d) {
+    return (
+      <>
+        <FloatingArt art={art} />
+        <span
+          className={`mt-3.5 text-sm font-semibold leading-tight ${linked ? 'group-hover:text-brand-primary' : ''}`}
+        >
+          {label}
+        </span>
+      </>
+    )
+  }
 
   return (
     <>
-      <section className="site-surface-tint tint-cream rounded-card border p-5">
-        <h2 className="mb-5 text-lg font-semibold text-brand-primary">
-          {title ?? 'Resources and Support Services'}
-        </h2>
+      <span className="relative flex h-16 w-16 items-center justify-center">
+        <span
+          aria-hidden
+          className={`absolute -bottom-1 left-1/2 h-2.5 w-12 -translate-x-1/2 rounded-[50%] bg-slate-900/15 blur-[3px] transition-all duration-500 group-hover:w-10 group-hover:bg-slate-900/10 dark:bg-black/50 ${SPRING}`}
+        />
+        <span
+          className={`relative transition-transform duration-500 group-hover:-translate-y-1.5 group-hover:-rotate-6 group-hover:scale-110 ${DEPTH} ${SPRING}`}
+        >
+          <Icon size={iconSize} />
+        </span>
+      </span>
+      <span className="mt-4">
+        <span
+          className={`text-sm font-semibold leading-tight ${linked ? 'group-hover:text-brand-primary' : ''}`}
+        >
+          {label}
+        </span>
+      </span>
+    </>
+  )
+}
 
-        <div className={`grid grid-cols-1 gap-5 ${stacked ? '' : 'lg:grid-cols-[0.95fr_1.05fr]'}`}>
-          <div className="site-surface-tint tint-sky tint-nested rounded-card border p-5">
-            <h3 className="mb-4 text-lg font-semibold text-brand-primary">
-              Facilities @ Bajaj Auto Limited
-            </h3>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-              {FACILITIES.map((item) => (
-                <ResourceLink key={item.id} {...item} />
-              ))}
-            </div>
-          </div>
+export default function ITResources() {
+  const [gatepassOpen, setGatepassOpen] = useState(false)
+  const [style, setStyle] = useState(readStyle)
+  const use3d = style === '3d'
 
-          <div className="site-surface-tint tint-green tint-nested rounded-card border p-5">
-            <h3 className="mb-4 text-lg font-semibold text-brand-primary">Tools and Services</h3>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-              {IT_LINKS.map((item) => (
-                <ResourceLink
-                  key={item.id}
-                  {...item}
-                  onClick={item.id === 'visitor-gatepass' ? () => setGatepassOpen(true) : undefined}
-                />
-              ))}
+  function changeStyle(next) {
+    setStyle(next)
+    try {
+      window.localStorage.setItem(STYLE_KEY, next)
+    } catch {
+      // Private window or blocked storage: the switch still works, it just won't be remembered.
+    }
+  }
+
+  return (
+    <>
+      <div className={CONTAINER}>
+        <SectionHeading id="workplace-heading" title="Your workplace." subtitle="Facilities, tools and services">
+          <StyleSwitch value={style} onChange={changeStyle} />
+        </SectionHeading>
+      </div>
+      <Shelf label="Workplace facilities and tools" className="pb-8 pt-6">
+        {WORKPLACE.map(({ id, opensGatepass, href, ...item }) => {
+          if (opensGatepass) {
+            return (
+              <div key={id} role="listitem" className="flex-none snap-start">
+                <button
+                  type="button"
+                  onClick={() => setGatepassOpen(true)}
+                  className={`${CARD} focus-ring`}
+                >
+                  <CardBody {...item} use3d={use3d} />
+                </button>
+              </div>
+            )
+          }
+
+          if (href && href !== '#') {
+            return (
+              <div key={id} role="listitem" className="flex-none snap-start">
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${CARD} focus-ring`}
+                >
+                  <CardBody {...item} use3d={use3d} />
+                </a>
+              </div>
+            )
+          }
+
+          return (
+            <div key={id} role="listitem" className={CARD}>
+              <CardBody {...item} use3d={use3d} linked={false} />
             </div>
-          </div>
-        </div>
-      </section>
+          )
+        })}
+      </Shelf>
 
       <VisitorGatepassWizard isOpen={gatepassOpen} onClose={() => setGatepassOpen(false)} />
     </>

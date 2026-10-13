@@ -8,6 +8,11 @@ export default function CsrHero({ activeView, onShowPrograms, onShowVolunteer })
     'bg-white text-emerald-700 hover:bg-emerald-50'
   const secondaryButton =
     'border border-white/35 bg-white/10 text-white hover:bg-white/20'
+  // The call to action: yellow whichever view is showing, so it never fades
+  // into the green behind it.
+  const volunteerButton = `bg-yellow-400 text-navy hover:bg-yellow-300 ${
+    activeView === 'volunteer' ? 'ring-2 ring-white/70' : ''
+  }`
 
   return (
     <div className="relative overflow-hidden rounded-card border border-emerald-900/10">
@@ -33,9 +38,9 @@ export default function CsrHero({ activeView, onShowPrograms, onShowVolunteer })
               type="button"
               onClick={onShowVolunteer}
               aria-pressed={activeView === 'volunteer'}
-              className={`${buttonBase} ${activeView === 'volunteer' ? primaryButton : secondaryButton}`}
+              className={`${buttonBase} ${volunteerButton}`}
             >
-              Volunteer with BAF
+              Volunteer TODAY!
               <ChevronRight size={14} />
             </button>
             <button

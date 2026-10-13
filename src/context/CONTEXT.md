@@ -7,15 +7,15 @@
 
 | File | State it holds |
 |---|---|
-| `SidebarContext.jsx` | `isExpanded` (bool), `toggleSidebar()`, `isMobileOpen` (bool), `setMobileOpen()` |
+| `ThemeContext.jsx` | `theme` ('light' | 'dark'), `toggleTheme()` |
 | `UserContext.jsx` | The signed-in employee as the *chrome* needs them: name, email, designation, department, avatar, role |
 | `AuthContext.jsx` | `enabled`, `isReady`, `isAuthenticated`, `account`, `claims`, `signIn()`, `signOut()` |
 
 ## Rules
 
-- `AuthProvider` wraps the router's `Routes` in `App.jsx`; `UserProvider` and
-  `SidebarProvider` sit inside the authenticated route, in that order
-- Consume with the `useSidebar()`, `useUser()` and `useAuth()` named hooks
+- `AuthProvider` wraps the router's `Routes` in `App.jsx`; `UserProvider` sits
+  inside the authenticated route
+- Consume with the `useTheme()`, `useUser()` and `useAuth()` named hooks
 - `AuthContext` is the only file allowed to touch `@azure/msal-react`. With
   `VITE_AUTH_MODE=off` it serves a frozen "signed in, no account" value so no
   consumer has to branch on the environment

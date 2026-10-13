@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Building2, ChevronRight, ExternalLink, Factory, MapPin, Satellite } from 'lucide-react'
+import {
+  ArrowLeft,
+  Building2,
+  ChevronRight,
+  ExternalLink,
+  Factory,
+  HeartHandshake,
+  MapPin,
+  Satellite,
+} from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
 import chetakSvgLogo from '@/assets/chetak svg.svg'
 
@@ -18,7 +27,7 @@ function ChetakLogoIcon({ size = 19, className = '' }) {
 const LOCATION_GROUPS = [
   {
     id: 'bajaj-auto',
-    label: 'Bajaj Auto',
+    label: 'Bajaj Auto Ltd',
     description: 'Manufacturing plants & headquarters',
     icon: Factory,
     subGroups: [
@@ -214,6 +223,25 @@ const LOCATION_GROUPS = [
         presence: 'South India tech hub',
         mapPosition: { x: '54%', y: '72%' },
         subLocations: ['BATL Office'],
+      },
+    ],
+  },
+  {
+    // Placeholder until the Foundation's own sites are confirmed.
+    id: 'bajaj-auto-foundation',
+    label: 'Bajaj Auto Foundation',
+    description: 'CSR & community initiatives',
+    icon: HeartHandshake,
+    locations: [
+      {
+        id: 'akurdi-baf',
+        name: 'Akurdi',
+        type: 'Foundation office',
+        country: 'India',
+        coordinates: '18.65 deg N, 73.77 deg E',
+        presence: 'Pune campus',
+        mapPosition: { x: '62%', y: '48%' },
+        subLocations: ['Foundation Office'],
       },
     ],
   },
@@ -555,24 +583,24 @@ function GlobePresence({ title }) {
         {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
       </div>
 
-      <div className="absolute left-5 top-24 z-20 hidden w-64 rounded-card border border-white/10 bg-[#061f48]/95 p-3 text-white shadow-modal backdrop-blur-md lg:block">
-        <div className="mb-4 rounded-card border border-white/10 bg-white/10 px-3 py-3">
-          <p className="text-4xl font-bold leading-none tracking-tight">{MARKET_COUNT}</p>
-          <p className="mt-1 text-sm text-white/65">Countries worldwide</p>
+      <div className="absolute bottom-5 left-5 top-5 z-20 hidden w-64 flex-col rounded-card border border-line/[0.08] bg-surface/95 p-3 text-ink shadow-soft backdrop-blur-md lg:flex">
+        <div className="mb-3 flex-none rounded-card bg-brand-primary px-3 py-3 text-center text-white">
+          <p className="text-4xl font-bold leading-none tracking-tight text-white">{MARKET_COUNT}</p>
+          <p className="mt-1 text-sm font-medium text-white/90">Countries worldwide</p>
         </div>
 
-        <div className="rounded-card border border-white/10 bg-white/5 p-2">
-          <div className="grid max-h-[230px] grid-cols-2 gap-1.5 overflow-y-auto pr-1 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/35">
+        <div className="flex min-h-0 flex-1 flex-col rounded-card bg-canvas p-2">
+          <div className="grid min-h-0 flex-1 auto-rows-min grid-cols-2 gap-1.5 overflow-y-auto pr-1 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-line/15 hover:[&::-webkit-scrollbar-thumb]:bg-line/30">
             {BAJAJ_COUNTRIES.map((country) => {
               const isActive = activeCountry === country.name
               return (
                 <button
                   key={country.name}
                   type="button"
-                  className={`min-w-0 rounded-btn border px-2.5 py-2 text-left text-[11px] font-medium transition-all focus-ring ${
+                  className={`min-w-0 rounded-btn border px-2.5 py-2 text-center text-[11px] font-medium transition-all focus-ring ${
                     isActive
-                      ? 'border-white/50 bg-white text-brand-dark shadow-[0_0_18px_rgba(255,255,255,0.22)]'
-                      : 'border-white/10 bg-white/5 text-white/70 hover:border-white/30 hover:bg-white/15 hover:text-white'
+                      ? 'border-brand-primary bg-brand-primary text-white shadow-[0_4px_12px_-4px_rgba(26,86,168,0.6)]'
+                      : 'border-transparent bg-surface text-ink hover:border-brand-primary/30 hover:text-brand-primary'
                   }`}
                   onMouseEnter={() => setActiveCountry(country.name)}
                   onMouseLeave={() => {
@@ -751,24 +779,31 @@ function PlantCard({ location }) {
   )
 }
 
-function GroupTile({ group, onEnter, onEnterSubGroup }) {
-  const Icon = group.icon
-  const hasSubGroups = Boolean(group.subGroups?.length)
-  const iconSize = group.iconSize ?? 19
+// Name and description only, no company icon, so each tile stays short
+// enough for four companies to share the globe's height.
+function GroupTileHeader({ group, interactive }) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[13px] font-semibold leading-tight text-text-primary">{group.label}</p>
+        <p className="truncate text-[11px] text-text-secondary">{group.description}</p>
+      </div>
+      {interactive && (
+        <ChevronRight
+          size={15}
+          className="flex-shrink-0 text-text-secondary transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
+        />
+      )}
+    </div>
+  )
+}
 
-  if (hasSubGroups) {
+function GroupTile({ group, onEnter, onEnterSubGroup }) {
+  if (group.subGroups?.length) {
     return (
-      <div className="site-surface-interactive relative w-full rounded-card border p-3">
-        <div className="flex items-start justify-between gap-2">
-          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10">
-            <Icon size={iconSize} />
-          </span>
-        </div>
-        <div className="mt-2">
-          <p className="text-[13px] font-semibold text-text-primary">{group.label}</p>
-          <p className="mt-0.5 text-xs text-text-secondary">{group.description}</p>
-        </div>
-        <div className="mt-2 flex flex-wrap gap-1.5">
+      <div className="site-surface-interactive relative w-full rounded-card border p-2.5 lg:flex-1">
+        <GroupTileHeader group={group} />
+        <div className="mt-2 flex flex-wrap gap-1">
           {group.subGroups.map((sg) => (
             <button
               key={sg.id}
@@ -789,25 +824,9 @@ function GroupTile({ group, onEnter, onEnterSubGroup }) {
     <button
       type="button"
       onClick={onEnter}
-      className="group site-surface-interactive relative w-full rounded-card border p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring"
+      className="group site-surface-interactive relative w-full rounded-card border p-2.5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring lg:flex-1"
     >
-      <div className="flex items-start justify-between gap-2">
-        <span
-          className={`flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-card bg-brand-light text-brand-primary ring-1 ring-brand-primary/10 transition-all duration-200 ${
-            group.preserveIconOnHover ? '' : 'group-hover:bg-brand-primary group-hover:text-white'
-          }`}
-        >
-          <Icon size={iconSize} />
-        </span>
-        <ChevronRight
-          size={16}
-          className="mt-0.5 flex-shrink-0 text-text-secondary transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
-        />
-      </div>
-      <div className="mt-2">
-        <p className="text-[13px] font-semibold text-text-primary">{group.label}</p>
-        <p className="mt-0.5 text-xs text-text-secondary">{group.description}</p>
-      </div>
+      <GroupTileHeader group={group} interactive />
       <div className="mt-2">
         <span className="rounded-full bg-brand-light px-2 py-0.5 text-[11px] font-semibold text-brand-primary">
           {group.locations.length} {group.locations.length === 1 ? 'location' : 'locations'}
@@ -819,7 +838,7 @@ function GroupTile({ group, onEnter, onEnterSubGroup }) {
 
 function LocationGroupRail({ onEnterGroup, onEnterSubGroup }) {
   return (
-    <div className="hidden h-[460px] w-[16rem] flex-col justify-between gap-3 lg:flex xl:w-[17rem] 2xl:w-[18rem]">
+    <div className="hidden h-[460px] w-[16rem] flex-col gap-2.5 lg:flex xl:w-[17rem] 2xl:w-[18rem]">
       {LOCATION_GROUPS.map((group) => (
         <GroupTile
           key={group.id}
@@ -868,7 +887,7 @@ export default function LocationsSection({ title }) {
             <GlobePresence title={title} />
             <LocationGroupRail onEnterGroup={setEnteredGroup} onEnterSubGroup={handleEnterSubGroup} />
           </div>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-3 sm:gap-4 lg:hidden">
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4 lg:hidden">
             {LOCATION_GROUPS.map((g) => (
               <GroupTile
                 key={g.id}

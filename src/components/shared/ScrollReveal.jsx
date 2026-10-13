@@ -36,7 +36,7 @@ export default function ScrollReveal({
     <Component
       ref={ref}
       className={`
-        scroll-mt-28 transition-all duration-500 ease-out
+        scroll-mt-32 transition-all duration-500 ease-out
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         ${className}
       `}

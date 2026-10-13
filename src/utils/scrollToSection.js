@@ -1,11 +1,12 @@
+import { SCROLL_TOP_OFFSET } from '@/lib/layout'
+
 /*
- * Scrolling to a section is done from three places now — the sidebar rail, the
- * header's Bajaj Bytes link, and anything else that grows a jump link — so the
- * offset lives here rather than being re-derived at each call site.
- *
- * TopBanner 36px + Header 80px on desktop + 8px breathing room.
+ * Scrolling to a section is done from several places — the header nav, the
+ * utility bar, the hero's quick links — so the offset lives here rather than
+ * being re-derived at each call site. The utility bar and the header are both
+ * pinned above the page.
  */
-export const SCROLL_TOP_OFFSET = 124
+export { SCROLL_TOP_OFFSET }
 
 export function scrollToSection(sectionId) {
   const el = document.getElementById(sectionId)

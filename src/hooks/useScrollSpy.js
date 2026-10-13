@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
+import { SCROLL_TOP_OFFSET } from '@/lib/layout'
 
-// 124px sticky header + 10% of viewport height so the section title is
-// comfortably visible before it activates, regardless of screen size
-const HEADER_HEIGHT = 124
+// The sticky header plus 10% of the viewport, so a section's title is
+// comfortably in view before it counts as the current one.
 function getThreshold() {
-  return HEADER_HEIGHT + Math.round(window.innerHeight * 0.1)
+  return SCROLL_TOP_OFFSET + Math.round(window.innerHeight * 0.1)
 }
 
 export function useScrollSpy(sectionIds) {

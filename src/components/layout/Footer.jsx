@@ -1,7 +1,9 @@
 import { Instagram, Linkedin } from 'lucide-react'
-import bajajFooterLockup from '@/assets/bajaj-footer-lockup.png'
 import { productBrand } from '@/config/brand.config'
-import StockTickerTape from '@/components/dashboard/StockTickerTape'
+import { services } from '@/config/services.config'
+import { footerColumns } from '@/config/navigation.config'
+import { CONTAINER } from '@/lib/layout'
+import { scrollToSection } from '@/utils/scrollToSection'
 
 const SOCIAL_LINKS = [
   {
@@ -17,49 +19,60 @@ const SOCIAL_LINKS = [
 ]
 
 const CURRENT_YEAR = new Date().getFullYear()
-const FOOTER_DESCRIPTION =
-  "With more than 18 million motorcycles sold in over 100 countries, Bajaj Auto is India's No. 1 motorcycle exporter, with two out of three bikes sold internationally carrying a Bajaj badge. The company is the world's largest manufacturer of three-wheelers and the first two/three-wheeler company to reach a market capitalisation of INR 1 trillion."
+
+const LINK = 'rounded transition-colors hover:text-brand-primary focus-ring'
+
+function FooterLink({ label, sectionId, serviceId }) {
+  if (sectionId) {
+    return (
+      <a
+        href={`#${sectionId}`}
+        onClick={(e) => {
+          e.preventDefault()
+          scrollToSection(sectionId)
+        }}
+        className={LINK}
+      >
+        {label}
+      </a>
+    )
+  }
+
+  const href = services.find((s) => s.id === serviceId)?.redirectUrl
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className={LINK}>
+      {label}
+    </a>
+  )
+}
 
 export default function Footer() {
   return (
-    <footer className="app-footer-chrome mt-8 text-white">
-      {/* The tape used to ride along the foot of the hero banner. With that
-          banner gone it rides the top edge of the footer instead — it belongs
-          to the footer now and is seen only when the footer is. */}
-      <StockTickerTape />
-
-      <div className="h-0.5 bg-gradient-to-r from-transparent via-white to-transparent opacity-20" />
-
-      <div className="mx-auto max-w-screen-xl px-4 pb-3 pt-4 md:px-6">
-        <div className="grid gap-5 lg:grid-cols-[1fr_1.8fr] lg:items-start">
-          <div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-              <div className="flex flex-shrink-0 items-center gap-3">
-                <img
-                  src={bajajFooterLockup}
-                  alt="Bajaj Auto - The World's Favourite Indian"
-                  className="h-10 w-auto object-contain sm:h-12"
-                />
-              </div>
-              <div className="hidden h-14 w-px flex-shrink-0 bg-white/25 sm:block" />
-              <div className="min-w-0">
-                <p className="text-xl font-bold leading-tight text-white sm:text-2xl">
-                  Bajaj Auto Ltd.
-                </p>
-                <p className="mt-0.5 font-wordmark text-xs italic tracking-wide text-white/55 sm:text-sm">
-                  Born in India. Loved by the World.
-                </p>
-              </div>
+    <footer className="mt-20 bg-[#ECEEF2] text-[13px] text-[#4A5260] dark:bg-[#0B111E] dark:text-muted">
+      <div className={`${CONTAINER} pb-8 pt-12`}>
+        <div className="grid grid-cols-2 gap-8 border-b border-[#D7DBE2] pb-8 dark:border-white/10 md:grid-cols-4">
+          {footerColumns.map((column) => (
+            <div key={column.heading} className="flex flex-col items-start gap-2.5">
+              <p className="mb-1 font-bold text-ink">{column.heading}</p>
+              {column.links.map((link) => (
+                <FooterLink key={link.label} {...link} />
+              ))}
             </div>
+          ))}
+        </div>
 
-            <div className="mt-4 flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-6">
+          <p>© {CURRENT_YEAR} Bajaj Auto Ltd. For internal use only.</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <p className="opacity-80">{productBrand.developedBy}</p>
+            <div className="flex items-center gap-2">
               {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary hover:shadow-lg focus-ring"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-surface text-ink shadow-sm transition-all hover:-translate-y-0.5 hover:bg-brand-primary hover:text-white focus-ring"
                   aria-label={`Visit Bajaj Auto on ${label}`}
                   title={label}
                 >
@@ -67,22 +80,6 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-
-            <p className="mt-2 text-xs text-white/40">
-              Copyright {CURRENT_YEAR} Bajaj Auto Ltd. All rights reserved.
-            </p>
-            {/* Build credit — set a step fainter than the copyright above it so
-                it reads as a watermark rather than as a second legal line. */}
-            <p className="mt-1 text-[11px] tracking-wide text-white/30">
-              {productBrand.developedBy}
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold leading-tight text-white md:text-2xl">
-              The World&apos;s Favourite Indian
-            </h2>
-            <p className="mt-1.5 text-sm leading-6 text-white/65">{FOOTER_DESCRIPTION}</p>
           </div>
         </div>
       </div>

@@ -38,7 +38,7 @@ export default function NoticesPanel() {
   const notices = noticesQuery.data
 
   return (
-    <div className="site-surface rounded-card border">
+    <div className="overflow-hidden rounded-2xl bg-surface shadow-lifted ring-1 ring-line/[0.06]">
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
         <div className="flex items-center gap-2">
           <FileText size={16} className="text-brand-primary" />
