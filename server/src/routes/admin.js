@@ -2,7 +2,8 @@ import { ADMIN_PURGE_TOKEN } from '../config.js'
 import { cacheSize, purge } from '../lib/cache.js'
 
 export default async function adminRoutes(app) {
-  app.get('/health', async () => ({
+  // Public: App Service's health probe has no token.
+  app.get('/health', { config: { public: true } }, async () => ({
     status: 'ok',
     uptimeSeconds: Math.round(process.uptime()),
     cachedEntries: cacheSize(),
@@ -15,7 +16,8 @@ export default async function adminRoutes(app) {
    * Disabled rather than open when no token is configured — an unauthenticated
    * cache purge is a free denial-of-service against the content source.
    */
-  app.post('/admin/cache/purge', async (request, reply) => {
+  // Public to the Entra check — it has its own shared-secret header instead.
+  app.post('/admin/cache/purge', { config: { public: true } }, async (request, reply) => {
     if (!ADMIN_PURGE_TOKEN) {
       return reply.code(503).send({ error: 'Purge is not configured.' })
     }

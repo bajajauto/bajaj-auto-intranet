@@ -22,8 +22,10 @@ The service worker exists only in `npm run build` output, never in `npm run dev`
 1. **HTTPS hosting reachable from the phone.** Either public hosting protected
    by Entra sign-in + Conditional Access, or internal hosting published through
    Entra Application Proxy / Microsoft Tunnel. Service workers require HTTPS.
-2. **API auth (step C).** The API must verify Entra JWTs before it is reachable
-   from outside the network.
+2. **API auth.** Done: the API verifies Entra JWTs and resolves the employee
+   from the token (see `server/CONTEXT.md`). Until SuccessFactors is wired in
+   (step E), letters work only for the single fixture employee; everyone else
+   gets a "no employee record" error on the letters page.
 3. **Entra app registration** (`bajaj-intranet-web`, SPA platform): add
    `https://<prod-host>/auth/callback` as a redirect URI and
    `https://<prod-host>/signed-out` as the logout URL. No Android-specific
