@@ -59,7 +59,7 @@ export default function Hero() {
         id="hero-heading"
         className="font-display text-[22px] font-semibold leading-tight tracking-[-0.015em] text-ink"
       >
-        {greetingFor(today)}, {firstName}.
+        {greetingFor(today)}, {firstName}
       </h1>
 
       <form role="search" onSubmit={handleSubmit} className="relative mt-4">
