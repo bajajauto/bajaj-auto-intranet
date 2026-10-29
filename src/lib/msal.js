@@ -34,7 +34,8 @@ const RETURN_TO_KEY = 'auth:returnTo'
  * from the shared plant terminal the session-storage rule below exists for.
  */
 const RUNNING_INSTALLED = ['standalone', 'fullscreen', 'minimal-ui'].some(
-  (mode) => window.matchMedia?.(`(display-mode: ${mode})`).matches,
+  // `globalThis.window`: verify-api loads this module in Node, where there is none.
+  (mode) => globalThis.window?.matchMedia?.(`(display-mode: ${mode})`).matches,
 )
 
 /*
