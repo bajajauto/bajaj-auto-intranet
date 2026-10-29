@@ -51,10 +51,43 @@ contracts would add a build step for types that could not flow anyway.
   across every employee.
 - Routes never touch the filesystem directly; they go through `store.read()`.
 
+## Auth
+
+Entra ID access tokens, verified in `src/lib/auth.js` with `jose` against the
+tenant's published keys. Every route is **private by default**; a route opts out
+with `{ config: { public: true } }` (only `/health` and the purge endpoint, which
+has its own secret). A verified request carries `request.user` —
+`{ oid, tenantId, name, upn, scopes }` — and nothing more.
+
+| Variable | Meaning |
+|---|---|
+| `AUTH_MODE` | `entra` or `off`. Defaults to `off` in dev and `entra` when `NODE_ENV=production`, so a missing value fails closed |
+| `AZURE_TENANT_ID` | The Bajaj tenant. Tokens from any other tenant are refused |
+| `AZURE_API_AUDIENCE` | The `bajaj-intranet-api` client id **and** its `api://` URI, comma-separated (v2 tokens carry one, v1 the other) |
+| `AZURE_API_SCOPE` | Delegated scope the `scp` claim must hold. Default `access_as_user` |
+
+| `EMPLOYEE_SOURCE` | `fixture` (default) or `successfactors` (step E, not built) |
+
+`AUTH_MODE=entra` without the tenant or audience refuses to start. App-only
+tokens (no `scp`) are rejected — there is no user behind them.
+
+**Employees come from the token, never the request.** `src/lib/employees.js`
+turns `request.user` into the HR record a letter certifies; `/letters/*` call
+`employeeFor(request, reply)` and nothing else. A signed-in account with no
+record gets 403 — never a fallback employee. The issuance log line carries the
+caller's `oid` beside the `empId`.
+
+```
+npm test           # signs tokens with a local key; no tenant needed
+```
+
 ## Not built yet, and why
 
-- **Auth.** Step 4. Every route is currently open; it binds to localhost in dev
-  and must not be exposed until token validation lands.
+- **SuccessFactors (auth step E).** `EMPLOYEE_SOURCE=successfactors` throws.
+  Until it lands, only the one account whose email matches the fixture employee
+  gets a record; every other signed-in user gets 403 on `/letters/*`.
+- **Per-user CSR stats.** `/csr/me/stats` is authenticated but still serves the
+  fixture's stats to every caller.
 - **Postgres.** Nothing writes yet. Feedback, volunteer signups and the gatepass
   are step 4 on the plan's numbering.
 - **The letter issuance log** is a structured log line, not a table. It becomes a

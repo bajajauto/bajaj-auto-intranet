@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { read } from '../lib/store.js'
 import { contracts, validate } from '../lib/contract.js'
+import { employeeFor } from '../lib/employees.js'
 import { composeLetter, composeForm } from '../../../src/services/letters/buildLetter.js'
 
 /*
@@ -38,8 +39,13 @@ const wireLetterSchema = contracts.employeeLetters.generate.returns.unwrap().omi
 const wireFormSchema = contracts.employeeLetters.generateForm.returns.unwrap().omit({ entity: true })
 
 export default async function lettersRoutes(app) {
-  app.get('/letters/employee', async (request) => {
-    const { employee } = await read('letters')
+  /*
+   * Every employee below comes from `employeeFor`, i.e. from the token. The
+   * signatories and entities are shared reference data and stay in the store.
+   */
+  app.get('/letters/employee', async (request, reply) => {
+    const employee = await employeeFor(request, reply)
+    if (!employee) return reply
     return validate(
       request,
       contracts.employeeLetters.getEmployee.returns,
@@ -64,7 +70,8 @@ export default async function lettersRoutes(app) {
       return reply.code(400).send({ error: 'Invalid request body.' })
     }
 
-    const { employee } = await read('letters')
+    const employee = await employeeFor(request, reply)
+    if (!employee) return reply
     const doc = composeLetter({
       letterTypeId: parsed.data.letterTypeId,
       employee,
@@ -77,7 +84,12 @@ export default async function lettersRoutes(app) {
      * a Postgres row, which is an audit requirement rather than a feature.
      */
     request.log.info(
-      { letterTypeId: doc.letterTypeId, empId: employee.empId, entityId: parsed.data.entityId },
+      {
+        letterTypeId: doc.letterTypeId,
+        empId: employee.empId,
+        entityId: parsed.data.entityId,
+        oid: request.user?.oid,
+      },
       'letter issued',
     )
 
@@ -90,7 +102,9 @@ export default async function lettersRoutes(app) {
       return reply.code(400).send({ error: 'Invalid request body.' })
     }
 
-    const [{ employee }, entities] = await Promise.all([read('letters'), read('entities')])
+    const employee = await employeeFor(request, reply)
+    if (!employee) return reply
+    const entities = await read('entities')
     const entity = entities[parsed.data.entityId]
     if (!entity) return reply.code(400).send({ error: 'Unknown entity.' })
 
@@ -103,7 +117,12 @@ export default async function lettersRoutes(app) {
     if (!doc) return reply.code(404).send(null)
 
     request.log.info(
-      { formId: doc.formId, empId: employee.empId, entityId: parsed.data.entityId },
+      {
+        formId: doc.formId,
+        empId: employee.empId,
+        entityId: parsed.data.entityId,
+        oid: request.user?.oid,
+      },
       'form issued',
     )
 
