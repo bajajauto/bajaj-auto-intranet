@@ -1,0 +1,38 @@
+# Deploys the server/ folder to the Azure App Service. App Service runs
+# `npm install` itself (SCM_DO_BUILD_DURING_DEPLOYMENT=true), so we ship
+# source only and run the tests first.
+#
+# Secret:   AZURE_API_PUBLISH_PROFILE  (App Service → Overview → Download publish profile)
+# Variable: AZURE_API_APP_NAME         (the App Service name)
+name: Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths: ['server/**']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+      - run: rm -rf node_modules
+
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_API_APP_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: server

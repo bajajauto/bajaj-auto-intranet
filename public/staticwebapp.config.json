@@ -1,0 +1,15 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/icons/*", "/forms/*", "/policies/*", "/vehicles/*", "*.{js,css,png,svg,ico,pdf,json,webmanifest}"]
+  },
+  "routes": [
+    { "route": "/sw.js", "headers": { "cache-control": "no-cache" } }
+  ],
+  "mimeTypes": { ".webmanifest": "application/manifest+json" },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  }
+}
