@@ -66,7 +66,10 @@ has its own secret). A verified request carries `request.user` —
 | `AZURE_API_AUDIENCE` | The `bajaj-intranet-api` client id **and** its `api://` URI, comma-separated (v2 tokens carry one, v1 the other) |
 | `AZURE_API_SCOPE` | Delegated scope the `scp` claim must hold. Default `access_as_user` |
 
-| `EMPLOYEE_SOURCE` | `fixture` (default) or `successfactors` (step E, not built) |
+| `EMPLOYEE_SOURCE` | `fixture` (default) or `successfactors` |
+| `SF_API_URL` | SuccessFactors API host — `https://api10.successfactors.com` for BALTEST |
+| `SF_USERNAME` / `SF_PASSWORD` | Basic-auth API user (`user@companyId`). App Service settings only, never committed |
+| `SF_TIMEOUT_MS` | Per-call timeout. Default `10000` |
 
 `AUTH_MODE=entra` without the tenant or audience refuses to start. App-only
 tokens (no `scp`) are rejected — there is no user behind them.
@@ -83,9 +86,15 @@ npm test           # signs tokens with a local key; no tenant needed
 
 ## Not built yet, and why
 
-- **SuccessFactors (auth step E).** `EMPLOYEE_SOURCE=successfactors` throws.
-  Until it lands, only the one account whose email matches the fixture employee
-  gets a record; every other signed-in user gets 403 on `/letters/*`.
+- **SuccessFactors keyed on email only.** `src/lib/successfactors.js` matches
+  the token's UPN to the *official* email (picklist `116528`) — three OData
+  reads, cached for `CACHE_TTL_SECONDS`. An email shared by two people, or a
+  person with no single current job row, gets 403. A record that fails the
+  letters contract gets 422 naming the blank fields. Only about 6,500 of
+  ~50,000 people in BALTEST have an official email; the rest cannot be
+  resolved until lookup moves to AD `employeeId` (needs IT to confirm it equals
+  the SuccessFactors user id). The state is a picklist code this API user
+  cannot read, so addresses end at city and PIN.
 - **Per-user CSR stats.** `/csr/me/stats` is authenticated but still serves the
   fixture's stats to every caller.
 - **Postgres.** Nothing writes yet. Feedback, volunteer signups and the gatepass
