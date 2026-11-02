@@ -5,7 +5,7 @@ import { pageDestinations } from '@/config/search.config'
 const MAX_RESULTS = 6
 
 // A Pitstop service with a real link opens it; one that opens a modal inside
-// its tile ('#') can only be pointed at, so it scrolls to the shelf.
+// its tile ('#') can only be pointed at, so it scrolls to the Pitstop card.
 const serviceEntries = services
   .filter((service) => service.enabled)
   .map((service) => {
@@ -15,7 +15,7 @@ const serviceEntries = services
       label: service.label,
       hint: 'Pitstop',
       href: external ? service.redirectUrl : undefined,
-      sectionId: external ? undefined : 'self-service',
+      sectionId: external ? undefined : 'pitstop',
       keywords: service.id.split('-'),
     }
   })

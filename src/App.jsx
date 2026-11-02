@@ -9,25 +9,23 @@ import { UserProvider } from '@/context/UserContext'
 import RequireAuth from '@/components/auth/RequireAuth'
 import AuthCallback from '@/components/auth/AuthCallback'
 import SignedOut from '@/components/auth/SignedOut'
-import TopBanner from '@/components/layout/TopBanner'
 import Header from '@/components/layout/Header'
-import TodayRibbon from '@/components/layout/TodayRibbon'
+import Sidebar from '@/components/layout/Sidebar'
 import MainContent from '@/components/layout/MainContent'
-import Footer from '@/components/layout/Footer'
+import SosModal from '@/components/emergency/SosModal'
 import FloatingSupportButton from '@/components/shared/FloatingSupportButton'
 import SplashScreen from '@/components/layout/SplashScreen'
 
-function AppShell({ splashDone }) {
+// Fixed top bar and icon rail, the scrolling page beside them, and the two
+// things any part of the page can summon: Jarvis and the SOS sheet.
+function AppShell() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <TopBanner />
-      {/* The shell mounts under the splash, so the header's mark would form
-          where nobody could see it. It replays as the splash clears instead. */}
-      <Header revealMark={splashDone} />
-      <TodayRibbon />
+    <div className="min-h-screen bg-white">
+      <Header />
+      <Sidebar />
       <MainContent />
-      <Footer />
       <FloatingSupportButton />
+      <SosModal />
     </div>
   )
 }
@@ -49,7 +47,7 @@ function HomePage() {
     <>
       {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
       <UserProvider>
-        <AppShell splashDone={splashDone} />
+        <AppShell />
       </UserProvider>
     </>
   )

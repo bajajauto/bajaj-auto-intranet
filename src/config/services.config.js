@@ -103,6 +103,27 @@ export const services = [
     icon: 'PerformanceManagementIcon',
     redirectUrl: '#',
     enabled: true,
+    // No single page: the tile opens a chooser of these three applications.
+    apps: [
+      {
+        id: 'top-potential',
+        label: 'Top Potential System',
+        description: 'Top potential identification',
+        href: 'https://top-potential-identification.bajajauto.com/',
+      },
+      {
+        id: 'self-development-plan',
+        label: 'Self Development Plan',
+        description: 'Plan and track your own development',
+        href: 'https://self-development-plan.bajajauto.com/',
+      },
+      {
+        id: 'dc-360',
+        label: 'DC & 360',
+        description: 'Development centre and 360° feedback',
+        href: 'https://dc-and-360-tool.bajajauto.com/',
+      },
+    ],
   },
   {
     id: 'it-summit',

@@ -12,6 +12,7 @@
  */
 
 export * from './_shared.js'
+export * from './attention.contract.js'
 export * from './bajajBytes.contract.js'
 export * from './calendar.contract.js'
 export * from './csr.contract.js'
@@ -25,6 +26,7 @@ export * from './stock.contract.js'
 export * from './vehicles.contract.js'
 export * from './youtube.contract.js'
 
+import { attentionContract } from './attention.contract.js'
 import { bajajBytesContract } from './bajajBytes.contract.js'
 import { calendarContract } from './calendar.contract.js'
 import { csrContract } from './csr.contract.js'
@@ -40,6 +42,7 @@ import { youtubeContract } from './youtube.contract.js'
 
 /** Every contract, keyed by service name. */
 export const contracts = {
+  attention: attentionContract,
   bajajBytes: bajajBytesContract,
   calendar: calendarContract,
   csr: csrContract,

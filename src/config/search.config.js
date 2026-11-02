@@ -4,77 +4,79 @@
  * the places on the page that are not services, with the words people are
  * likely to type for them.
  *
- * A destination is either a `sectionId` (scroll there) or an `href` (open it).
+ * A destination is a `sectionId` (scroll there), an `href` (open it), or an
+ * `action` the shell owns ('sos' opens the emergency sheet, 'helpline' the
+ * top bar's Helpline menu).
  */
 export const pageDestinations = [
   {
     id: 'calendar',
     label: 'Calendar & holidays',
     hint: 'Calendar',
-    sectionId: 'calendar',
+    sectionId: 'holidays',
     keywords: ['holiday', 'holidays', 'leave', 'events', 'meeting', 'calendar'],
   },
   {
     id: 'emergency',
     label: 'Emergency contacts',
-    hint: 'Help',
-    sectionId: 'emergency-contacts',
+    hint: 'Helpline',
+    action: 'sos',
     keywords: ['sos', 'fire', 'medical', 'dispensary', 'security', 'helpline', 'hr'],
   },
   {
     id: 'ethics',
     label: 'Ethics Helpline & POSH',
-    hint: 'Help',
-    sectionId: 'emergency-contacts',
+    hint: 'Helpline',
+    action: 'helpline',
     keywords: ['integrity', 'ethics', 'posh', 'complaint', 'harassment'],
   },
   {
     id: 'canteen',
     label: 'Delicia canteen',
-    hint: 'Workplace',
-    sectionId: 'it-resources',
+    hint: 'Support Services',
+    sectionId: 'resources',
     keywords: ['canteen', 'food', 'menu', 'lunch', 'delicia'],
   },
   {
     id: 'it-request',
     label: 'Raise an IT request',
-    hint: 'Workplace',
-    sectionId: 'it-resources',
+    hint: 'Support Services',
+    sectionId: 'resources',
     keywords: ['it', 'laptop', 'ticket', 'support', 'intercom', 'request'],
   },
   {
     id: 'gatepass',
     label: 'Visitor gatepass',
-    hint: 'Workplace',
-    sectionId: 'it-resources',
+    hint: 'Support Services',
+    sectionId: 'resources',
     keywords: ['visitor', 'guest', 'gatepass', 'entry'],
   },
   {
     id: 'utsah',
     label: 'Utsah & Crèche',
-    hint: 'Workplace',
-    sectionId: 'it-resources',
+    hint: 'Support Services',
+    sectionId: 'resources',
     keywords: ['utsah', 'recreation', 'creche', 'childcare', 'gym'],
   },
   {
     id: 'bytes',
     label: 'Bajaj Bytes',
     hint: 'Newsletter, podcast & videos',
-    sectionId: 'happening',
+    sectionId: 'news',
     keywords: ['newsletter', 'podcast', 'video', 'watch', 'bytes'],
   },
   {
     id: 'csr',
-    label: 'Community & CSR',
+    label: 'CSR',
     hint: 'Volunteer',
-    sectionId: 'csr',
+    sectionId: 'community',
     keywords: ['csr', 'volunteer', 'community', 'foundation'],
   },
   {
     id: 'presence',
     label: 'Bajaj Auto overview & presence',
     hint: 'About us',
-    sectionId: 'locations',
+    sectionId: 'about',
     keywords: ['about', 'company', 'plant', 'office', 'location', 'country', 'global', 'map'],
   },
   {
@@ -91,7 +93,7 @@ export const pageDestinations = [
 export const popularSearches = [
   { label: 'Leave balance', serviceId: 'leave-attendance' },
   { label: 'Payslip', serviceId: 'compensation' },
-  { label: 'Holiday list', sectionId: 'calendar' },
-  { label: 'Canteen menu', sectionId: 'it-resources' },
+  { label: 'Holiday list', sectionId: 'holidays' },
+  { label: 'Canteen menu', sectionId: 'resources' },
   { label: 'Mediclaim card', serviceId: 'mediclaim' },
 ]

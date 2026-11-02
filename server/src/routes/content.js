@@ -10,6 +10,8 @@ import { contracts, validate } from '../lib/contract.js'
 const COLLECTIONS = [
   { path: '/news', fixture: 'news', schema: contracts.news.getAll.returns },
   { path: '/notices', fixture: 'notices', schema: contracts.notices.getAll.returns },
+  // Per-employee once SuccessFactors is wired; one fixture for everyone until then.
+  { path: '/me/attention', fixture: 'attention', schema: contracts.attention.getSummary.returns },
   {
     path: '/notifications',
     fixture: 'notifications',

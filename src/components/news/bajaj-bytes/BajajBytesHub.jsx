@@ -12,8 +12,8 @@ const TABS = [
   { id: 'watch', label: 'Watch', icon: PlayCircle },
 ]
 
-export default function BajajBytesHub({ title, subtitle, headingId }) {
-  const [activeTab, setActiveTab] = useState('newsletters')
+export default function BajajBytesHub({ title, subtitle, headingId, initialTab = 'newsletters' }) {
+  const [activeTab, setActiveTab] = useState(initialTab)
   const [initialEpisodeId, setInitialEpisodeId] = useState(null)
 
   /*

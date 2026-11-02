@@ -24,6 +24,7 @@ export const queryClient = new QueryClient({
  * through a typo. Keys are arrays so a prefix invalidates a whole domain.
  */
 export const queryKeys = {
+  attention: ['attention'],
   news: ['news'],
   notices: ['notices'],
   notifications: ['notifications'],

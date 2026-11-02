@@ -1,51 +1,44 @@
 import { services } from '@/config/services.config'
-import Shelf from '@/components/shared/Shelf'
+import navPitstop from '@/assets/icons/ocean/nav-pitstop.webp'
+import Panel from '@/components/shared/Panel'
+import PanelTitle from '@/components/shared/PanelTitle'
 import ServiceTile from './ServiceTile'
 
 /*
- * Pitstop runs as one shelf, grouped by errand — each group is one tone, so the
- * groups stay legible as the row scrolls past. Within a group, tiles run
- * most-used first.
+ * All fifteen services in three rows of five, most-used first. A disabled
+ * service simply drops out.
  */
-const pitstopGroups = [
-  {
-    tone: 'blue',
-    label: 'Work and time',
-    ids: ['team-directory', 'leave-attendance', 'holiday-calendar', 'travel', 'policies'],
-  },
-  {
-    tone: 'green',
-    label: 'Pay, benefits and health',
-    ids: ['compensation', 'benefits', 'documents', 'mediclaim', 'health-wellness'],
-  },
-  {
-    tone: 'amber',
-    label: 'Growth and recognition',
-    ids: ['recognition-gem', 'idea-hub', 'bolt-learning', 'performance-management', 'it-summit'],
-  },
+const ORDER = [
+  'team-directory',
+  'leave-attendance',
+  'holiday-calendar',
+  'travel',
+  'policies',
+  'compensation',
+  'benefits',
+  'documents',
+  'mediclaim',
+  'health-wellness',
+  'recognition-gem',
+  'idea-hub',
+  'bolt-learning',
+  'performance-management',
+  'it-summit',
 ]
 
-// Flatten the groups into render order, carrying each tile's tone with it. A
-// disabled service simply drops out of its group.
-function orderServices(enabled) {
-  return pitstopGroups.flatMap((group) =>
-    group.ids
-      .map((id) => enabled.find((service) => service.id === id))
-      .filter(Boolean)
-      .map((service) => ({ ...service, tone: group.tone })),
-  )
-}
+const shown = ORDER.map((id) => services.find((service) => service.id === id && service.enabled)).filter(Boolean)
 
 export default function ServiceGrid() {
-  const orderedServices = orderServices(services.filter((s) => s.enabled))
-
   return (
-    <Shelf label="Pitstop services" gap="gap-2" className="pb-4 pt-2">
-      {orderedServices.map((service) => (
-        <div key={service.id} role="listitem" className="flex-none snap-start">
-          <ServiceTile {...service} />
-        </div>
-      ))}
-    </Shelf>
+    <Panel as="section" id="pitstop" aria-labelledby="pitstop-heading" className="scroll-mt-20 px-5 py-4 sm:px-6">
+      <PanelTitle id="pitstop-heading" icon={navPitstop} title="Pitstop" />
+      <ul className="mt-1 grid grid-cols-2 gap-x-2 gap-y-1 sm:grid-cols-3 md:grid-cols-5">
+        {shown.map((service) => (
+          <li key={service.id}>
+            <ServiceTile {...service} />
+          </li>
+        ))}
+      </ul>
+    </Panel>
   )
 }
