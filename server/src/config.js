@@ -53,6 +53,17 @@ export const AZURE_API_SCOPE = raw.AZURE_API_SCOPE ?? 'access_as_user'
 /*
  * Where the signed-in person's HR record comes from: `fixture` (the generated
  * employee, served only to the account whose email it carries) or
- * `successfactors` (step E).
+ * `successfactors` (Employee Central over OData, keyed on the token's UPN).
  */
 export const EMPLOYEE_SOURCE = raw.EMPLOYEE_SOURCE ?? 'fixture'
+
+/* --- SuccessFactors ------------------------------------------------------ */
+
+/** Data-centre API host, e.g. `https://api10.successfactors.com`. */
+export const SF_API_URL = raw.SF_API_URL ?? ''
+
+/* Basic auth, `user@companyId`. An App Service setting, never committed. */
+export const SF_USERNAME = raw.SF_USERNAME ?? ''
+export const SF_PASSWORD = raw.SF_PASSWORD ?? ''
+
+export const SF_TIMEOUT_MS = Number(raw.SF_TIMEOUT_MS ?? 10_000)
