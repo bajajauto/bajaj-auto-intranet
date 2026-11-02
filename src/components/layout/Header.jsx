@@ -1,89 +1,194 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Bell, ChevronDown, LogOut, Menu, Search, X } from 'lucide-react'
-import { useUser } from '@/context/UserContext'
-import { useAuth } from '@/context/AuthContext'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { AlertTriangle, ArrowUpRight, Bell, ChevronDown, Menu, X } from 'lucide-react'
 import { useNotices } from '@/hooks/useNotices'
-import { useScrollSpy } from '@/hooks/useScrollSpy'
+import { useSiteSearch } from '@/hooks/useSiteSearch'
 import NoticesPanel from '@/components/notices/NoticesPanel'
-import ThemeToggle from '@/components/shared/ThemeToggle'
-import UnionMark from '@/components/layout/UnionMark'
+import PoliciesBenefitsModal from '@/components/self-service/PoliciesBenefitsModal'
+import LettersModal from '@/components/self-service/letters/LettersModal'
 import bajajLockupBlue from '@/assets/bajaj-lockup-blue.png'
-import bajajLockupWhite from '@/assets/bajaj-footer-lockup.png'
-import { productBrand } from '@/config/brand.config'
-import { headerNav, pageSections } from '@/config/navigation.config'
-import { CONTAINER, SITE_SEARCH_ID } from '@/lib/layout'
+import jarvisAvatar from '@/assets/jarvis-blue.png'
+import { services } from '@/config/services.config'
+import { helpLinks } from '@/config/contacts.config'
+import { helplineMenu, topNav } from '@/config/navigation.config'
+import { SITE_SEARCH_ID } from '@/lib/layout'
+import { openJarvis } from '@/lib/jarvis'
+import { openSos } from '@/lib/sos'
 import { scrollToSection } from '@/utils/scrollToSection'
 
-// How often the header mark replays itself.
-const MARK_REPLAY_MS = 5000
-
-function initials(name) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join('')
+// Where a top-bar or Helpline entry goes: a link to open, or nothing yet.
+function hrefFor(item) {
+  if (item.serviceId) return services.find((s) => s.id === item.serviceId)?.redirectUrl
+  if (item.helpLinkId) return helpLinks.find((l) => l.id === item.helpLinkId)?.href
+  return item.href
 }
 
+const isReady = (href) => Boolean(href) && href !== '#'
+
+const NAV_LINK =
+  'inline-flex h-9 items-center gap-1 whitespace-nowrap rounded-lg px-2 text-[13px] font-medium text-[#2e1a30] transition-colors hover:bg-ocean-100 hover:text-ocean-700 focus-ring'
 const ICON_BUTTON =
-  'relative flex h-11 w-11 items-center justify-center rounded-xl text-ink transition-colors hover:bg-chip focus-ring'
+  'relative flex h-10 w-10 flex-none items-center justify-center rounded-xl border border-ocean-line bg-ocean-50 text-[#2d4357] shadow-ocean-sm transition-colors hover:bg-ocean-100 focus-ring'
+const PANEL =
+  'absolute top-full z-50 mt-2 overflow-hidden rounded-2xl border border-ocean-line bg-white shadow-ocean'
 
-export default function Header({ revealMark = false }) {
-  const user = useUser()
-  const { enabled: authEnabled, signOut } = useAuth()
-  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const [activeSection] = useScrollSpy(pageSections)
+function SiteSearch({ onAction }) {
+  const [query, setQuery] = useState('')
+  const results = useSiteSearch(query)
+  const open = query.trim().length > 0
 
-  const [isNoticesOpen, setNoticesOpen] = useState(false)
-  const [isProfileOpen, setProfileOpen] = useState(false)
-  const [isMenuOpen, setMenuOpen] = useState(false)
-  const [noticesSeen, setNoticesSeen] = useState(false)
+  function pick(result) {
+    setQuery('')
+    if (result.href) window.open(result.href, '_blank', 'noopener,noreferrer')
+    else if (result.action) onAction(result.action)
+    else if (result.sectionId) scrollToSection(result.sectionId)
+  }
 
+  return (
+    <form
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault()
+        if (results[0]) pick(results[0])
+      }}
+      className="relative w-full"
+    >
+      <label htmlFor={SITE_SEARCH_ID} className="sr-only">
+        Search the intranet
+      </label>
+      <div className="flex h-10 items-center gap-1.5 rounded-xl border border-ocean-line bg-ocean-50 pl-1 pr-3 shadow-ocean-sm focus-within:ring-2 focus-within:ring-ocean-600/40">
+        {/* Jarvis stands in for the magnifier: the search finds places on the
+            page, and anything it cannot find is a question for Jarvis. */}
+        <button
+          type="button"
+          onClick={openJarvis}
+          title="Ask Jarvis"
+          aria-label="Ask Jarvis"
+          className="flex h-8 w-8 flex-none items-center justify-center rounded-full transition-transform hover:scale-110 focus-ring"
+        >
+          <img src={jarvisAvatar} alt="" className="h-7 w-7 rounded-full object-cover" />
+        </button>
+        <input
+          id={SITE_SEARCH_ID}
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Escape' && setQuery('')}
+          placeholder="Search services, policies…"
+          autoComplete="off"
+          aria-controls="site-search-results"
+          aria-expanded={open}
+          className="h-full min-w-0 flex-1 border-0 bg-transparent text-[13px] text-ocean-ink outline-none placeholder:text-[#587d8c]"
+        />
+      </div>
+
+      {open && (
+        <div id="site-search-results" className={`${PANEL} right-0 w-[min(360px,calc(100vw-2rem))] p-1.5`}>
+          {results.length > 0 ? (
+            <ul aria-label="Search results">
+              {results.map((result) => (
+                <li key={result.id}>
+                  <button
+                    type="button"
+                    onClick={() => pick(result)}
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors hover:bg-ocean-100 focus-ring"
+                  >
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13px] font-semibold text-ocean-ink">
+                        {result.label}
+                      </span>
+                      <span className="block text-[11px] text-ocean-sub">{result.hint}</span>
+                    </span>
+                    {result.href && <ArrowUpRight size={15} className="flex-none text-ocean-sub" />}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="flex items-center justify-between gap-3 px-3 py-2">
+              <p className="text-[13px] text-ocean-sub">Nothing matches “{query.trim()}”.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery('')
+                  openJarvis()
+                }}
+                className="flex-none rounded-lg bg-ocean-100 px-3 py-1.5 text-xs font-semibold text-ocean-700 hover:bg-ocean-200 focus-ring"
+              >
+                Ask Jarvis
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </form>
+  )
+}
+
+function HelplineItems({ onPick }) {
+  return helplineMenu.map((item) => {
+    if (item.action === 'sos') {
+      return (
+        <button
+          key={item.id}
+          type="button"
+          onClick={() => onPick(item)}
+          className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-[13px] font-semibold text-[#bc271b] transition-colors hover:bg-[#fdeceb] focus-ring"
+        >
+          <AlertTriangle size={15} strokeWidth={2.2} />
+          {item.label}
+        </button>
+      )
+    }
+    const href = hrefFor(item)
+    return isReady(href) ? (
+      <a
+        key={item.id}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        onClick={() => onPick(item)}
+        className="flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-[13px] text-ocean-ink transition-colors hover:bg-ocean-100 focus-ring"
+      >
+        {item.label}
+        <ArrowUpRight size={14} className="text-ocean-sub" />
+      </a>
+    ) : (
+      <span
+        key={item.id}
+        title="Link coming soon"
+        className="flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-[13px] text-ocean-sub"
+      >
+        {item.label}
+        <span className="text-[11px]">Soon</span>
+      </span>
+    )
+  })
+}
+
+/*
+ * The one bar across the top: the Bajaj Auto lockup, the everyday shortcuts,
+ * the site search with Jarvis and notices. Below xl the
+ * shortcuts fold into a menu sheet so phones keep the same reach.
+ */
+export default function Header() {
   const notices = useNotices().data
   const noticeCount = notices.length
 
-  const noticesRef = useRef(null)
-  const profileRef = useRef(null)
-  const menuRef = useRef(null)
+  const [openMenu, setOpenMenu] = useState(null) // 'helpline' | 'notices' | 'mobile'
+  const [noticesSeen, setNoticesSeen] = useState(false)
+  const [modal, setModal] = useState(null) // 'policies' | 'letters'
+  const barRef = useRef(null)
 
-  // Remounting the mark is what restarts its animation — a CSS animation will
-  // not re-run on an element that never left. The header mounts underneath the
-  // splash, so the first run happens unseen; `revealMark` fires the one that
-  // matters, as the splash clears, and hovering the lockup asks for it again.
-  const [markRun, setMarkRun] = useState(0)
-  const replayMark = useCallback(() => setMarkRun((run) => run + 1), [])
+  const close = useCallback(() => setOpenMenu(null), [])
+  const toggle = (name) => setOpenMenu((current) => (current === name ? null : name))
 
   useEffect(() => {
-    if (revealMark) replayMark()
-  }, [revealMark, replayMark])
-
-  // ...and then on a loop, unless reduced motion is asked for: this is the one
-  // animation on the page that repeats forever on its own.
-  useEffect(() => {
-    if (prefersReducedMotion) return undefined
-    const id = setInterval(replayMark, MARK_REPLAY_MS)
-    return () => clearInterval(id)
-  }, [replayMark, prefersReducedMotion])
-
-  const closeAll = useCallback(() => {
-    setNoticesOpen(false)
-    setProfileOpen(false)
-    setMenuOpen(false)
-  }, [])
-
-  const anyOpen = isNoticesOpen || isProfileOpen || isMenuOpen
-
-  useEffect(() => {
-    if (!anyOpen) return undefined
+    if (!openMenu) return undefined
     function onMouseDown(e) {
-      if (noticesRef.current && !noticesRef.current.contains(e.target)) setNoticesOpen(false)
-      if (profileRef.current && !profileRef.current.contains(e.target)) setProfileOpen(false)
-      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false)
+      if (!barRef.current?.contains(e.target)) close()
     }
     function onKeyDown(e) {
-      if (e.key === 'Escape') closeAll()
+      if (e.key === 'Escape') close()
     }
     document.addEventListener('mousedown', onMouseDown)
     document.addEventListener('keydown', onKeyDown)
@@ -91,239 +196,178 @@ export default function Header({ revealMark = false }) {
       document.removeEventListener('mousedown', onMouseDown)
       document.removeEventListener('keydown', onKeyDown)
     }
-  }, [anyOpen, closeAll])
+  }, [openMenu, close])
 
-  function goTo(sectionId) {
-    closeAll()
-    scrollToSection(sectionId)
+  function runAction(action) {
+    close()
+    if (action === 'sos') openSos()
+    else if (action === 'helpline') setOpenMenu('helpline')
+    else if (action === 'policies' || action === 'letters') setModal(action)
   }
 
-  function handleSearchClick() {
-    closeAll()
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    document.getElementById(SITE_SEARCH_ID)?.focus({ preventScroll: true })
+  function pickHelpline(item) {
+    if (item.action) runAction(item.action)
+    else close()
   }
 
-  const isActive = (item) => item.covers.includes(activeSection)
+  function renderNavItem(item, { mobile = false } = {}) {
+    const cls = mobile
+      ? 'flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-[14px] font-medium text-ocean-ink transition-colors hover:bg-ocean-100 focus-ring'
+      : NAV_LINK
 
-  return (
-    <header className="sticky top-10 z-40 border-b border-line/[0.06] bg-canvas/80 backdrop-blur-xl backdrop-saturate-150">
-      <div className={`${CONTAINER} flex h-14 items-center gap-4 lg:gap-8`}>
-        {/* Lockup: the parent brand, then the product's own mark. */}
-        <a
-          href="#top"
-          onClick={(e) => {
-            e.preventDefault()
-            goTo('top')
-          }}
-          onMouseEnter={replayMark}
-          className="flex flex-shrink-0 select-none items-center gap-2 rounded-lg focus-ring md:gap-3"
-          aria-label={`${productBrand.name} — Bajaj Auto intranet home`}
-        >
-          {/* The Bajaj Auto lockup: brand blue on the light header, the
-              original white artwork on the dark one. The blue file is the white
-              one recoloured, so the two are the same shape exactly. */}
-          <img
-            src={bajajLockupBlue}
-            alt=""
-            className="h-8 w-auto object-contain dark:hidden sm:h-9 md:h-10"
-          />
-          <img
-            src={bajajLockupWhite}
-            alt=""
-            className="hidden h-8 w-auto object-contain dark:block sm:h-9 md:h-10"
-          />
-          <span className="h-7 w-px bg-line/20 md:h-9" aria-hidden="true" />
-          {/* The scene the mark assembles from overflows its box on both sides
-              for the couple of seconds it runs; the margin keeps the
-              motorcycle off the lockup on the way in. */}
-          <span className="ml-2 leading-none sm:ml-3 md:ml-5">
-            <UnionMark
-              key={markRun}
-              className="h-6 w-auto text-brand-primary dark:text-white sm:h-7 md:h-7"
-            />
-          </span>
-        </a>
-
-        <nav aria-label="Main" className="hidden items-center gap-6 text-sm font-medium xl:flex">
-          {headerNav.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.sectionId}`}
-              onClick={(e) => {
-                e.preventDefault()
-                goTo(item.sectionId)
-              }}
-              aria-current={isActive(item) ? 'location' : undefined}
-              className={`relative rounded py-1 transition-colors focus-ring ${
-                isActive(item) ? 'text-brand-primary' : 'text-ink hover:text-brand-primary'
-              }`}
-            >
-              {item.label}
-              {isActive(item) && (
-                <span className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-brand-primary" />
-              )}
-            </a>
-          ))}
-        </nav>
-
-        <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
+    if (item.action === 'helpline') {
+      if (mobile) return null
+      return (
+        <div key={item.id} className="relative">
           <button
             type="button"
-            onClick={handleSearchClick}
-            className={`${ICON_BUTTON} hidden sm:flex`}
-            aria-label="Search"
+            onClick={() => toggle('helpline')}
+            aria-expanded={openMenu === 'helpline'}
+            aria-haspopup="true"
+            className={`${NAV_LINK} ${openMenu === 'helpline' ? 'bg-ocean-100 text-ocean-700' : ''}`}
           >
-            <Search size={20} strokeWidth={1.8} />
+            {item.label}
+            <ChevronDown
+              size={14}
+              className={`transition-transform ${openMenu === 'helpline' ? 'rotate-180' : ''}`}
+            />
           </button>
+          {openMenu === 'helpline' && (
+            <div className={`${PANEL} left-0 w-72 p-1.5`}>
+              <HelplineItems onPick={pickHelpline} />
+            </div>
+          )}
+        </div>
+      )
+    }
 
-          <ThemeToggle />
+    if (item.action) {
+      return (
+        <button key={item.id} type="button" onClick={() => runAction(item.action)} className={cls}>
+          {item.label}
+        </button>
+      )
+    }
 
-          <div className="relative" ref={noticesRef}>
-            <button
-              type="button"
-              onClick={() => {
-                setProfileOpen(false)
-                setMenuOpen(false)
-                setNoticesOpen((v) => !v)
-                setNoticesSeen(true)
-              }}
-              aria-label={
-                noticeCount > 0 && !noticesSeen ? `Notices, ${noticeCount} unread` : 'Notices'
-              }
-              aria-expanded={isNoticesOpen}
-              aria-haspopup="true"
-              className={ICON_BUTTON}
-            >
-              <Bell size={20} strokeWidth={1.8} />
-              {noticeCount > 0 && !noticesSeen && (
-                <span className="absolute right-2 top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-orange px-1 text-[10px] font-bold leading-none text-white">
-                  {noticeCount > 9 ? '9+' : noticeCount}
-                </span>
-              )}
-            </button>
+    if (item.sectionId) {
+      return (
+        <a
+          key={item.id}
+          href={`#${item.sectionId}`}
+          onClick={(e) => {
+            e.preventDefault()
+            close()
+            scrollToSection(item.sectionId)
+          }}
+          className={cls}
+        >
+          {item.label}
+        </a>
+      )
+    }
 
-            {isNoticesOpen && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-2rem)] sm:left-1/2 sm:right-auto sm:-translate-x-1/2">
-                <NoticesPanel />
-              </div>
-            )}
-          </div>
+    const href = hrefFor(item)
+    return isReady(href) ? (
+      <a key={item.id} href={href} target="_blank" rel="noreferrer" onClick={close} className={cls}>
+        {item.label}
+      </a>
+    ) : (
+      <span
+        key={item.id}
+        title="Link coming soon"
+        aria-disabled="true"
+        className={`${cls} cursor-default opacity-60 hover:bg-transparent hover:text-[#2e1a30]`}
+      >
+        {item.label}
+      </span>
+    )
+  }
 
-          <div className="relative" ref={profileRef}>
-            <button
-              type="button"
-              onClick={() => {
-                setNoticesOpen(false)
-                setMenuOpen(false)
-                setProfileOpen((v) => !v)
-              }}
-              aria-label={`Account: ${user.name}`}
-              aria-expanded={isProfileOpen}
-              aria-haspopup="true"
-              className="flex h-11 items-center gap-1.5 rounded-full px-1.5 transition-colors hover:bg-chip focus-ring"
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-[13px] font-bold text-white">
-                {initials(user.name)}
-              </span>
-              <ChevronDown
-                size={14}
-                className={`hidden text-muted transition-transform duration-200 sm:block ${
-                  isProfileOpen ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
+  return (
+    <>
+      <header
+        ref={barRef}
+        className="fixed inset-x-0 top-0 z-50 border-b border-[#e3ecef] bg-[#fffefa]/95 backdrop-blur-md"
+      >
+        <div className="flex h-14 items-center gap-3 px-3 sm:px-5">
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault()
+              close()
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            className="flex flex-none items-center rounded-lg focus-ring"
+            aria-label="Bajaj Auto intranet home"
+          >
+            <img src={bajajLockupBlue} alt="" className="h-8 w-auto object-contain sm:h-9" />
+          </a>
 
-            {isProfileOpen && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-60 overflow-hidden rounded-2xl bg-surface shadow-lifted ring-1 ring-line/[0.06]">
-                <div className="flex items-center gap-3 px-4 py-3">
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-sm font-semibold text-white">
-                    {initials(user.name)}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-ink">{user.name}</p>
-                    <p className="truncate text-xs text-muted">{user.email}</p>
-                  </div>
-                </div>
+          <span className="mx-1 hidden h-7 w-px bg-[#c9cfd6] xl:block" aria-hidden="true" />
 
-                {/* Both come from optional claims or, later, SuccessFactors.
-                    Until one of those is wired the block would be an empty strip. */}
-                {(user.designation || user.department) && (
-                  <div className="border-t border-line/[0.06] px-4 py-2">
-                    {user.designation && <p className="text-xs text-muted">{user.designation}</p>}
-                    {user.department && <p className="text-xs text-muted">{user.department}</p>}
-                  </div>
-                )}
+          <nav aria-label="Shortcuts" className="hidden items-center gap-0.5 xl:flex">
+            {topNav.map((item) => renderNavItem(item))}
+          </nav>
 
-                <div className="border-t border-line/[0.06] p-2">
-                  {/* Stays disabled with VITE_AUTH_MODE=off: there is no session
-                      to end, and a button that appears to work but does nothing
-                      is worse on a shared terminal than one that plainly cannot. */}
-                  <button
-                    type="button"
-                    disabled={!authEnabled}
-                    onClick={authEnabled ? signOut : undefined}
-                    className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${
-                      authEnabled
-                        ? 'text-ink hover:bg-chip'
-                        : 'cursor-not-allowed text-muted opacity-50'
-                    }`}
-                    aria-label={authEnabled ? 'Sign out' : 'Sign out (sign-in is not enabled)'}
-                  >
-                    <LogOut size={14} />
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          <div className="ml-auto flex min-w-0 items-center gap-2">
+            <div className="hidden w-72 sm:block xl:w-[22rem] 2xl:w-[32rem]">
+              <SiteSearch onAction={runAction} />
+            </div>
 
-          {/* Below xl the nav folds into this sheet rather than disappearing —
-              phones need the same way round the page as desktops do. */}
-          <div className="relative xl:hidden" ref={menuRef}>
-            <button
-              type="button"
-              onClick={() => {
-                setNoticesOpen(false)
-                setProfileOpen(false)
-                setMenuOpen((v) => !v)
-              }}
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMenuOpen}
-              aria-haspopup="true"
-              className={ICON_BUTTON}
-            >
-              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-
-            {isMenuOpen && (
-              <nav
-                aria-label="Main"
-                className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl bg-surface p-2 shadow-lifted ring-1 ring-line/[0.06]"
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  toggle('notices')
+                  setNoticesSeen(true)
+                }}
+                aria-label={noticeCount > 0 && !noticesSeen ? `Notices, ${noticeCount} unread` : 'Notices'}
+                aria-expanded={openMenu === 'notices'}
+                aria-haspopup="true"
+                className={ICON_BUTTON}
               >
-                {headerNav.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.sectionId}`}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      goTo(item.sectionId)
-                    }}
-                    aria-current={isActive(item) ? 'location' : undefined}
-                    className={`flex items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors focus-ring ${
-                      isActive(item)
-                        ? 'bg-brand-primary/10 text-brand-primary'
-                        : 'text-ink hover:bg-chip'
-                    }`}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </nav>
-            )}
+                <Bell size={16} strokeWidth={1.9} />
+                {noticeCount > 0 && !noticesSeen && (
+                  <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#e33b35]" />
+                )}
+              </button>
+              {openMenu === 'notices' && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-2rem)]">
+                  <NoticesPanel />
+                </div>
+              )}
+            </div>
+
+            <div className="relative xl:hidden">
+              <button
+                type="button"
+                onClick={() => toggle('mobile')}
+                aria-label={openMenu === 'mobile' ? 'Close menu' : 'Open menu'}
+                aria-expanded={openMenu === 'mobile'}
+                aria-haspopup="true"
+                className={ICON_BUTTON}
+              >
+                {openMenu === 'mobile' ? <X size={18} /> : <Menu size={18} />}
+              </button>
+              {openMenu === 'mobile' && (
+                <div className={`${PANEL} right-0 max-h-[calc(100vh-5rem)] w-72 overflow-y-auto p-2`}>
+                  <div className="mb-2 sm:hidden">
+                    <SiteSearch onAction={runAction} />
+                  </div>
+                  <nav aria-label="Shortcuts">{topNav.map((item) => renderNavItem(item, { mobile: true }))}</nav>
+                  <p className="mt-2 border-t border-ocean-line px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-ocean-sub">
+                    Helpline
+                  </p>
+                  <HelplineItems onPick={pickHelpline} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {modal === 'policies' && <PoliciesBenefitsModal onClose={() => setModal(null)} />}
+      {modal === 'letters' && <LettersModal onClose={() => setModal(null)} />}
+    </>
   )
 }

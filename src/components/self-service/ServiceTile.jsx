@@ -1,23 +1,24 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { X } from 'lucide-react'
+import { ArrowUpRight, X } from 'lucide-react'
 import { iconMap } from '@/components/shared/iconMap'
 import holidayCalendarImage from '@/assets/holiday calendar.jpg'
-import teamDirectoryArt from '@/assets/icons/pitstop/team-directory.png'
-import leaveAttendanceArt from '@/assets/icons/pitstop/leave-attendance.png'
-import holidayCalendarArt from '@/assets/icons/pitstop/holiday-calendar.png'
-import travelArt from '@/assets/icons/pitstop/travel.png'
-import policiesArt from '@/assets/icons/pitstop/policies.png'
-import compensationArt from '@/assets/icons/pitstop/compensation.png'
-import benefitsArt from '@/assets/icons/pitstop/benefits.png'
-import documentsArt from '@/assets/icons/pitstop/documents-forms.png'
-import mediclaimArt from '@/assets/icons/pitstop/mediclaim-card.png'
-import healthWellnessArt from '@/assets/icons/pitstop/health-wellness.png'
+import teamDirectoryArt from '@/assets/icons/ocean/team-directory.webp'
+import leaveAttendanceArt from '@/assets/icons/ocean/leave-attendance.webp'
+import holidayCalendarArt from '@/assets/icons/ocean/holiday-calendar.webp'
+import travelArt from '@/assets/icons/ocean/travel.webp'
+import policiesArt from '@/assets/icons/ocean/policies.webp'
+import compensationArt from '@/assets/icons/ocean/compensation.webp'
+import benefitsArt from '@/assets/icons/ocean/benefits.webp'
+import documentsArt from '@/assets/icons/ocean/documents.webp'
+import mediclaimArt from '@/assets/icons/ocean/mediclaim.webp'
+import healthWellnessArt from '@/assets/icons/ocean/health-wellness.webp'
 import gemArt from '@/assets/icons/pitstop/gem.png'
 import ideaHubArt from '@/assets/icons/pitstop/idea-hub.png'
 import boltArt from '@/assets/icons/pitstop/bolt.png'
 import performanceArt from '@/assets/icons/pitstop/performance.png'
 import itSummitArt from '@/assets/icons/pitstop/it-summit.png'
+import Modal from '@/components/shared/Modal'
 import PoliciesBenefitsModal from './PoliciesBenefitsModal'
 import LettersModal from './letters/LettersModal'
 
@@ -43,40 +44,7 @@ const ARTWORK = {
   'it-summit': itSummitArt,
 }
 
-/*
- * One tone per errand group, assigned in ServiceGrid. Each tone is a pastel
- * pedestal the artwork stands on, a glow of the same hue beneath it, and three
- * paint-splash dots around it: a large one in the pedestal's tint, a small one
- * in a complementary colour, a tiny one in the tone's strong shade.
- *
- * Written out in full because Tailwind only generates class strings that exist
- * literally in the source.
- */
-const TONES = {
-  blue: {
-    splashLarge: 'bg-[#C9DDFB]',
-    splashSmall: 'bg-[#F7A35C]',
-    splashTiny: 'bg-[#5B9BF5]',
-    base: 'from-[#F1F6FE] to-[#D7E6FA] shadow-[inset_0_2px_0_rgba(255,255,255,0.95),inset_0_-4px_8px_rgba(11,79,168,0.10),0_12px_18px_-10px_rgba(11,79,168,0.45)]',
-  },
-  green: {
-    splashLarge: 'bg-[#BDEBD5]',
-    splashSmall: 'bg-[#F5C542]',
-    splashTiny: 'bg-[#34C189]',
-    base: 'from-[#F0FAF5] to-[#D3EFE1] shadow-[inset_0_2px_0_rgba(255,255,255,0.95),inset_0_-4px_8px_rgba(11,110,68,0.10),0_12px_18px_-10px_rgba(11,110,68,0.45)]',
-  },
-  amber: {
-    splashLarge: 'bg-[#FCDDB0]',
-    splashSmall: 'bg-[#5B9BF5]',
-    splashTiny: 'bg-[#F29A1F]',
-    base: 'from-[#FFF7EC] to-[#FBE2C2] shadow-[inset_0_2px_0_rgba(255,255,255,0.95),inset_0_-4px_8px_rgba(196,98,10,0.10),0_12px_18px_-10px_rgba(196,98,10,0.45)]',
-  },
-}
-
-const DEFAULT_TONE = 'blue'
-
-// The overshoot easing gives the hover its bounce: the artwork hops up, tilts
-// and grows, the pedestal widens under it, and the splashes swell.
+// The overshoot easing gives the hover its hop: the artwork lifts and grows.
 const SPRING = 'ease-[cubic-bezier(.34,1.56,.64,1)]'
 
 function ServiceDocumentModal({ title, titleId, onClose, children }) {
@@ -143,56 +111,80 @@ function ServiceDocumentModal({ title, titleId, onClose, children }) {
   )
 }
 
-function TileArt({ id, icon, tone }) {
-  const palette = TONES[tone] ?? TONES[DEFAULT_TONE]
+function TileArt({ id, icon }) {
   const art = ARTWORK[id]
   const Icon = iconMap[icon] ?? iconMap.ExternalLink
 
   return (
-    <span className="relative block h-[88px] w-[100px]" aria-hidden="true">
-      <span
-        className={`absolute right-0 top-0.5 h-[22px] w-[22px] rounded-full transition-transform duration-[450ms] ${SPRING} group-hover:scale-125 ${palette.splashLarge}`}
-      />
-      <span
-        className={`absolute bottom-1.5 left-0 h-2.5 w-2.5 rounded-full transition-transform duration-[450ms] ${SPRING} group-hover:scale-125 ${palette.splashSmall}`}
-      />
-      <span
-        className={`absolute left-1 top-[22px] h-1.5 w-1.5 rounded-full transition-transform duration-[450ms] ${SPRING} group-hover:scale-125 ${palette.splashTiny}`}
-      />
-      <span
-        className={`absolute inset-x-3.5 bottom-0 h-14 rounded-[22px] bg-gradient-to-b transition-transform duration-500 ${SPRING} group-hover:scale-x-[1.06] ${palette.base}`}
-      />
+    <span className="flex h-[48px] w-full items-end justify-center" aria-hidden="true">
       {art ? (
         <img
           src={art}
           alt=""
-          className={`absolute -top-3.5 left-2.5 h-20 w-20 object-contain drop-shadow-[0_10px_10px_rgba(15,22,32,0.18)] transition-[transform,filter] duration-500 ${SPRING} group-hover:-translate-y-2 group-hover:-rotate-[5deg] group-hover:scale-110 group-hover:drop-shadow-[0_16px_14px_rgba(15,22,32,0.22)]`}
+          className={`max-h-[48px] max-w-[64px] origin-[50%_90%] object-contain transition-[transform,filter] duration-[350ms] ${SPRING} group-hover:-translate-y-1.5 group-hover:scale-[1.08] group-hover:drop-shadow-[0_12px_9px_rgba(15,50,80,0.28)] group-focus-visible:-translate-y-1.5`}
         />
       ) : (
         <Icon
-          size={40}
-          strokeWidth={1.8}
-          className={`absolute left-[30px] top-3 text-brand-primary transition-transform duration-500 ${SPRING} group-hover:-translate-y-2 group-hover:scale-110`}
+          size={36}
+          strokeWidth={1.6}
+          className={`text-ocean-700 transition-transform duration-[350ms] ${SPRING} group-hover:-translate-y-1.5`}
         />
       )}
     </span>
   )
 }
 
-export default function ServiceTile({ id, label, icon, redirectUrl, tone }) {
+// A service made of several applications: the tile opens a short list of them.
+function AppChooser({ label, apps, content, className }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className={className} aria-haspopup="dialog">
+        {content}
+      </button>
+      <Modal isOpen={open} onClose={() => setOpen(false)} title={label}>
+        <ul className="space-y-2">
+          {apps.map((app) => (
+            <li key={app.id}>
+              <a
+                href={app.href}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-xl border border-ocean-line bg-ocean-50 px-4 py-3 transition-colors hover:bg-ocean-100 focus-ring"
+              >
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[14px] font-semibold text-ocean-ink">{app.label}</span>
+                  <span className="block text-[12px] text-ocean-sub">{app.description}</span>
+                </span>
+                <ArrowUpRight size={18} className="flex-none text-ocean-700" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Modal>
+    </>
+  )
+}
+
+export default function ServiceTile({ id, label, icon, redirectUrl, apps }) {
   const [isHolidayCalendarOpen, setHolidayCalendarOpen] = useState(false)
   const [isPoliciesOpen, setPoliciesOpen] = useState(false)
   const [isDocumentsOpen, setDocumentsOpen] = useState(false)
   const isClickable = redirectUrl && redirectUrl !== '#'
 
   const className =
-    'group flex w-[120px] flex-col items-center gap-3.5 rounded-2xl px-1 pb-2 pt-7 text-center text-ink focus-ring'
+    'group flex w-full flex-col items-center gap-1 rounded-2xl px-1 pb-1 pt-1.5 text-center text-ocean-ink focus-ring'
   const content = (
     <>
-      <TileArt id={id} icon={icon} tone={tone} />
-      <span className="text-sm font-semibold leading-tight">{label}</span>
+      <TileArt id={id} icon={icon} />
+      <span className="text-[12.5px] font-semibold leading-tight">{label}</span>
     </>
   )
+
+  if (apps?.length) {
+    return <AppChooser label={label} apps={apps} content={content} className={className} />
+  }
 
   if (isClickable) {
     return (
@@ -250,7 +242,7 @@ export default function ServiceTile({ id, label, icon, redirectUrl, tone }) {
     )
   }
 
-  // No destination yet (Team Directory, Performance, IT Summit). Disabled and
+  // No destination yet (Team Directory, IT Summit). Disabled and
   // labelled as such, rather than a button that silently does nothing.
   return (
     <button

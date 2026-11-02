@@ -1,130 +1,121 @@
 import { useState } from 'react'
-import { CheckCircle, MessageSquare } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
+import veryGood from '@/assets/icons/ocean/face-very-good.webp'
+import good from '@/assets/icons/ocean/face-good.webp'
+import neutral from '@/assets/icons/ocean/face-neutral.webp'
+import bad from '@/assets/icons/ocean/face-bad.webp'
+import veryBad from '@/assets/icons/ocean/face-very-bad.webp'
+import { productBrand } from '@/config/brand.config'
+import Panel from '@/components/shared/Panel'
 
 const RATINGS = [
-  { value: 1, emoji: '😞', label: 'Very unhappy' },
-  { value: 2, emoji: '🙁', label: 'Unhappy' },
-  { value: 3, emoji: '😐', label: 'Neutral' },
-  { value: 4, emoji: '🙂', label: 'Happy' },
-  { value: 5, emoji: '😍', label: 'Love it' },
+  { value: 5, face: veryGood, label: 'Very good' },
+  { value: 4, face: good, label: 'Good' },
+  { value: 3, face: neutral, label: 'Neutral' },
+  { value: 2, face: bad, label: 'Bad' },
+  { value: 1, face: veryBad, label: 'Very bad' },
 ]
 
 /*
- * A one-tap rating, then an optional note. The text box stays folded away
- * until asked for, so rating alone is a complete answer. Nothing is sent
- * anywhere yet — there is no feedback service behind this — so submitting
- * only thanks the reader.
+ * A one-tap rating, then an optional note. Rating alone is a complete answer.
+ * Nothing is sent anywhere yet — there is no feedback service behind this —
+ * so submitting only thanks the reader.
  */
 export default function FeedbackSection() {
   const [rating, setRating] = useState(null)
-  const [isWriting, setWriting] = useState(false)
   const [note, setNote] = useState('')
   const [isSent, setSent] = useState(false)
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    setSent(true)
-  }
-
   function reset() {
     setRating(null)
-    setWriting(false)
     setNote('')
     setSent(false)
   }
 
   return (
-    <div className="mx-auto max-w-xl text-center text-ink">
-      <div>
-        <p className="mb-1 text-[11px] font-bold tracking-[0.08em] text-accent-orange">FEEDBACK</p>
-        <h2
-          id="feedback-heading"
-          className="font-display text-[22px] font-semibold leading-tight tracking-[-0.015em]"
-        >
-          How is your experience?
-        </h2>
+    <Panel
+      as="section"
+      id="feedback"
+      aria-labelledby="feedback-heading"
+      surface="bg-gradient-to-r from-white via-[#c8d9e6] to-[#fcfdff]"
+      className="scroll-mt-20 rounded-[14px] px-5 py-5 sm:px-7"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-5">
+        <div>
+          <h2 id="feedback-heading" className="text-[22px] font-bold tracking-[-0.02em] text-black">
+            Help us make {productBrand.name} better.
+          </h2>
+          <p className="mt-1 text-[13px] text-black">How was your portal experience today?</p>
+        </div>
 
         {isSent ? (
-          <div role="status" className="mt-4 flex flex-col items-center gap-2">
-            <CheckCircle size={28} className="text-accent-green" />
-            <p className="text-sm text-muted">Thank you — your feedback was received.</p>
+          <div role="status" className="flex items-center gap-3 text-[14px] text-ocean-ink">
+            <CheckCircle size={22} className="text-ocean-700" />
+            Thank you — your feedback was received.
             <button
               type="button"
               onClick={reset}
-              className="rounded text-sm font-semibold text-brand-primary hover:text-brand-dark focus-ring dark:text-[#8fb5ec]"
+              className="rounded text-[13px] font-semibold text-ocean-700 hover:underline focus-ring"
             >
-              Send more feedback
+              Send more
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit}>
-            <div
-              role="radiogroup"
-              aria-label="Rate your experience"
-              className="mt-3 flex justify-center gap-2"
-            >
-              {RATINGS.map((r) => (
-                <button
-                  key={r.value}
-                  type="button"
-                  role="radio"
-                  aria-checked={rating === r.value}
-                  aria-label={r.label}
-                  title={r.label}
-                  onClick={() => setRating(r.value)}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-[22px] transition-all focus-ring sm:h-11 sm:w-11 sm:text-[24px] ${
-                    rating === r.value
-                      ? 'scale-110 bg-surface shadow-lifted ring-2 ring-brand-primary/40'
-                      : rating
-                        ? 'bg-chip opacity-50 hover:opacity-100'
-                        : 'bg-chip hover:scale-110 hover:bg-surface hover:shadow-soft'
-                  }`}
-                >
-                  <span aria-hidden="true">{r.emoji}</span>
-                </button>
-              ))}
-            </div>
-
-            {isWriting ? (
-              <div className="mt-4 text-left">
-                <label htmlFor="feedback-note" className="mb-2 block text-sm font-semibold">
-                  Tell us what you would like us to improve
-                </label>
-                <textarea
-                  id="feedback-note"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  rows={3}
-                  autoFocus
-                  placeholder="Something missing, broken or slow?"
-                  className="w-full resize-none rounded-2xl border-0 bg-surface px-4 py-2.5 text-sm text-ink shadow-soft outline-none ring-1 ring-line/[0.08] placeholder:text-muted focus:ring-2 focus:ring-brand-primary/40"
-                />
-              </div>
-            ) : (
+          <div role="radiogroup" aria-label="Rate your experience" className="flex gap-3 sm:gap-5">
+            {RATINGS.map((r) => (
               <button
+                key={r.value}
                 type="button"
-                onClick={() => setWriting(true)}
-                className="mt-3 inline-flex items-center gap-2 rounded text-sm font-semibold text-muted underline decoration-muted/40 underline-offset-4 hover:text-ink focus-ring"
+                role="radio"
+                aria-checked={rating === r.value}
+                onClick={() => setRating(r.value)}
+                className={`group flex w-14 flex-col items-center gap-1 rounded-xl focus-ring ${
+                  rating && rating !== r.value ? 'opacity-50 hover:opacity-100' : ''
+                }`}
               >
-                <MessageSquare size={14} />
-                Tell us what you would like us to improve
+                <img
+                  src={r.face}
+                  alt=""
+                  className={`h-[42px] w-[42px] object-contain transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:scale-110 ${
+                    rating === r.value ? 'scale-[1.15]' : ''
+                  }`}
+                />
+                <span className={`text-[11px] text-[#355987] ${rating === r.value ? 'font-bold' : 'font-semibold'}`}>
+                  {r.label}
+                </span>
               </button>
-            )}
-
-            {(rating || isWriting) && (
-              <div className="mt-3 flex justify-center">
-                <button
-                  type="submit"
-                  disabled={!rating && !note.trim()}
-                  className="inline-flex h-9 items-center rounded-full bg-brand-primary px-6 text-sm font-semibold text-white transition-transform hover:scale-[1.03] focus-ring disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
-                >
-                  Submit
-                </button>
-              </div>
-            )}
-          </form>
+            ))}
+          </div>
         )}
       </div>
-    </div>
+
+      {rating && !isSent && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            setSent(true)
+          }}
+          className="mt-4 flex flex-wrap items-end gap-3"
+        >
+          <label htmlFor="feedback-note" className="sr-only">
+            Tell us what you would like us to improve
+          </label>
+          <textarea
+            id="feedback-note"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            rows={2}
+            placeholder="Anything we should improve? (optional)"
+            className="min-w-0 flex-1 resize-none rounded-xl border border-ocean-line bg-white px-4 py-2.5 text-[13px] text-ocean-ink outline-none placeholder:text-ocean-sub focus:ring-2 focus:ring-ocean-600/40"
+          />
+          <button
+            type="submit"
+            className="h-10 rounded-[10px] bg-gradient-to-r from-[#0a344a] to-[#2289aa] px-6 text-[13px] font-semibold text-white hover:brightness-110 focus-ring"
+          >
+            Submit
+          </button>
+        </form>
+      )}
+    </Panel>
   )
 }

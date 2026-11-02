@@ -1,96 +1,47 @@
-import Hero from './Hero'
+import Greeting from '@/components/dashboard/Greeting'
+import Highlights from '@/components/dashboard/Highlights'
 import ServiceGrid from '@/components/self-service/ServiceGrid'
-import HappeningNow from '@/components/dashboard/HappeningNow'
+import HolidayCalendar from '@/components/calendar/HolidayCalendar'
 import ITResources from '@/components/it-resources/ITResources'
-import CalendarWidget from '@/components/calendar/CalendarWidget'
-import HelpSection from '@/components/emergency/HelpSection'
+import NewsBytes from '@/components/news/NewsBytes'
 import CsrSection from '@/components/csr/CsrSection'
 import LocationsSection from '@/components/locations/LocationsSection'
 import FeedbackSection from '@/components/feedback/FeedbackSection'
-import ScrollReveal from '@/components/shared/ScrollReveal'
-import SectionHeading from '@/components/shared/SectionHeading'
-import { CONTAINER } from '@/lib/layout'
-
-const MONTH = new Date().toLocaleDateString('en-IN', { month: 'long' })
+import Footer from '@/components/layout/Footer'
+import { PAGE } from '@/lib/layout'
 
 /*
- * Page order. The header's scroll spy walks these same ids in this same order
- * (navigation.config's pageSections) — move a section here, move it there too.
+ * Page order. The sidebar's scroll spy walks these same ids in this same order
+ * (pageSections in navigation.config.js) — keep the two in step.
  *
- * Shelves (Pitstop, Workplace, Happening now) run the full window width and
- * line their first card up with the column themselves, so only their heading
- * sits in CONTAINER. Everything else lives inside it.
- *
- * Section headings are "Statement. Subtitle" — the subtitle carries no full
- * stop of its own. Bajaj Bytes lives only on the Happening now shelf, and the
- * globe panel sits under the page's own heading voice.
+ * The page sits on the ocean wash: white at the edges deepening to steel blue
+ * through the middle, so the white cards stand off it.
  */
 export default function MainContent() {
   return (
-    <main className="min-w-0 flex-1">
-      <Hero />
+    <main className="min-h-screen min-w-0 bg-[linear-gradient(90deg,#fefefe_0%,#fff_6%,#e4ebf3_20%,#a1c0d4_38%,#52a3be_53%,#93b9ce_66%,#d6e2ee_80%,#fff_92%)] pt-14 lg:pl-[86px]">
+      <div className={`${PAGE} space-y-4 pb-2 pt-4`}>
+        <Greeting />
 
-      <section id="self-service" aria-labelledby="self-service-heading" className="scroll-mt-28 pt-2">
-        <h2 id="self-service-heading" className="sr-only">
-          Pitstop
-        </h2>
-        <ServiceGrid />
-      </section>
-
-      <ScrollReveal id="it-resources" aria-labelledby="workplace-heading" className="pt-12">
-        <ITResources />
-      </ScrollReveal>
-
-      <ScrollReveal id="happening" aria-labelledby="happening-heading" className="pt-6">
-        <div className={CONTAINER}>
-          <SectionHeading
-            id="happening-heading"
-            title="Happening now."
-            subtitle="What's on at Bajaj this month"
-          />
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_385px]">
+          <div className="min-w-0 space-y-4">
+            <ServiceGrid />
+            <ITResources />
+          </div>
+          <div className="flex flex-col gap-4 [&>#holidays]:flex-1">
+            <Highlights />
+            <HolidayCalendar />
+          </div>
         </div>
-        <HappeningNow />
-      </ScrollReveal>
 
-      <ScrollReveal
-        id="calendar"
-        aria-labelledby="calendar-heading"
-        className={`${CONTAINER} space-y-6 pt-8`}
-      >
-        <SectionHeading id="calendar-heading" title="Calendar." subtitle={`${MONTH} at a glance`} />
-        <CalendarWidget />
-      </ScrollReveal>
-
-      <ScrollReveal
-        id="emergency-contacts"
-        aria-labelledby="help-heading"
-        className={`${CONTAINER} space-y-6 pt-14`}
-      >
-        <SectionHeading
-          id="help-heading"
-          title="Help is here."
-          subtitle="Whenever, and however, you need it"
-        />
-        <HelpSection />
-      </ScrollReveal>
-
-      <ScrollReveal id="csr" aria-labelledby="csr-heading" className={`${CONTAINER} space-y-6 pt-14`}>
-        <SectionHeading id="csr-heading" title="Community & CSR." subtitle="Giving back, together" />
-        <CsrSection />
-      </ScrollReveal>
-
-      <ScrollReveal
-        id="locations"
-        aria-labelledby="locations-heading"
-        className={`${CONTAINER} space-y-6 pt-14`}
-      >
-        <SectionHeading id="locations-heading" title="Bajaj Auto." subtitle="Overview and Presence" />
+        <div className="grid gap-4 xl:grid-cols-2">
+          <CsrSection />
+          <NewsBytes />
+        </div>
         <LocationsSection />
-      </ScrollReveal>
-
-      <ScrollReveal id="feedback" aria-labelledby="feedback-heading" className={`${CONTAINER} pt-10`}>
         <FeedbackSection />
-      </ScrollReveal>
+        <Footer />
+      </div>
     </main>
   )
 }

@@ -56,6 +56,20 @@ export const calendarMock = {
         time: '11:00 am - 1:00 pm',
       },
       {
+        date: '2026-10-28',
+        label: 'Quarterly Town Hall',
+        type: 'event',
+        location: 'Akurdi Auditorium',
+        time: '4:00 pm - 5:30 pm',
+      },
+      {
+        date: '2026-11-18',
+        label: 'Annual Sports Meet',
+        type: 'event',
+        location: 'Chakan Grounds',
+        time: '8:00 am - 1:00 pm',
+      },
+      {
         date: todayKey,
         label: 'Leadership Sync',
         type: 'meeting',

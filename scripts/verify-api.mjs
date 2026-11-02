@@ -50,7 +50,7 @@ try {
   const api = async (file, name) =>
     (await vite.ssrLoadModule(`/src/services/adapters/api/${file}.js`))[name]
 
-  const [news, notices, notifications, calendar, stock, vehicles, bytes, podcast, videos, policies, csr, letters] =
+  const [news, notices, notifications, calendar, stock, vehicles, bytes, podcast, videos, policies, csr, letters, attention] =
     await Promise.all([
       api('newsApi', 'newsApi'), api('noticesApi', 'noticesApi'),
       api('notificationsApi', 'notificationsApi'), api('calendarApi', 'calendarApi'),
@@ -58,6 +58,7 @@ try {
       api('bajajBytesApi', 'bajajBytesApi'), api('podcastApi', 'podcastApi'),
       api('youtubeApi', 'youtubeApi'), api('policyLibraryApi', 'policyLibraryApi'),
       api('csrApi', 'csrApi'), api('employeeLettersApi', 'employeeLettersApi'),
+      api('attentionApi', 'attentionApi'),
     ])
 
   const c = contracts
@@ -65,6 +66,7 @@ try {
   console.log(`\ncollections  ${DIM(BASE)}`)
   report('GET /news', c.news.getAll.returns.safeParse(await news.getAll()))
   report('GET /notices', c.notices.getAll.returns.safeParse(await notices.getAll()))
+  report('GET /me/attention', c.attention.getSummary.returns.safeParse(await attention.getSummary()))
   report(
     'GET /notifications',
     c.notifications.getAll.returns.safeParse(await notifications.getAll()),

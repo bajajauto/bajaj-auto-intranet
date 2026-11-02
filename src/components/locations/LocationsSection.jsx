@@ -1,40 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  ArrowLeft,
-  Building2,
-  ChevronRight,
-  ExternalLink,
-  Factory,
-  HeartHandshake,
-  MapPin,
-  Satellite,
-} from 'lucide-react'
+import { ArrowLeft, ExternalLink, Factory, MapPin, RotateCcw, Satellite } from 'lucide-react'
 import earthMapUrl from '@/assets/globe/bluemarble-2048.png'
-import chetakSvgLogo from '@/assets/chetak svg.svg'
-
-function ChetakLogoIcon({ size = 19, className = '' }) {
-  return (
-    <img
-      src={chetakSvgLogo}
-      alt=""
-      aria-hidden="true"
-      style={{ width: size, height: size }}
-      className={`object-contain ${className}`}
-    />
-  )
-}
+import navAbout from '@/assets/icons/ocean/nav-about.webp'
+import Panel from '@/components/shared/Panel'
+import PanelTitle from '@/components/shared/PanelTitle'
 
 const LOCATION_GROUPS = [
   {
     id: 'bajaj-auto',
+    abbr: 'BA',
     label: 'Bajaj Auto Ltd',
     description: 'Manufacturing plants & headquarters',
-    icon: Factory,
     subGroups: [
       {
         id: 'manufacturing-plants',
         label: 'Manufacturing Plants',
-        icon: Factory,
         locations: [
           {
             id: 'chakan',
@@ -71,7 +51,6 @@ const LOCATION_GROUPS = [
       {
         id: 'headquarters',
         label: 'Headquarters',
-        icon: Building2,
         locations: [
           {
             id: 'akurdi',
@@ -88,7 +67,6 @@ const LOCATION_GROUPS = [
       {
         id: 'regional-offices',
         label: 'Regional Offices',
-        icon: MapPin,
         locations: [
           {
             id: 'mumbai-ro',
@@ -136,14 +114,13 @@ const LOCATION_GROUPS = [
   },
   {
     id: 'bajaj-auto-credit',
+    abbr: 'BAC',
     label: 'Bajaj Auto Credit Limited',
     description: 'Financial office network',
-    icon: Building2,
     subGroups: [
       {
         id: 'headquarters',
         label: 'Headquarters',
-        icon: Building2,
         locations: [
           {
             id: 'akurdi-bacl',
@@ -160,7 +137,6 @@ const LOCATION_GROUPS = [
       {
         id: 'regional-offices',
         label: 'Regional Offices',
-        icon: MapPin,
         locations: [
           {
             id: 'mumbai-bacl',
@@ -208,11 +184,9 @@ const LOCATION_GROUPS = [
   },
   {
     id: 'bajaj-auto-technology',
+    abbr: 'BAT',
     label: 'Bajaj Auto Technology Limited',
     description: 'Technology & digital hub',
-    icon: ChetakLogoIcon,
-    iconSize: 72,
-    preserveIconOnHover: true,
     locations: [
       {
         id: 'bangalore-batl',
@@ -229,9 +203,9 @@ const LOCATION_GROUPS = [
   {
     // Placeholder until the Foundation's own sites are confirmed.
     id: 'bajaj-auto-foundation',
+    abbr: 'BAF',
     label: 'Bajaj Auto Foundation',
     description: 'CSR & community initiatives',
-    icon: HeartHandshake,
     locations: [
       {
         id: 'akurdi-baf',
@@ -295,28 +269,48 @@ const BAJAJ_COUNTRIES = [
 
 const MARKET_COUNT = 108
 
-function GlobePresence({ title }) {
+// Region buttons turn the globe to a centre point and hold it there.
+const REGIONS = [
+  { id: 'global', label: 'Global' },
+  { id: 'americas', label: 'Americas', lat: 2, lng: -72 },
+  { id: 'europe', label: 'Europe', lat: 48, lng: 12 },
+  { id: 'africa', label: 'Africa', lat: 4, lng: 22 },
+  { id: 'apac', label: 'Asia Pacific', lat: 14, lng: 110 },
+]
+
+const CAMERA_Z = { min: 4.3, max: 7.2, start: 5.45 }
+
+/*
+ * The 3D globe. It spins on its own, pauses while a marker is hovered, turns
+ * to a country or region when asked, and can be dragged round by hand. The
+ * parent drives it through `controlsRef` — flyTo, reset, setPaused, zoom —
+ * rather than through props, because each is an instruction to an animation
+ * loop that runs outside React, not state to render.
+ */
+function GlobePresence({ controlsRef, activeCountry, onActiveCountry }) {
   const mountRef = useRef(null)
   const markerRefs = useRef({})
   const isPausedRef = useRef(false)
-  const targetCountryRef = useRef(null)
-  const [activeCountry, setActiveCountry] = useState('India')
+  const userPausedRef = useRef(false)
+  const targetRef = useRef(null)
+  const setActive = useRef(onActiveCountry)
+  setActive.current = onActiveCountry
 
   const pauseOnCountry = (countryName) => {
     isPausedRef.current = true
-    setActiveCountry(countryName)
+    setActive.current(countryName)
   }
 
   const resumeGlobe = () => {
-    if (targetCountryRef.current) return
-    isPausedRef.current = false
-    setActiveCountry('India')
+    if (targetRef.current) return
+    isPausedRef.current = userPausedRef.current
+    setActive.current('India')
   }
 
   const flyToCountry = (country) => {
-    targetCountryRef.current = country
+    targetRef.current = country
     isPausedRef.current = false
-    setActiveCountry(country.name)
+    setActive.current(country.name)
   }
 
   useEffect(() => {
@@ -332,7 +326,7 @@ function GlobePresence({ title }) {
 
       const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(35, mount.clientWidth / mount.clientHeight, 0.1, 100)
-      camera.position.set(0, 0, 5.45)
+      camera.position.set(0, 0, CAMERA_Z.start)
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -360,31 +354,7 @@ function GlobePresence({ title }) {
         )
       }
 
-      // The globe is nudged right to clear the country-list panel that overlays
-      // its left; on mobile there is no panel, so keep it centered.
-      //
-      // The width being tested is the canvas, not the window — and the canvas
-      // is a good deal narrower, about 890px inside a 1280px viewport. Against
-      // the old 1024 threshold the nudge therefore never fired on ordinary
-      // desktops: the branch that existed to clear the panel was dead, and the
-      // globe sat centred with its left limb and those countries' labels
-      // behind the panel. 640 is the canvas width that corresponds to the `lg`
-      // viewport where the panel appears.
-      //
-      // The offset then scales with the canvas rather than being one constant:
-      // a small desktop needs enough to clear the panel, a wide one has far
-      // more room to the right and looks lopsided if it barely moves. Units are
-      // world units — the sphere's own radius is 1.55, the atmosphere shell
-      // 1.66 — and the ceiling is what keeps the right limb off the edge.
-      const getOffsetX = (w) => {
-        if (w < 640) return 0
-        const t = Math.min(Math.max((w - 640) / 700, 0), 1)
-        return 0.55 + t * 0.65
-      }
-      let globeOffsetX = getOffsetX(mount.clientWidth)
-
       const globeGroup = new THREE.Group()
-      globeGroup.position.x = globeOffsetX
       globeGroup.rotation.y = -0.75
       const baseRotationX = THREE.MathUtils.degToRad(-8)
       globeGroup.rotation.x = baseRotationX
@@ -398,36 +368,18 @@ function GlobePresence({ title }) {
         emissive: new THREE.Color('#03152e'),
         emissiveIntensity: 0.08,
       })
-      const earth = new THREE.Mesh(earthGeometry, earthMaterial)
-      globeGroup.add(earth)
+      globeGroup.add(new THREE.Mesh(earthGeometry, earthMaterial))
 
       const atmosphereGeometry = new THREE.SphereGeometry(1.66, 128, 128)
       const atmosphereMaterial = new THREE.MeshBasicMaterial({
-        color: '#8bdcff',
+        color: '#5fb6d6',
         transparent: true,
-        opacity: 0.18,
-        blending: THREE.AdditiveBlending,
+        opacity: 0.22,
         side: THREE.BackSide,
         depthWrite: false,
       })
       const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
-      atmosphere.position.x = globeOffsetX
       scene.add(atmosphere)
-
-      const starGeometry = new THREE.BufferGeometry()
-      const starPositions = []
-      for (let i = 0; i < 120; i += 1) {
-        starPositions.push((Math.random() - 0.5) * 9, (Math.random() - 0.5) * 6, -3 - Math.random() * 5)
-      }
-      starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3))
-      const starMaterial = new THREE.PointsMaterial({
-        color: '#dbeafe',
-        size: 0.012,
-        transparent: true,
-        opacity: 0.55,
-      })
-      const stars = new THREE.Points(starGeometry, starMaterial)
-      scene.add(stars)
 
       scene.add(new THREE.AmbientLight('#9cc9ff', 0.7))
       const sunLight = new THREE.DirectionalLight('#ffffff', 3.2)
@@ -437,79 +389,102 @@ function GlobePresence({ title }) {
       rimLight.position.set(-4, 0.4, -1.8)
       scene.add(rimLight)
 
-      const countryVecs = BAJAJ_COUNTRIES.map((c) => ({
-        name: c.name,
-        lat: c.lat,
-        lng: c.lng,
-        vec: latLngToVector3(c.lat, c.lng, 1.68),
-      }))
-
+      const countryVecs = BAJAJ_COUNTRIES.map((c) => ({ name: c.name, vec: latLngToVector3(c.lat, c.lng, 1.68) }))
       const normalizeRotation = (angle) => Math.atan2(Math.sin(angle), Math.cos(angle))
 
-      const focusCountry = (country) => {
-        const countryVec = latLngToVector3(country.lat, country.lng, 1)
-        const targetY = normalizeRotation(Math.atan2(-countryVec.x, countryVec.z))
+      const focusOn = (target) => {
+        const v = latLngToVector3(target.lat, target.lng, 1)
+        const targetY = normalizeRotation(Math.atan2(-v.x, v.z))
         const targetX = THREE.MathUtils.clamp(
-          baseRotationX + THREE.MathUtils.degToRad(country.lat) * 0.35,
+          baseRotationX + THREE.MathUtils.degToRad(target.lat) * 0.35,
           THREE.MathUtils.degToRad(-32),
           THREE.MathUtils.degToRad(24)
         )
         const yDelta = normalizeRotation(targetY - globeGroup.rotation.y)
         globeGroup.rotation.y += yDelta * 0.08
         globeGroup.rotation.x += (targetX - globeGroup.rotation.x) * 0.08
-
         if (Math.abs(yDelta) < 0.004 && Math.abs(targetX - globeGroup.rotation.x) < 0.004) {
-          targetCountryRef.current = null
+          targetRef.current = null
           isPausedRef.current = true
         }
       }
+
+      let zoomTarget = CAMERA_Z.start
+      controlsRef.current = {
+        flyTo(target) {
+          targetRef.current = target
+          isPausedRef.current = false
+        },
+        reset() {
+          targetRef.current = null
+          userPausedRef.current = false
+          isPausedRef.current = false
+          zoomTarget = CAMERA_Z.start
+        },
+        setPaused(paused) {
+          userPausedRef.current = paused
+          isPausedRef.current = paused
+        },
+        zoom(direction) {
+          zoomTarget = THREE.MathUtils.clamp(zoomTarget - direction * 0.6, CAMERA_Z.min, CAMERA_Z.max)
+        },
+      }
+
+      // Drag to rotate. A drag cancels any fly-to in progress and holds the
+      // globe where it is let go, as a paused globe does.
+      let drag = null
+      const onPointerDown = (e) => {
+        drag = { x: e.clientX, y: e.clientY }
+        targetRef.current = null
+        isPausedRef.current = true
+        mount.setPointerCapture(e.pointerId)
+      }
+      const onPointerMove = (e) => {
+        if (!drag) return
+        globeGroup.rotation.y += (e.clientX - drag.x) * 0.006
+        globeGroup.rotation.x = THREE.MathUtils.clamp(
+          globeGroup.rotation.x + (e.clientY - drag.y) * 0.004,
+          THREE.MathUtils.degToRad(-40),
+          THREE.MathUtils.degToRad(40)
+        )
+        drag = { x: e.clientX, y: e.clientY }
+      }
+      const onPointerUp = () => {
+        drag = null
+      }
+      mount.addEventListener('pointerdown', onPointerDown)
+      mount.addEventListener('pointermove', onPointerMove)
+      mount.addEventListener('pointerup', onPointerUp)
+      mount.addEventListener('pointercancel', onPointerUp)
 
       const resizeObserver = new ResizeObserver(([entry]) => {
         const { width, height } = entry.contentRect
         camera.aspect = width / height
         camera.updateProjectionMatrix()
         renderer.setSize(width, height)
-        globeOffsetX = getOffsetX(width)
-        globeGroup.position.x = globeOffsetX
-        atmosphere.position.x = globeOffsetX
       })
       resizeObserver.observe(mount)
 
       const updateMarkers = () => {
         const { clientWidth: w, clientHeight: h } = mount
-        const safeInsetX = 34
-        const safeInsetTop = 52
-        const safeInsetBottom = 34
         countryVecs.forEach(({ name, vec }) => {
           const el = markerRefs.current[name]
           if (!el) return
           const world = vec.clone().applyMatrix4(globeGroup.matrixWorld)
           const screen = world.clone().project(camera)
           const visible = world.z > -0.18
-          const x = (screen.x * 0.5 + 0.5) * w
-          const y = (-screen.y * 0.5 + 0.5) * h
-          const safeX = Math.min(Math.max(x, safeInsetX), w - safeInsetX)
-          const safeY = Math.min(Math.max(y, safeInsetTop), h - safeInsetBottom)
-          el.style.transform = `translate(calc(${safeX}px - 50%), calc(${safeY}px - 50%))`
+          const x = Math.min(Math.max((screen.x * 0.5 + 0.5) * w, 30), w - 30)
+          const y = Math.min(Math.max((-screen.y * 0.5 + 0.5) * h, 40), h - 20)
+          el.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`
           el.style.opacity = visible ? '1' : '0'
           el.style.pointerEvents = visible ? 'auto' : 'none'
           el.tabIndex = visible ? 0 : -1
         })
       }
 
-      // The globe used to render and rewrite every marker's transform on every
-      // frame for as long as the page was open — scrolled past, tab in the
-      // background, or buried under a modal, it made no difference.
-      //
-      // Buried under a modal is the expensive one. `#root.modal-open` puts a
-      // 6px blur over the whole app, and a blur has to be recomputed for the
-      // entire viewport whenever anything inside it moves. The globe moved
-      // sixty times a second, so opening the vehicle turntable meant re-blurring
-      // the page under every spin, on top of the spin's own work.
-      //
-      // Nothing here is worth drawing when it cannot be seen, so it isn't. The
-      // rAF loop stays alive to notice when that changes, which costs nothing —
-      // what costs is the render and the marker writes, and those are skipped.
+      // Nothing is drawn while the globe cannot be seen — scrolled away, tab
+      // hidden, or under a modal's blur, which would otherwise be recomputed
+      // for the whole viewport on every frame of spin.
       let onScreen = true
       const visibility = new IntersectionObserver(
         ([entry]) => {
@@ -518,26 +493,21 @@ function GlobePresence({ title }) {
         { threshold: 0.01 }
       )
       visibility.observe(mount)
-
       const root = document.getElementById('root')
-      const isVisible = () =>
-        onScreen && !document.hidden && !root?.classList.contains('modal-open')
+      const isVisible = () => onScreen && !document.hidden && !root?.classList.contains('modal-open')
 
       let frameId = 0
       const animate = () => {
         frameId = window.requestAnimationFrame(animate)
         if (!isVisible()) return
 
-        const targetCountry = targetCountryRef.current
-
-        if (targetCountry) {
-          focusCountry(targetCountry)
-        } else if (!isPausedRef.current) {
+        if (targetRef.current) {
+          focusOn(targetRef.current)
+        } else if (!isPausedRef.current && !drag) {
           globeGroup.rotation.y += 0.0026
           globeGroup.rotation.x += (baseRotationX - globeGroup.rotation.x) * 0.015
-          atmosphere.rotation.y += 0.0008
-          stars.rotation.y -= 0.00015
         }
+        camera.position.z += (zoomTarget - camera.position.z) * 0.12
         updateMarkers()
         renderer.render(scene, camera)
       }
@@ -547,13 +517,16 @@ function GlobePresence({ title }) {
         window.cancelAnimationFrame(frameId)
         visibility.disconnect()
         resizeObserver.disconnect()
+        mount.removeEventListener('pointerdown', onPointerDown)
+        mount.removeEventListener('pointermove', onPointerMove)
+        mount.removeEventListener('pointerup', onPointerUp)
+        mount.removeEventListener('pointercancel', onPointerUp)
+        controlsRef.current = null
         if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
         earthGeometry.dispose()
         earthMaterial.dispose()
         atmosphereGeometry.dispose()
         atmosphereMaterial.dispose()
-        starGeometry.dispose()
-        starMaterial.dispose()
         earthTexture.dispose()
         renderer.dispose()
       }
@@ -565,87 +538,12 @@ function GlobePresence({ title }) {
       disposed = true
       cleanupGlobe()
     }
-  }, [])
+  }, [controlsRef])
 
   return (
-    // Border and lift match the section boxes elsewhere on the page, so the
-    // globe reads as one of them. It keeps its own background gradient rather
-    // than taking site-surface-tint, which would paint over the sky wash the
-    // globe is composited against.
-    <div className="relative min-h-[360px] overflow-hidden rounded-card border border-brand-primary/30 dark:border-white/[0.16] bg-gradient-to-br from-brand-light/80 via-white to-sky-50 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-14px_rgba(15,23,42,0.22)] sm:min-h-[420px] lg:min-h-[460px]">
-      {/* Dark-mode space backdrop — minimal deep-space gradient behind the globe */}
-      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_68%_30%,#11244a_0%,#0a1430_40%,#04060f_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.14),transparent_55%)]" />
-      <div ref={mountRef} className="absolute inset-x-0 bottom-0 top-14 sm:top-16 lg:top-0" aria-hidden="true" />
+    <div className="relative h-[340px] sm:h-[380px]">
+      <div ref={mountRef} className="absolute inset-0 cursor-grab touch-none active:cursor-grabbing" aria-hidden="true" />
 
-      {/* Header overlay */}
-      <div className="pointer-events-none absolute left-3 top-3 z-20 space-y-2 sm:left-5 sm:top-5">
-        {title && <h2 className="text-lg font-semibold text-brand-primary">{title}</h2>}
-      </div>
-
-      <div className="absolute bottom-5 left-5 top-5 z-20 hidden w-64 flex-col rounded-card border border-line/[0.08] bg-surface/95 p-3 text-ink shadow-soft backdrop-blur-md lg:flex">
-        <div className="mb-3 flex-none rounded-card bg-brand-primary px-3 py-3 text-center text-white">
-          <p className="text-4xl font-bold leading-none tracking-tight text-white">{MARKET_COUNT}</p>
-          <p className="mt-1 text-sm font-medium text-white/90">Countries worldwide</p>
-        </div>
-
-        <div className="flex min-h-0 flex-1 flex-col rounded-card bg-canvas p-2">
-          <div className="grid min-h-0 flex-1 auto-rows-min grid-cols-2 gap-1.5 overflow-y-auto pr-1 overscroll-contain [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-line/15 hover:[&::-webkit-scrollbar-thumb]:bg-line/30">
-            {BAJAJ_COUNTRIES.map((country) => {
-              const isActive = activeCountry === country.name
-              return (
-                <button
-                  key={country.name}
-                  type="button"
-                  className={`min-w-0 rounded-btn border px-2.5 py-2 text-center text-[11px] font-medium transition-all focus-ring ${
-                    isActive
-                      ? 'border-brand-primary bg-brand-primary text-white shadow-[0_4px_12px_-4px_rgba(26,86,168,0.6)]'
-                      : 'border-transparent bg-surface text-ink hover:border-brand-primary/30 hover:text-brand-primary'
-                  }`}
-                  onMouseEnter={() => setActiveCountry(country.name)}
-                  onMouseLeave={() => {
-                    if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
-                  }}
-                  onFocus={() => setActiveCountry(country.name)}
-                  onBlur={() => {
-                    if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
-                  }}
-                  onClick={() => flyToCountry(country)}
-                >
-                  <span className="block truncate">{country.name}</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="absolute bottom-3 left-3 right-3 z-20 flex gap-1.5 overflow-x-auto pb-1 sm:bottom-5 sm:left-5 sm:right-5 lg:hidden [&::-webkit-scrollbar]:hidden">
-        {BAJAJ_COUNTRIES.map((country) => (
-          <button
-            key={country.name}
-            type="button"
-            className={`flex-shrink-0 rounded-full border px-2.5 py-1.5 text-[10px] font-semibold transition-all focus-ring sm:px-3 sm:text-[11px] ${
-              activeCountry === country.name
-                ? 'border-brand-primary bg-brand-primary text-white'
-                : 'border-brand-primary/10 bg-white/90 text-brand-primary backdrop-blur-sm'
-            }`}
-            onMouseEnter={() => setActiveCountry(country.name)}
-            onMouseLeave={() => {
-              if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
-            }}
-            onFocus={() => setActiveCountry(country.name)}
-            onBlur={() => {
-              if (!targetCountryRef.current && !isPausedRef.current) setActiveCountry('India')
-            }}
-            onClick={() => flyToCountry(country)}
-          >
-            {country.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Country marker overlays */}
       {BAJAJ_COUNTRIES.map((country) => {
         const isActive = activeCountry === country.name
         return (
@@ -656,7 +554,7 @@ function GlobePresence({ title }) {
               if (node) markerRefs.current[country.name] = node
               else delete markerRefs.current[country.name]
             }}
-            className="absolute left-0 top-0 z-10 group flex h-7 w-7 items-center justify-center rounded-full focus-ring sm:h-8 sm:w-8"
+            className="group absolute left-0 top-0 z-10 flex h-7 w-7 items-center justify-center rounded-full focus-ring"
             aria-label={`${country.name}${country.primary ? ' HQ' : ''}`}
             onMouseEnter={() => pauseOnCountry(country.name)}
             onMouseLeave={resumeGlobe}
@@ -664,41 +562,19 @@ function GlobePresence({ title }) {
             onBlur={resumeGlobe}
             onClick={() => flyToCountry(country)}
           >
-            {country.primary ? (
-              <>
-                <span className="relative flex h-4 w-4 items-center justify-center rounded-full">
-                  <span className={`absolute inset-0 rounded-full bg-brand-primary/40 ${isActive ? 'animate-ping' : ''}`} />
-                  <span
-                    className={`relative rounded-full bg-brand-primary transition-all duration-200 ${
-                      isActive
-                        ? 'h-5 w-5 shadow-[0_0_20px_rgba(37,99,235,0.65)]'
-                        : 'h-4 w-4 shadow-[0_0_12px_rgba(37,99,235,0.45)]'
-                    }`}
-                  />
-                </span>
-                <span className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-brand-primary px-2 py-0.5 text-[9px] font-bold text-white shadow-md sm:mb-2.5 sm:px-2.5 sm:py-1 sm:text-[11px]">
-                  India - HQ
-                </span>
-              </>
-            ) : (
-              <>
-                <span
-                  className={`block rounded-full ring-white/15 transition-all duration-200 ${
-                    isActive
-                      ? 'h-4 w-4 scale-125 bg-brand-primary ring-2 shadow-[0_0_16px_rgba(37,99,235,0.6)]'
-                      : 'h-2 w-2 bg-sky-500/80 ring-1 group-hover:scale-[1.9] group-hover:bg-brand-primary group-hover:ring-2 group-hover:ring-brand-primary/30 group-hover:shadow-[0_0_7px_rgba(37,99,235,0.5)]'
-                  }`}
-                />
-                <span
-                  className={`pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[9px] font-semibold text-brand-dark shadow-sm transition-all duration-150 sm:mb-2.5 sm:px-2 sm:text-[10px] ${
-                    isActive
-                      ? 'bg-brand-primary text-white opacity-100 shadow-[0_0_14px_rgba(37,99,235,0.35)]'
-                      : 'bg-white/90 opacity-90 ring-1 ring-brand-primary/10 group-hover:bg-white group-hover:opacity-100'
-                  }`}
-                >
-                  {country.name}
-                </span>
-              </>
+            <span
+              className={`block rounded-full ring-white/60 transition-all duration-200 ${
+                country.primary
+                  ? 'h-3.5 w-3.5 bg-ocean-900 ring-2 shadow-[0_0_12px_rgba(9,52,75,0.6)]'
+                  : isActive
+                    ? 'h-3.5 w-3.5 bg-ocean-700 ring-2 shadow-[0_0_14px_rgba(29,104,133,0.6)]'
+                    : 'h-2 w-2 bg-white ring-1 ring-ocean-700/60 group-hover:scale-150'
+              }`}
+            />
+            {(country.primary || isActive) && (
+              <span className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-ocean-900 px-2 py-0.5 text-[10px] font-semibold text-white shadow-md">
+                {country.primary ? 'India - HQ' : country.name}
+              </span>
             )}
           </button>
         )
@@ -779,158 +655,217 @@ function PlantCard({ location }) {
   )
 }
 
-// Name and description only, no company icon, so each tile stays short
-// enough for four companies to share the globe's height.
-function GroupTileHeader({ group, interactive }) {
-  return (
-    <div className="flex items-center gap-2.5">
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-[13px] font-semibold leading-tight text-text-primary">{group.label}</p>
-        <p className="truncate text-[11px] text-text-secondary">{group.description}</p>
-      </div>
-      {interactive && (
-        <ChevronRight
-          size={15}
-          className="flex-shrink-0 text-text-secondary transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-primary"
-        />
-      )}
-    </div>
-  )
-}
+// The network panel's entity rows step down the ocean scale.
+const ENTITY_TONES = ['bg-ocean-500 text-white', 'bg-[#68a1bc] text-white', 'bg-[#93c4d5] text-[#013b5c]', 'bg-[#b6d8e1] text-[#013b5c]']
 
-function GroupTile({ group, onEnter, onEnterSubGroup }) {
-  if (group.subGroups?.length) {
-    return (
-      <div className="site-surface-interactive relative w-full rounded-card border p-2.5 lg:flex-1">
-        <GroupTileHeader group={group} />
-        <div className="mt-2 flex flex-wrap gap-1">
-          {group.subGroups.map((sg) => (
-            <button
-              key={sg.id}
-              type="button"
-              onClick={() => onEnterSubGroup(group.id, sg.id)}
-              className="inline-flex items-center gap-1 rounded-full bg-brand-light px-2 py-0.5 text-[11px] font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
-            >
+const CHIP =
+  'h-[25px] flex-none rounded-[11px] px-3 text-[11px] font-medium transition-colors focus-ring'
+const CHIP_OFF = 'bg-[#8bc2d6] text-[#0a1620] hover:bg-[#7ab6cc]'
+const CHIP_ON = 'bg-gradient-to-r from-[#093449] to-[#2188a9] text-white'
+
+function NetworkEntity({ group, tone, onEnter, onEnterSubGroup }) {
+  const tags = group.subGroups?.length ? group.subGroups : null
+  const dark = tone.includes('text-white')
+  const tag = `rounded-[7px] border border-[#f2f8ff] bg-[#e4f1ff] px-2 text-[10.5px] font-medium leading-[18px] text-[#033b56] transition-colors hover:bg-white focus-ring`
+
+  return (
+    <div className={`rounded-xl p-2.5 transition-transform hover:translate-x-1 ${tone}`}>
+      <div className="min-w-0">
+        <p className="truncate text-[12.5px] font-semibold">{group.label}</p>
+        <p className={`truncate text-[12px] ${dark ? 'text-white/85' : 'text-[#013857]'}`}>{group.description}</p>
+      </div>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {tags ? (
+          tags.map((sg) => (
+            <button key={sg.id} type="button" onClick={() => onEnterSubGroup(group.id, sg.id)} className={tag}>
               {sg.label}
-              <ChevronRight size={10} className="flex-shrink-0 opacity-60" />
             </button>
-          ))}
-        </div>
+          ))
+        ) : (
+          <button type="button" onClick={onEnter} className={tag}>
+            {group.locations.length} {group.locations.length === 1 ? 'location' : 'locations'}
+          </button>
+        )}
       </div>
-    )
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={onEnter}
-      className="group site-surface-interactive relative w-full rounded-card border p-2.5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-modal focus-ring lg:flex-1"
-    >
-      <GroupTileHeader group={group} interactive />
-      <div className="mt-2">
-        <span className="rounded-full bg-brand-light px-2 py-0.5 text-[11px] font-semibold text-brand-primary">
-          {group.locations.length} {group.locations.length === 1 ? 'location' : 'locations'}
-        </span>
-      </div>
-    </button>
-  )
-}
-
-function LocationGroupRail({ onEnterGroup, onEnterSubGroup }) {
-  return (
-    <div className="hidden h-[460px] w-[16rem] flex-col gap-2.5 lg:flex xl:w-[17rem] 2xl:w-[18rem]">
-      {LOCATION_GROUPS.map((group) => (
-        <GroupTile
-          key={group.id}
-          group={group}
-          onEnter={() => onEnterGroup(group.id)}
-          onEnterSubGroup={onEnterSubGroup}
-        />
-      ))}
     </div>
   )
 }
 
-export default function LocationsSection({ title }) {
+/*
+ * About Bajaj Auto: the globe with its region and zoom controls on the left,
+ * the four Bajaj entities on the right. Choosing an entity's office group
+ * swaps the presence box for that group's location cards, with a way back.
+ */
+export default function LocationsSection() {
+  const controlsRef = useRef(null)
+  const [region, setRegion] = useState('global')
+  const [paused, setPaused] = useState(false)
+  const [activeCountry, setActiveCountry] = useState('India')
   const [enteredGroup, setEnteredGroup] = useState(null)
   const [enteredSubGroup, setEnteredSubGroup] = useState(null)
 
   const group = LOCATION_GROUPS.find((g) => g.id === enteredGroup)
   const subGroup = group?.subGroups?.find((sg) => sg.id === enteredSubGroup)
   const displayLocations = subGroup ? subGroup.locations : group?.locations
-  const displayIcon = subGroup ? subGroup.icon : group?.icon
-  const displayLabel = subGroup ? subGroup.label : group?.label
+  const displayLabel = subGroup ? `${group.label} · ${subGroup.label}` : group?.label
 
-  const handleEnterSubGroup = (groupId, subGroupId) => {
+  function chooseRegion(r) {
+    setRegion(r.id)
+    if (r.id === 'global') {
+      controlsRef.current?.reset()
+      setPaused(false)
+    } else {
+      controlsRef.current?.flyTo(r)
+    }
+  }
+
+  function togglePause() {
+    const next = !paused
+    setPaused(next)
+    controlsRef.current?.setPaused(next)
+  }
+
+  function chooseCountry(country) {
+    setActiveCountry(country.name)
+    setRegion(null)
+    controlsRef.current?.flyTo(country)
+  }
+
+  function enter(groupId, subGroupId = null) {
     setEnteredGroup(groupId)
     setEnteredSubGroup(subGroupId)
   }
 
-  const handleBack = () => {
-    setEnteredGroup(null)
-    setEnteredSubGroup(null)
-  }
-
-  const isDetailVisible = Boolean(enteredGroup)
-
   return (
-    <div className="space-y-5">
-      <div className="relative [overflow-x:clip]">
-        <div
-          className={`transition-[transform,opacity] duration-500 ease-in-out ${
-            isDetailVisible
-              ? 'absolute top-0 left-0 w-full -translate-x-full opacity-0 pointer-events-none'
-              : 'relative translate-x-0 opacity-100'
-          }`}
-        >
-          <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_17rem] 2xl:grid-cols-[minmax(0,1fr)_18rem]">
-            <GlobePresence title={title} />
-            <LocationGroupRail onEnterGroup={setEnteredGroup} onEnterSubGroup={handleEnterSubGroup} />
-          </div>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4 lg:hidden">
-            {LOCATION_GROUPS.map((g) => (
-              <GroupTile
-                key={g.id}
-                group={g}
-                onEnter={() => setEnteredGroup(g.id)}
-                onEnterSubGroup={handleEnterSubGroup}
-              />
-            ))}
-          </div>
-        </div>
+    <Panel as="section" id="about" aria-labelledby="about-heading" className="scroll-mt-20 p-4 sm:p-5">
+      <PanelTitle id="about-heading" icon={navAbout} title="About Bajaj Auto" />
 
-        <div
-          className={`transition-[transform,opacity] duration-500 ease-in-out ${
-            isDetailVisible
-              ? 'relative translate-x-0 opacity-100'
-              : 'absolute top-0 left-0 w-full translate-x-full opacity-0 pointer-events-none'
-          }`}
-        >
-          {group && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="flex items-center gap-1.5 rounded-btn border border-brand-primary/20 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
-                >
-                  <ArrowLeft size={13} />
-                  Back
-                </button>
-                <div className="flex items-center gap-1.5">
-                  {displayIcon && <displayIcon size={14} className="text-brand-primary" />}
-                  <span className="text-sm font-semibold text-text-primary">{displayLabel}</span>
-                </div>
+      <div className="mt-4 rounded-[18px] border border-[#e3edf3] bg-white p-4 sm:p-5">
+        {group ? (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => enter(null)}
+                className="flex items-center gap-1.5 rounded-lg bg-ocean-100 px-3 py-1.5 text-xs font-semibold text-ocean-700 transition-colors hover:bg-ocean-200 focus-ring"
+              >
+                <ArrowLeft size={13} />
+                Back
+              </button>
+              <span className="text-sm font-semibold text-ocean-ink">{displayLabel}</span>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {displayLocations?.map((location) => (
+                <PlantCard key={location.id} location={location} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="max-w-[640px]">
+                <h3 className="text-[16px] font-semibold text-[#000709]">Bajaj Auto Presence</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-[#4f5f61]">
+                  Explore selected locations from Bajaj Auto’s worldwide footprint. Drag the globe, choose a
+                  region or hover a marker to discover key markets.
+                </p>
               </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {displayLocations?.map((location) => (
-                  <PlantCard key={location.id} location={location} />
-                ))}
+              <div className="flex items-center gap-2.5 rounded-[10px] border border-[#e3eeee] bg-gradient-to-br from-[#fcfeff] to-[#e5eff0] px-3 py-2">
+                <span className="text-[22px] font-semibold tracking-[-0.02em] text-black">{MARKET_COUNT}</span>
+                <span className="text-[10.5px] leading-tight tracking-[0.12em] text-[#405a5e]">
+                  COUNTRIES
+                  <br />
+                  WORLDWIDE
+                </span>
               </div>
             </div>
-          )}
-        </div>
+
+            <div className="mt-4 grid gap-5 lg:grid-cols-[1.8fr_1fr]">
+              <div className="min-w-0 rounded-[18px] border border-[#d6e6ee] bg-gradient-to-b from-[#e1eff8] to-[#dceff5] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div role="group" aria-label="Region" className="flex flex-wrap gap-1.5">
+                    {REGIONS.map((r) => (
+                      <button
+                        key={r.id}
+                        type="button"
+                        aria-pressed={region === r.id}
+                        onClick={() => chooseRegion(r)}
+                        className={`${CHIP} ${region === r.id ? CHIP_ON : CHIP_OFF}`}
+                      >
+                        {r.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex gap-1.5">
+                    <button type="button" onClick={togglePause} aria-pressed={paused} className={`${CHIP} ${CHIP_OFF}`}>
+                      {paused ? 'Play' : 'Pause'}
+                    </button>
+                    <button type="button" aria-label="Zoom out" onClick={() => controlsRef.current?.zoom(-1)} className={`${CHIP} ${CHIP_OFF} w-7 px-0`}>
+                      −
+                    </button>
+                    <button type="button" aria-label="Zoom in" onClick={() => controlsRef.current?.zoom(1)} className={`${CHIP} ${CHIP_OFF} w-7 px-0`}>
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Reset view"
+                      onClick={() => chooseRegion(REGIONS[0])}
+                      className={`${CHIP} ${CHIP_OFF} flex w-7 items-center justify-center px-0`}
+                    >
+                      <RotateCcw size={12} />
+                    </button>
+                  </div>
+                </div>
+
+                <GlobePresence controlsRef={controlsRef} activeCountry={activeCountry} onActiveCountry={setActiveCountry} />
+
+                <p className="text-[10.5px] text-[#718688]">Drag to rotate · hover a location · use region filters</p>
+                <div className="scrollbar-none mt-2 flex gap-1.5 overflow-x-auto pb-1">
+                  {BAJAJ_COUNTRIES.map((country) => (
+                    <button
+                      key={country.name}
+                      type="button"
+                      onClick={() => chooseCountry(country)}
+                      className={`h-[20px] flex-none rounded-[10px] px-2.5 text-[10.5px] font-medium transition-colors focus-ring ${
+                        activeCountry === country.name ? CHIP_ON : 'bg-[#8cc0d4] text-[#0a1620] hover:bg-[#7ab6cc]'
+                      }`}
+                    >
+                      {country.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[18px] border border-[#dfeaf3] bg-white p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-[13px] font-semibold text-[#022738]">Bajaj network</p>
+                    <p className="mt-0.5 text-[12.5px] leading-snug text-[#505a69]">
+                      Business and operating presence across the Bajaj ecosystem.
+                    </p>
+                  </div>
+                  <span className="flex-none text-[10px] text-[#032436]">{LOCATION_GROUPS.length} entities</span>
+                </div>
+                <div className="mt-3 space-y-2.5">
+                  {LOCATION_GROUPS.map((g, i) => (
+                    <NetworkEntity
+                      key={g.id}
+                      group={g}
+                      tone={ENTITY_TONES[i % ENTITY_TONES.length]}
+                      onEnter={() => enter(g.id)}
+                      onEnterSubGroup={enter}
+                    />
+                  ))}
+                </div>
+                <p className="mt-4 text-[12.5px] leading-snug text-[#012336]">
+                  The globe highlights selected locations within Bajaj Auto’s {MARKET_COUNT}-country worldwide
+                  footprint.
+                </p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-    </div>
+    </Panel>
   )
 }

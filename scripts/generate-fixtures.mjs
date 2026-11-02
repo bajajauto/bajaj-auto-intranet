@@ -50,11 +50,11 @@ try {
   const { contracts } = await load('/src/contracts/index.js')
   const { entities } = await load('/src/config/letters.config.js')
 
-  const [news, notices, notifications, calendar, stock, vehicles, bytes, podcast, youtube, policy, csr, letters] =
+  const [news, notices, notifications, calendar, stock, vehicles, bytes, podcast, youtube, policy, csr, letters, attention] =
     await Promise.all([
       mock('news'), mock('notices'), mock('notifications'), mock('calendar'),
       mock('stock'), mock('vehicles'), mock('bajajBytes'), mock('podcast'),
-      mock('youtube'), mock('policyLibrary'), mock('csr'), mock('employeeLetters'),
+      mock('youtube'), mock('policyLibrary'), mock('csr'), mock('employeeLetters'), mock('attention'),
     ])
 
   const POLICY_BUCKETS = [
@@ -71,6 +71,7 @@ try {
   const files = {
     'news.json': check('news', contracts.news.getAll.returns, news.getAll()),
     'notices.json': check('notices', contracts.notices.getAll.returns, notices.getAll()),
+    'attention.json': check('attention', contracts.attention.getSummary.returns, attention.getSummary()),
     'notifications.json': check(
       'notifications',
       contracts.notifications.getAll.returns,

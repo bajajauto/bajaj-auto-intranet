@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 const ThemeContext = createContext(null)
 
+// The ocean redesign is light-only for now: it has no dark palette and no
+// toggle, so a stored or system preference for dark would render it half
+// remapped. The provider stays so a dark design can return without rewiring.
 function getInitialTheme() {
-  if (typeof window === 'undefined') return 'light'
-  const stored = localStorage.getItem('theme')
-  if (stored === 'light' || stored === 'dark') return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  return 'light'
 }
 
 export function ThemeProvider({ children }) {
