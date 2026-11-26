@@ -1,16 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { Send, X } from 'lucide-react'
+import { ArrowRight, ExternalLink, FileText, Send, X } from 'lucide-react'
 import jarvisImage from '@/assets/jarvis-blue.png'
 import { JARVIS_OPEN_EVENT } from '@/lib/jarvis'
 import { SCROLL_TOP_OFFSET } from '@/lib/layout'
-
-const QUICK_ACTIONS = [
-  { id: 'leave', label: 'Leave balance' },
-  { id: 'it', label: 'Raise IT ticket' },
-  { id: 'policy', label: 'HR policies' },
-  { id: 'payslip', label: 'My payslip' },
-  { id: 'holiday', label: 'Holiday list' },
-]
+import { runShellAction } from '@/lib/shellActions'
+import { answer, SUGGESTIONS } from '@/lib/jarvisBot/engine'
+import { useJarvisKnowledge } from '@/hooks/useJarvisKnowledge'
+import { scrollToSection } from '@/utils/scrollToSection'
 
 function JarvisIcon({ size = 32, className = '' }) {
   return (
@@ -26,19 +22,33 @@ function JarvisIcon({ size = 32, className = '' }) {
   )
 }
 
-function getBotResponse(text) {
-  const t = text.toLowerCase()
-  if (t.includes('leave') || t.includes('vacation') || t.includes('leave balance'))
-    return 'You have 12 earned leave days and 6 sick leave days remaining this year. Would you like to apply for leave or see the full breakdown?'
-  if (t.includes('it') || t.includes('ticket') || t.includes('laptop') || t.includes('computer') || t.includes('internet'))
-    return "I'll help you raise an IT ticket. Please describe your issue briefly and I'll route it to the right team — typically resolved within 4 business hours."
-  if (t.includes('policy') || t.includes('policies') || t.includes('hr policy'))
-    return 'All HR policies are available in the Self-Service portal. Commonly accessed ones are Leave Policy, Travel Policy, and Code of Conduct. Which one do you need?'
-  if (t.includes('payslip') || t.includes('salary') || t.includes('pay slip'))
-    return 'Your latest payslip for April 2026 is ready. You can download it from Self-Service → Payroll → Payslips.'
-  if (t.includes('holiday') || t.includes('holidays'))
-    return 'The next public holiday is Maharashtra Day on 1 May. The full 2026 holiday calendar is available under Self-Service → HR → Holiday List.'
-  return "I'm Jarvis in preview mode right now. For urgent queries please contact HR at hr@bajajauto.com or the IT helpdesk at helpdesk@bajajauto.com."
+const WELCOME =
+  "Hi! I'm Jarvis, your Bajaj Auto assistant. Ask me about HR policies, holidays, letters and forms, or any intranet service."
+
+// One answer button. Links open in a new tab, sections scroll, shell actions
+// open the Header's modals, and `ask` sends its text as the next question.
+function ActionChip({ action, onAsk }) {
+  const Icon = action.href ? (action.kind === 'document' ? FileText : ExternalLink) : ArrowRight
+  function run() {
+    if (action.href) window.open(action.href, '_blank', 'noopener,noreferrer')
+    else if (action.sectionId) scrollToSection(action.sectionId)
+    else if (action.action) runShellAction(action.action)
+    else if (action.ask) onAsk(action.ask)
+  }
+  return (
+    <button
+      type="button"
+      onClick={run}
+      className={`inline-flex min-w-0 max-w-full items-center gap-1 overflow-hidden rounded-full border px-2.5 py-1 text-left text-[11px] font-medium transition-all focus-ring ${
+        action.related
+          ? 'border-brand-primary/10 bg-white text-text-secondary hover:border-brand-primary/30 hover:text-brand-primary'
+          : 'border-brand-primary/20 bg-brand-light text-brand-primary hover:bg-brand-primary hover:text-white'
+      }`}
+    >
+      <Icon size={12} className="flex-shrink-0" aria-hidden="true" />
+      <span className="min-w-0 truncate">{action.label}</span>
+    </button>
+  )
 }
 
 export default function FloatingSupportButton() {
@@ -47,24 +57,32 @@ export default function FloatingSupportButton() {
   const [isPromptClosing, setPromptClosing] = useState(false)
   const [hasPassedEss, setHasPassedEss] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      from: 'bot',
-      text: "Hi! I'm Jarvis, your Bajaj Auto assistant. Ask me anything about HR, IT, payroll, or company policies.",
-    },
-  ])
+  const [hasOpened, setHasOpened] = useState(false)
+  const [messages, setMessages] = useState([{ id: 1, from: 'bot', text: WELCOME, actions: [] }])
   const [input, setInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
+  const knowledge = useJarvisKnowledge({ enabled: hasOpened })
+  // Read when the reply is composed, not when the question was sent, so an
+  // answer given just after the policy library lands already knows it.
+  const knowledgeRef = useRef(knowledge)
+  knowledgeRef.current = knowledge
+
+  useEffect(() => {
+    if (isOpen) setHasOpened(true)
+  }, [isOpen])
+
   useEffect(() => {
     const feedback = document.getElementById('feedback')
     if (!feedback) return undefined
-    const observer = new IntersectionObserver(([entry]) => setHideForFeedback(entry.isIntersecting), {
-      threshold: 0.12,
-    })
+    const observer = new IntersectionObserver(
+      ([entry]) => setHideForFeedback(entry.isIntersecting),
+      {
+        threshold: 0.12,
+      }
+    )
     observer.observe(feedback)
     return () => observer.disconnect()
   }, [])
@@ -112,12 +130,18 @@ export default function FloatingSupportButton() {
     setInput('')
     setIsTyping(true)
     setTimeout(() => {
+      const { data, isPending } = knowledgeRef.current
+      const reply = answer(trimmed, data)
+      const text =
+        reply.fallback && isPending
+          ? "I'm still loading the policy library. Please ask again in a moment."
+          : reply.text
       setIsTyping(false)
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, from: 'bot', text: getBotResponse(trimmed) },
+        { id: Date.now() + 1, from: 'bot', text, actions: reply.actions ?? [] },
       ])
-    }, 900)
+    }, 500)
   }
 
   const showPrompt = !isOpen && !isPromptDismissed && !hasPassedEss
@@ -142,7 +166,7 @@ export default function FloatingSupportButton() {
     >
       {/* ── Chat panel ─────────────────────────────────────── */}
       {isOpen && (
-        <div className="mb-2 flex w-[min(20rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-brand-primary/10 bg-white shadow-[0_8px_40px_rgba(26,86,168,0.18)] animate-in slide-in-from-bottom-4 duration-300 sm:w-[20rem]">
+        <div className="mb-2 flex w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-brand-primary/10 bg-white shadow-[0_8px_40px_rgba(26,86,168,0.18)] animate-in slide-in-from-bottom-4 duration-300 sm:w-[22rem]">
           {/* Header */}
           <div className="flex items-center gap-3 bg-gradient-to-r from-brand-primary to-brand-dark px-4 py-3">
             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#202020] ring-2 ring-white/20">
@@ -152,7 +176,7 @@ export default function FloatingSupportButton() {
               <p className="text-sm font-bold text-white">Jarvis</p>
               <div className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                <p className="text-[11px] text-white/65">Bajaj Auto AI · Online</p>
+                <p className="text-[11px] text-white/65">Bajaj Auto assistant · Online</p>
               </div>
             </div>
             <button
@@ -166,7 +190,7 @@ export default function FloatingSupportButton() {
           </div>
 
           {/* Messages */}
-          <div className="flex max-h-[14.5rem] min-h-[10rem] flex-col gap-3 overflow-y-auto bg-slate-50/70 p-3.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/20">
+          <div className="flex max-h-[min(24rem,55vh)] min-h-[10rem] flex-col gap-3 overflow-y-auto bg-slate-50/70 p-3.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-brand-primary/20">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -178,13 +202,28 @@ export default function FloatingSupportButton() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[82%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
-                    msg.from === 'user'
-                      ? 'rounded-br-sm bg-brand-primary text-white'
-                      : 'rounded-bl-sm border border-brand-primary/8 bg-white text-text-primary shadow-sm'
-                  }`}
+                  className={`flex min-w-0 max-w-[85%] flex-col gap-1.5 ${msg.from === 'user' ? 'items-end' : 'items-start'}`}
                 >
-                  {msg.text}
+                  <div
+                    className={`whitespace-pre-line break-words rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
+                      msg.from === 'user'
+                        ? 'rounded-br-sm bg-brand-primary text-white'
+                        : 'rounded-bl-sm border border-brand-primary/8 bg-white text-text-primary shadow-sm'
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                  {msg.actions?.length > 0 && (
+                    <div className="flex max-w-full flex-wrap gap-1.5">
+                      {msg.actions.map((action) => (
+                        <ActionChip
+                          key={`${action.label}-${action.href ?? action.ask ?? action.action ?? action.sectionId}`}
+                          action={action}
+                          onAsk={sendMessage}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -208,14 +247,14 @@ export default function FloatingSupportButton() {
           {/* Quick-action chips (only on welcome screen) */}
           {showQuickActions && (
             <div className="flex flex-wrap gap-1.5 border-t border-brand-primary/8 bg-white px-3.5 py-2.5">
-              {QUICK_ACTIONS.map((action) => (
+              {SUGGESTIONS.map((label) => (
                 <button
-                  key={action.id}
+                  key={label}
                   type="button"
-                  onClick={() => sendMessage(action.label)}
+                  onClick={() => sendMessage(label)}
                   className="rounded-full border border-brand-primary/20 bg-brand-light px-2.5 py-1.5 text-[11px] font-medium text-brand-primary transition-all hover:bg-brand-primary hover:text-white focus-ring"
                 >
-                  {action.label}
+                  {label}
                 </button>
               ))}
             </div>

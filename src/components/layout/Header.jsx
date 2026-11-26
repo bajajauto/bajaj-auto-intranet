@@ -13,6 +13,7 @@ import { helplineMenu, topNav } from '@/config/navigation.config'
 import { SITE_SEARCH_ID } from '@/lib/layout'
 import { openJarvis } from '@/lib/jarvis'
 import { openSos } from '@/lib/sos'
+import { SHELL_ACTION_EVENT } from '@/lib/shellActions'
 import { scrollToSection } from '@/utils/scrollToSection'
 
 // Where a top-bar or Helpline entry goes: a link to open, or nothing yet.
@@ -82,7 +83,10 @@ function SiteSearch({ onAction }) {
       </div>
 
       {open && (
-        <div id="site-search-results" className={`${PANEL} right-0 w-[min(360px,calc(100vw-2rem))] p-1.5`}>
+        <div
+          id="site-search-results"
+          className={`${PANEL} right-0 w-[min(360px,calc(100vw-2rem))] p-1.5`}
+        >
           {results.length > 0 ? (
             <ul aria-label="Search results">
               {results.map((result) => (
@@ -198,12 +202,25 @@ export default function Header() {
     }
   }, [openMenu, close])
 
-  function runAction(action) {
-    close()
+  const applyAction = useCallback((action) => {
     if (action === 'sos') openSos()
     else if (action === 'helpline') setOpenMenu('helpline')
     else if (action === 'policies' || action === 'letters') setModal(action)
+  }, [])
+
+  function runAction(action) {
+    close()
+    applyAction(action)
   }
+
+  // Jarvis offers these modals as answers; see lib/shellActions.
+  useEffect(() => {
+    function onShellAction(event) {
+      if (event.detail?.action) applyAction(event.detail.action)
+    }
+    window.addEventListener(SHELL_ACTION_EVENT, onShellAction)
+    return () => window.removeEventListener(SHELL_ACTION_EVENT, onShellAction)
+  }, [applyAction])
 
   function pickHelpline(item) {
     if (item.action) runAction(item.action)
@@ -321,7 +338,9 @@ export default function Header() {
                   toggle('notices')
                   setNoticesSeen(true)
                 }}
-                aria-label={noticeCount > 0 && !noticesSeen ? `Notices, ${noticeCount} unread` : 'Notices'}
+                aria-label={
+                  noticeCount > 0 && !noticesSeen ? `Notices, ${noticeCount} unread` : 'Notices'
+                }
                 aria-expanded={openMenu === 'notices'}
                 aria-haspopup="true"
                 className={ICON_BUTTON}
@@ -350,11 +369,15 @@ export default function Header() {
                 {openMenu === 'mobile' ? <X size={18} /> : <Menu size={18} />}
               </button>
               {openMenu === 'mobile' && (
-                <div className={`${PANEL} right-0 max-h-[calc(100vh-5rem)] w-72 overflow-y-auto p-2`}>
+                <div
+                  className={`${PANEL} right-0 max-h-[calc(100vh-5rem)] w-72 overflow-y-auto p-2`}
+                >
                   <div className="mb-2 sm:hidden">
                     <SiteSearch onAction={runAction} />
                   </div>
-                  <nav aria-label="Shortcuts">{topNav.map((item) => renderNavItem(item, { mobile: true }))}</nav>
+                  <nav aria-label="Shortcuts">
+                    {topNav.map((item) => renderNavItem(item, { mobile: true }))}
+                  </nav>
                   <p className="mt-2 border-t border-ocean-line px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-ocean-sub">
                     Helpline
                   </p>

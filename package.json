@@ -18,7 +18,8 @@
     "verify:api": "node scripts/verify-api.mjs",
     "api": "npm --prefix server start",
     "api:dev": "npm --prefix server run dev",
-    "smoke:letters": "node scripts/smoke-letters.mjs"
+    "smoke:letters": "node scripts/smoke-letters.mjs",
+    "smoke:jarvis": "node scripts/smoke-jarvis.mjs"
   },
   "dependencies": {
     "@azure/msal-browser": "^5.21.0",

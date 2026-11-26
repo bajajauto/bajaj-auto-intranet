@@ -43,4 +43,5 @@ export const queryKeys = {
   csrUserStats: ['csr', 'userStats'],
   letterEmployee: ['letters', 'employee'],
   letterSignatories: ['letters', 'signatories'],
+  jarvisPolicyLibrary: ['policy', 'library', 'all'],
 }
