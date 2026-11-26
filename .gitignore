@@ -26,3 +26,7 @@ coverage
 
 # Throwaway repro scripts
 *.tmp.mjs
+
+# Local HR reference files - contain credentials / employee data, never commit
+/Employee Master API mapping sheet.xlsx
+/HR Employee Master.postman_collection.json
